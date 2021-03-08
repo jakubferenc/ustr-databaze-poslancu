@@ -1,0 +1,19 @@
+{
+    "name": "my-app",
+    "scripts": {
+        "dev": "nuxt",
+        "build": "nuxt build",
+        "generate": "nuxt generate",
+        "start": "nuxt start"
+    },
+    "dependencies": {
+        "nuxt": "^2.15.2"
+    },
+    "devDependencies": {
+        "fibers": "^5.0.0",
+        "pug": "^3.0.2",
+        "pug-plain-loader": "^1.1.0",
+        "sass": "^1.32.8",
+        "sass-loader": "^10.1.1"
+    }
+}
