@@ -14,7 +14,7 @@ The `dev` branch is the main development branch. Merge all accepted feature bran
 
 
 ## Start to develop
-* Clone the repository from [MDH team](https://bitbucket.org/DOPLNIT/DOPLNIT)
+* Clone the repository from [jakubferenc](https://github.com/jakubferenc/ustr-parlamentni-mapy)
 * `npm start` in terminal to install & run the project in your browser
 
 ## Production build

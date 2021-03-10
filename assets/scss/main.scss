@@ -1,0 +1,117 @@
+@charset "utf-8";
+
+// bulma
+// Import only what you need from Bulma
+@import "~bulma/sass/utilities/_all.sass";
+@import "~bulma/sass/base/_all.sass";
+@import "~bulma/sass/grid/columns.sass";
+
+@import "~bulma/sass/helpers/visibility.sass";
+
+// custom library
+@import "lib/all";
+
+// typography
+@import "typography";
+
+
+html {
+
+  font-size: 12px;
+
+  @include from($tablet) {
+    font-size: 14px;
+  }
+
+  @include from($desktop) {
+
+  }
+
+  @include from($widescreen) {
+    font-size: 16px;
+  }
+
+  @include from($fullhd) {
+
+  }
+
+}
+
+body {
+  font-family: 'Courier', monospace;
+  font-weight: 400;
+  color: $primary-color;
+  line-height: 1.7;
+  margin: 0;
+
+}
+
+strong {
+}
+
+a {
+
+}
+
+h1, h2, h3 {
+
+}
+
+p {}
+
+/* :CUSTOM CLASSES: */
+
+/* Removes the forced telephone styling on mobile phones */
+a[href^="tel"] {
+  color: inherit; /* Inherit text color of parent element. */
+  text-decoration: none; /* Remove underline. */
+  /* Additional css `propery: value;` pairs here */
+}
+
+[data-rel] {
+  cursor: pointer;
+}
+
+/****************************************************/
+/* :DEBUG: */
+.debug-bar {
+  position: fixed;
+  bottom: 0; right: 0;
+  width: 200px;
+  height: 50px;
+  background: #fff;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:after {
+    content: "mobile";
+  }
+
+  @include from($tablet) {
+    &:after {
+      content: "tablet";
+    }
+  }
+
+  @include from($desktop) {
+    &:after {
+      content: "desktop";
+    }
+  }
+
+  @include from($widescreen) {
+    &:after {
+      content: "widescreen";
+    }
+  }
+
+  @include from($fullhd) {
+    &:after {
+      content: "fullhd";
+    }
+  }
+
+}
+/****************************************************/

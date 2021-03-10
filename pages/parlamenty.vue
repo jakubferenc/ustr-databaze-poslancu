@@ -1,5 +1,5 @@
 <template lang="pug">
 
-  <h1>Hlavní stránka</h1>
+    <h1>Parlamenty</h1>
 
 </template>
