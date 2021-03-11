@@ -1,5 +1,5 @@
 <template lang="pug">
 
-    <h1>Rodinné klany</h1>
+    h1.typography-main-title Rodinné klany
 
 </template>

@@ -1,6 +1,5 @@
 <template lang="pug">
-  main.main-container
-    <Nuxt />
+  footer.main-footer
 </template>
 
 

@@ -15,7 +15,6 @@
     margin-left: 15px
     &:first-child
       margin-left: 0
-    font-size: 15px
 
 
   .nuxt-link-exact-active

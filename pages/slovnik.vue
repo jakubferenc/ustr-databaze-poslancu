@@ -1,16 +1,42 @@
 <template lang="pug">
 
-    <h1>Slovník</h1>
+    .section
+
+      h1.typography-main-title {{title}}
+
+      .container-list.columns.is-multiline
+
+        Keyword(v-for="item in slovnikova_hesla" v-bind:key="item.id" :title="item.title.rendered" :description="item.content.rendered" class="is-one-third column")
+
 
 </template>
 
 
 <script>
-  export default {
-    layout: 'default',
-    head: {
-      // Set Meta Tags for this Page
+export default {
+
+    created() {
+      this.$store.dispatch("getSlovnikovaHesla");
+    },
+    computed: {
+      slovnikova_hesla() {
+        return this.$store.state.slovnikova_hesla;
+      },
+    },
+    data() {
+      return {
+        title: `Slovník pojmů`,
+      }
+    },
+
+    head () {
+      return {
+        title: `${this.title} — ${this.$config.globalTitle}`,
+        htmlAttrs: {
+          class: 'alt-bg'
+        }
+      }
     }
-    // ...
-  }
+
+}
 </script>

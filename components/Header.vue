@@ -16,8 +16,9 @@
     padding: 0 50px
     align-items: center
 
-
     a
       color: #000
+      font-size: 15px
+      font-family: Courier, monospace
 
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
 
-    <h1>Galerie médií</h1>
+    h1.typography-main-title Galerie médií
 
 </template>

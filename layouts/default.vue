@@ -3,6 +3,11 @@
   div
     <Header />
     <Main />
-      <Nuxt />
+    <Footer />
+
+    .debug-bar
+
 
 </template>
+
+

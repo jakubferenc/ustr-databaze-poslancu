@@ -1,5 +1,5 @@
 <template lang="pug">
 
-    <h1>Vývoj parlamentu</h1>
+  h1.typography-main-title Vývoj parlamentu
 
 </template>
