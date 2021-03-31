@@ -1,8 +1,9 @@
 <template lang="pug">
-
+  .slider
+    img(src="~/assets/images/slider-homepage.jpg" alt="")
 </template>
 
 
-<style lang="sass" scoped>
+<style lang="sass">
 
 </style>

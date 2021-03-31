@@ -1,14 +1,26 @@
 <template lang="pug">
   .logo
-    img(src="~/assets/images/logo.svg")
+    <AppLogoImage />
+    span.logo-text Databáze poslanců
 </template>
 
 
 <style lang="sass" scoped>
-  .logo
+.logo
+  display: flex
+  justify-content: center
+  align-items: center
+  .logo-text
+    margin-left: 20px
+  svg
     width: 30px
-    img
-      width: 100%
-      height: auto
-
+    height: auto
 </style>
+
+<script>
+  import AppLogoImage from "~/assets/images/logo.svg?inline";
+
+  export default {
+    components: { AppLogoImage },
+  };
+</script>

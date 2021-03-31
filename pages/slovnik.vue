@@ -6,7 +6,7 @@
 
       .container-list.columns.is-multiline
 
-        Keyword(v-for="item in slovnikova_hesla" v-bind:key="item.id" :title="item.title.rendered" :description="item.content.rendered" class="is-one-third column")
+        SlovnikoveHeslo(v-for="item in slovnikova_hesla" v-bind:key="item.id" :title="item.title.rendered" :description="item.content.rendered" class="is-one-third column")
 
 
 </template>

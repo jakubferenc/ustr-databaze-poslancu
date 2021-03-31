@@ -17,7 +17,6 @@
 
 html {
 
-
   font-size: 12px;
 
   @include from($tablet) {
@@ -57,7 +56,8 @@ strong {
 }
 
 a {
-
+  color: inherit;
+  text-decoration: underline;
 }
 
 h1, h2, h3 {
@@ -77,6 +77,31 @@ a[href^="tel"] {
 
 [data-rel] {
   cursor: pointer;
+}
+
+input[type="text"] {
+  border: 1px solid #000;
+  border-radius: 12px;
+  height: 60px;
+  background-color: transparent;
+  font-size: 15px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  &:focus,
+  &:hover {
+    outline: none;
+  }
+}
+
+.button-large {
+  border-radius: 12px;
+  background-color: #000;
+  min-width: 340px;
+  height: 60px;
+  color: #fff;
+  cursor: pointer;
+  font-family: Courier, monospace;
+  font-size: 15px;
 }
 
 /****************************************************/

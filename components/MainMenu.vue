@@ -1,12 +1,12 @@
 <template lang="pug">
   nav
-    <NuxtLink to="/">Hlavní stránka</NuxtLink>
-    <NuxtLink to="/vyvoj-parlamentu">Vývoj parlamentu</NuxtLink>
-    <NuxtLink to="/poslanci">Poslanci</NuxtLink>
-    <NuxtLink to="/parlamenty">Parlamenty</NuxtLink>
-    <NuxtLink to="/rodinne-klany">Rodinné klany</NuxtLink>
-    <NuxtLink to="/slovnik">Slovník</NuxtLink>
-    <NuxtLink to="/galerie-medii">Galerie médií</NuxtLink>
+    NuxtLink(to="/") Hlavní stránka
+    NuxtLink(to="/vyvoj-parlamentu") Vývoj parlamentu
+    NuxtLink(to="/poslanci") Poslanci
+    NuxtLink(to="/parlamenty") Parlamenty
+    NuxtLink(to="/rodinne-klany") Rodinné klany
+    NuxtLink(to="/slovnik") Slovník
+    NuxtLink(to="/galerie-medii") Galerie médií
 </template>
 
 

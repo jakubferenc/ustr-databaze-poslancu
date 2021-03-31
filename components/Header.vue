@@ -1,14 +1,18 @@
 <template lang="pug">
-  header.main-header
-    <Logo />
-    <MainMenu />
-    <SearchNav />
-</template>
+  header.main-header()
+    .top-bar
+      <Logo />
+      <MainMenu />
+      <SearchNav />
 
+    <Slider />
+</template>
 
 <style lang="sass">
 
-  .main-header
+.main-header
+
+  .top-bar
     background: #fff
     height: 80px
     display: flex
@@ -21,4 +25,27 @@
       font-size: 15px
       font-family: Courier, monospace
 
+html.has-slider .main-header
+  position: relative
+  .top-bar
+    background-color: transparent
+    position: absolute
+    width: 100%
+
+    a, &
+      color: #fff
+
+    .logo svg *
+      fill: #fff
+
 </style>
+
+<script>
+export default {
+  data() {
+    return {
+      data: {}
+    };
+  },
+};
+</script>

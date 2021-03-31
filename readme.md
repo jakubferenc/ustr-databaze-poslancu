@@ -12,8 +12,13 @@ The `dev` branch is the main development branch. Merge all accepted feature bran
 * [Github account](https://github.com/)
 * [Git](https://git-scm.com/downloads)
 * [Node.js & npm](https://nodejs.org/en/) (use the LTS version)
-* [Gulp](http://gulpjs.com/) (`npm install gulp-cli -g`)
 * ... and text editor ie. [Visual Studio Code](https://code.visualstudio.com/)
+
+## Vue & Nuxt prostředí
+* [Vue JS](https://vuejs.org/)
+* [Nuxt framework](https://nuxtjs.org/)
+* [Nuxt Storybook](https://storybook.nuxtjs.org/)
+
 ## Začni vyvíjet
 * Clone the repository from [MDH team](https://github.com/jakubferenc/ustr-mdh-mapa)
 * `npm run dev` in terminal to install & run the project in your browser

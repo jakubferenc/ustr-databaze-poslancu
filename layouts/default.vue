@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  div
+  .app-container
     <Header />
     <Main />
     <Footer />

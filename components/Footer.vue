@@ -1,8 +1,146 @@
 <template lang="pug">
   footer.main-footer
+
+    .section-padding.is-footer
+
+      .columns.is-multiline
+
+        .footer-section.is-section-newsletter.column.is-half-desktop.is-full
+          .footer-section-title Odebírejte náš newsletter
+          .footer-section-content
+            input.typo-form-input(type="text")
+            button.typo-form-button.button-large přihlásit se do newsletteru
+
+        .footer-section.is-section-nav-social.column.is-half-desktop.is-full
+          .footer-section-title Jsme na sociálních sítích #databazeposlancu
+          .footer-section-content.typography-body-text
+            nav.nav-social-icons
+              a.icon.facebook(href="#")
+                img(src="~/assets/images/icon-facebook.svg" alt="Facebook")
+                span.icon-text Facebook
+              a.icon.instagram(href="#")
+                img(src="~/assets/images/icon-instagram.svg" alt="Instagram")
+                span.icon-text Instagram
+              a.icon.youtube(href="#")
+                img(src="~/assets/images/icon-youtube.svg" alt="Youtube")
+                span.icon-text Youtube
+
+
+      .columns.is-multiline
+
+        .footer-section.is-section-goals.column.is-one-quarter-widescreen.is-half-desktop.is-full
+          .footer-section-title Cíl aplikace Databáze poslanců
+          .footer-section-content.typography-body-text
+            p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+        .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
+          .footer-section-title Na projektu spolupracovali
+          .footer-section-content
+            nav.nav-social-icons.typography-body-text
+              a.logo(href="#") logo
+              a.logo(href="#") logo
+              a.logo(href="#") logo
+
+        .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
+          .footer-section-title Důležité odkazy
+          .footer-section-content.typography-body-text
+            nav.nav-links
+              a.link(href="#") link
+              a.link(href="#") link
+              a.link(href="#") link
+
+        .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
+          .footer-section-title Zpětná vazba
+          .footer-section-content.typography-body-text
+            a(href="#") Poslat zpětnou vazbu na aplikaci
+
+
+      .columns
+
+        .footer-section.is-section-claim.column.is-full
+          p.typography-body-text.typography-smaller-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+
 </template>
 
 
 <style lang="sass">
+@import 'bulma/sass/utilities/mixins.sass'
+
+.main-footer
+  min-height: 100vh
+  background: #eee
+
+  .columns
+
+    margin-bottom: 20px
+
+    +from($desktop)
+      margin-bottom: 40px
+
+
+  input[type="text"]
+    width: 400px
+    margin-right: 2rem
+    margin-bottom: 10px
+
+
+.footer-section.is-section-goals
+  p
+    max-width: 366px
+
+
+.footer-section-title
+
+  margin-bottom: 10px
+
+  +from($tablet)
+    margin-bottom: 20px
+
+  +from($desktop)
+    margin-bottom: 40px
+
+.typography-main-title
+
+  text-align: center
+
+  +until($desktop)
+    margin-top: 50px
+    margin-bottom: 50px
+
+  +from($desktop)
+    margin-top: 100px
+    margin-bottom: 100px
+
+  font-size: 2.91666667vw * 2.5
+
+  +from($tablet)
+    font-size: 2.91666667vw * 2
+
+  +from($desktop)
+    font-size: 2.91666667vw * 1.5
+
+  +from($fullhd)
+    font-size: 52px
+
+
+.nav-social-icons
+  display: flex
+
+  .icon
+
+    text-decoration: none
+    width: 33%
+
+    +from($tablet)
+      display: flex
+      align-items: center
+
+
+    .icon-text
+      margin-left: 1rem
+
+      +until($tablet)
+        display: none
 
 </style>

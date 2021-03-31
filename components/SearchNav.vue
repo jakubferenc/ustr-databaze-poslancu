@@ -1,6 +1,6 @@
 <template lang="pug">
   .search
-    img(src="~/assets/images/icon-search.svg")
+    <SearchIcon />
     a(href="#").icon-text Vyhledávat
 </template>
 
@@ -9,4 +9,16 @@
 .search
   .icon-text
     margin-left: 1rem
+
+  svg path
+    stroke: white
 </style>
+
+
+<script>
+  import SearchIcon from "~/assets/images/icon-search.svg?inline";
+
+  export default {
+    components: { SearchIcon },
+  };
+</script>

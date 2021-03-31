@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  h1.typography-main-title {{ title }}
+  .page-content
 
 </template>
 
@@ -20,7 +20,7 @@ export default {
       return {
         title: `${this.title} — ${this.$config.globalTitle}`,
         htmlAttrs: {
-          class: 'slovnik'
+          class: 'index has-slider'
         }
       }
     }
