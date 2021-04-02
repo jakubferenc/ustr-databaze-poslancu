@@ -1,5 +1,5 @@
 <template lang="pug">
-  main.main-container
+  main.main-container(role="main")
     <Nuxt />
 </template>
 

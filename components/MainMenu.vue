@@ -1,5 +1,5 @@
 <template lang="pug">
-  nav
+  nav.main-menu(role="navigation" aria-label="Primary")
     NuxtLink(to="/") Hlavní stránka
     NuxtLink(to="/vyvoj-parlamentu") Vývoj parlamentu
     NuxtLink(to="/poslanci") Poslanci
@@ -11,13 +11,14 @@
 
 
 <style lang="sass" scoped>
-  nav a
-    margin-left: 15px
-    &:first-child
-      margin-left: 0
+  .main-menu
+    a
+      margin-left: 15px
+      text-decoration: none
+      &:first-child
+        margin-left: 0
 
-
-  .nuxt-link-exact-active
-    text-decoration: underline
+    .nuxt-link-exact-active
+      text-decoration: underline
 
 </style>

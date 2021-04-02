@@ -66,19 +66,32 @@ export const actions = {
     }
   },
 
-  async getPoslanci({ state, commit }) {
+  async getPoslanciSeznam({ state, commit }) {
     if (state.poslanci.length) return;
     try {
-      let poslanci = await this.$axios.get('/Api/osoby?limit=100')
-      .then(res => res.data);
 
+      let poslanci = await this.$axios.get('/Api/osoby?limit=20').then(res => res.data);
       poslanci = poslanci
-        .map(({ Id, KrestniJmeno, Prijmeni, ZivotniData}) => ({
-          Id,
-          KrestniJmeno,
-          Prijmeni,
-          ZivotniData,
-        }));
+        .map(({ Id, Jmeno, Prijmeni, ZivotniData, DatumNarozeniZobrazene, DatumUmrtiZobrazene}) => {
+
+          if (DatumNarozeniZobrazene !== null) {
+            DatumNarozeniZobrazene = DatumNarozeniZobrazene.split('. ')[2];
+          }
+
+          if (DatumUmrtiZobrazene !== null) {
+            DatumUmrtiZobrazene = DatumUmrtiZobrazene.split('. ')[2];
+          }
+
+          return {
+            Id,
+            Jmeno,
+            Prijmeni,
+            ZivotniData,
+            DatumNarozeniZobrazene,
+            DatumUmrtiZobrazene,
+          };
+
+        });
 
       commit("updatePoslanci", poslanci);
     } catch (err) {

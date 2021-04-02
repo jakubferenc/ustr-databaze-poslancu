@@ -1,24 +1,39 @@
 <template lang="pug">
-  .search
-    <SearchIcon />
-    a(href="#").icon-text Vyhledávat
+  a.search(href="#" role="search")
+    <SearchIconImage />
+    .icon-text Vyhledávat
 </template>
 
 
 <style lang="sass" scoped>
+@import "~/assets/scss/bulma"
+@import "~/assets/scss/typography"
+
 .search
+  display: flex
+  align-items: center
+
+  text-decoration: none
+
   .icon-text
     margin-left: 1rem
 
+    +until($fullhd)
+      display: none
+
   svg path
-    stroke: white
+    stroke: #000
+
+html.has-slider svg path
+  stroke: #fff
+
 </style>
 
 
 <script>
-  import SearchIcon from "~/assets/images/icon-search.svg?inline";
+  import SearchIconImage from "~/assets/images/icon-search.svg?inline";
 
   export default {
-    components: { SearchIcon },
+    components: { SearchIconImage },
   };
 </script>

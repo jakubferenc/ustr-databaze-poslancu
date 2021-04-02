@@ -5,7 +5,8 @@
       <MainMenu />
       <SearchNav />
 
-    <Slider />
+    <Slider v-if="true" />
+
 </template>
 
 <style lang="sass">

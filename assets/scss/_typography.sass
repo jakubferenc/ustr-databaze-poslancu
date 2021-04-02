@@ -1,4 +1,10 @@
 
+
+$margin-from-desktop: 130px
+$margin-until-desktop: 50px
+
+
+
 .is-title
   font-family: garamond-premier-pro, serif
   font-weight: 400
@@ -10,6 +16,30 @@
 .typography-smaller-text
   font-size: 12px
 
+.typography-hero-title
+
+  @extend .is-title
+  line-height: 1.1
+  font-weight: 300
+
+  +until($desktop)
+    margin-top: 50px
+    margin-bottom: 50px
+
+  +from($desktop)
+    margin-top: 100px
+    margin-bottom: 100px
+
+  font-size: 3.38541667vw * 2.5
+
+  +from($tablet)
+    font-size: 3.38541667vw * 2
+
+  +from($desktop)
+    font-size: 3.38541667vw * 1.5
+
+  +from($fullhd)
+    font-size: 65px
 
 .typography-main-title
 
@@ -35,24 +65,124 @@
   +from($fullhd)
     font-size: 52px
 
+.typography-section-title
+
+  @extend .is-title
+  text-align: center
+
+  +until($desktop)
+
+  +from($desktop)
+    margin-bottom: $margin-from-desktop/1.5
+    font-size: 45px
+
+  +from($tablet)
+
+  +from($desktop)
+
+  +from($fullhd)
+
+.typography-poslanec-thumb-title
+  font-family: 'Courier', monospace
+  font-size: 16px
+  font-weight: bold
+
+
+.section-padding-h-margin-v
+
+  +from($desktop)
+    padding-left: $margin-from-desktop
+    padding-right: $margin-from-desktop
+    margin-top: $margin-from-desktop
+    margin-bottom: $margin-from-desktop
 
 .section-padding
+  padding-top: $margin-until-desktop
+  padding-bottom: $margin-until-desktop
+  padding-left: $margin-until-desktop
+  padding-right: $margin-until-desktop
+
+  +from($desktop)
+    padding-top: $margin-from-desktop
+    padding-bottom: $margin-from-desktop
+    padding-left: $margin-from-desktop
+    padding-right: $margin-from-desktop
+
 
   &.is-footer
-
-    padding-top: 50px
-    padding-bottom: 50px
-    padding-left: 50px
-    padding-right: 50px
+    padding-top: $margin-until-desktop
+    padding-bottom: $margin-until-desktop
+    padding-left: $margin-until-desktop
+    padding-right: $margin-until-desktop
 
     +from($desktop)
-      padding-top: 100px
-      padding-bottom: 100px
-      padding-left: 100px
-      padding-right: 100px
+      padding-top: 85px
+      padding-bottom: 85px
+      padding-left: $margin-from-desktop
+      padding-right: $margin-from-desktop
 
 
+.button
+  $button-height: 35px
+
+  background-color: #fff
+  border: 1px solid #000
+  border-radius: 10px
+  min-height: $button-height
+  display: inline-block
+  text-align: center
+  line-height: $button-height
+  cursor: pointer
+
+.custom-select
+
+  $custom-select-width: 260px
+
+  @extend .button
+
+  cursor: pointer
+  width: $custom-select-width
+  position: relative
+
+  &, &:focus, &:active
+    outline: none
+    user-select: none
+
+  &[data-has-been-selected="true"]
+    .option-default-text
+      display: none
+
+  &[data-open="true"]
+    border-bottom: none
+    border-bottom-left-radius: 0
+    border-bottom-right-radius: 0
+    .options
+      display: flex
+
+    .option-default-text
+      display: inline-block
 
 
+    .option-selected-text
+      display: none
 
 
+  .options
+    background: #fff
+    position: absolute
+    left: -1px
+    display: none
+    flex-direction: column
+    border: 1px solid #000
+    border-top: none
+    width: $custom-select-width
+    border-bottom-left-radius: 10px
+    border-bottom-right-radius: 10px
+
+    .option
+      display: block
+
+      &.selected
+        text-decoration: underline
+
+  small

@@ -1,7 +1,7 @@
 <template lang="pug">
 
   .keyword()
-    .title {{ title }}
+    .title /{{ title }}/
     .description(v-html="description")
 
 
@@ -20,11 +20,9 @@
   align-items: center
 
   +until($desktop)
-    margin-top: 50px
     margin-bottom: 50px
 
   +from($desktop)
-    margin-top: 100px
     margin-bottom: 100px
 
   .title

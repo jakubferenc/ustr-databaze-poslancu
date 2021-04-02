@@ -4,18 +4,7 @@
 
     h1.typography-main-title {{ title }}
 
-    .container-list.columns.is-multiline
-
-      Poslanec(
-        v-for="poslanec in poslanci"
-        v-bind:key="poslanec.Id"
-        :Id="poslanec.Id"
-        :KrestniJmeno="poslanec.KrestniJmeno"
-        :Prijmeni="poslanec.Prijmeni"
-        :ZivotniData="poslanec.ZivotniData"
-        class="is-one-third column"
-        )
-
+    PoslanciSeznam(:Poslanci="poslanci" :MaNadpis="false" :MaFilter="true" :PolozekNaRadku="6")
 
 </template>
 
@@ -24,13 +13,14 @@
 export default {
 
     created() {
-      this.$store.dispatch("getPoslanci");
+      this.$store.dispatch("getPoslanciSeznam");
     },
     computed: {
       poslanci() {
         return this.$store.state.poslanci;
       },
     },
+
     data() {
       return {
         title: `Poslanci`,
