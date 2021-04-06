@@ -1,0 +1,286 @@
+@charset "utf-8"
+
+// bulma
+// Import only what you need from Bulma
+@import "bulma"
+
+// fonts
+@import url("https://use.typekit.net/pau2dqq.css")
+
+// custom library
+@import "lib/all"
+
+// typography
+@import "typography"
+
+
+html
+  font-size: 12px
+
+  +from($tablet)
+    font-size: 14px
+
+  +from($desktop)
+
+  +from($widescreen)
+    font-size: 16px
+
+
+  +from($fullhd)
+
+
+
+
+body
+  font-family: 'Courier', monospace
+  font-weight: 400
+  color: $primary-color
+  line-height: 1.7
+  margin: 0
+  overflow-x: hidden // :TODO: #3 Zkontrolovat, co způsobuje horizontální scrolling (Safari, Mac OS)
+
+
+strong
+
+a
+  color: inherit
+  text-decoration: underline
+
+h1, h2, h3
+
+/* Removes the forced telephone styling on mobile phones */
+a[href^="tel"]
+  color: inherit /* Inherit text color of parent element. */
+  text-decoration: none /* Remove underline. */
+  /* Additional css `propery: value` pairs here */
+
+[data-rel]
+  cursor: pointer
+
+input[type="text"]
+  border: 1px solid #000
+  border-radius: 12px
+  height: 60px
+  background-color: transparent
+  font-size: 15px
+  padding-left: 1rem
+  padding-right: 1rem
+  &:focus,
+  &:hover
+    outline: none
+
+
+.component-footer
+  display: flex
+  align-items: center
+  justify-content: center
+
+$filter-button-width: 340px
+
+.button-large
+  border-radius: 12px
+  background-color: #000
+  min-width: $filter-button-width
+  height: 60px
+  color: #fff
+  cursor: pointer
+  font-family: Courier, monospace
+  font-size: 15px
+  display: flex
+  align-items: center
+  justify-content: center
+  text-decoration: none
+
+.filter-seznam-bar
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: 40px
+
+.button.button-filter
+  width: $filter-button-width
+
+  &.active,
+  &:hover
+    background-color: #000
+    color: #fff
+
+.alt-bg
+  background-color: #F4F4F4
+
+input[type="radio"]
+
+  &:after
+    border-radius: 50px
+
+input[type="radio"],
+input[type="checkbox"]
+  position: relative
+  transition: .3s border-color, .3s background-color
+
+  &:checked::after
+    background-color: #002896
+
+  &:not(:checked):hover::after
+    background: #f7f7f7
+    border: 2px solid #fff
+
+  &:after
+    content: ""
+    width: 20px
+    height: 20px
+    background-color: #fff
+    display: inline-block
+    cursor: pointer
+    position: relative
+    top: -2px
+    left: -5px
+
+.seznam-content-container
+  display: flex
+
+  .seznam-filter-sidebar
+    margin-right: 50px
+    color: #002896
+    background-color: #F4F4F4
+
+    .seznam-filter-sidebar-content
+      width: $filter-button-width
+      padding: 30px
+      overflow-y: auto
+      border: 1px solid #000
+      border-radius: 10px
+
+
+
+
+    .seznam-filter-sidebar-content-section
+      border-top: 1px solid #000
+      padding-top: 10px
+      margin-top: 20px
+
+    .seznam-filter-sidebar-content-header
+      text-align: center
+
+    .seznam-filter-sidebar-content-section-title
+      color: #000
+      font-size: 15px
+      margin-bottom: 15px
+      line-height: 1
+
+    .filter-list
+      list-style: none
+
+      &.filter-list-radios
+
+
+      &.filter-list-inline
+        display: flex
+
+        .filter-list-item
+          margin-right: 20px
+
+      .filter-list-item
+
+        margin-bottom: 5px
+
+        label
+          display: flex
+          justify-content: flex-start
+          cursor: pointer
+
+        .filter-list-item-checkbox
+          margin-right: 10px
+
+.seznam-filter-list
+  flex: 1 1 auto
+
+  .columns
+    align-items: flex-start
+
+
+.filter-seznam-filter-statistics
+
+  +until($tablet)
+
+  +from($tablet)
+
+  +from($desktop)
+    margin: 100px auto
+
+  +from($widescreen)
+
+  +from($fullhd)
+
+
+.filter-seznam-filter-statistics-content
+  display: flex
+  justify-content: center
+  align-items: center
+  min-height: 400px
+
+.statistics-diagram
+  &.simple
+
+    display: flex
+    align-items: center
+    justify-content: center
+
+    .diagram-desc
+      margin-right: 15px
+      width: 150px
+      text-align: right
+    .diagram-graphics
+      $sizeDiagram: 126px
+      background-color: #E5E5E5
+      border-radius: $sizeDiagram
+      width: $sizeDiagram
+      height: $sizeDiagram
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+
+      .diagram-graphics-value
+        @extend .typography-body-text
+        font-size: 45px
+        line-height: 1
+
+      .diagram-graphics-desc
+
+/****************************************************/
+/* :DEBUG: */
+.debug-bar
+  position: fixed
+  bottom: 0
+  right: 0
+  width: 200px
+  height: 50px
+  background: #fff
+  text-align: center
+  display: flex
+  justify-content: center
+  align-items: center
+
+  &:after
+    content: "mobile"
+
+  +from($tablet)
+    &:after
+      content: "tablet"
+
+  +from($desktop)
+    &:after
+      content: "desktop"
+
+  +from($widescreen)
+    &:after
+      content: "widescreen"
+
+  +from($fullhd)
+    &:after
+      content: "fullhd"
+
+
+
+/****************************************************/

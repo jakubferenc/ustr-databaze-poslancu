@@ -4,9 +4,7 @@
 
     h1.typography-main-title {{ title }}
 
-    .container-list.columns.is-multiline
-
-      Parlament(v-for="parlament in parlamenty" v-bind:key="parlament.Id" :Nazev="parlament.Nazev" class="is-one-third column")
+    <ParlamentRadek />
 
 
 </template>
@@ -20,12 +18,14 @@ export default {
     },
     computed: {
       parlamenty() {
+        console.log(this.$store.state.parlamenty);
         return this.$store.state.parlamenty;
       },
     },
+
     data() {
       return {
-        title: `Parlamenty`,
+        title: `Představení parlamentních těles`,
       }
     },
 

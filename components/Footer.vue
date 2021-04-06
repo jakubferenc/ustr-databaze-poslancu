@@ -7,7 +7,7 @@
       .footer-section.is-section-newsletter.column.is-half-desktop.is-full
         .footer-section-title Odebírejte náš newsletter
         .footer-section-content
-          input.typo-form-input(type="text")
+          input.typo-form-input(type="text" placeholder="Zadejte váš email")
           button.typo-form-button.button-large přihlásit se do newsletteru
 
       .footer-section.is-section-nav-social.column.is-half-desktop.is-full

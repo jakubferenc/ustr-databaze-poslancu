@@ -38,7 +38,7 @@
       font-size: 6.19791667vw
 
     +from($fullhd)
-      font-size: 119px
+      font-size: 100px
 
   .description
     font-size: 1rem

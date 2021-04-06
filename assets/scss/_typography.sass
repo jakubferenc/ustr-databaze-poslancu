@@ -1,9 +1,5 @@
-
-
 $margin-from-desktop: 130px
 $margin-until-desktop: 50px
-
-
 
 .is-title
   font-family: garamond-premier-pro, serif
@@ -15,6 +11,10 @@ $margin-until-desktop: 50px
 
 .typography-smaller-text
   font-size: 12px
+
+.typography-alt-heading
+  font-family: 'Courier', monospace
+
 
 .typography-hero-title
 
@@ -83,9 +83,25 @@ $margin-until-desktop: 50px
   +from($fullhd)
 
 .typography-poslanec-thumb-title
-  font-family: 'Courier', monospace
+  @extend .typography-alt-heading
   font-size: 16px
   font-weight: bold
+
+.typography-filter-text
+  @extend .typography-body-text
+  font-size: 13px
+  color: #002896
+
+.typography-filter-heading
+  @extend .typography-alt-heading
+  font-size: 15px
+  font-weight: normal
+
+.typography-item-detail-text
+  @extend .typography-body-text
+  font-size: 22px
+  line-height: 1.4
+  letter-spacing: .5px
 
 
 .section-padding-h-margin-v
@@ -133,56 +149,3 @@ $margin-until-desktop: 50px
   text-align: center
   line-height: $button-height
   cursor: pointer
-
-.custom-select
-
-  $custom-select-width: 260px
-
-  @extend .button
-
-  cursor: pointer
-  width: $custom-select-width
-  position: relative
-
-  &, &:focus, &:active
-    outline: none
-    user-select: none
-
-  &[data-has-been-selected="true"]
-    .option-default-text
-      display: none
-
-  &[data-open="true"]
-    border-bottom: none
-    border-bottom-left-radius: 0
-    border-bottom-right-radius: 0
-    .options
-      display: flex
-
-    .option-default-text
-      display: inline-block
-
-
-    .option-selected-text
-      display: none
-
-
-  .options
-    background: #fff
-    position: absolute
-    left: -1px
-    display: none
-    flex-direction: column
-    border: 1px solid #000
-    border-top: none
-    width: $custom-select-width
-    border-bottom-left-radius: 10px
-    border-bottom-right-radius: 10px
-
-    .option
-      display: block
-
-      &.selected
-        text-decoration: underline
-
-  small

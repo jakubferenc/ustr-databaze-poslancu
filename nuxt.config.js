@@ -7,7 +7,7 @@ export default {
   },
   modules: ['@nuxtjs/style-resources', '@nuxtjs/proxy',  '@nuxtjs/axios'],
   css: [
-    '~assets/scss/main.scss',
+    '~assets/scss/main.sass',
   ],
   styleResources: {
     sass: ['~bulma/sass/utilities/all']
@@ -18,7 +18,8 @@ export default {
   buildModules: ["@nuxtjs/svg", '@nuxtjs/html-validator'],
   proxy: {
     '/Api/snemovny/seznam': 'http://parliament.ustrcr.cz',
-    '/Api/osoby': 'http://parliament.ustrcr.cz'
+    '/Api/osoby': 'http://parliament.ustrcr.cz',
+    '/Api/soubory': 'http://parliament.ustrcr.cz'
   },
   head: {
     title: 'Databáze poslanců.cz',

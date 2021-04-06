@@ -4,7 +4,10 @@
 
     h1.typography-main-title {{ title }}
 
-    PoslanciSeznam(:Poslanci="poslanci" :MaNadpis="false" :MaFilter="true" :PolozekNaRadku="6")
+    .section-padding-h-margin-v
+
+      PoslanciSeznam(:Poslanci="poslanci" :PoslanciStatistiky="poslanciStatistiky" :MaPaginaci="true" :MaFiltr="true" :MaStatistiky="true" :MaButtonMore="true" :ButtonMoreLink="false")
+
 
 </template>
 
@@ -13,14 +16,23 @@
 export default {
 
     created() {
-      this.$store.dispatch("getPoslanciSeznam");
+      this.$store.dispatch("getPoslanciSeznam", {
+        limit: 150,
+        stranka: 1,
+      });
     },
     computed: {
       poslanci() {
         return this.$store.state.poslanci;
       },
-    },
+      poslanci_sezmam_razeni_default_id() {
+        return this.$store.state.poslanci_sezmam_razeni_id;
+      },
+      poslanciStatistiky() {
 
+        return this.$store.state.poslanci_statistiky;
+      }
+    },
     data() {
       return {
         title: `Poslanci`,
@@ -31,10 +43,12 @@ export default {
       return {
         title: `${this.title} — ${this.$config.globalTitle}`,
         htmlAttrs: {
-          class: ''
+          class: 'alt-bg'
         }
       }
     }
 
 }
 </script>
+
+
