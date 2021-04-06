@@ -6,9 +6,11 @@
 
       .footer-section.is-section-newsletter.column.is-half-desktop.is-full
         .footer-section-title Odebírejte náš newsletter
-        .footer-section-content
-          input.typo-form-input(type="text" placeholder="Zadejte váš email")
-          button.typo-form-button.button-large přihlásit se do newsletteru
+        .footer-section-content.columns.is-multiline
+          .column.is-full-tablet.is-half-widescreen
+            input.typo-form-input(type="text" placeholder="Zadejte váš email")
+          .column.is-full-tablet.is-half-widescreen
+            button.typo-form-button.button-large přihlásit se
 
       .footer-section.is-section-nav-social.column.is-half-desktop.is-full
         .footer-section-title Jsme na sociálních sítích #databazeposlancu
@@ -79,23 +81,39 @@
   a
     text-decoration: none
 
-  .columns
+  & > .columns
 
-    margin-bottom: 20px
+    &:not(:last-child)
 
-    +from($desktop)
-      margin-bottom: 40px
+      margin-bottom: 20px
 
-
-  input[type="text"]
-    width: 400px
-    margin-right: 2rem
-    margin-bottom: 10px
+      +from($desktop)
+        margin-bottom: 100px
 
 
   .footer-section.is-section-goals
     p
       max-width: 366px
+
+  .footer-section.is-section-newsletter
+
+    .footer-section-content
+      display: flex
+
+
+    input[type="text"]
+      margin-right: 2rem
+      margin-bottom: 10px
+
+    input[type="text"],
+    .button-large
+
+      width: 100%
+      min-width: auto
+
+      +from($widescreen)
+        max-width: 400px
+        width: 100%
 
 
   .footer-section-title
