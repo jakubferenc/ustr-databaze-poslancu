@@ -15,7 +15,7 @@
 
       .component-footer(v-if="MaButtonMore")
 
-        button.typo-form-button.button-large Zobrazit všechny pojmy
+        button.typo-form-button.button-large Zobrazit celou galerii
 
 </template>
 

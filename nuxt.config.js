@@ -1,6 +1,7 @@
 export default {
   globalName: 'databaze-poslancu',
   target: 'static', // default is 'server'
+  ssr: false,
   components: true,
   publicRuntimeConfig: {
     globalTitle: 'Databáze poslanců.cz'

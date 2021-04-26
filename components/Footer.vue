@@ -57,7 +57,7 @@
       .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
         .footer-section-title Zpětná vazba
         .footer-section-content.typography-body-text
-          a(href="#") Poslat zpětnou vazbu na aplikaci
+          a(href="#") Poslat zpětnou vazbu na aplikaci DOPLNIT text, chceme též, aby se ozvali pamětníci. Mohou zde být i kontaktní informace, email, výzva k aktivní spolupráci
 
 
     .columns
