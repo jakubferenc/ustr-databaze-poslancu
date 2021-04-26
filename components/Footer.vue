@@ -4,31 +4,6 @@
 
     .columns.is-multiline
 
-      .footer-section.is-section-newsletter.column.is-half-desktop.is-full
-        .footer-section-title Odebírejte náš newsletter
-        .footer-section-content.columns.is-multiline
-          .column.is-full-tablet.is-half-widescreen
-            input.typo-form-input(type="text" placeholder="Zadejte váš email")
-          .column.is-full-tablet.is-half-widescreen
-            button.typo-form-button.button-large přihlásit se
-
-      .footer-section.is-section-nav-social.column.is-half-desktop.is-full
-        .footer-section-title Jsme na sociálních sítích #databazeposlancu
-        .footer-section-content.typography-body-text
-          nav.nav-social-icons
-            a.icon.facebook(href="#")
-              img(src="~/assets/images/icon-facebook.svg" alt="Facebook")
-              span.icon-text Facebook
-            a.icon.instagram(href="#")
-              img(src="~/assets/images/icon-instagram.svg" alt="Instagram")
-              span.icon-text Instagram
-            a.icon.youtube(href="#")
-              img(src="~/assets/images/icon-youtube.svg" alt="Youtube")
-              span.icon-text Youtube
-
-
-    .columns.is-multiline
-
       .footer-section.is-section-goals.column.is-one-quarter-widescreen.is-half-desktop.is-full
         .footer-section-title Cíl aplikace Databáze poslanců
         .footer-section-content.typography-body-text
