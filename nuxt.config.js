@@ -32,7 +32,22 @@ export default {
   },
   build: {
   },
-  buildModules: ["@nuxtjs/svg", '@nuxtjs/html-validator'],
+  buildModules: [
+    "@nuxtjs/svg",
+    '@nuxtjs/html-validator',
+    ['@aceforth/nuxt-netlify', { /* :TODO: dopsat zbývající proxy redirecty */
+      redirects: [
+        {
+          from: '/Api/snemovny/seznam',
+          to: `${databazePoslancuURL}`
+        },
+        {
+          from: '/Api/snemovny/',
+          to: `${databazePoslancuURL}`,
+        },
+      ]
+    }]
+  ],
   proxy: {
     '/Api/snemovny/seznam': `${databazePoslancuURL}`,
     '/Api/snemovny/': `${databazePoslancuURL}`,

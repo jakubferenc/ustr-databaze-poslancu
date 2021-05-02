@@ -11,6 +11,7 @@
         "nuxt": "^2.15.2"
     },
     "devDependencies": {
+        "@aceforth/nuxt-netlify": "^1.1.0",
         "@nuxtjs/bulma": "^1.3.0",
         "@nuxtjs/html-validator": "^0.2.2",
         "@nuxtjs/storybook": "^3.3.1",
