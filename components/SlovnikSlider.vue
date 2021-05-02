@@ -19,7 +19,7 @@
 
     .component-footer(v-if="MaButtonMore")
 
-      button.typo-form-button.button-large Zobrazit všechny pojmy
+      NuxtLink(class="typo-form-button button-large" :to="`/slovnik/`") Zobrazit všechny pojmy
 
 
 </template>

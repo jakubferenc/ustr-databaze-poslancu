@@ -4,7 +4,7 @@
 
     h1.typography-main-title {{ title }}
 
-    <ParlamentRadek />
+    <ParlamentRadek v-for="parlament in parlamenty" :key="parlament.Id" :Id="parlament.Id" :Nazev="parlament.Nazev" :SnemovniObdobi="parlament.SnemovniObdobi" />
 
 
 </template>
@@ -13,15 +13,17 @@
 <script>
 export default {
 
-    created() {
+    fetch() {
+
       this.$store.dispatch("getParlamenty");
     },
+
     computed: {
       parlamenty() {
-        console.log(this.$store.state.parlamenty);
         return this.$store.state.parlamenty;
-      },
+      }
     },
+
 
     data() {
       return {

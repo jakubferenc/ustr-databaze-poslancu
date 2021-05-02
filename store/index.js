@@ -9,13 +9,17 @@ export const state = () => ({
   poslanci_statistiky: {},
   media_soubory: [],
   poslanci_seznam_razeni_id: undefined,
+  stranky: [],
 });
 /*
 this will update the state with the posts
 */
 export const mutations = {
+  updateStranky: (state, stranky) => {
+    state.stranky = stranky;
+},
   updateSlovnikovaHesla: (state, slovnikova_hesla) => {
-      state.slovnikova_hesla = slovnikova_hesla;
+    state.slovnikova_hesla = slovnikova_hesla;
   },
   updateParlamenty: (state, parlamenty) => {
     state.parlamenty = parlamenty;
@@ -43,10 +47,39 @@ and then commits the mutation to update it
 */
 export const actions = {
 
+  async getStranky ({ state, commit }) {
+
+    if (state.stranky.length) return;
+
+    try {
+
+      let stranky = await fetch(`/wp/v2/pages?_embed`)
+      .then(res => res.json());
+
+      stranky = stranky
+        .filter(page => page.status === "publish")
+        .map(({ id, date, slug, title, content, excerpt, _embedded }) => ({
+          id: id,
+          date: date,
+          slug: slug,
+          title: title.rendered,
+          content: content.rendered,
+          excerpt: excerpt.rendered,
+          featured_image: _embedded['wp:featuredmedia'][0].media_details,
+          author: _embedded.author /* will return an array of authors and their meta data */
+        }));
+
+      commit("updateStranky", stranky);
+
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
   async getSlovnikovaHesla({ state, commit }) {
     if (state.slovnikova_hesla.length) return;
     try {
-      let slovnikova_hesla = await fetch( `http://ustr-databaze-poslancu.jakubferenc.cz/wp-json/wp/v2/slovnik?per_page=100`
+      let slovnikova_hesla = await fetch( `/wp/v2/slovnik?per_page=100`
       ).then(res => res.json());
       slovnikova_hesla = slovnikova_hesla
         .filter(el => el.status === "publish")
@@ -66,7 +99,7 @@ export const actions = {
   async getMedia({ state, commit }) {
     if (state.media_soubory.length) return;
     try {
-      let media_soubory = await this.$axios.get('/Api/soubory')
+      let media_soubory = await this.$axios.get('/Api/soubory?limit=100')
       .then(res => res.data);
 
       /* filtering or cleaning up data if needed
@@ -86,19 +119,36 @@ export const actions = {
   async getParlamenty({ state, commit }) {
     if (state.parlamenty.length) return;
     try {
-      let parlamenty = await this.$axios.get('/Api/snemovny/seznam')
-      .then(res => res.data);
 
-      parlamenty = parlamenty
-        .map(({ Id, Nazev, SnemovniObdobi}) => ({
+      let parlamenty = await this.$axios.get('/Api/snemovny/seznam');
+      parlamenty = parlamenty.data;
+
+      return Promise.all(parlamenty.map( async (parlament) => {
+
+        parlament.SnemovniObdobi = await this.$axios.get(`/Api/snemovny/${parlament.Id}`);
+        parlament.SnemovniObdobi = parlament.SnemovniObdobi.data.SnemovniObdobi;
+
+        return parlament;
+
+      })).then((res) => {
+        commit("updateParlamenty", parlamenty);
+      });
+
+      /*parlamenty = parlamenty.map( async ({ Id, Nazev, SnemovniObdobi }) => {
+
+        let snemovni_obdobi = await this.$axios.get(`/Api/snemovny/${Id}`)
+        .then(res => res.data);
+
+        SnemovniObdobi = snemovni_obdobi.SnemovniObdobi;
+
+        return {
           Id,
           Nazev,
           SnemovniObdobi,
-        }));
+        };
 
-        console.log("from actions parlamenty", parlamenty);
+      });*/
 
-      commit("updateParlamenty", parlamenty);
     } catch (err) {
       console.log(err);
     }

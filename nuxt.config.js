@@ -1,3 +1,14 @@
+import axios from "axios";
+
+const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz';
+const databazePoslancuURL = 'http://parliament.ustrcr.cz';
+
+let dynamicRoutes = async () => {
+  const res = await axios
+    .get(`${wordpressAPIURLWebsite}/wp-json/wp/v2/pages`);
+  return res.data.map(stranka => `/stranka/${stranka.slug}`);
+};
+
 export default {
   globalName: 'databaze-poslancu',
   target: 'static', // default is 'server'
@@ -13,14 +24,19 @@ export default {
   styleResources: {
     sass: ['~bulma/sass/utilities/all']
   },
+  generate: {
+    routes: dynamicRoutes
+  },
   build: {
-
   },
   buildModules: ["@nuxtjs/svg", '@nuxtjs/html-validator'],
   proxy: {
-    '/Api/snemovny/seznam': 'http://parliament.ustrcr.cz',
-    '/Api/osoby': 'http://parliament.ustrcr.cz',
-    '/Api/soubory': 'http://parliament.ustrcr.cz'
+    '/Api/snemovny/seznam': `${databazePoslancuURL}`,
+    '/Api/snemovny/': `${databazePoslancuURL}`,
+    '/Api/osoby': `${databazePoslancuURL}`,
+    '/Api/soubory': `${databazePoslancuURL}`,
+    '/wp/v2/slovnik': `${wordpressAPIURLWebsite}/wp-json`,
+    '/wp/v2/pages': `${wordpressAPIURLWebsite}/wp-json`,
   },
   head: {
     title: 'Databáze poslanců.cz',

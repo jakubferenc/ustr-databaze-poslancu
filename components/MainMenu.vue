@@ -4,7 +4,7 @@
     NuxtLink(to="/vyvoj-parlamentu") Vývoj parlamentu
     NuxtLink(to="/poslanci") Poslanci
     NuxtLink(to="/parlamenty") Parlamenty
-    NuxtLink(to="/rodinne-klany") Rodinné klany
+    NuxtLink(to="/rodinne-vazby") Rodinné vazby
     NuxtLink(to="/slovnik") Slovník
     NuxtLink(to="/galerie-medii") Galerie médií
 </template>

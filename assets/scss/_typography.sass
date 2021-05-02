@@ -1,5 +1,13 @@
 $margin-from-desktop: 130px
 $margin-until-desktop: 50px
+$section-content-fixed-max-width: 1525px
+
+.alt-bg
+  background-color: #F4F4F4
+
+
+.alt-bg-02
+  background-color: #F8F6F1
 
 .is-title
   font-family: garamond-premier-pro, serif
@@ -103,8 +111,26 @@ $margin-until-desktop: 50px
   line-height: 1.4
   letter-spacing: .5px
 
+.typography-body-text-popisy
+  @extend .typography-body-text
+  font-size: 18px
+  line-height: 1.4
+  letter-spacing: .5px
+
+.section-margin-h-margin-v
+
+  +from($desktop)
+    padding-left: $margin-from-desktop
+    padding-right: $margin-from-desktop
+    margin-top: $margin-from-desktop
+    margin-bottom: $margin-from-desktop
+
 
 .section-padding-h-margin-v
+  padding-left: $margin-until-desktop
+  padding-right: $margin-until-desktop
+  margin-top: $margin-until-desktop
+  margin-bottom: $margin-until-desktop
 
   +from($desktop)
     padding-left: $margin-from-desktop
@@ -138,6 +164,11 @@ $margin-until-desktop: 50px
       padding-right: $margin-from-desktop
 
 
+.section-content-max-width
+
+  max-width: $section-content-fixed-max-width
+  margin: 0 auto
+
 .button
   $button-height: 35px
 
@@ -149,3 +180,31 @@ $margin-until-desktop: 50px
   text-align: center
   line-height: $button-height
   cursor: pointer
+
+
+.real-content-text
+  p
+    margin-bottom: 1em
+
+
+.typography-row-with-image
+
+  &.has-featured-image
+
+    @extend .columns
+    @extend .is-multiline
+
+    .row-in-image,
+    .row-in-text
+
+      @extend .column
+      @extend .is-half-desktop
+
+
+    .row-in-text
+      +from($desktop)
+        margin-top: -0.75rem
+
+
+
+
