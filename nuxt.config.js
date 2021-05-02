@@ -10,6 +10,9 @@ let dynamicRoutes = async () => {
 };
 
 export default {
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  },
   globalName: 'databaze-poslancu',
   target: 'static', // default is 'server'
   ssr: false,
