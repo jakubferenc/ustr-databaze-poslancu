@@ -15,8 +15,8 @@
 <script>
 export default {
 
-    created() {
-      this.$store.dispatch("getPoslanciSeznam", {
+    async fetch ({store}) {
+      store.dispatch("getPoslanciSeznam", {
         limit: 150,
         stranka: 1,
       });

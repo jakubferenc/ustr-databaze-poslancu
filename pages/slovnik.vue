@@ -15,8 +15,8 @@
 <script>
 export default {
 
-    created() {
-      this.$store.dispatch("getSlovnikovaHesla");
+    async fetch ({store}) {
+      store.dispatch("getSlovnikovaHesla");
     },
     computed: {
       slovnikova_hesla() {

@@ -22,15 +22,16 @@
 
 export default {
 
-    created() {
-      this.$store.dispatch("getStranky");
+    async fetch ({store}) {
+      store.dispatch("getStranky");
     },
 
-    asyncData() {
-      return {
-        stranka: this.$store.state.stranky.filter(stranka => stranka.slug === this.slug)[0],
+    computed: {
+      stranka() {
+        return this.$store.state.stranky.filter(stranka => stranka.slug === this.slug)[0];
       }
     },
+
     data() {
       return {
         slug: this.$route.params.slug,

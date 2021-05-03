@@ -1,6 +1,11 @@
 /*
 this is where we will eventually hold the data for all of our posts
 */
+
+const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
+const databazePoslancuURL = 'http://parliament.ustrcr.cz';
+
+
 export const state = () => ({
   slovnikova_hesla: [],
   parlamenty: [],
@@ -53,7 +58,7 @@ export const actions = {
 
     try {
 
-      let stranky = await fetch(`/wp/v2/pages?_embed`)
+      let stranky = await fetch(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`)
       .then(res => res.json());
 
       stranky = stranky
@@ -79,7 +84,7 @@ export const actions = {
   async getSlovnikovaHesla({ state, commit }) {
     if (state.slovnikova_hesla.length) return;
     try {
-      let slovnikova_hesla = await fetch( `/wp/v2/slovnik?per_page=100`
+      let slovnikova_hesla = await fetch( `${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`
       ).then(res => res.json());
       slovnikova_hesla = slovnikova_hesla
         .filter(el => el.status === "publish")
@@ -99,7 +104,7 @@ export const actions = {
   async getMedia({ state, commit }) {
     if (state.media_soubory.length) return;
     try {
-      let media_soubory = await this.$axios.get('/Api/soubory?limit=100')
+      let media_soubory = await this.$axios.get(`${databazePoslancuURL}/Api/soubory?limit=100`)
       .then(res => res.data);
 
 
@@ -114,18 +119,12 @@ export const actions = {
     if (state.parlamenty.length) return;
     try {
 
-      let parlamenty = await this.$axios.get('http://parliament.ustrcr.cz/Api/snemovny/seznam');
-      console.log(parlamenty);
-      console.log(parlamenty.data);
-
+      let parlamenty = await this.$axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
       parlamenty = parlamenty.data;
-
-      console.log(parlamenty);
-      console.log(typeof parlamenty);
 
       parlamenty = await Promise.all(parlamenty.map(async (parlament) => {
 
-        const getSnemovniObdobi = await this.$axios.get(`http://parliament.ustrcr.cz/Api/snemovny/${parlament.Id}`);
+        const getSnemovniObdobi = await this.$axios.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
         parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
 
         return parlament;
@@ -144,7 +143,7 @@ export const actions = {
     if (state.poslanci.length) return;
     try {
 
-      let poslanci = await this.$axios.get(`/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanci = await this.$axios.get(`${databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
 
       if (filterCallback !== null) {
         poslanci = poslanci.filter(filterCallback);
@@ -264,7 +263,7 @@ export const actions = {
     if (state.poslanci.length) return;
     try {
 
-      let poslanci = await this.$axios.get(`/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanci = await this.$axios.get(`${databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
 
       if (filterCallback !== null) {
         poslanci = poslanci.filter(filterCallback);

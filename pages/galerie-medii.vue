@@ -14,8 +14,8 @@
 <script>
 export default {
 
-    created() {
-      this.$store.dispatch("getMedia");
+    async fetch ({store}) {
+      store.dispatch("getMedia");
     },
 
     computed: {

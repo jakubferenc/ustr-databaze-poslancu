@@ -14,7 +14,7 @@
         <SlovnikSliderImageArrowRight />
 
     .slovnik-slider-items-container(:style="generatedStyles")
-      .slovnik-slider-item(v-for="item in slovnikova_hesla")
+      .slovnik-slider-item(v-for="item in SlovnikovaHesla")
         SlovnikoveHeslo(:key="item.id" :title="item.title.rendered" :description="item.content.rendered" class="")
 
     .component-footer(v-if="MaButtonMore")
@@ -65,25 +65,19 @@ import SlovnikSliderImageArrowRight from "~/assets/images/slider-arrow-right.svg
 
 
 export default {
-    props: ['MaButtonMore'],
+    props: ['MaButtonMore', 'SlovnikovaHesla'],
     components: { SlovnikSliderImageArrowLeft,  SlovnikSliderImageArrowRight},
-    created() {
-      this.$store.dispatch("getSlovnikovaHesla");
-    },
 
     computed: {
-      slovnikova_hesla() {
-        return this.$store.state.slovnikova_hesla;
-      },
       step() {
-        return 100 / this.$store.state.slovnikova_hesla.length;
+        return 100 / this.SlovnikovaHesla.length;
       },
       total() {
-        return this.$store.state.slovnikova_hesla.length;
+        return this.SlovnikovaHesla.length;
       },
       generatedStyles() {
         return {
-          width: `${this.$store.state.slovnikova_hesla.length * 100}%`,
+          width: `${this.SlovnikovaHesla.length * 100}%`,
           transform: `translateX(-${this.currentPosition * this.step}%)`
         }
       }

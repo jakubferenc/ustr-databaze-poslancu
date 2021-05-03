@@ -7,7 +7,7 @@
     .container-list.columns.is-multiline
 
       ParlamentNahled(
-        v-for="parlament in parlamenty"
+        v-for="parlament in Parlamenty"
         :key="parlament.Id"
         :Nazev="parlament.Nazev"
         class="is-one-third-desktop is-half-tablet column")
@@ -28,14 +28,7 @@
 
 <script>
 export default {
-    created() {
-      this.$store.dispatch("getParlamenty");
-    },
-    computed: {
-      parlamenty() {
-        return this.$store.state.parlamenty;
-      },
-    },
-   props: [],
+
+   props: ['Parlamenty'],
 }
 </script>

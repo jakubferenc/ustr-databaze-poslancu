@@ -10,9 +10,9 @@
 
       PoslanciSeznam(:Poslanci="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
 
-    <ParlamentySeznam />
+    <ParlamentySeznam :Parlamenty="parlamenty"/>
 
-    SlovnikSlider(:MaButtonMore="true")
+    SlovnikSlider(:MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 
     .section-padding.alt-bg
 
@@ -25,12 +25,19 @@
 <script>
 export default {
 
-    created() {
-      this.$store.dispatch("getMedia");
-      this.$store.dispatch("getPoslanciHomepage", {
+    async fetch ({store}) {
+
+      await store.dispatch("getMedia");
+
+      await store.dispatch("getPoslanciHomepage", {
         limit: 20,
         stranka: 1
       });
+
+      await store.dispatch("getParlamenty");
+
+      await store.dispatch("getSlovnikovaHesla");
+
     },
 
     computed: {
@@ -39,6 +46,12 @@ export default {
       },
       poslanci() {
         return this.$store.state.poslanci_homepage;
+      },
+      parlamenty() {
+        return this.$store.state.parlamenty;
+      },
+      slovnikova_hesla() {
+        return this.$store.state.slovnikova_hesla;
       },
     },
 

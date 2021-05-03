@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz';
+const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
 const databazePoslancuURL = 'http://parliament.ustrcr.cz';
 
 let dynamicRoutes = async () => {
   const res = await axios
-    .get(`${wordpressAPIURLWebsite}/wp-json/wp/v2/pages`);
+    .get(`${wordpressAPIURLWebsite}/wp/v2/pages`);
   return res.data.map(stranka => `/stranka/${stranka.slug}`);
 };
 
@@ -19,13 +19,13 @@ export default {
         res.setHeader('X-Frame-Options', 'ALLOWALL');
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET');
-        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
       }
     }
   },
   globalName: 'databaze-poslancu',
   target: 'static', // default is 'server'
-  ssr: false,
+  ssr: true,
   components: true,
   publicRuntimeConfig: {
     globalTitle: 'Databáze poslanců.cz'
@@ -66,8 +66,8 @@ export default {
     '/Api/snemovny/': `${databazePoslancuURL}`,
     '/Api/osoby': `${databazePoslancuURL}`,
     '/Api/soubory': `${databazePoslancuURL}`,
-    '/wp/v2/slovnik': `${wordpressAPIURLWebsite}/wp-json`,
-    '/wp/v2/pages': `${wordpressAPIURLWebsite}/wp-json`,
+    '/wp/v2/slovnik': `${wordpressAPIURLWebsite}`,
+    '/wp/v2/pages': `${wordpressAPIURLWebsite}`,
   },
   head: {
     title: 'Databáze poslanců.cz',
