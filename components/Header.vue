@@ -12,6 +12,8 @@
 <style lang="sass">
 
 .main-header
+  position: sticky
+  top: 0
 
   .top-bar
     background: #fff

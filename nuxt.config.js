@@ -13,6 +13,16 @@ export default {
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000'
   },
+  render: {
+    static: {
+      setHeaders(res) {
+        res.setHeader('X-Frame-Options', 'ALLOWALL');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+      }
+    }
+  },
   globalName: 'databaze-poslancu',
   target: 'static', // default is 'server'
   ssr: false,
@@ -21,6 +31,9 @@ export default {
     globalTitle: 'Databáze poslanců.cz'
   },
   modules: ['@nuxtjs/style-resources', '@nuxtjs/proxy',  '@nuxtjs/axios'],
+  axios: {
+    proxy: true
+  },
   css: [
     '~assets/scss/main.sass',
   ],
@@ -39,11 +52,11 @@ export default {
       redirects: [
         {
           from: '/Api/snemovny/seznam',
-          to: `${databazePoslancuURL}`
+          to: `${databazePoslancuURL}/Api/snemovny/seznam`
         },
         {
           from: '/Api/snemovny/',
-          to: `${databazePoslancuURL}`,
+          to: `${databazePoslancuURL}/Api/snemovny/`,
         },
       ]
     }]

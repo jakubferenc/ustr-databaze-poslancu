@@ -102,13 +102,7 @@ export const actions = {
       let media_soubory = await this.$axios.get('/Api/soubory?limit=100')
       .then(res => res.data);
 
-      /* filtering or cleaning up data if needed
-      parlamenty = parlamenty
-        .map(({ Id, Nazev, SnemovniObdobi}) => ({
-          Id,
-          Nazev,
-          SnemovniObdobi,
-        })); */
+
         console.log(media_soubory);
       commit("updateMedia", media_soubory);
     } catch (err) {
@@ -120,34 +114,26 @@ export const actions = {
     if (state.parlamenty.length) return;
     try {
 
-      let parlamenty = await this.$axios.get('/Api/snemovny/seznam');
+      let parlamenty = await this.$axios.get('http://parliament.ustrcr.cz/Api/snemovny/seznam');
+      console.log(parlamenty);
+      console.log(parlamenty.data);
+
       parlamenty = parlamenty.data;
 
-      return Promise.all(parlamenty.map( async (parlament) => {
+      console.log(parlamenty);
+      console.log(typeof parlamenty);
 
-        parlament.SnemovniObdobi = await this.$axios.get(`/Api/snemovny/${parlament.Id}`);
-        parlament.SnemovniObdobi = parlament.SnemovniObdobi.data.SnemovniObdobi;
+      parlamenty = await Promise.all(parlamenty.map(async (parlament) => {
+
+        const getSnemovniObdobi = await this.$axios.get(`http://parliament.ustrcr.cz/Api/snemovny/${parlament.Id}`);
+        parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
 
         return parlament;
 
-      })).then((res) => {
-        commit("updateParlamenty", parlamenty);
-      });
+      }));
 
-      /*parlamenty = parlamenty.map( async ({ Id, Nazev, SnemovniObdobi }) => {
+      commit("updateParlamenty", parlamenty);
 
-        let snemovni_obdobi = await this.$axios.get(`/Api/snemovny/${Id}`)
-        .then(res => res.data);
-
-        SnemovniObdobi = snemovni_obdobi.SnemovniObdobi;
-
-        return {
-          Id,
-          Nazev,
-          SnemovniObdobi,
-        };
-
-      });*/
 
     } catch (err) {
       console.log(err);

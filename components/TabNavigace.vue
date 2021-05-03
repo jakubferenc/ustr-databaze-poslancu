@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.parlament-tabs
+.parlament-tabs(:class="typ")
 
   nav.parlament-tabs-nav
     .tabs.columns
@@ -19,7 +19,7 @@
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
 
- .parlament-tabs
+  .parlament-tabs.parlament-radek
     margin-top: 100px
 
     .parlament-tabs-nav
@@ -59,19 +59,19 @@
         &.active
           text-decoration: underline
 
-.parlament-tabs-content-item
-  padding: 50px 20px 0 20px
+    .parlament-tabs-content-item
+      padding: 50px 20px 0 20px
 
-  display: none
+      display: none
 
-  &.active
-    display: flex
+      &.active
+        display: flex
 
 </style>
 
 <script>
 export default {
-  props: ['nastaveni'],
+  props: ['nastaveni', 'typ'],
   data() {
     return {
       activeTabId: Object.values(this.nastaveni).filter(item => item.aktivni === true)[0].id
