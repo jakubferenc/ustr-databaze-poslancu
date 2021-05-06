@@ -26,7 +26,7 @@ export default {
         return this.$store.state.poslanci;
       },
       poslanci_sezmam_razeni_default_id() {
-        return this.$store.state.poslanci_sezmam_razeni_id;
+        return this.$store.state.poslanci_seznam_razeni_id;
       },
       poslanciStatistiky() {
 

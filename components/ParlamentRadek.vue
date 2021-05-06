@@ -9,9 +9,7 @@
 
         h2.parlament-radek-title.typography-section-title {{Nazev}}
 
-        .parlament-radek-desc.typography-item-detail-text.real-content-text
-          p Česká národní rada byl samostatný zastupitelský orgán pro občany České socialistické republiky, od roku 1990 České republiky. Jednalo se o obdobu již existující Slovenské národní rady v rámci připravované federace Československa. Dne 10.7.1968 bylo nepřímo zvoleno 150 členů majících na starosti přípravu a ustavení České socialistické republiky a jejího zákonodárného sboru. Od 1.1.1969 fungovala Česká národní rada již na základě zákona o federaci jako legislativní orgán ve vztahu k nově ustavené české vládě a počet členů byl kooptací rozšířen na 200. První přímé volby se konaly až v roce 1971 s volebním obdobím 5 let. Většinový volební systém, na jehož základě voliči schvalovali pouze jediného navrženého kandidáta ve svém volebním obvodu, zůstal v platnosti až do roku 1990, kdy Česká národní rada přešla na poměrný volební systém v 7 volebních krajích.
-          p Po celou dobu své existence sídlila rada v Thunovském paláci na Malé Straně. Česká národní rada volila a odvolávala své předsednictvo a zřizovala sněmovní výbory. Na republikové úrovni vydávala vlastní zákony a potenciálně mohla i vyslovit nedůvěru české vládě. V období normalizace nicméně nejčastěji volila soudce z povolání, scházela se zpravidla čtyřikrát v roce a přijímala jen několik jednotek zákonů ročně. Její úloha narostla po Listopadu 1989, kdy se uskutečnily svobodné volby více politických stran, nabyly na významu republikové orgány a zvýšil se také počet zasedání a přijatých zákonů. Od 1. ledna 1993 se přejmenovala na Poslaneckou sněmovnu tehdy jednokomorového Parlamentu České republiky. Poslancům České národní rady tedy na rozdíl do poslanců Federálního shromáždění mandáty se vznikem samostatné České republiky nezanikly.
+        .parlament-radek-desc.typography-item-detail-text.real-content-text(v-html="StrucnyPopis")
 
     TabNavigace(:nastaveni="tabNavigaceNastaveni" typ="parlament-radek")
 
@@ -28,11 +26,16 @@
 
 .parlament-snemovni-obdobi
   position: relative
-  width: 300px
   height: 150px
-  border-radius: 30px
-  overflow: hidden
-  margin: 20px 10px
+  margin-bottom: $margin-until-desktop
+  box-sizing: border-box
+
+  .parlament-snemovni-obdobi-in
+    padding: 20px
+    height: 150px
+    display: block
+    position: relative
+
 
   .image
     position: absolute
@@ -47,16 +50,44 @@
     background-color: rgba(0,0,0,.4)
     color: #fff
     @extend .typography-alt-heading
-    font-size: 40px
     display: flex
     align-items: center
     justify-content: center
     position: absolute
     width: 100%
     height: 100%
+    border-radius: 30px
+
+    +until($tablet)
+
+    +from($tablet)
+
+    +from($desktop)
+      font-size: 30px
+
+    +from($widescreen)
+      font-size: 40px
+
+
+    +from($fullhd)
+
 
 .parlament-radek
+
   text-align: center
+  margin-top: $margin-until-desktop/1.25
+  &:nth-child(1)
+    margin-top: 0
+
+  +until($tablet)
+
+  +from($tablet)
+
+  +from($desktop)
+
+  +from($widescreen)
+
+  +from($fullhd)
 
   &.alt-bg-01
     background-color: #F8F6F1
@@ -71,29 +102,6 @@
     line-height: 1
     margin-bottom: 50px
 
-  +until($tablet)
-    margin-top: 75px
-    &:nth-child(1)
-      margin-top: 0
-
-  +from($tablet)
-    margin-top: 100px
-    &:nth-child(1),
-    &:nth-child(2)
-      margin-top: 0
-
-  +from($desktop)
-    margin-top: 150px
-
-    &:nth-child(1),
-    &:nth-child(2),
-    &:nth-child(3)
-      margin-top: 0
-
-  +from($widescreen)
-
-  +from($fullhd)
-
   .parlament-nahled-image svg
     width: 100%
 
@@ -106,7 +114,7 @@
 
   const snemovnyHTMLHelperContainer = (data) => {
 
-    const start = `  <div class="parlament-snemovni-obdobi-list columns is-multiline">`;
+    const start = `  <div class="parlament-snemovni-obdobi-list columns is-mobile is-multiline">`;
     const end = `</div>`;
 
     let content = '';
@@ -120,9 +128,12 @@
       dateYearEnd = dateYearEnd.split(". ")[2];
 
       content = content + `
-        <a href="/snemovni-obdobi/${item.Id}" class="parlament-snemovni-obdobi is-one-fifth-desktop">
-          <img class="image" src="~/assets/images/snemovni-obdobi-thumb.png"/>
-          <span class="date">(${dateYearStart}–${dateYearEnd})</span>
+        <a href="/snemovni-obdobi/${item.Id}" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
+          <span class="parlament-snemovni-obdobi-in">
+            <img class="image" src="~/assets/images/snemovni-obdobi-thumb.png"/>
+            <span class="date">(${dateYearStart}–${dateYearEnd})</span>
+          </span>
+
         </a>
       `;
 
@@ -135,7 +146,7 @@
   export default {
     components: { ParlamentNahledObecnyImage },
 
-    props: ['Id', 'Nazev', 'SnemovniObdobi'],
+    props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa'],
 
     computed: {
 
@@ -151,7 +162,7 @@
           dalsiInformace: {
             id: 'dalsi-informace',
             title: 'další informace',
-            obsah: 'testuji dalsi informace'
+            obsah: this.Popis
           },
           duleziteUdalosti: {
             id: 'dulezite-udalosti',

@@ -84,7 +84,7 @@ export const actions = {
   async getSlovnikovaHesla({ state, commit }) {
     if (state.slovnikova_hesla.length) return;
     try {
-      let slovnikova_hesla = await fetch( `${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`
+      let slovnikova_hesla = fetch( `${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`
       ).then(res => res.json());
       slovnikova_hesla = slovnikova_hesla
         .filter(el => el.status === "publish")
@@ -104,10 +104,8 @@ export const actions = {
   async getMedia({ state, commit }) {
     if (state.media_soubory.length) return;
     try {
-      let media_soubory = await this.$axios.get(`${databazePoslancuURL}/Api/soubory?limit=100`)
+      let media_soubory = this.$axios.get(`${databazePoslancuURL}/Api/soubory?limit=100`)
       .then(res => res.data);
-
-
         console.log(media_soubory);
       commit("updateMedia", media_soubory);
     } catch (err) {
@@ -122,10 +120,41 @@ export const actions = {
       let parlamenty = await this.$axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
       parlamenty = parlamenty.data;
 
+      let parlamentyWPData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
+      parlamentyWPData = parlamentyWPData.data;
+
       parlamenty = await Promise.all(parlamenty.map(async (parlament) => {
 
         const getSnemovniObdobi = await this.$axios.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
+
         parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
+
+        // get wordpress content referenced via Id
+        let thisWPParlamentObj = parlamentyWPData.filter((item) => item.databaze_id == parlament.Id);
+
+
+        // checking potential errors
+        if (!thisWPParlamentObj.length) {
+          throw new Error(`There is not Wordpress Parlament object matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
+          return;
+        }
+
+        if (thisWPParlamentObj.length > 1) {
+          throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
+          return;
+        }
+
+        thisWPParlamentObj = thisWPParlamentObj[0];
+        parlament.Popis = thisWPParlamentObj.content.rendered;
+        parlament.WPNazev = thisWPParlamentObj.title.rendered;
+        parlament.StrucnyPopis = thisWPParlamentObj.excerpt.rendered;
+
+        parlament.Barva = thisWPParlamentObj.barva;
+
+        if (thisWPParlamentObj.acf && thisWPParlamentObj.acf.casova_osa) {
+          parlament.CasovaOsa = thisWPParlamentObj.acf.casova_osa;
+        }
+
 
         return parlament;
 

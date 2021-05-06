@@ -30,7 +30,16 @@ export default {
   publicRuntimeConfig: {
     globalTitle: 'Databáze poslanců.cz'
   },
-  modules: ['@nuxtjs/style-resources', '@nuxtjs/proxy',  '@nuxtjs/axios'],
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/proxy',  '@nuxtjs/axios', '@nuxtjs/sentry'],
+  sentry: {
+    dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
+    // Additional Module Options go here
+    // https://sentry.nuxtjs.org/sentry/options
+    config: {
+      // Add native Sentry config here
+      // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
+    },
+  },
   axios: {
     proxy: true
   },

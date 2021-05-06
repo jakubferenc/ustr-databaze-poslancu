@@ -25,6 +25,9 @@
 <script>
 export default {
 
+    beforeMount() {
+      //this.$sentry.captureMessage('Hello!')
+    },
     async fetch ({store}) {
 
       await store.dispatch("getMedia");

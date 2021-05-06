@@ -9,8 +9,7 @@
 
   .parlament-tabs-content-container
 
-    .parlament-tabs-content-item(v-for="(item, key) in nastaveni" :class="{ active: nastaveni[key].id === activeTabId }" v-if="nastaveni[key].id === activeTabId" )
-      div(v-html="nastaveni[key].obsah")
+    .parlament-tabs-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }"  v-html="nastaveni[key].obsah")
 
 </template>
 
@@ -65,7 +64,10 @@
       display: none
 
       &.active
-        display: flex
+        display: block
+
+      &.dalsi-informace
+        text-align: left
 
 </style>
 
