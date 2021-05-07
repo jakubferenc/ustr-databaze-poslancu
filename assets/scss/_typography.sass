@@ -158,6 +158,18 @@ $section-content-fixed-max-width: 1525px
     padding-right: $margin-from-desktop
 
 
+.section-padding.smaller-vertical-margin
+
+  @extend .section-padding
+
+  padding-top: $margin-until-desktop/1.5
+  padding-bottom: $margin-until-desktop/1.5
+
+  +from($desktop)
+    padding-top: $margin-until-desktop
+    padding-bottom: $margin-until-desktop
+
+
   &.is-footer
     padding-top: $margin-until-desktop
     padding-bottom: $margin-until-desktop
@@ -221,3 +233,8 @@ $section-content-fixed-max-width: 1525px
 .typography-has-no-margin-bottom
   margin-bottom: 0
 
+.typography-text-block
+  display: flex
+
+  .text-block-image
+  .text-block-text

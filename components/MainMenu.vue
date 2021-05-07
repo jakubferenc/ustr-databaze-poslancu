@@ -22,3 +22,15 @@
       text-decoration: underline
 
 </style>
+
+<script>
+export default {
+
+    data() {
+      return {
+
+      }
+    },
+
+}
+</script>

@@ -15,6 +15,7 @@ export const state = () => ({
   media_soubory: [],
   poslanci_seznam_razeni_id: undefined,
   stranky: [],
+  snemovni_obdobi: {},
 });
 /*
 this will update the state with the posts
@@ -22,9 +23,12 @@ this will update the state with the posts
 export const mutations = {
   updateStranky: (state, stranky) => {
     state.stranky = stranky;
-},
+  },
   updateSlovnikovaHesla: (state, slovnikova_hesla) => {
     state.slovnikova_hesla = slovnikova_hesla;
+  },
+  updateSnemovniObdobi: (state, snemovni_obdobi) => {
+    state.snemovni_obdobi = snemovni_obdobi;
   },
   updateParlamenty: (state, parlamenty) => {
     state.parlamenty = parlamenty;
@@ -82,35 +86,67 @@ export const actions = {
   },
 
   async getSlovnikovaHesla({ state, commit }) {
+
     if (state.slovnikova_hesla.length) return;
+
     try {
-      let slovnikova_hesla = fetch( `${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`
-      ).then(res => res.json());
+
+      let slovnikova_hesla = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`);
+
+      slovnikova_hesla = slovnikova_hesla.data;
+
       slovnikova_hesla = slovnikova_hesla
-        .filter(el => el.status === "publish")
-        .map(({ id, slug, title, date, content }) => ({
-          id,
-          slug,
-          title,
-          date,
-          content,
-        }));
+      .filter(el => el.status === "publish")
+      .map(({ id, slug, title, date, content }) => ({
+        id,
+        slug,
+        title,
+        date,
+        content,
+      }));
+
       commit("updateSlovnikovaHesla", slovnikova_hesla);
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+  },
+
+  async getMedia({ state, commit }) {
+
+    if (state.media_soubory.length) return;
+
+    try {
+
+      let media_soubory = await this.$axios.get(`${databazePoslancuURL}/Api/soubory?limit=100`);
+
+      media_soubory = media_soubory.data;
+
+      commit("updateMedia", media_soubory);
+
     } catch (err) {
       console.log(err);
     }
   },
 
-  async getMedia({ state, commit }) {
-    if (state.media_soubory.length) return;
+  async getSnemovniObdobi({ state, commit }, { snemovniObdobiId }) {
+
+    if (state.snemovni_obdobi.length) return;
+
     try {
-      let media_soubory = this.$axios.get(`${databazePoslancuURL}/Api/soubory?limit=100`)
-      .then(res => res.data);
-        console.log(media_soubory);
-      commit("updateMedia", media_soubory);
+
+      let snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
+      snemovniObdobiObj = snemovniObdobiObj.data;
+
+
+      commit("updateSnemovniObdobi", snemovniObdobiObj);
+
     } catch (err) {
       console.log(err);
     }
+
   },
 
   async getParlamenty({ state, commit }) {

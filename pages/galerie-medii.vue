@@ -15,7 +15,7 @@
 export default {
 
     async fetch ({store}) {
-      store.dispatch("getMedia");
+      await store.dispatch("getMedia");
     },
 
     computed: {

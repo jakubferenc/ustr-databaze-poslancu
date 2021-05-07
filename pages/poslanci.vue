@@ -16,11 +16,12 @@
 export default {
 
     async fetch ({store}) {
-      store.dispatch("getPoslanciSeznam", {
+      await store.dispatch("getPoslanciSeznam", {
         limit: 150,
         stranka: 1,
       });
     },
+
     computed: {
       poslanci() {
         return this.$store.state.poslanci;

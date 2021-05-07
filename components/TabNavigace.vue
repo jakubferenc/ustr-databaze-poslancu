@@ -1,15 +1,32 @@
 <template lang="pug">
 
-.parlament-tabs(:class="typ")
+.tab-navigation(:class="typ")
 
-  nav.parlament-tabs-nav
+  nav.parlament-tabs-nav.tabs-nav
     .tabs.columns
       a.tab.column.is-one-fourth(v-for="(item, key) in nastaveni" @click.prevent="selectActiveTab(nastaveni[key].id)" :class="{ active: nastaveni[key].id === activeTabId}" href="#") {{ nastaveni[key].title }}
     .line
 
-  .parlament-tabs-content-container
+  .tab-navigation-content-container.parlament-tabs-content-container(v-if="typ =='parlament-radek' ")
 
-    .parlament-tabs-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }"  v-html="nastaveni[key].obsah")
+    .tab-navigation-content-item.parlament-tabs-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }"  v-html="nastaveni[key].obsah")
+
+
+  .tab-navigation-content-container(v-if="typ =='parlament-detail-navigace' ")
+
+    .tab-navigation-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }")
+
+      .parlament-detail-data-item-circle-container.section-padding.smaller-vertical-margin
+
+        .chart-widget.text-left.chart-pie(v-for="(polozka, klic) in item.data" :key="item.data.id")
+          .chart-graphics.text-data
+            .text-data-main {{polozka.pocet}}
+          .chart-text {{polozka.nazev}}
+
+
+
+
+
 
 </template>
 
@@ -18,7 +35,71 @@
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
 
-  .parlament-tabs.parlament-radek
+
+
+  .tab-navigation.parlament-detail-navigace
+
+
+    .parlament-detail-data-item-circle-container
+
+      display: flex
+      margin-left: auto
+      margin-right: auto
+      flex-wrap: wrap
+      justify-content: flex-start
+
+      .chart-widget
+        margin-bottom: $margin-until-desktop / 2
+
+        +until($desktop)
+
+        +from($desktop)
+          margin-left: $margin-from-desktop/4
+          margin-right: $margin-from-desktop/4
+
+        +from($tablet)
+
+        +from($desktop)
+
+        +from($fullhd)
+
+        .chart-graphics
+          width: 90px
+          height: 90px
+          border-radius: 100%
+          background-color: #fff
+
+        .chart-text
+          width: 100px
+
+    .tab-navigation-content-item
+      display: none
+
+      &.active
+        display: block
+
+    .tabs
+      max-width: 886px
+      margin: 0 auto
+
+    .tab
+      @extend .typography-filter-heading
+
+      width: 175px
+      height: 41px
+      border-radius: 8px
+      text-decoration: none
+      display: flex
+      align-items: center
+      justify-content: center
+
+      &:hover,
+      &.active
+        background-color: #fff
+        text-decoration: underline
+
+
+  .tab-navigation.parlament-radek
     margin-top: 100px
 
     .parlament-tabs-nav
@@ -69,6 +150,8 @@
       &.dalsi-informace
         text-align: left
 
+
+
 </style>
 
 <script>
@@ -82,12 +165,6 @@ export default {
   computed: {
 
   },
-  created() {
-
-    console.log(this.activeTabId);
-
-  },
-
 
   methods: {
     selectActiveTab: function(id) {
