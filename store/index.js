@@ -178,7 +178,7 @@ export const actions = {
 
 
       // get wordpress content referenced via Id
-      let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => item.databaze_id == snemovniObdobiObj.Id);
+      let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
 
       // checking potential errors
       if (!thisWPSnemovniObdobiObj.length) {
@@ -191,7 +191,8 @@ export const actions = {
         return;
       }
 
-      snemovniObdobiObjWpData = snemovniObdobiObjWpData[0];
+      snemovniObdobiObjWpData = thisWPSnemovniObdobiObj[0];
+
       snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
       snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
       snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
@@ -210,9 +211,11 @@ export const actions = {
 
       }
 
+      snemovniObdobiObj.UvodniFotografie = false;
+
       if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
 
-        snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie;
+        snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
 
       }
 
