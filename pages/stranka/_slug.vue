@@ -7,7 +7,7 @@
       .excerpt-container.typography-row-with-image(:class="excerptKontejnerStyly")
 
         .row-in-image.featured-image()
-          img(:src="featured_image.sizes.large.source_url")
+          img(:src="stranka.featured_image.sizes.large.source_url")
         .row-in-text.excerpt-text.typography-item-detail-text
           p
             i(v-html="stranka.excerpt")
