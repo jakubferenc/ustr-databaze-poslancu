@@ -2,8 +2,8 @@
 this is where we will eventually hold the data for all of our posts
 */
 
-const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
-const databazePoslancuURL = 'https://parliament.ustrcr.cz';
+const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
+const databazePoslancuURL = 'http://parliament.ustrcr.cz';
 
 const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
 
