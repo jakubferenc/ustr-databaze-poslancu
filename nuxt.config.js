@@ -1,6 +1,5 @@
 import axios from "axios";
-import path from 'path';
-import fs from 'fs';
+
 
 const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
 const databazePoslancuURL = 'http://parliament.ustrcr.cz';
