@@ -2,8 +2,20 @@
 this is where we will eventually hold the data for all of our posts
 */
 
-const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
-const databazePoslancuURL = 'http://parliament.ustrcr.cz';
+const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
+const databazePoslancuURL = 'https://parliament.ustrcr.cz';
+
+const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
+
+  // http://parliament.ustrcr.cz/Api/Help/Api/GET-soubory_Limit_Stranka_Mime
+
+  soubor.url = soubor.URLNahled;
+  soubor.title = soubor.Poznamka;
+  soubor.mime_type = soubor.Mime;
+
+  return soubor;
+
+};
 
 
 export const state = () => ({
@@ -15,7 +27,8 @@ export const state = () => ({
   media_soubory: [],
   poslanci_seznam_razeni_id: undefined,
   stranky: [],
-  snemovni_obdobi: {},
+  snemovni_obdobi: [],
+  snemovni_obdobi_detail: {},
 });
 /*
 this will update the state with the posts
@@ -27,8 +40,11 @@ export const mutations = {
   updateSlovnikovaHesla: (state, slovnikova_hesla) => {
     state.slovnikova_hesla = slovnikova_hesla;
   },
-  updateSnemovniObdobi: (state, snemovni_obdobi) => {
-    state.snemovni_obdobi = snemovni_obdobi;
+  addSnemovniObdobi: (state, snemovni_obdobi) => {
+    state.snemovni_obdobi = [...state.snemovni_obdobi, snemovni_obdobi];
+  },
+  updateSnemovniObdobiDetail: (state, snemovni_obdobi) => {
+    state.snemovni_obdobi_detail = snemovni_obdobi;
   },
   updateParlamenty: (state, parlamenty) => {
     state.parlamenty = parlamenty;
@@ -116,13 +132,16 @@ export const actions = {
 
   async getMedia({ state, commit }) {
 
+    // ÚSTR custom API reference — http://parliament.ustrcr.cz/Api/Help/Api/GET-soubory_Limit_Stranka_Mime
+    // Wordpress media REST API reference — https://developer.wordpress.org/rest-api/reference/media/#list-media
+
     if (state.media_soubory.length) return;
 
     try {
 
       let media_soubory = await this.$axios.get(`${databazePoslancuURL}/Api/soubory?limit=100`);
 
-      media_soubory = media_soubory.data;
+      media_soubory = media_soubory.data.map(normalizeUstrApiMediaObjectForWordpress);
 
       commit("updateMedia", media_soubory);
 
@@ -131,17 +150,75 @@ export const actions = {
     }
   },
 
-  async getSnemovniObdobi({ state, commit }, { snemovniObdobiId }) {
+  async getSnemovniObdobiDetail({ state, commit }, { snemovniObdobiId }) {
 
-    if (state.snemovni_obdobi.length) return;
+    // :TODO: check if the id is already in the store, if so, return it and do not do axios call
+    // if (state.snemovni_obdobi.length) return;
+
+    const getDetailIfExists = state.snemovni_obdobi.filter(item => item.id === snemovniObdobiId);
+
+    if (getDetailIfExists.length) return;
 
     try {
 
       let snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
       snemovniObdobiObj = snemovniObdobiObj.data;
 
+      let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
+      snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
 
-      commit("updateSnemovniObdobi", snemovniObdobiObj);
+      snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
+      snemovniObdobiObj.PocetPoslancu = snemovniObdobiObj.Poslanci.length;
+
+      // prepare statistics, make them integer
+      snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);
+      snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu);
+      snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu);
+      snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu);
+
+
+      // get wordpress content referenced via Id
+      let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => item.databaze_id == snemovniObdobiObj.Id);
+
+      // checking potential errors
+      if (!thisWPSnemovniObdobiObj.length) {
+        throw new Error(`There is not Wordpress Parlament object matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
+        return;
+      }
+
+      if (thisWPSnemovniObdobiObj.length > 1) {
+        throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
+        return;
+      }
+
+      snemovniObdobiObjWpData = snemovniObdobiObjWpData[0];
+      snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
+      snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
+      snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
+
+      if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
+        snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
+
+        // sort by date
+        snemovniObdobiObj.CasovaOsa.sort();
+
+      }
+
+      if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
+
+        snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie;
+
+      }
+
+      if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
+
+        snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie;
+
+      }
+
+
+      commit("addSnemovniObdobi", snemovniObdobiObj);
+      commit("updateSnemovniObdobiDetail", snemovniObdobiObj);
 
     } catch (err) {
       console.log(err);
@@ -189,6 +266,16 @@ export const actions = {
 
         if (thisWPParlamentObj.acf && thisWPParlamentObj.acf.casova_osa) {
           parlament.CasovaOsa = thisWPParlamentObj.acf.casova_osa;
+
+          // sort by date
+          parlament.CasovaOsa.sort();
+
+        }
+
+        if (thisWPParlamentObj.acf && thisWPParlamentObj.acf.galerie) {
+
+          parlament.Galerie = thisWPParlamentObj.acf.galerie;
+
         }
 
 

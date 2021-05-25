@@ -6,7 +6,7 @@
         .slider-footer-description
           span.slider-footer-descriotion-image
             <SliderFooterLogo01Image />
-          span.slider-footer-description-text Poslanecká sněmovna Říšské rady (1911–1918)
+          span.slider-footer-description-text Thunovský palác, popisek se nastaví ve Wordpressu
       img.slider-image
 </template>
 

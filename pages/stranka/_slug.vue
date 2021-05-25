@@ -23,7 +23,7 @@
 export default {
 
     async fetch ({store}) {
-      store.dispatch("getStranky");
+      await store.dispatch("getStranky");
     },
 
     computed: {

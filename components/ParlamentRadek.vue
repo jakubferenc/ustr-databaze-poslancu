@@ -144,9 +144,9 @@
   };
 
   export default {
-    components: { ParlamentNahledObecnyImage },
+    components: { ParlamentNahledObecnyImage},
 
-    props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa'],
+    props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa', 'Galerie'],
 
     computed: {
 
@@ -161,18 +161,18 @@
           },
           dalsiInformace: {
             id: 'dalsi-informace',
-            title: 'další informace',
+            title: 'podrobné informace',
             obsah: this.Popis
           },
           duleziteUdalosti: {
             id: 'dulezite-udalosti',
             title: 'důležité události',
-            obsah: 'testuji dulezite udalosti obsah'
+            obsah: this.CasovaOsa
           },
-          galerieMedie: {
+          galerieMedia: {
             id: 'galerie-medii',
             title: 'galerie médií',
-            obsah: 'tady bude galerie medii'
+            obsah: this.Galerie
           }
         };
 

@@ -7,11 +7,11 @@
       .columns.is-multiline.is-mobile
 
         div.column.file-thumb(v-for="soubor in Soubory").is-one-fifth-desktop.is-one-third-tablet.is-half-mobile
-          img.file-image(:src="soubor.URLNahled" alt="")
+          img.file-image(:src="soubor.url" alt="")
           .file-thumb-footer
-            .file-title Popisek fotky
+            .file-title {{soubor.title}}
             .file-type
-              <IconFileTypeImage />
+              <IconFileTypeImage v-if="soubor.mime_type === 'image/jpeg' " />
 
       .component-footer(v-if="MaButtonMore")
 
@@ -61,9 +61,17 @@
         height: 206px
         object-fit: cover
 
+
+
       .file-thumb-footer
         display: flex
         justify-content: space-between
+
+        .file-title
+          text-align: left
+
+        .file-type
+          margin-left: $margin-until-desktop / 4
 
 
 </style>
@@ -72,7 +80,6 @@
 import IconFileTypeImage from "~/assets/images/icon-file-image.svg?inline";
 import IconFileTypeVideo from "~/assets/images/icon-file-video.svg?inline";
 import IconFileTypeDocument from "~/assets/images/icon-file-document.svg?inline";
-
 
 
 export default {

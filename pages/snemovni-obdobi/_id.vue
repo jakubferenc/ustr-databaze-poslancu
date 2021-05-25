@@ -8,14 +8,20 @@
 
         .chart-row
 
+
           .chart-widget.text-right.chart-pie
-            .chart-graphics.pie
+            .chart-graphics.text-data
+              .text-data-main {{statistiky.ProcentoMuzu}}<small class="text-data-sub">%</small>
+              .text-data-sub mužů
             .chart-text Poměr pohlaví poslanců
 
         .chart-row
 
           .chart-widget.text-right.chart-pie
-            .chart-graphics.pie
+            //.chart-graphics.pie
+            .chart-graphics.text-data
+              .text-data-main {{statistiky.ProcentoVysokoskolaku}}<small class="text-data-sub">%</small>
+              .text-data-sub vš
             .chart-text Vzdělání
 
         .chart-row
@@ -55,7 +61,7 @@
 
     .parlament-detail-title
       h1.typography-main-title.typography-has-no-margin-top.typography-has-no-margin-bottom {{snemovniObdobi.Nazev}} <br> ({{snemovniObdobi.DatumZacatkuZobrazene}} — {{snemovniObdobi.DatumKonceZobrazene}} )
-      .counter-poslanci {{snemovniObdobi.PocetPoslancu}} poslanců celkem
+      .counter-poslanci celkem {{snemovniObdobi.PocetPoslancu}} poslanců
 
 
     .parlament-meta-tab-navigation
@@ -70,26 +76,43 @@
       img(src="~/assets/images/section-map-mock.png" alt="")
 
 
-    .parlament-detail-about
+    .parlament-detail-about.section-padding-h-margin-v
 
-      .section-padding-h-margin-v
+      h2.typography-section-title  O sněmovně
 
-        h2.typography-section-title  O sněmovně
+      .typography-text-block.columns.is-multiline
 
-        .typography-text-block.with-image
-
-          .text-block-image
-          .text-block-text
-
-
-    .parlament-detail-events
+        .text-block-image.column.is-full.is-full-tablet.is-half-desktop
+          img(:src="snemovniObdobi.UvodniFotografie.sizes.medium_large" :alt="snemovniObdobi.Nazev")
+        .text-block-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
 
-    .parlament-detail-poslanci
+    .parlament-detail-events.section-padding-h-margin-v
 
-    .parlament-detail-galerie-medii
+      h2.typography-section-title Důležité události
 
-    .parlament-detail-metadata-table
+      CasovaOsa(:Data="snemovniObdobi.CasovaOsa" v-if="snemovniObdobi.CasovaOsa")
+
+
+    .parlament-detail-poslanci.section-padding-h-margin-v
+
+      h2.typography-section-title Poslanci
+
+      PoslanciSeznam(:Poslanci="snemovniObdobi.Poslanci" :MaPaginaci="true" :MaFiltr="true" :MaStatistiky="false" :MaButtonMore="true" :ButtonMoreLink="false")
+
+
+    .parlament-detail-galerie-medii.section-padding-h-margin-v
+
+      h2.typography-section-title Galerie médií
+
+      GalerieMediiSeznam(:Soubory="snemovniObdobi.Galerie" :MaButtonMore="false" :MaFilter="false")
+
+    .parlament-detail-metadata-table.section-padding-h-margin-v
+
+      h2.typography-section-title Kompletní informace o sněmovně
+
+      p fadfsd
+
 
 
 
@@ -209,169 +232,169 @@
 <script>
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
-export default {
+ //import DoughnutChart from '~/components/DoughnutChart';
 
-    components: { ParlamentNahledObecnyImage },
+  const chartColors = {
+    red: 'rgb(255, 99, 132)',
+    orange: 'rgb(255, 159, 64)',
+    yellow: 'rgb(255, 205, 86)',
+    green: 'rgb(75, 192, 192)',
+    blue: 'rgb(54, 162, 235)',
+    purple: 'rgb(153, 102, 255)',
+    grey: 'rgb(201, 203, 207)'
+  };
 
-    /*async fetch ({store, params }) {
-      store.dispatch("getSnemovniObdobi", {
-        snemovniObdobiId: params.id,
-      });
-    },*/
+  export default {
 
-    async asyncData({ params, $axios }) {
+      components: { ParlamentNahledObecnyImage },
 
-      const databazePoslancuURL = 'http://parliament.ustrcr.cz';
-      const snemovniObdobiId = params.id;
+      async fetch ({store, params}) {
 
-      const snemovniObdobi = await $axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`).then(res => res.data);
-
-      snemovniObdobi.Nazev = snemovniObdobi.Nazev.split('|')[0];
-      snemovniObdobi.PocetPoslancu = snemovniObdobi.Poslanci.length;
-
-      return { snemovniObdobi, title: snemovniObdobi.Nazev }
-    },
-
-    created() {
-    },
-
-    data() {
-      return {
-        ukazatDataProKonecneObdobi: false,
-      }
-    },
-
-    mounted() {
-
-      const schemaCircles = this.$el.querySelectorAll('.component-snemovna-schema svg circle');
-
-      schemaCircles.forEach((el, index) => {
-
-        if (index <= 40) {
-          el.style.fill = "#C0E4F1"
-        }
-
-        if (index > 40 && index <= 80) {
-          el.style.fill = "#ACD0C0"
-        }
-
-        if (index > 80 && index <= 180) {
-          el.style.fill = "#DDC3B6"
-        }
-
-        if (index > 180 && index <= schemaCircles.length+1) {
-          el.style.fill = "#E8D7AD"
-        }
-
-        el.addEventListener('mouseenter', (e) => {
-          e.target.classList.add('active');
+        await store.dispatch("getSnemovniObdobiDetail", {
+          snemovniObdobiId: params.id
         });
-
-        el.addEventListener('mouseleave', (e) => {
-          e.target.classList.remove('active');
-        });
-
-        el.addEventListener('click', (e) => {
-
-        });
-
-      });
-
-    },
-
-    computed: {
-
-      statistiky() {
-
-        if (!this.ukazatDataProKonecneObdobi) {
-          this.snemovniObdobi.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(this.snemovniObdobi.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);
-          return this.snemovniObdobi.SnemovniObdobiStatistikaZacatek;
-        } else {
-          this.snemovniObdobi.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu = parseInt(this.snemovniObdobi.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu);
-          return this.snemovniObdobi.SnemovniObdobiStatistikaKonec;
-        }
 
 
       },
 
-
-      tabNavigaceNastaveni() {
-
+      data() {
         return {
-          poslaneckeKluby: {
-            id: 'poslanecke-kluby',
-            title: 'poslanecké kluby',
-            data: [
-              {
-                id: 1,
-                nazev: 'nějaký název',
-                pocet: 34
-              },
-              {
-                id: 2,
-                nazev: 'nějaký název',
-                pocet: 21
-              }
-            ],
-            aktivni: true
-          },
-          volebniStrany: {
-            id: 'volebni-strany',
-            title: 'volební strany',
-            data: [
-              {
-                id: 1,
-                nazev: 'nějaký název',
-                pocet: 12
-              }
-            ],
-          },
-          uzemi: {
-            id: 'uzemi',
-            title: 'území',
-            data: [
-              {
-                id: 1,
-                nazev: 'nějaký název',
-                pocet: 57
-              }
-            ],
-          },
-          kurie: {
-            id: 'kurie',
-            title: 'kurie',
-            data: [
-              {
-                id: 1,
-                nazev: 'nějaký název',
-                pocet: 11
-              }
-            ],
-          },
-          narodnost: {
-            id: 'narodnost',
-            title: 'podle národnosti',
-            data: [
-              {
-                id: 1,
-                nazev: 'nějaký název',
-                pocet: 7
-              }
-            ],
+          ukazatDataProKonecneObdobi: false,
+        }
+      },
+
+      mounted() {
+
+        const schemaCircles = this.$el.querySelectorAll('.component-snemovna-schema svg circle');
+
+        schemaCircles.forEach((el, index) => {
+
+          if (index <= 40) {
+            el.style.fill = "#C0E4F1"
           }
-        };
+
+          if (index > 40 && index <= 80) {
+            el.style.fill = "#ACD0C0"
+          }
+
+          if (index > 80 && index <= 180) {
+            el.style.fill = "#DDC3B6"
+          }
+
+          if (index > 180 && index <= schemaCircles.length+1) {
+            el.style.fill = "#E8D7AD"
+          }
+
+          el.addEventListener('mouseenter', (e) => {
+            e.target.classList.add('active');
+          });
+
+          el.addEventListener('mouseleave', (e) => {
+            e.target.classList.remove('active');
+          });
+
+          el.addEventListener('click', (e) => {
+
+          });
+
+        });
 
       },
-    },
 
-    head () {
-      return {
-        title: `${this.title} — ${this.$config.globalTitle}`,
-        htmlAttrs: {
-          class: 'alt-bg-02 subpage-parlamen'
+      computed: {
+
+        snemovniObdobi() {
+          return this.$store.state.snemovni_obdobi_detail;
+        },
+
+        statistiky() {
+
+          if (!this.ukazatDataProKonecneObdobi) {
+            return this.$store.state.snemovni_obdobi_detail.SnemovniObdobiStatistikaZacatek;
+          } else {
+            return this.$store.state.snemovni_obdobi_detail.SnemovniObdobiStatistikaKonec;
+          }
+
+        },
+
+
+        tabNavigaceNastaveni() {
+
+          return {
+            poslaneckeKluby: {
+              id: 'poslanecke-kluby',
+              title: 'poslanecké kluby',
+              data: [
+                {
+                  id: 1,
+                  nazev: 'nějaký název',
+                  pocet: 34
+                },
+                {
+                  id: 2,
+                  nazev: 'nějaký název',
+                  pocet: 21
+                }
+              ],
+              aktivni: true
+            },
+            volebniStrany: {
+              id: 'volebni-strany',
+              title: 'volební strany',
+              data: [
+                {
+                  id: 1,
+                  nazev: 'nějaký název',
+                  pocet: 12
+                }
+              ],
+            },
+            uzemi: {
+              id: 'uzemi',
+              title: 'území',
+              data: [
+                {
+                  id: 1,
+                  nazev: 'nějaký název',
+                  pocet: 57
+                }
+              ],
+            },
+            kurie: {
+              id: 'kurie',
+              title: 'kurie',
+              data: [
+                {
+                  id: 1,
+                  nazev: 'nějaký název',
+                  pocet: 11
+                }
+              ],
+            },
+            narodnost: {
+              id: 'narodnost',
+              title: 'podle národnosti',
+              data: [
+                {
+                  id: 1,
+                  nazev: 'nějaký název',
+                  pocet: 7
+                }
+              ],
+            }
+          };
+
+        },
+      },
+
+      head () {
+        return {
+          title: `${this.snemovniObdobi.Nazev} (${this.snemovniObdobi.DatumZacatkuZobrazene} — ${this.snemovniObdobi.DatumKonceZobrazene}) — ${this.$config.globalTitle}`,
+          htmlAttrs: {
+            class: 'alt-bg-02 subpage-parlament'
+          }
         }
       }
-    }
 
-}
+  }
 </script>

@@ -9,9 +9,15 @@
 
   .tab-navigation-content-container.parlament-tabs-content-container(v-if="typ =='parlament-radek' ")
 
-    .tab-navigation-content-item.parlament-tabs-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }"  v-html="nastaveni[key].obsah")
+    .tab-navigation-content-item.parlament-tabs-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }")
 
+      CasovaOsa(:Data="nastaveni[key].obsah" v-if="key === 'duleziteUdalosti' ")
+      GalerieMediiSeznam(v-else-if="key === 'galerieMedia' " :Soubory="nastaveni[key].obsah" :MaButtonMore="false" :MaFilter="false")
+      div(v-else v-html="nastaveni[key].obsah")
 
+  // :TODO: #6 Create a separate component to display tab nav for this page type?
+  // probably temporary
+  // better to have a separate component to display tab navigation for this page type
   .tab-navigation-content-container(v-if="typ =='parlament-detail-navigace' ")
 
     .tab-navigation-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }")
@@ -22,10 +28,6 @@
           .chart-graphics.text-data
             .text-data-main {{polozka.pocet}}
           .chart-text {{polozka.nazev}}
-
-
-
-
 
 
 </template>
@@ -149,6 +151,9 @@
 
       &.dalsi-informace
         text-align: left
+
+        p
+          margin-bottom: 1em
 
 
 
