@@ -111,6 +111,9 @@
 
 <script>
 
+  import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+
+
   const snemovnyHTMLHelperContainer = (data, parlamentId) => {
 
     const start = `  <div class="parlament-snemovni-obdobi-list columns is-mobile is-multiline">`;
@@ -143,7 +146,9 @@
   };
 
   export default {
-    components: {  },
+
+    components: { ParlamentNahledObecnyImage },
+
 
     props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa', 'Galerie'],
 
