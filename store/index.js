@@ -203,6 +203,37 @@ export const actions = {
         // sort by date
         snemovniObdobiObj.CasovaOsa.sort();
 
+        // add auto generated beginning and the end date of the snemovni obdobi
+
+        /*
+        {
+          "datum_udalosti": "1968-01-01",
+          "nazev_udalosti": "Test událost",
+          "dulezita": [
+          "true"
+          ]
+        },
+        */
+
+        const beginningOfTheSnemovniObdobiObj = {
+          "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
+          "nazev_udalosti": "Začátek sněmovny",
+          "dulezita": [
+          "true"
+          ]
+        };
+
+        const endOfTheSnemovniObdobiObj = {
+          "datum_udalosti": snemovniObdobiObj.DatumKonce.split('T')[0],
+          "nazev_udalosti": "Konec sněmovny",
+          "dulezita": [
+          "true"
+          ]
+        };
+
+        snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
+
+
       }
 
       if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
@@ -272,6 +303,25 @@ export const actions = {
 
           // sort by date
           parlament.CasovaOsa.sort();
+
+          const beginningOfParlamentObj = {
+            "datum_udalosti": parlament.SnemovniObdobi[0].DatumZacatku.split('T')[0],
+            "nazev_udalosti": "Začátek parlamentu",
+            "dulezita": [
+            "true"
+            ]
+          };
+
+          const endOfParlamentObj = {
+            "datum_udalosti": parlament.SnemovniObdobi[parlament.SnemovniObdobi.length-1].DatumKonce.split('T')[0],
+            "nazev_udalosti": "Konec parlamentu",
+            "dulezita": [
+            "true"
+            ]
+          };
+
+          parlament.CasovaOsa = [beginningOfParlamentObj, ...parlament.CasovaOsa, endOfParlamentObj];
+
 
         }
 
