@@ -1,7 +1,9 @@
 import axios from "axios";
+import path from 'path';
+import fs from 'fs';
 
-const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
-const databazePoslancuURL = 'http://parliament.ustrcr.cz';
+const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
+const databazePoslancuURL = 'https://parliament.ustrcr.cz';
 
 let dynamicRoutes = async () => {
   const res = await axios
@@ -10,9 +12,14 @@ let dynamicRoutes = async () => {
 };
 
 export default {
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  /*env: {
+    baseUrl: process.env.BASE_URL || 'https://localhost:8000'
   },
+  server: {
+    port: 8000,
+    host: 'localhost',
+    timing: false
+  },*/
   render: {
     static: {
       setHeaders(res) {
