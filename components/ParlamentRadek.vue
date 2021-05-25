@@ -130,7 +130,7 @@
       content = content + `
         <a href="/snemovni-obdobi/${item.Id}" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
           <span class="parlament-snemovni-obdobi-in">
-            <img class="image" src="~/assets/images/snemovni-obdobi-thumb.png"/>
+            <span class="image">${ParlamentNahledObecnyImage}</span>
             <span class="date">(${dateYearStart}–${dateYearEnd})</span>
           </span>
 
