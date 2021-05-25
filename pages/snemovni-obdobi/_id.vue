@@ -21,14 +21,16 @@
             //.chart-graphics.pie
             .chart-graphics.text-data
               .text-data-main {{statistiky.ProcentoVysokoskolaku}}<small class="text-data-sub">%</small>
-              .text-data-sub vš
-            .chart-text Vzdělání
+              .text-data-sub
+            .chart-text vysokoškoláků
 
         .chart-row
 
           .chart-widget.text-right.chart-pie
-            .chart-graphics.pie
-            .chart-text Nově zvolení/Znovuzvolení
+            .chart-graphics.text-data
+              .text-data-main {{ parseInt(statistiky.PocetMazaku / (snemovniObdobi.PocetPoslancu / 100))  }}<small class="text-data-sub">%</small>
+              .text-data-sub
+            .chart-text Znovuzvolených
 
       .component-snemovna-schema
         <ParlamentNahledObecnyImage />
@@ -84,7 +86,7 @@
 
         .text-block-image.column.is-full.is-full-tablet.is-half-desktop
           img(v-if="snemovniObdobi.UvodniFotografie" :src="snemovniObdobi.UvodniFotografie" :alt="snemovniObdobi.Nazev")
-        .text-block-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
+        .text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
 
     .parlament-detail-events.section-padding-h-margin-v
@@ -303,7 +305,9 @@
 
       computed: {
 
+
         snemovniObdobi() {
+
           return this.$store.state.snemovni_obdobi_detail;
         },
 
