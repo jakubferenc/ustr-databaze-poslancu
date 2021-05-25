@@ -83,7 +83,7 @@
       .typography-text-block.columns.is-multiline
 
         .text-block-image.column.is-full.is-full-tablet.is-half-desktop
-          img(:src="snemovniObdobi.UvodniFotografie.sizes.medium_large" :alt="snemovniObdobi.Nazev")
+          img(v-if="snemovniObdobi.UvodniFotografie" :src="snemovniObdobi.UvodniFotografie" :alt="snemovniObdobi.Nazev")
         .text-block-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
 

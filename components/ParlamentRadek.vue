@@ -110,7 +110,6 @@
 </style>
 
 <script>
-  import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
   const snemovnyHTMLHelperContainer = (data, parlamentId) => {
 
@@ -130,7 +129,7 @@
       content = content + `
         <a href="/snemovni-obdobi/${item.Id}" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
           <span class="parlament-snemovni-obdobi-in">
-            <span class="image">${ParlamentNahledObecnyImage}</span>
+            <span class="image"></span>
             <span class="date">(${dateYearStart}–${dateYearEnd})</span>
           </span>
 
@@ -144,7 +143,7 @@
   };
 
   export default {
-    components: { ParlamentNahledObecnyImage},
+    components: {  },
 
     props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa', 'Galerie'],
 
