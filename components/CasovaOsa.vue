@@ -28,6 +28,8 @@
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
 
+  $large-circle-height: 160px
+
   .slovnik-slider-nav
 
     margin-top: $margin-until-desktop
@@ -56,13 +58,11 @@
     overflow-x: scroll
     margin-top: $margin-until-desktop
 
-
   .casova-osa-line
     border-bottom: 5px dotted #000
     height: 2px
     position: absolute
-    top: 50%
-    margin-top: -9px - $margin-until-desktop / 4
+    top: 80px
     left: 0
     width: 100%
     z-index: 0
@@ -71,7 +71,7 @@
 
     display: flex
     justify-content: space-between
-    align-items: center
+    align-items: flex-start
     flex-wrap: nowrap
     -webkit-overflow-scrolling: touch
     -ms-overflow-style: -ms-autohiding-scrollbar
@@ -79,8 +79,15 @@
     z-index: 1
     scroll-behavior: smooth
 
+    .casova-osa-item
+      display: flex
+      flex-direction: column
+      align-items: center
+      max-width: 160px
+
     .casova-osa-item-text
       margin-top: $margin-until-desktop / 4
+      text-align: center
 
     .casova-osa-circle
       background-color: #000
@@ -98,12 +105,16 @@
         width: 80px
         height: 80px
 
+        margin-top: $large-circle-height / 4
+
       &.large
 
       @extend .typography-timeline-large-text
 
       width: 160px
       height: 160px
+
+
 
 </style>
 
