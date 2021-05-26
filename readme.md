@@ -5,6 +5,7 @@
 ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ustr-databaze-poslancu)
 
 
+
 # Popis
 The `dev` branch is the main development branch. Merge all accepted feature branches to the `dev` branch or make pull/merge requests. If feature branch was merged, delete that branch. Keep updated your feature branches with current `dev` status.
 
