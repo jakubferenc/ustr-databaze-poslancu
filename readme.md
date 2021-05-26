@@ -2,7 +2,7 @@
 
 ## Status
 
-![Vercel](http://therealsujitk-vercel-badge.vercel.app/?app=ustr-databaze-poslancu)
+![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ustr-databaze-poslancu)
 
 
 # Popis
