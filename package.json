@@ -1,5 +1,11 @@
 {
     "name": "ustr-databaze-poslancu",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/jakubferenc/ustr-databaze-poslancu"
+    },
+    "license": "",
+    "author": "Jakub A. Ferenc <hello@jakubferenc.cz> (https://jakubferenc.cz)",
     "scripts": {
         "dev": "nuxt",
         "build": "nuxt generate",
