@@ -1,6 +1,13 @@
 # os files
 .DS_store
 
+#dev
+idea
+.vscode
+.cache
+.eslintcache
+package-lock.json
+
 # dependencies
 node_modules
 

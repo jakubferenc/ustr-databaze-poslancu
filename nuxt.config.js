@@ -1,8 +1,8 @@
 import axios from "axios";
 
 
-const wordpressAPIURLWebsite = 'http://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
-const databazePoslancuURL = 'http://parliament.ustrcr.cz';
+const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
+const databazePoslancuURL = 'https://parliament.ustrcr.cz';
 
 let dynamicRoutes = async () => {
   const res = await axios
@@ -19,6 +19,10 @@ export default {
     host: 'localhost',
     timing: false
   },*/
+  publicRuntimeConfig: {
+    wordpressAPIURLWebsite,
+    databazePoslancuURL
+  },
   render: {
     static: {
       setHeaders(res) {
@@ -66,19 +70,6 @@ export default {
   },
   buildModules: [
     "@nuxtjs/svg",
-    /*'@nuxtjs/html-validator',*/
-    ['@aceforth/nuxt-netlify', { /* :TODO: dopsat zbývající proxy redirecty */
-      redirects: [
-        {
-          from: '/Api/snemovny/seznam',
-          to: `${databazePoslancuURL}/Api/snemovny/seznam`
-        },
-        {
-          from: '/Api/snemovny/',
-          to: `${databazePoslancuURL}/Api/snemovny/`,
-        },
-      ]
-    }]
   ],
   proxy: {
     '/Api/snemovny/seznam': `${databazePoslancuURL}`,
@@ -116,29 +107,6 @@ export default {
         }
       }
     ]
-  },
-  htmlValidator: {
-    usePrettier: false,
-    options: {
-      extends: [
-        'html-validate:document',
-        'html-validate:recommended',
-        'html-validate:standard'
-      ],
-      rules: {
-        'svg-focusable': 'off',
-        'no-unknown-elements': 'error',
-        // Conflicts or not needed as we use prettier formatting
-        'void-style': 'off',
-        'no-trailing-whitespace': 'off',
-        // Conflict with Nuxt defaults
-        'require-sri': 'off',
-        'attribute-boolean-style': 'off',
-        'doctype-style': 'off',
-        // Unreasonable rule
-        'no-inline-style': 'off'
-      }
-    }
   }
 
 };
