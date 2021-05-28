@@ -1,6 +1,7 @@
 $margin-from-desktop: 130px
 $margin-until-desktop: 50px
-$section-content-fixed-max-width: 1525px
+$section-content-fixed-max-width: 75%
+$large-circle-height: 160px
 
 .alt-bg
   background-color: #F4F4F4
@@ -71,12 +72,13 @@ $section-content-fixed-max-width: 1525px
     font-size: 2.91666667vw * 1.5
 
   +from($fullhd)
-    font-size: 52px
+    font-size: 56px
 
 .typography-section-title
 
   @extend .is-title
   text-align: center
+  line-height: 1.2
 
   +until($desktop)
 
@@ -239,8 +241,6 @@ $section-content-fixed-max-width: 1525px
         margin-top: -0.75rem
 
 
-
-
 .typography-has-no-margin-top
   margin-top: 0
 
@@ -252,3 +252,15 @@ $section-content-fixed-max-width: 1525px
   justify-content: space-between
   text-align: center
   align-items: center
+
+
+.typography-image-thumb-larger
+  +from($widescreen)
+    width: 636px
+
+.typography-image-thumb-medium
+  +from($widescreen)
+    max-width: 570px
+
+
+

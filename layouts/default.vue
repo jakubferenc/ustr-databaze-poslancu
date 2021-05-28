@@ -1,13 +1,23 @@
 <template lang="pug">
 
   .app-container
-    <Header />
-    <Main />
-    <Footer />
+
+    .app-content
+      <Header />
+      <Main />
+      <Footer />
+
+    <PopupDetail/>
 
     .debug-bar
 
 
 </template>
 
+
+<script>
+export default {
+
+}
+</script>
 

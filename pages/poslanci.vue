@@ -6,7 +6,16 @@
 
     .section-padding-h-margin-v
 
-      PoslanciSeznam(:Poslanci="poslanci" :PoslanciStatistiky="poslanciStatistiky" :MaPaginaci="true" :MaFiltr="true" :MaStatistiky="true" :MaButtonMore="true" :ButtonMoreLink="false")
+      PoslanciSeznam(
+        :Poslanci="poslanci"
+        :PoslanciFiltrovani="poslanci_filtrovani"
+        :PoslanciStatistiky="poslanciStatistiky"
+        :MaPaginaci="true"
+        :MaFiltr="true"
+        :MaStatistiky="true"
+        :MaButtonMore="true"
+        :ButtonMoreLink="false"
+      )
 
 
 </template>
@@ -24,7 +33,10 @@ export default {
 
     computed: {
       poslanci() {
-        return this.$store.state.poslanci;
+        return this.$store.state.poslanci
+      },
+      poslanci_filtrovani() {
+        return this.$store.state.poslanci_filtrovani;
       },
       poslanci_sezmam_razeni_default_id() {
         return this.$store.state.poslanci_seznam_razeni_id;

@@ -1,5 +1,208 @@
 <template lang="pug">
 
-  h1.typography-main-title Časová osa vývoje parlamentarismu
+  .page
+
+    h1.typography-main-title {{title}}
+
+    .section-padding-h-margin-v
+
+      .timeline-vertical
+
+        .casova-osa-line
+
+        .timeline-item-row(v-for="item in casova_osa" :key="item.id")
+
+          .timeline-item-box.timeline-item-box-image
+
+            .timeline-item-image-container
+
+              img.timeline-item-image.typography-image-thumb-medium(v-if="item.featured_image !== null" :src="item.featured_image.sizes.medium_large.source_url" :alt="item.featured_image_description")
+
+              .timeline-item-image-description(v-if="item.featured_image_description !== null")
+                span {{item.featured_image_description}}
+
+          .timeline-item-box.timeline-item-box-date.timeline-item-date
+            .casova-osa-circle(:class="{large: item.casova_osa_dulezita == '1', small: item.casova_osa_dulezita != '1'}") {{item.casova_osa_rok}}
+
+          .timeline-item-box.timeline-item-box-title
+            .timeline-item-title(@click="openPopUpDetail(item, $event)") {{item.title}}
 
 </template>
+
+
+<style lang="sass" scoped>
+  @import "~/assets/scss/bulma"
+  @import "~/assets/scss/typography"
+
+  .timeline-vertical
+    position: relative
+
+    .casova-osa-line
+      border-left: 5px dotted #000
+      height: 2px
+      position: absolute
+      top: 0
+      margin-top: -80px
+      bottom: 0
+      margin-bottom: -80px
+
+      width: 0
+      z-index: 0
+      height: calc(100% + 160px)
+
+      left: 0
+
+      +from($fullhd)
+        margin-left: -2px
+        left: 50%
+
+
+  .timeline-item-box
+    display: flex;
+    justify-content: flex-start;
+
+    +from($fullhd)
+      justify-content: center
+      flex: 1
+
+  .timeline-item-row
+
+    display: flex
+    justify-content: space-between
+    position: relative
+    align-items: center
+    margin-bottom: 120px
+
+    &.reverse
+      flex-direction: row-reverse
+
+    &:last-child
+      margin-bottom: 0
+
+
+
+
+    +until($fullhd)
+      .timeline-item-box-date
+        order: 1
+
+      .timeline-item-box-image
+        order: 2
+
+      .timeline-item-box-title
+        order: 3
+
+
+    .timeline-item-image-container
+
+      .timeline-item-image
+        width: 100%
+        background-color: lightgray;
+
+        max-width: 300px
+
+        +from($fullhd)
+          max-width: 500px
+
+      .timeline-item-image-description
+        position: absolute
+        margin-top: $margin-until-desktop / 4
+
+
+    .timeline-item-title
+
+      @extend .typography-section-title
+
+      max-width: 300px
+      cursor: pointer
+
+      +from($fullhd)
+        max-width: 500px
+
+
+    .timeline-item-box-date
+
+       +until($fullhd)
+        width: $large-circle-height
+
+
+    .casova-osa-circle
+      background-color: #000
+      display: flex
+      align-items: center
+      justify-content: center
+      border-radius: 100%
+      color: #fff
+      line-height: 1
+
+      &.small
+
+        width: $large-circle-height / 2
+        height: $large-circle-height / 2
+        font-size: 18px
+        margin-left: -1 * ($large-circle-height / 4)
+
+        +from($fullhd)
+          margin-left: 0
+
+
+      &.large
+
+        width: 160px
+        height: 160px
+        margin-left: -80px
+        line-height: 1
+        font-size: 32px
+
+        +from($fullhd)
+          margin-left: 0
+
+</style>
+
+<script>
+export default {
+
+
+    async fetch ({store}) {
+
+      await store.dispatch("getCasovaOsa");
+
+    },
+    methods: {
+
+      openPopUpDetail: function(item, e) {
+
+
+        item.scrollTop = window.scrollY;
+
+        this.$store.dispatch("setPopupTimelineDetail", item);
+        document.getElementsByTagName('html')[0].classList.add('popup-detail-on');
+      }
+
+    },
+    computed: {
+      casova_osa() {
+        return this.$store.state.casova_osa;
+      },
+      htmlClassComputed() {
+        return this.htmlClass.join(' ');
+      }
+    },
+    data() {
+      return {
+        title: `Časová osa vývoje parlamentarismu`,
+        htmlClass: ['alt-bg']
+      }
+    },
+
+    head () {
+      return {
+        title: `${this.title} — ${this.$config.globalTitle}`,
+        htmlAttrs: {
+          class: this.htmlClassComputed
+        }
+      }
+    }
+
+}
+</script>

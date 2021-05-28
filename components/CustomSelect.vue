@@ -2,7 +2,7 @@
   span.custom-select(@click="toggleSelect()" :data-has-been-selected="hasBeenSelected" :data-open="isActive")
     span.option-default(:id="ZakladniPolozka.id" :data-option-default-text="ZakladniPolozka.text") <span class="option-default-text">{{ZakladniPolozka.text}}</span> <small class="option-selected-text">{{selectedOptionText}}</small>
     span.options
-      span.option(v-for="polozka in RaditDle" :data-option-id="polozka.id"  @click="selectOption(polozka.id, polozka.text, Namespace)") {{polozka.text}}
+      span.option(v-for="polozka in RaditDle" :data-option-id="polozka.id"  @click="selectOption(polozka.id, polozka.text)") {{polozka.text}}
 </template>
 
 
@@ -70,7 +70,7 @@
 
 <script>
 export default {
-   props: ['Namespace', 'ZakladniPolozka', 'RaditDle'],
+   props: ['ZakladniPolozka', 'RaditDle'],
 
   created() {
     // :TODO: #5 Check if this is necessary and will be implemented
@@ -80,7 +80,7 @@ export default {
       if (getFilterInDefaults.length > 0) {
         const {selectedOptionId, selectedOptionText} = getFilterInDefaults;
         const namespace = this.Namespace;
-        this.$emit('selectOption', {selectedOptionId, selectedOptionText, namespace});
+        this.$emit('selectOption', {selectedOptionId, selectedOptionText});
       }
     }
   },
@@ -99,7 +99,7 @@ export default {
       this.isActive = (this.isActive) ? false: true;
 
     },
-    selectOption: function (selectedOptionId, selectedOptionText, Namespace) {
+    selectOption: function (selectedOptionId, selectedOptionText) {
 
       if (!this.hasBeenSelected) {
         this.hasBeenSelected = true
@@ -110,7 +110,7 @@ export default {
       this.$el.querySelectorAll(`.selected`).forEach(item => item.classList.remove('selected'));
       this.$el.querySelector(`[data-option-id="${selectedOptionId}"]`).classList.add('selected')
 
-      this.$store.dispatch('raditPoslanciSeznam', {selectedOptionId, selectedOptionText, Namespace});
+      this.$store.dispatch('raditPoslanciSeznam', {selectedOptionId, selectedOptionText});
     }
   }
 

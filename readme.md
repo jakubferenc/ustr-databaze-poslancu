@@ -1,14 +1,14 @@
-# Dokumentace aplikace Ústav pro studium totalitních režimů/Parlamentní mapy
+# Dokumentace aplikace Databáze poslanců
 
 ## Status
 
 ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ustr-databaze-poslancu)
 
-
-
 # Popis
 The `dev` branch is the main development branch. Merge all accepted feature branches to the `dev` branch or make pull/merge requests. If feature branch was merged, delete that branch. Keep updated your feature branches with current `dev` status.
 
+# Dokumentace
+* [Požadavky na package.json](https://docs.npmjs.com/cli/v7/configuring-npm/package-json)
 # Požadavky
 ## Vývojové prostředí
 * [Github account](https://github.com/)

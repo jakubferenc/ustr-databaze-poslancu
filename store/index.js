@@ -1,6 +1,8 @@
 /*
 this is where we will eventually hold the data for all of our posts
 */
+/*eslint no-unsafe-optional-chaining: "error"*/
+
 
 const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
 const databazePoslancuURL = 'https://parliament.ustrcr.cz';
@@ -22,6 +24,7 @@ export const state = () => ({
   slovnikova_hesla: [],
   parlamenty: [],
   poslanci: [],
+  poslanci_filtrovani: [],
   poslanci_homepage: [],
   poslanci_statistiky: {},
   media_soubory: [],
@@ -29,6 +32,8 @@ export const state = () => ({
   stranky: [],
   snemovni_obdobi: [],
   snemovni_obdobi_detail: {},
+  casova_osa: [],
+  popup_timeline_detail: {},
 });
 /*
 this will update the state with the posts
@@ -36,6 +41,9 @@ this will update the state with the posts
 export const mutations = {
   updateStranky: (state, stranky) => {
     state.stranky = stranky;
+  },
+  updateCasovaOsa: (state, casova_osa) => {
+    state.casova_osa = casova_osa;
   },
   updateSlovnikovaHesla: (state, slovnikova_hesla) => {
     state.slovnikova_hesla = slovnikova_hesla;
@@ -55,6 +63,11 @@ export const mutations = {
   updatePoslanciStatistiky: (state, poslanci_statistiky) => {
     state.poslanci_statistiky = poslanci_statistiky;
   },
+
+  updateFiltrovaniPoslanci: (state, poslanci_filtrovani) => {
+    state.poslanci_filtrovani = poslanci_filtrovani;
+  },
+
   updatePoslanciRazeniID: (state, poslanci_seznam_razeni_id) => {
     state.poslanci_seznam_razeni_id = poslanci_seznam_razeni_id;
   },
@@ -63,6 +76,9 @@ export const mutations = {
   },
   updateMedia: (state, media_soubory) => {
     state.media_soubory = media_soubory;
+  },
+  updatePopupTimelineDetail: (state, popup_timeline_detail) => {
+    state.popup_timeline_detail = popup_timeline_detail;
   }
 };
 /*
@@ -71,6 +87,16 @@ actions is where we will make an API call that gathers the posts,
 and then commits the mutation to update it
 */
 export const actions = {
+
+  setPopupTimelineDetail ({ state, commit }, popup_timeline_detail) {
+    try {
+
+      commit("updatePopupTimelineDetail", popup_timeline_detail);
+
+    } catch (err) {
+      console.log(err);
+    }
+  },
 
   async getStranky ({ state, commit }) {
 
@@ -98,6 +124,42 @@ export const actions = {
 
     } catch (err) {
       console.log(err);
+    }
+  },
+
+  async getCasovaOsa({ state, commit }) {
+
+    if (state.casova_osa.length) return;
+
+    try {
+
+      let casova_osa = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=100`);
+
+      casova_osa = casova_osa.data;
+
+      casova_osa = casova_osa
+      .filter(el => el.status === "publish")
+      .sort((a, b) => (a.casova_osa_datum > b.casova_osa_datum) ? 1 : (a.casova_osa_datum < b.casova_osa_datum ) ? -1 : 0) // sort from the lowest date, format yyyy-mm-dd
+      .map(({ id, slug, title, date, content, casova_osa_datum, _embedded, casova_osa_dulezita }) => ({
+        id,
+        slug,
+        title: title.rendered,
+        date,
+        content: content.rendered,
+        casova_osa_rok: casova_osa_datum.split('-')[0],
+        casova_osa_datum,
+        featured_image: (_embedded) ? _embedded['wp:featuredmedia'][0].media_details : null,
+        featured_image_description: (_embedded) ?_embedded['wp:featuredmedia'][0].title.rendered : null,
+        casova_osa_dulezita,
+      }));
+
+
+      commit("updateCasovaOsa", casova_osa);
+
+    } catch (err) {
+
+      console.log(err);
+
     }
   },
 
@@ -163,6 +225,8 @@ export const actions = {
 
       let snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
       snemovniObdobiObj = snemovniObdobiObj.data;
+
+      console.log(snemovniObdobiObj);
 
       let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
       snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
@@ -381,7 +445,7 @@ export const actions = {
     let poslanciStatistiky = {};
 
     // Remove all items with Age == 0
-    let poslanciFiltered = state.poslanci.filter((item) => typeof item.Vek == 'number');
+    let poslanciFiltered = state.poslanci_filtrovani.filter((item) => typeof item.Vek == 'number');
 
     poslanciStatistiky.averageAge = Math.round(poslanciFiltered.reduce((total, next) => total + next.Vek, 0) / poslanciFiltered.length);
     poslanciStatistiky.oldestAge = Math.round(Math.max(...poslanciFiltered.map(o => o.Vek), 0));
@@ -401,25 +465,25 @@ export const actions = {
 
   },
 
-  raditPoslanciSeznam({ state, commit }, {selectedOptionId, selectedOptionText, Namespace}) {
+  raditPoslanciSeznam({ state, commit }, {selectedOptionId, selectedOptionText}) {
 
     let filteredPoslanci = null;
 
     if (selectedOptionId === 'radit-datum-narozeni') {
 
-      filteredPoslanci = [...state.poslanci].sort((a, b) => (a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene) ? 1 : -1);
+      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene) ? 1 : -1);
 
     }
 
     if (selectedOptionId === 'radit-datum-narozeni-sestupne') {
 
-      filteredPoslanci = [...state.poslanci].sort((a, b) => (a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene) ? 1 : -1);
+      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene) ? 1 : -1);
 
     }
 
     if (selectedOptionId === 'radit-prijmeni') {
 
-      filteredPoslanci = [...state.poslanci].sort((a, b) => {
+      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => {
         const nameA = a.Prijmeni.toLowerCase();
         const nameB = b.Prijmeni.toLowerCase();
 
@@ -431,7 +495,7 @@ export const actions = {
 
     if (selectedOptionId === 'radit-prijmeni-sestupne') {
 
-      filteredPoslanci = [...state.poslanci].sort((a, b) => {
+      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => {
         const nameA = a.Prijmeni.toLowerCase();
         const nameB = b.Prijmeni.toLowerCase();
 
@@ -443,24 +507,40 @@ export const actions = {
 
     if (selectedOptionId === 'radit-pocet-mandatu') {
 
-      filteredPoslanci = [...state.poslanci].sort((a, b) => (a.Mandaty.length > b.Mandaty.length) ? 1 : -1);
+      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.Mandaty.length > b.Mandaty.length) ? 1 : -1);
 
     }
 
     if (selectedOptionId === 'radit-pocet-mandatu-sestupne') {
 
-      filteredPoslanci = [...state.poslanci].sort((a, b) => (a.Mandaty.length < b.Mandaty.length) ? 1 : -1);
+      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.Mandaty.length < b.Mandaty.length) ? 1 : -1);
 
     }
 
     if (selectedOptionId === 'radit-id') {
 
-      filteredPoslanci = [...state.poslanci].sort((a, b) => (a.Id > b.Id) ? 1 : -1);
+      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.Id > b.Id) ? 1 : -1);
 
     }
 
-    commit("updatePoslanci", filteredPoslanci);
+    commit("updateFiltrovaniPoslanci", filteredPoslanci);
     commit("updatePoslanciRazeniID", selectedOptionId);
+
+  },
+
+  getPoslanciFiltrovani({ state, commit, dispatch }, filterNastaveni) {
+
+    let currentPoslanci = state.poslanci;
+
+    // do filtering
+    if (filterNastaveni.pohlavi) {
+      currentPoslanci = currentPoslanci.filter(item => item.Pohlavi === filterNastaveni?.pohlavi);
+    }
+
+    // commit & dispatch
+
+    commit("updateFiltrovaniPoslanci", currentPoslanci);
+    dispatch('countPoslanciStatistiky');
 
   },
 
@@ -490,7 +570,8 @@ export const actions = {
         });
 
       commit("updatePoslanci", poslanci);
-      dispatch('countPoslanciStatistiky');
+      dispatch('getPoslanciFiltrovani');
+
 
     } catch (err) {
       console.log(err);

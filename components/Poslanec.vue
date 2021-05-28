@@ -7,6 +7,7 @@
       .poslanec-title {{ Jmeno }} {{ Prijmeni }}
 
       .poslanec-years(v-if="DatumNarozeniZobrazene && DatumUmrtiZobrazene") ({{DatumNarozeniZobrazene}} — {{DatumUmrtiZobrazene}})
+      .mandaty(v-if="ZobrazitMandaty") Mandátů: {{ pocetMandatu }}
       .content {{ ZivotniData }}
 
 </template>
@@ -40,6 +41,11 @@
 
 <script>
 export default {
-   props: ['Id', 'Jmeno', 'Prijmeni', 'ZivotniData', 'DatumNarozeniZobrazene', 'DatumUmrtiZobrazene'],
+   props: ['Id', 'Jmeno', 'Prijmeni', 'ZivotniData', 'DatumNarozeniZobrazene', 'DatumUmrtiZobrazene', 'Mandaty', 'ZobrazitMandaty'],
+   computed: {
+     pocetMandatu() {
+       return this.Mandaty.length;
+     }
+   }
 }
 </script>

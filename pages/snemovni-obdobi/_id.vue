@@ -100,7 +100,14 @@
 
       h2.typography-section-title Poslanci
 
-      PoslanciSeznam(:Poslanci="snemovniObdobi.Poslanci" :MaPaginaci="true" :MaFiltr="true" :MaStatistiky="false" :MaButtonMore="true" :ButtonMoreLink="false")
+      PoslanciSeznam(
+        :Poslanci="snemovniObdobi.Poslanci"
+        :MaPaginaci="true"
+        :MaFiltr="true"
+        :MaStatistiky="false"
+        :MaButtonMore="false"
+        :ButtonMoreLink="false"
+      )
 
 
     .parlament-detail-galerie-medii.section-padding-h-margin-v

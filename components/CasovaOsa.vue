@@ -28,8 +28,6 @@
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
 
-  $large-circle-height: 160px
-
   .slovnik-slider-nav
 
     margin-top: $margin-until-desktop
