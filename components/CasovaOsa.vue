@@ -162,8 +162,6 @@ export default {
 
         this.intervalRef = setInterval((e) => {
 
-            console.log("canMove from interval", this.canMove);
-            console.log("direction from interval", direction);
 
             if (this.canMove) {
 

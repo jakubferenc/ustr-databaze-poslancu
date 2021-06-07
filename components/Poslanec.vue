@@ -7,7 +7,7 @@
       .poslanec-title {{ Jmeno }} {{ Prijmeni }}
 
       .poslanec-years(v-if="DatumNarozeniZobrazene && DatumUmrtiZobrazene") ({{DatumNarozeniZobrazene}} — {{DatumUmrtiZobrazene}})
-      .mandaty(v-if="ZobrazitMandaty") Mandátů: {{ pocetMandatu }}
+      .mandaty(v-if="ZobrazitMandaty") {{ pocetMandatu }} mandátů
       .content {{ ZivotniData }}
 
 </template>

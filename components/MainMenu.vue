@@ -1,11 +1,17 @@
 <template lang="pug">
   nav.main-menu(role="navigation" aria-label="Primary")
     NuxtLink(to="/") Hlavní stránka
-    NuxtLink(to="/vyvoj-parlamentu") Vývoj parlamentu
+    span &nbsp;|
+    NuxtLink(to="/vyvoj-parlamentu") Vývoj parlamentarismu
+    span &nbsp;|
     NuxtLink(to="/poslanci") Poslanci
+    span &nbsp;|
     NuxtLink(to="/parlamenty") Parlamenty
-    NuxtLink(to="/rodinne-vazby") Rodinné vazby
+    span &nbsp;|
+    NuxtLink(to="/rodinne-vazby") Sociální mapy
+    span &nbsp;|
     NuxtLink(to="/slovnik") Slovník
+    span &nbsp;|
     NuxtLink(to="/galerie-medii") Galerie médií
 </template>
 

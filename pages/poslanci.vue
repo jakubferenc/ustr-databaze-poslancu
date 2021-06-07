@@ -38,7 +38,7 @@ export default {
       poslanci_filtrovani() {
         return this.$store.state.poslanci_filtrovani;
       },
-      poslanci_sezmam_razeni_default_id() {
+      poslanci_seznam_razeni_default_id() {
         return this.$store.state.poslanci_seznam_razeni_id;
       },
       poslanciStatistiky() {

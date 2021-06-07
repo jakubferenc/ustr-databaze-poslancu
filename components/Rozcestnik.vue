@@ -2,22 +2,29 @@
 
   .rozcestnik.section-padding-h-margin-v.columns.is-multiline.is-tablet
 
-    .rozcestnik-item.is-full.is-one-third-tablet.column
+    .rozcestnik-item.is-full.is-one-quarter-tablet.column
 
       .rozcestnik-item-title Časová osa
       .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
       .rozcestnik-item-image
         img(src="~/assets/images/risska-rada-01-thumb.jpg" alt="")
 
-    .rozcestnik-item.is-full.is-one-third-tablet.column
+    .rozcestnik-item.is-full.is-one-quarter-tablet.column
 
       .rozcestnik-item-title Jak funguje parlament
       .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
       .rozcestnik-item-image
         img(src="~/assets/images/risska-rada-02-thumb.jpg" alt="")
 
+    .rozcestnik-item.is-full.is-one-quarter-tablet.column
 
-    .rozcestnik-item.is-full.is-one-third-tablet.column
+      .rozcestnik-item-title Společenské vazby
+      .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
+      .rozcestnik-item-image
+        img(src="~/assets/images/risska-rada-01-thumb.jpg" alt="")
+
+
+    .rozcestnik-item.is-full.is-one-quarter-tablet.column
 
       .rozcestnik-item-title Ženy v parlamentu
       .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.

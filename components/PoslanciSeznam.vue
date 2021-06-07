@@ -384,13 +384,13 @@ export default {
   mounted() {
 
     this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
-    this.$sidebar.querySelectorAll('input').forEach(item => item.addEventListener('change', (e) => {
+    /*this.$sidebar.querySelectorAll('input').forEach(item => item.addEventListener('change', (e) => {
 
       this.$store.dispatch("getPoslanciFiltrovani", {
         pohlavi: 1
       });
 
-    }));
+    }));*/
 
   },
 

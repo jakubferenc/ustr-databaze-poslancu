@@ -226,8 +226,6 @@ export const actions = {
       let snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
       snemovniObdobiObj = snemovniObdobiObj.data;
 
-      console.log(snemovniObdobiObj);
-
       let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
       snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
 
@@ -277,7 +275,7 @@ export const actions = {
           "true"
           ]
         },
-        */
+
 
         const beginningOfTheSnemovniObdobiObj = {
           "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
@@ -296,7 +294,7 @@ export const actions = {
         };
 
         snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
-
+        */
 
       }
 
@@ -370,7 +368,7 @@ export const actions = {
 
           const beginningOfParlamentObj = {
             "datum_udalosti": parlament.SnemovniObdobi[0].DatumZacatku.split('T')[0],
-            "nazev_udalosti": "Začátek parlamentu",
+            "nazev_udalosti": "Začátek parlamentního tělesa",
             "dulezita": [
             "true"
             ]
@@ -378,7 +376,7 @@ export const actions = {
 
           const endOfParlamentObj = {
             "datum_udalosti": parlament.SnemovniObdobi[parlament.SnemovniObdobi.length-1].DatumKonce.split('T')[0],
-            "nazev_udalosti": "Konec parlamentu",
+            "nazev_udalosti": "Konec parlamentního tělesa",
             "dulezita": [
             "true"
             ]
@@ -570,7 +568,7 @@ export const actions = {
         });
 
       commit("updatePoslanci", poslanci);
-      dispatch('getPoslanciFiltrovani');
+      dispatch('getPoslanciFiltrovani', {}); // must have an argument, at least an empty object
 
 
     } catch (err) {

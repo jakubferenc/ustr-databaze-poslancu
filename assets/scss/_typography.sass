@@ -54,6 +54,7 @@ $large-circle-height: 160px
 
   @extend .is-title
   text-align: center
+  line-height: 1.1
 
   +until($desktop)
     margin-top: 50px
@@ -252,6 +253,12 @@ $large-circle-height: 160px
   justify-content: space-between
   text-align: center
   align-items: center
+
+  .text-block-image
+
+    &.next-to-text
+      +from($widescreen)
+        padding-right: $margin-until-desktop
 
 
 .typography-image-thumb-larger

@@ -24,10 +24,10 @@
 
       .parlament-detail-data-item-circle-container.section-padding.smaller-vertical-margin
 
-        .chart-widget.text-left.chart-pie(v-for="(polozka, klic) in item.data" :key="item.data.id")
+        .chart-widget.text-left.chart-pie(v-for="(polozka, klic) in item.data" :key="polozka.Id")
           .chart-graphics.text-data
-            .text-data-main {{polozka.pocet}}
-          .chart-text {{polozka.nazev}}
+            .text-data-main {{polozka.PocetNavazanychPoslancu}}
+          .chart-text {{polozka.Nazev}}
 
 
 </template>
@@ -72,7 +72,7 @@
           background-color: #fff
 
         .chart-text
-          width: 100px
+          width: 150px
 
     .tab-navigation-content-item
       display: none

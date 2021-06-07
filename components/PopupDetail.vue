@@ -1,5 +1,5 @@
 <template lang="pug">
-  .popup-timeline-detail
+  .popup-timeline-detail(v-if="popupTimelineDetailContent")
     .background-shadow
 
     .popup-timeline-detail-content(:style="{top: `calc(30% + ${elementScrollTop}px)`}")
@@ -7,17 +7,40 @@
       .button-close(@click="closePopup()") X Zavřít detail
       .section-padding-h-margin-v
 
-
           h1.typography-main-title {{popupTimelineDetailContent.title}}
+
+          .popup-content.columns.is-multiline
+            .image-container.column.is-one-half-tablet
+              img(v-if="popupTimelineDetailContent.featured_image" :src="popupTimelineDetailContent.featured_image.sizes.medium_large.source_url")
+              .timeline-item-image-description(v-if="popupTimelineDetailContent.featured_image_description !== null")
+                small {{popupTimelineDetailContent.featured_image_description}}
+            .text-container.column.is-one-half-tablet(v-html="popupTimelineDetailContent.content")
 </template>
 
 
-<style lang="sass">
+<style lang="sass" scoped>
 
   @import 'bulma/sass/utilities/mixins.sass'
 
+  .popup-content
+
+    .image-container,
+    .text-container
+
+
   .popup-timeline-detail
     display: none
+
+    .typography-main-title
+      width: 100%
+      margin-left: auto
+      margin-right: auto
+
+      +from($desktop)
+        width: 75%
+
+      +from($fullhd)
+        width: 50%
 
     @at-root html.popup-detail-on &
       z-index: 9

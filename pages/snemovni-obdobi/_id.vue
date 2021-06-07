@@ -84,7 +84,7 @@
 
       .typography-text-block.columns.is-multiline
 
-        .text-block-image.column.is-full.is-full-tablet.is-half-desktop
+        .text-block-image.next-to-text.column.is-full.is-full-tablet.is-half-desktop
           img(v-if="snemovniObdobi.UvodniFotografie" :src="snemovniObdobi.UvodniFotografie" :alt="snemovniObdobi.Nazev")
         .text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
@@ -102,6 +102,7 @@
 
       PoslanciSeznam(
         :Poslanci="snemovniObdobi.Poslanci"
+        :PoslanciFiltrovani="poslanci_filtrovani"
         :MaPaginaci="true"
         :MaFiltr="true"
         :MaStatistiky="false"
@@ -312,7 +313,19 @@
 
       computed: {
 
+        poslanci() {
+          return this.$store.state.poslanci
+        },
+        poslanci_filtrovani() {
+          return this.$store.state.poslanci_filtrovani;
+        },
+        poslanci_seznam_razeni_default_id() {
+          return this.$store.state.poslanci_seznam_razeni_id;
+        },
+        poslanciStatistiky() {
 
+          return this.$store.state.poslanci_statistiky;
+        },
         snemovniObdobi() {
 
           return this.$store.state.snemovni_obdobi_detail;
@@ -335,63 +348,23 @@
             poslaneckeKluby: {
               id: 'poslanecke-kluby',
               title: 'poslanecké kluby',
-              data: [
-                {
-                  id: 1,
-                  nazev: 'nějaký název',
-                  pocet: 34
-                },
-                {
-                  id: 2,
-                  nazev: 'nějaký název',
-                  pocet: 21
-                }
-              ],
+              data: this.statistiky.PoslaneckeKluby,
               aktivni: true
             },
             volebniStrany: {
               id: 'volebni-strany',
               title: 'volební strany',
-              data: [
-                {
-                  id: 1,
-                  nazev: 'nějaký název',
-                  pocet: 12
-                }
-              ],
-            },
-            uzemi: {
-              id: 'uzemi',
-              title: 'území',
-              data: [
-                {
-                  id: 1,
-                  nazev: 'nějaký název',
-                  pocet: 57
-                }
-              ],
+              data: this.statistiky.VolebniStrany,
             },
             kurie: {
               id: 'kurie',
               title: 'kurie',
-              data: [
-                {
-                  id: 1,
-                  nazev: 'nějaký název',
-                  pocet: 11
-                }
-              ],
+              data: this.statistiky.Kurie,
             },
             narodnost: {
               id: 'narodnost',
               title: 'podle národnosti',
-              data: [
-                {
-                  id: 1,
-                  nazev: 'nějaký název',
-                  pocet: 7
-                }
-              ],
+              data: this.statistiky.Narodnosti,
             }
           };
 

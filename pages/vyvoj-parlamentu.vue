@@ -12,7 +12,7 @@
 
         .timeline-item-row(v-for="item in casova_osa" :key="item.id")
 
-          .timeline-item-box.timeline-item-box-image
+          .timeline-item-box.timeline-item-box-image(@click="openPopUpDetail(item, $event)")
 
             .timeline-item-image-container
 
@@ -56,6 +56,8 @@
         margin-left: -2px
         left: 50%
 
+  .timeline-item-box-image
+    cursor: pointer
 
   .timeline-item-box
     display: flex;
@@ -190,7 +192,7 @@ export default {
     },
     data() {
       return {
-        title: `Časová osa vývoje parlamentarismu`,
+        title: `Časová osa vývoje parlamentarismu v českých zemích a Československu`,
         htmlClass: ['alt-bg']
       }
     },
