@@ -33,6 +33,18 @@ export default {
       }
     }
   },
+  generate: {
+    routes: dynamicRoutes
+  },
+  build: {
+    loaders: {
+      scss: { sourceMap: true },
+      vue: { cacheBusting: false },
+    }
+  },
+  buildModules: [
+    "@nuxtjs/svg",
+  ],
   globalName: 'databaze-poslancu',
   target: 'static', // default is 'server'
   ssr: true,
@@ -40,7 +52,7 @@ export default {
   publicRuntimeConfig: {
     globalTitle: 'Databáze poslanců.cz'
   },
-  modules: ['@nuxtjs/style-resources', '@nuxtjs/proxy',  '@nuxtjs/axios', '@nuxtjs/sitemap' /*'@nuxtjs/sentry'*/],
+  modules: ['@nuxtjs/style-resources', '@nuxtjs/proxy',  '@nuxtjs/axios', /*'@nuxtjs/sentry'*/],
   sentry: {
     dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
     // Additional Module Options go here
@@ -55,22 +67,13 @@ export default {
   },
   css: [
     '~assets/scss/main.sass',
+    { src: 'leaflet.markercluster/dist/MarkerCluster.css', lang: 'css' },
+    { src: 'leaflet.markercluster/dist/MarkerCluster.Default.css', lang: 'css' }
   ],
   styleResources: {
     sass: ['~bulma/sass/utilities/all']
   },
-  generate: {
-    routes: dynamicRoutes
-  },
-  build: {
-    loaders: {
-      scss: { sourceMap: true },
-      vue: { cacheBusting: false },
-    }
-  },
-  buildModules: [
-    "@nuxtjs/svg",
-  ],
+  plugins: [{ src: '~plugins/vue-leaflet.js', ssr: false }],
   proxy: {
     '/Api/snemovny/seznam': `${databazePoslancuURL}`,
     '/Api/snemovny/': `${databazePoslancuURL}`,

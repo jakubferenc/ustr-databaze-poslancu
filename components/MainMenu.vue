@@ -6,7 +6,7 @@
     span &nbsp;|
     NuxtLink(to="/poslanci") Poslanci
     span &nbsp;|
-    NuxtLink(to="/parlamenty") Parlamenty
+    NuxtLink.link-parlamenty(to="/parlamenty") Parlamenty
     span &nbsp;|
     NuxtLink(to="/rodinne-vazby") Sociální mapy
     span &nbsp;|
@@ -26,6 +26,9 @@
 
     .nuxt-link-exact-active
       text-decoration: underline
+
+  html.subpage-parlament .link-parlamenty
+    @extend .nuxt-link-exact-active
 
 </style>
 

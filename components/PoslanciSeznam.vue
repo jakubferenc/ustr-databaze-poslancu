@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .poslanci-seznam.seznam-with-filter
+  .poslanci-seznam.seznam-with-filter()
 
     .filter-seznam
 
@@ -61,7 +61,10 @@
 
           .filter-seznam.bar-right
 
-            CustomSelect(:ZakladniPolozka="RaditZakladniPolozkaNastaveni" :RaditDle="RaditDleNastaveni")
+            span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
+              span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
+              span.options
+                span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text)") {{polozka.text}}
 
 
         .seznam-content-container()
@@ -70,259 +73,46 @@
             .seznam-filter-sidebar-content
 
               .seznam-filter-sidebar-content-header
-                p.typography-filter-heading Zobrazuje se {{pocetPoslancuFiltrovanych}} z {{pocetPoslancu}} poslanců
+                p.typography-filter-heading Zobrazuje se {{pocetPoslancuFiltrovanych}} z {{pocetPoslancu}} <br>poslanců
 
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
 
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Parlamentní tělesa
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
 
-                  ol.filter-list.filter-list-checkboxes
-                    li.filter-list-item
-                      label(for="telesa01")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa01" value="")
-                        .filter-list-item-value Poslanecká sněmovna Říšské rady
+              .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey")
 
-                    li.filter-list-item
-                      label(for="telesa02")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa02" value="")
-                        .filter-list-item-value Národní shromáždění
-
-                    li.filter-list-item
-                      label(for="telesa03")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa03" value="")
-                        .filter-list-item-value Poslanecká sněmovna Říšské rady
-
-                    li.filter-list-item
-                      label(for="telesa04")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa04" value="")
-                        .filter-list-item-value Národní shromáždění
-              ////////////////////////////////////////////////////////////////////////////////
-
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
-
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Pohlaví
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
-
-                  ol.filter-list.filter-list-inline.filter-list-radios
-                    li.filter-list-item
-                      label(for="pohlavi01")
-                        .filter-list-item-checkbox
-                          input(type="radio" id="pohlavi01" name="pohlavi" value="0")
-                        .filter-list-item-value Vše
-
-                    li.filter-list-item
-                      label(for="pohlavi02")
-                        .filter-list-item-checkbox
-                          input(type="radio" id="pohlavi02" name="pohlavi" value="1")
-                        .filter-list-item-value Muž
-
-                    li.filter-list-item
-                      label(for="pohlavi03")
-                        .filter-list-item-checkbox
-                          input(type="radio" id="pohlavi03" name="pohlavi" value="2")
-                        .filter-list-item-value Žena
+                //// sekce
                 ////////////////////////////////////////////////////////////////////////////////
-
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
-
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Vzdělání
+                .seznam-filter-sidebar-content-section-title.typography-filter-heading {{filtrNastaveni[filtrSekceKey].title}}
                 .seznam-filter-sidebar-content-section-content.typography-filter-text
 
-                  ol.filter-list.filter-list-inline.filter-list-radios
-                    li.filter-list-item
-                      label(for="vzdelani01")
+                  ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
+                    li.filter-list-item(v-for="(filtrPolozka, index) in filtrNastaveni[filtrSekceKey].values" :key="index")
+                      label(:for="filtrPolozka.id" :class="{disabled: filtrPolozka.disabled}")
                         .filter-list-item-checkbox
-                          input(type="radio" id="vzdelani01" name="vzdelani" value="")
-                        .filter-list-item-value Vše
-
-                    li.filter-list-item
-                      label(for="vzdelani02")
-                        .filter-list-item-checkbox
-                          input(type="radio" id="vzdelani02" name="vzdelani" value="")
-                        .filter-list-item-value Pouze vysoká škola
+                          input(
+                            @click="selectFilterOption(filtrSekceKey, index, filtrNastaveni[filtrSekceKey].multiple, filtrNastaveni[filtrSekceKey].reset, $event)"
+                            :type="filtrNastaveni[filtrSekceKey].type"
+                            :id="filtrPolozka.id"
+                            :disabled="filtrPolozka.disabled"
+                            :checked="filtrPolozka.selected ? 'checked' : ''"
+                            :data-checked="filtrPolozka.selected"
+                            :class="{selected: filtrPolozka.selected}"
+                            :name="filtrNastaveni[filtrSekceKey].type ==='radio' ? filtrSekceKey : false"
+                            :value="filtrPolozka.id"
+                          )
+                        .filter-list-item-value {{filtrPolozka.text}}
 
                 ////////////////////////////////////////////////////////////////////////////////
 
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
-
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Náboženské vyznání
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
-
-                  ol.filter-list.filter-list-checkboxes
-                    li.filter-list-item
-                      label(for="telesa01")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa01" value="")
-                        .filter-list-item-value Římskokatolické
-
-                    li.filter-list-item
-                      label(for="telesa02")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa02" value="")
-                        .filter-list-item-value Protestanské
-
-                    li.filter-list-item
-                      label(for="telesa03")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa03" value="")
-                        .filter-list-item-value Židovské
-
-                    li.filter-list-item
-                      label(for="telesa04")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa04" value="")
-                        .filter-list-item-value Neuvedeno
-              ////////////////////////////////////////////////////////////////////////////////
-
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
-
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Profese
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
-
-                  ol.filter-list.filter-list-checkboxes
-                    li.filter-list-item
-                      label(for="telesa01")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa01" value="")
-                        .filter-list-item-value Řezník
-
-                    li.filter-list-item
-                      label(for="telesa02")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa02" value="")
-                        .filter-list-item-value Právník
-
-                    li.filter-list-item
-                      label(for="telesa03")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa03" value="")
-                        .filter-list-item-value Židovské
-
-                    li.filter-list-item
-                      label(for="telesa04")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa04" value="")
-                        .filter-list-item-value Neuvedeno
-              ////////////////////////////////////////////////////////////////////////////////
-
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
-
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Tituly a řády
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
-
-                  ol.filter-list.filter-list-checkboxes
-                    li.filter-list-item
-                      label(for="telesa01")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa01" value="")
-                        .filter-list-item-value Šlechtický
-
-                    li.filter-list-item
-                      label(for="telesa02")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa02" value="")
-                        .filter-list-item-value Další
-
-                    li.filter-list-item
-                      label(for="telesa03")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa03" value="")
-                        .filter-list-item-value Další
-
-                    li.filter-list-item
-                      label(for="telesa04")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa04" value="")
-                        .filter-list-item-value Neuvedeno
-              ////////////////////////////////////////////////////////////////////////////////
-
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
-
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Další vlastnosti
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
-
-                  ol.filter-list.filter-list-checkboxes
-                    li.filter-list-item
-                      label(for="telesa01")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa01" value="")
-                        .filter-list-item-value Má fotku
-
-                    li.filter-list-item
-                      label(for="telesa02")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa02" value="")
-                        .filter-list-item-value Má sociální vazby
-
-                    li.filter-list-item
-                      label(for="telesa02")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa02" value="")
-                        .filter-list-item-value Má galerii médií
 
 
-                    li.filter-list-item
-                      label(for="telesa03")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa03" value="")
-                        .filter-list-item-value Další
-
-              ////////////////////////////////////////////////////////////////////////////////
-
-              //// sekce
-              ////////////////////////////////////////////////////////////////////////////////
-              .seznam-filter-sidebar-content-section
-
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading Národnost
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
-
-                  ol.filter-list.filter-list-checkboxes
-                    li.filter-list-item
-                      label(for="telesa01")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa01" value="")
-                        .filter-list-item-value Česká
-
-                    li.filter-list-item
-                      label(for="telesa02")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa02" value="")
-                        .filter-list-item-value Polská
-
-                    li.filter-list-item
-                      label(for="telesa03")
-                        .filter-list-item-checkbox
-                          input(type="checkbox" id="telesa03" value="")
-                        .filter-list-item-value Další
-
-              ////////////////////////////////////////////////////////////////////////////////
 
           .seznam-filter-list
 
             .columns.is-multiline.is-mobile()
 
               Poslanec(
-                v-for="poslanec in PoslanciFiltrovani"
-                :key="poslanec.Id"
+                v-for="(poslanec, index) in poslanci"
+                :key="index"
                 :Id="poslanec.Id"
                 :Jmeno="poslanec.Jmeno"
                 :Prijmeni="poslanec.Prijmeni"
@@ -344,6 +134,21 @@
 
 <style lang="sass" scoped>
 
+  @import "~/assets/scss/bulma"
+  @import "~/assets/scss/typography"
+
+  label.disabled,
+  input:disabled
+    cursor: not-allowed
+    pointer-events: none
+    opacity: .5
+
+  .filter-list-item-value
+    text-transform: lowercase
+
+    &:first-letter
+      text-transform: uppercase
+
   .filter-seznam-bar
     display: flex
     align-item: center
@@ -351,63 +156,373 @@
     margin-bottom: 40px
     font-size: 12px
 
+  .custom-select
+
+    $custom-select-width: 260px
+
+    @extend .button
+
+    cursor: pointer
+    width: $custom-select-width
+    position: relative
+    font-size: 12px
+
+
+    &, &:focus, &:active
+      outline: none
+      user-select: none
+
+    &[data-has-been-selected="true"]
+      .option-default-text
+        display: none
+
+    &[data-open="true"]
+
+      top: -1px // :TODO: #4 A bug when a custom select is open, it moves down by 1px
+
+      border-bottom: none
+      border-bottom-left-radius: 0
+      border-bottom-right-radius: 0
+      .options
+        display: flex
+
+      .option-default-text
+        display: inline-block
+
+
+      .option-selected-text
+        display: none
+
+
+    .options
+      background: #fff
+      position: absolute
+      left: -1px
+      display: none
+      flex-direction: column
+      border: 1px solid #000
+      border-top: none
+      width: $custom-select-width
+      border-bottom-left-radius: 10px
+      border-bottom-right-radius: 10px
+
+      .option
+        display: block
+
+        &.selected
+          text-decoration: underline
+
 </style>
 
 <script>
+
+
 export default {
-  props: ["PoslanciStatistiky", "Poslanci", "PoslanciFiltrovani", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky"],
+  props: ["PoslanciVstupniPolozky", "KesovatPoslanceInterne", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
 
   computed: {
-    sidebarButtonToggleStyles: function () {
+
+    filtrNastaveni() {
+
+      const defaults = {
+
+      }
+
+      return Object.assign({}, defaults, this.NastaveniFiltrace, this.filtrNastaveniAktualniPolozky);
+
+    },
+
+    poslanci() {
+
+      let currentPoslanci = this.PoslanciVstupniPolozky;
+
+      if ( this.filtrovat.hasBeenSelected ) {
+
+        // filter has been set, let us filter poslance
+
+        // here filtering based on the this.filterNastaveni
+
+        let filteredPoslanci = this.PoslanciVstupniPolozky;
+
+        filteredPoslanci = filteredPoslanci.filter((poslanec) => {
+
+          let itemSatisfyFilter = [];
+
+          // filter
+          Object.keys(this.filtrNastaveni).forEach((polozkaFiltrKey) => {
+
+            // filter these properties
+            if ( polozkaFiltrKey === 'pohlavi' || polozkaFiltrKey === 'parlamenti_telesa' ||  polozkaFiltrKey === 'vzdelani' || polozkaFiltrKey === 'nabozenske_vyznani' || polozkaFiltrKey === 'narodnosti') {
+
+              const itemPropertyValueToTest = poslanec[this.filtrNastaveni[polozkaFiltrKey].property];
+
+              //console.log("itemPropertyValueToTest", itemPropertyValueToTest);
+
+              const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected);
+
+              //console.log("thisFilterItemSelectedItems", thisFilterItemSelectedItems);
+
+              const tempFilterResults = []; // here will be several boolean variables true or false, we need to get at last one true for the filter item to be true as such and this the item passes the filter
+
+              thisFilterItemSelectedItems.forEach(validator => {
+
+                tempFilterResults.push(validator.validate(itemPropertyValueToTest))
+
+              });
+
+              //console.log("tempFilterResults", tempFilterResults);
+
+              itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
+
+              //console.log("itemSatisfyFilter", itemSatisfyFilter);
+
+            }
+
+          });
+
+          // must be all true, so
+
+          return ![...new Set(itemSatisfyFilter)].includes(false);
+
+
+        });
+
+
+        currentPoslanci = filteredPoslanci;
+
+      }
+
+      if (this.radit.hasBeenSelected) {
+
+        currentPoslanci = this.getRazeniPoslanciSeznam(this.radit.selectedOptionId, currentPoslanci);
+
+      }
+
+      return currentPoslanci;
+
+    },
+
+    sidebarButtonToggleStyles() {
       return {
         active: this.isSidebarOpen
       }
     },
     pocetPoslancuFiltrovanych() {
-      return this.PoslanciFiltrovani.length;
+      return this.poslanci.length;
     },
     pocetPoslancu: function() {
-      return this.Poslanci.length;
+      return this.PoslanciVstupniPolozky.length;
     },
     aktualniNastaveniRazeni() {
-      return this.$store.state.poslanci_seznam_razeni_id;
+      return this.radit.selectedOptionId;
     }
   },
+
   methods: {
-    toggleSidebar: function() {
+
+    toggleSidebar() {
 
       this.isSidebarOpen = (this.isSidebarOpen) ? false: true;
 
+    },
+
+    toggleSelect() {
+
+      this.radit.isActive = (this.radit.isActive) ? false: true;
+
+    },
+
+    selectOrderOption(selectedOptionId, selectedOptionText) {
+
+      if (!this.radit.hasBeenSelected) {
+        this.radit.hasBeenSelected = true
+      }
+
+      this.radit.selectedOptionId = selectedOptionId;
+      this.radit.selectedOptionText = selectedOptionText;
+      this.$el.querySelectorAll(`.selected`).forEach(item => item.classList.remove('selected'));
+      this.$el.querySelector(`[data-option-id="${selectedOptionId}"]`).classList.add('selected');
+
+    },
+
+    selectFilterOption(filtrSekceKey, thisObjIndex, multiple, sectionHasReset, $event) {
+
+      // just an indicator if the filter has been used at least once
+      // :TODO: may not be needed
+      if (!this.filtrovat.hasBeenSelected) {
+        this.filtrovat.hasBeenSelected = true;
+      }
+
+      const tempResult = this.filtrNastaveni[filtrSekceKey];
+
+
+      if (multiple) {
+
+        if (sectionHasReset) {
+
+          const isItemReset = tempResult.values[thisObjIndex].reset || false;
+
+          tempResult.values.forEach((item, index) => {
+
+            if (isItemReset) {
+
+              item.selected = (index === thisObjIndex) ? true : false;
+
+            } else {
+
+              if (index === thisObjIndex) {
+                item.selected = (item.selected) ? false : true;
+              }
+
+              if (item.reset) {
+                item.selected = false;
+              }
+
+            }
+
+
+          });
+
+
+        } else {
+
+          tempResult.values[thisObjIndex].selected = (tempResult.values[thisObjIndex].selected) ? false : true;
+
+        }
+
+      } else {
+
+        tempResult.values.forEach((item, index) => {
+
+          item.selected = (thisObjIndex === index) ? true : false;
+
+        });
+
+      }
+
+
+
+      this.filtrNastaveniAktualniPolozky = {[filtrSekceKey]: tempResult};
+
+    },
+
+    getRazeniPoslanciSeznam(selectedOptionId, poslanci) {
+
+
+      let filteredPoslanci = [...poslanci];
+
+
+      // Sorting
+
+      if (selectedOptionId === 'radit-datum-narozeni') {
+
+        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene) ? 1 : -1);
+
+      }
+
+      if (selectedOptionId === 'radit-datum-narozeni-sestupne') {
+
+        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene) ? 1 : -1);
+
+      }
+
+      if (selectedOptionId === 'radit-prijmeni') {
+
+        filteredPoslanci = filteredPoslanci.sort((a, b) => {
+          const nameA = a.Prijmeni.toLowerCase();
+          const nameB = b.Prijmeni.toLowerCase();
+
+          return (nameA > nameB) ? 1 : -1;
+
+        });
+
+      }
+
+      if (selectedOptionId === 'radit-prijmeni-sestupne') {
+
+        filteredPoslanci = filteredPoslanci.sort((a, b) => {
+          const nameA = a.Prijmeni.toLowerCase();
+          const nameB = b.Prijmeni.toLowerCase();
+
+          return (nameA < nameB) ? 1 : -1;
+
+        });
+
+      }
+
+      if (selectedOptionId === 'radit-pocet-mandatu') {
+
+        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Mandaty.length > b.Mandaty.length) ? 1 : -1);
+
+      }
+
+      if (selectedOptionId === 'radit-pocet-mandatu-sestupne') {
+
+        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Mandaty.length < b.Mandaty.length) ? 1 : -1);
+
+      }
+
+      if (selectedOptionId === 'radit-id') {
+
+        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Id > b.Id) ? 1 : -1);
+
+      }
+
+      return filteredPoslanci;
+
+      //this.PoslanciFiltrovani = filteredPoslanci;
+
+      // commit & dispatch
+
+      //this.$store.commit("updatePoslanciFiltrovani", this.PoslanciFiltrovani);
+
+    },
+
+  },
+
+  created() {
+    // :TODO: #5 Check if this is necessary and will be implemented
+    if (this.radit.selectedOptionId !== undefined) {
+      // we have a default order value set
+      let getFilterInDefaults = this.RaditDle.filter(item => item.id === this.radit.selectedOptionId);
+      if (getFilterInDefaults.length) {
+        const {selectedOptionId, selectedOptionText} = getFilterInDefaults;
+        this.$emit('selectOption', {selectedOptionId, selectedOptionText});
+      }
     }
   },
 
   mounted() {
 
     this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
-    /*this.$sidebar.querySelectorAll('input').forEach(item => item.addEventListener('change', (e) => {
 
-      this.$store.dispatch("getPoslanciFiltrovani", {
-        pohlavi: 1
-      });
-
-    }));*/
 
   },
 
   data() {
     return {
+      filtrovat: {
+        hasBeenSelected: false
+      },
+      radit: {
+        isActive: false,
+        selectedOptionId: undefined,
+        selectedOptionText: undefined,
+        hasBeenSelected: false,
+        RaditDle: [
+          { id: 'radit-id', text: 'Základní řazení' },
+          { id: 'radit-prijmeni', text: 'Podle příjmení' },
+          { id: 'radit-prijmeni-sestupne', text: 'Podle příjmení (sestupně)' },
+          { id: 'radit-pocet-mandatu', text: 'Podle počtu mandátů' },
+          { id: 'radit-pocet-mandatu-sestupne', text: 'Podle počtu mandátů (sestupně)' },
+          { id: 'radit-datum-narozeni', text: 'Podle data narození' },
+          { id: 'radit-datum-narozeni-sestupne', text: 'Podle data narození (sestupně)' },
+        ],
+        ZakladniPolozka: { id: 'radit-default', text: 'řadit dle' },
+      },
+      PoslanciFiltrovani: [],
+      filtrNastaveniAktualniPolozky: {},
       isSidebarOpen: true, // can set a default value
-      RaditZakladniPolozkaNastaveni: { id: 'radit-default', text: 'řadit dle' },
-      RaditDleNastaveni: [
-        { id: 'radit-id', text: 'Základní řazení' },
-        { id: 'radit-prijmeni', text: 'Podle příjmení' },
-        { id: 'radit-prijmeni-sestupne', text: 'Podle příjmení (sestupně)' },
-        { id: 'radit-pocet-mandatu', text: 'Podle počtu mandátů' },
-        { id: 'radit-pocet-mandatu-sestupne', text: 'Podle počtu mandátů (sestupně)' },
-        { id: 'radit-datum-narozeni', text: 'Podle data narození' },
-        { id: 'radit-datum-narozeni-sestupne', text: 'Podle data narození (sestupně)' },
-
-      ],
     };
   },
 };

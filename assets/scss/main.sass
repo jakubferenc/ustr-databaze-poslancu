@@ -17,6 +17,10 @@
 html
   font-size: 12px
 
+  box-sizing: border-box;
+  min-width: 1700px; /* :TODO: */
+  overflow: auto; /* :TODO: */
+
   +from($tablet)
     font-size: 14px
 
@@ -127,10 +131,10 @@ input[type="checkbox"]
   position: relative
   transition: .3s border-color, .3s background-color
 
-  &:checked::after
+  &.selected::after
     background-color: #002896
 
-  &:not(:checked):hover::after
+  &:not(.selected):hover::after
     background: #f7f7f7
     border: 2px solid #fff
 

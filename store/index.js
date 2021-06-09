@@ -60,17 +60,15 @@ export const mutations = {
   updatePoslanci: (state, poslanci) => {
     state.poslanci = poslanci;
   },
-  updatePoslanciStatistiky: (state, poslanci_statistiky) => {
-    state.poslanci_statistiky = poslanci_statistiky;
-  },
 
-  updateFiltrovaniPoslanci: (state, poslanci_filtrovani) => {
+  updatePoslanciFiltrovani: (state, poslanci_filtrovani) => {
     state.poslanci_filtrovani = poslanci_filtrovani;
   },
 
   updatePoslanciRazeniID: (state, poslanci_seznam_razeni_id) => {
     state.poslanci_seznam_razeni_id = poslanci_seznam_razeni_id;
   },
+
   updatePoslanciHomepage: (state, poslanci) => {
     state.poslanci_homepage = poslanci;
   },
@@ -87,6 +85,17 @@ actions is where we will make an API call that gathers the posts,
 and then commits the mutation to update it
 */
 export const actions = {
+
+  getUnique ({ state, commit }, popup_timeline_detail) {
+    try {
+
+      commit("updatePopupTimelineDetail", popup_timeline_detail);
+
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
 
   setPopupTimelineDetail ({ state, commit }, popup_timeline_detail) {
     try {
@@ -214,111 +223,127 @@ export const actions = {
 
   async getSnemovniObdobiDetail({ state, commit }, { snemovniObdobiId }) {
 
-    // :TODO: check if the id is already in the store, if so, return it and do not do axios call
-    // if (state.snemovni_obdobi.length) return;
 
-    const getDetailIfExists = state.snemovni_obdobi.filter(item => item.id === snemovniObdobiId);
-
-    if (getDetailIfExists.length) return;
-
-    try {
-
-      let snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
-      snemovniObdobiObj = snemovniObdobiObj.data;
-
-      let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
-      snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
-
-      snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
-      snemovniObdobiObj.PocetPoslancu = snemovniObdobiObj.Poslanci.length;
-
-      // prepare statistics, make them integer
-      snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);
-      snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu);
-      snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu);
-      snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu);
+    let snemovniObdobiObj = undefined;
 
 
-      // get wordpress content referenced via Id
-      let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
+    // check if the id is already in the store, if so, return it and do not do axios call
+    const getDetailObjectIfExists = state.snemovni_obdobi.filter(item => item.Id === snemovniObdobiId);
 
-      // checking potential errors
-      if (!thisWPSnemovniObdobiObj.length) {
-        throw new Error(`There is not Wordpress Parlament object matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
-        return;
-      }
+    if (getDetailObjectIfExists.length) {
 
-      if (thisWPSnemovniObdobiObj.length > 1) {
-        throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
-        return;
-      }
+      snemovniObdobiObj = getDetailObjectIfExists;
 
-      snemovniObdobiObjWpData = thisWPSnemovniObdobiObj[0];
-
-      snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
-      snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
-      snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
-
-      if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
-        snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
-
-        // sort by date
-        snemovniObdobiObj.CasovaOsa.sort();
-
-        // add auto generated beginning and the end date of the snemovni obdobi
-
-        /*
-        {
-          "datum_udalosti": "1968-01-01",
-          "nazev_udalosti": "Test událost",
-          "dulezita": [
-          "true"
-          ]
-        },
-
-
-        const beginningOfTheSnemovniObdobiObj = {
-          "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
-          "nazev_udalosti": "Začátek sněmovny",
-          "dulezita": [
-          "true"
-          ]
-        };
-
-        const endOfTheSnemovniObdobiObj = {
-          "datum_udalosti": snemovniObdobiObj.DatumKonce.split('T')[0],
-          "nazev_udalosti": "Konec sněmovny",
-          "dulezita": [
-          "true"
-          ]
-        };
-
-        snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
-        */
-
-      }
-
-      if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
-
-        snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie;
-
-      }
-
-      snemovniObdobiObj.UvodniFotografie = false;
-
-      if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
-
-        snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
-
-      }
-
-
-      commit("addSnemovniObdobi", snemovniObdobiObj);
       commit("updateSnemovniObdobiDetail", snemovniObdobiObj);
 
-    } catch (err) {
-      console.log(err);
+    } else {
+
+      // object is not either in the snemovni obdobi detail object, not is it in the global snemovni obdobi array
+      // therefore, we need to do API call
+
+      try {
+
+        snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
+
+        snemovniObdobiObj = snemovniObdobiObj.data;
+
+
+        let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
+        snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
+
+        snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
+        snemovniObdobiObj.PocetPoslancu = snemovniObdobiObj.Poslanci.length;
+
+        // prepare statistics, make them integer
+        snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);
+        snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu);
+        snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu);
+        snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu);
+
+
+        // get wordpress content referenced via Id
+        let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
+
+        // checking potential errors
+        if (!thisWPSnemovniObdobiObj.length) {
+          throw new Error(`There is not Wordpress Parlament object matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
+          return;
+        }
+
+        if (thisWPSnemovniObdobiObj.length > 1) {
+          throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
+          return;
+        }
+
+        snemovniObdobiObjWpData = thisWPSnemovniObdobiObj[0];
+
+        snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
+        snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
+        snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
+
+        if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
+          snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
+
+          // sort by date
+          snemovniObdobiObj.CasovaOsa.sort();
+
+          // add auto generated beginning and the end date of the snemovni obdobi
+
+          /*
+          {
+            "datum_udalosti": "1968-01-01",
+            "nazev_udalosti": "Test událost",
+            "dulezita": [
+            "true"
+            ]
+          },
+
+
+          const beginningOfTheSnemovniObdobiObj = {
+            "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
+            "nazev_udalosti": "Začátek sněmovny",
+            "dulezita": [
+            "true"
+            ]
+          };
+
+          const endOfTheSnemovniObdobiObj = {
+            "datum_udalosti": snemovniObdobiObj.DatumKonce.split('T')[0],
+            "nazev_udalosti": "Konec sněmovny",
+            "dulezita": [
+            "true"
+            ]
+          };
+
+          snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
+          */
+
+        }
+
+        if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
+
+          snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie;
+
+        }
+
+        snemovniObdobiObj.UvodniFotografie = false;
+
+        if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
+
+          snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
+
+        }
+
+        commit("addSnemovniObdobi", snemovniObdobiObj);
+        commit("updateSnemovniObdobiDetail", snemovniObdobiObj);
+
+
+      } catch (err) {
+        console.log(err);
+      }
+
     }
+
 
   },
 
@@ -463,70 +488,7 @@ export const actions = {
 
   },
 
-  raditPoslanciSeznam({ state, commit }, {selectedOptionId, selectedOptionText}) {
-
-    let filteredPoslanci = null;
-
-    if (selectedOptionId === 'radit-datum-narozeni') {
-
-      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene) ? 1 : -1);
-
-    }
-
-    if (selectedOptionId === 'radit-datum-narozeni-sestupne') {
-
-      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene) ? 1 : -1);
-
-    }
-
-    if (selectedOptionId === 'radit-prijmeni') {
-
-      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => {
-        const nameA = a.Prijmeni.toLowerCase();
-        const nameB = b.Prijmeni.toLowerCase();
-
-        return (nameA > nameB) ? 1 : -1;
-
-      });
-
-    }
-
-    if (selectedOptionId === 'radit-prijmeni-sestupne') {
-
-      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => {
-        const nameA = a.Prijmeni.toLowerCase();
-        const nameB = b.Prijmeni.toLowerCase();
-
-        return (nameA < nameB) ? 1 : -1;
-
-      });
-
-    }
-
-    if (selectedOptionId === 'radit-pocet-mandatu') {
-
-      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.Mandaty.length > b.Mandaty.length) ? 1 : -1);
-
-    }
-
-    if (selectedOptionId === 'radit-pocet-mandatu-sestupne') {
-
-      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.Mandaty.length < b.Mandaty.length) ? 1 : -1);
-
-    }
-
-    if (selectedOptionId === 'radit-id') {
-
-      filteredPoslanci = [...state.poslanci_filtrovani].sort((a, b) => (a.Id > b.Id) ? 1 : -1);
-
-    }
-
-    commit("updateFiltrovaniPoslanci", filteredPoslanci);
-    commit("updatePoslanciRazeniID", selectedOptionId);
-
-  },
-
-  getPoslanciFiltrovani({ state, commit, dispatch }, filterNastaveni) {
+  filterPoslanci({ state, commit, dispatch }, filterNastaveni = {}) {
 
     let currentPoslanci = state.poslanci;
 
@@ -537,7 +499,7 @@ export const actions = {
 
     // commit & dispatch
 
-    commit("updateFiltrovaniPoslanci", currentPoslanci);
+    commit("updatePoslanciFiltrovani", currentPoslanci);
     dispatch('countPoslanciStatistiky');
 
   },
@@ -568,7 +530,7 @@ export const actions = {
         });
 
       commit("updatePoslanci", poslanci);
-      dispatch('getPoslanciFiltrovani', {}); // must have an argument, at least an empty object
+
 
 
     } catch (err) {
