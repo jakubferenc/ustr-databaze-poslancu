@@ -22,19 +22,28 @@
 
 export default {
 
-    async fetch ({store}) {
-      await store.dispatch("getStranky");
-    },
+    // :NOTE: {params, error, payload, store} is a deconstructed "context" variable
+    async asyncData({params, error, payload, store}) {
 
-    computed: {
-      stranka() {
-        return this.$store.state.stranky.filter(stranka => stranka.slug === this.slug)[0];
+      if (payload) {
+        return {
+          stranka: payload
+        }
+      } else {
+
+        // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
+        await store.dispatch("getStranky");
+
+        return {
+          stranka: store.state.stranky.filter(stranka => stranka.slug === params.slug)[0]
+        }
+
       }
+
     },
 
     data() {
       return {
-        slug: this.$route.params.slug,
         excerptKontejnerStyly: {
           'has-featured-image': true,
         }

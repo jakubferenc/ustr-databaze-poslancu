@@ -8,7 +8,7 @@
 
       h2.typography-section-title Seznam poslanců
 
-      PoslanciSeznam(:Poslanci="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
+      PoslanciSeznam(:PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
 
     <ParlamentySeznam :Parlamenty="parlamenty"/>
 

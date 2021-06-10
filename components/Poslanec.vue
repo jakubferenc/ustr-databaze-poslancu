@@ -12,7 +12,7 @@
         span(v-show="pocetMandatu > 4") mandátů
         span(v-show="pocetMandatu > 1 && pocetMandatu < 5") mandáty
         span(v-show="pocetMandatu === 1") mandát
-      .content {{ ZivotniData }}
+      .content {{ VekBehemSnemovny }}
 
 </template>
 
@@ -45,7 +45,7 @@
 
 <script>
 export default {
-   props: ['Id', 'Jmeno', 'Prijmeni', 'ZivotniData', 'DatumNarozeniZobrazene', 'DatumUmrtiZobrazene', 'Mandaty', 'ZobrazitMandaty'],
+   props: ['Id', 'Jmeno', 'Prijmeni', 'ZivotniData', 'DatumNarozeniZobrazene', 'DatumUmrtiZobrazene', 'Mandaty', 'ZobrazitMandaty', 'VekBehemSnemovny'],
    computed: {
      pocetMandatu() {
        return this.Mandaty.length;

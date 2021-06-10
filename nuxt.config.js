@@ -4,12 +4,6 @@ import axios from "axios";
 const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
 const databazePoslancuURL = 'https://parliament.ustrcr.cz';
 
-let dynamicRoutes = async () => {
-  const res = await axios
-    .get(`${wordpressAPIURLWebsite}/wp/v2/pages`);
-  return res.data.map(stranka => `/stranka/${stranka.slug}`);
-};
-
 export default {
   /*env: {
     baseUrl: process.env.BASE_URL || 'https://localhost:8000'
@@ -34,7 +28,20 @@ export default {
     }
   },
   generate: {
-    routes: dynamicRoutes
+    async routes() {
+
+      const res = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages`);
+
+      return res.data.map(stranka => {
+
+        return {
+          route: `/stranka/${stranka.slug}`,
+          payload: stranka // thanks to the payload, we are caching results for the subpage here
+        };
+
+      });
+
+    }
   },
   build: {
     loaders: {

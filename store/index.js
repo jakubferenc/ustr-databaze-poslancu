@@ -57,6 +57,11 @@ export const mutations = {
   updateParlamenty: (state, parlamenty) => {
     state.parlamenty = parlamenty;
   },
+
+  updatePoslanciStatistiky: (state, poslanci_statistiky) => {
+    state.poslanci_statistiky = poslanci_statistiky;
+  },
+
   updatePoslanci: (state, poslanci) => {
     state.poslanci = poslanci;
   },
@@ -101,6 +106,18 @@ export const actions = {
     try {
 
       commit("updatePopupTimelineDetail", popup_timeline_detail);
+
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+
+  setPoslanciFiltrovani ({ state, commit, dispatch }, poslanci_filtrovani) {
+    try {
+
+      commit("updatePoslanciFiltrovani", poslanci_filtrovani);
+      dispatch("countPoslanciStatistiky");
 
     } catch (err) {
       console.log(err);
@@ -488,21 +505,6 @@ export const actions = {
 
   },
 
-  filterPoslanci({ state, commit, dispatch }, filterNastaveni = {}) {
-
-    let currentPoslanci = state.poslanci;
-
-    // do filtering
-    if (filterNastaveni.pohlavi) {
-      currentPoslanci = currentPoslanci.filter(item => item.Pohlavi === filterNastaveni?.pohlavi);
-    }
-
-    // commit & dispatch
-
-    commit("updatePoslanciFiltrovani", currentPoslanci);
-    dispatch('countPoslanciStatistiky');
-
-  },
 
   async getPoslanciSeznam({ state, commit, dispatch }, {limit = 20, stranka = 1, filterCallback = null} ) {
     if (state.poslanci.length) return;
@@ -530,8 +532,7 @@ export const actions = {
         });
 
       commit("updatePoslanci", poslanci);
-
-
+      dispatch("setPoslanciFiltrovani", poslanci);
 
     } catch (err) {
       console.log(err);

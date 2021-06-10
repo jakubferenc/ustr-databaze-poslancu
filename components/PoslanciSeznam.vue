@@ -218,7 +218,7 @@
 
 
 export default {
-  props: ["PoslanciVstupniPolozky", "KesovatPoslanceInterne", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
+  props: ["PoslanciVstupniPolozky", "KesovatPoslanceInterne", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
 
   computed: {
 
@@ -234,69 +234,105 @@ export default {
 
     poslanci() {
 
-      let currentPoslanci = this.PoslanciVstupniPolozky;
+      let currentPoslanci = (this.$store.state.poslanci_filtrovani.length) ?  this.$store.state.poslanci_filtrovani : this.PoslanciVstupniPolozky;
 
-      if ( this.filtrovat.hasBeenSelected ) {
+      if (this.MaFiltr) {
 
-        // filter has been set, let us filter poslance
+        if (!this.radit.hasBeenSelected) {
 
-        // here filtering based on the this.filterNastaveni
+          // make zakladni razeni sort filter
+          currentPoslanci = [...currentPoslanci].sort((a, b) => (a.Id > b.Id) ? 1 : -1);
 
-        let filteredPoslanci = this.PoslanciVstupniPolozky;
+        }
 
-        filteredPoslanci = filteredPoslanci.filter((poslanec) => {
+        if ( this.filtrovat.hasBeenSelected ) {
 
-          let itemSatisfyFilter = [];
+          // filter has been set, let us filter poslance
 
-          // filter
-          Object.keys(this.filtrNastaveni).forEach((polozkaFiltrKey) => {
+          // here filtering based on the this.filterNastaveni
 
-            // filter these properties
-            if ( polozkaFiltrKey === 'pohlavi' || polozkaFiltrKey === 'parlamenti_telesa' ||  polozkaFiltrKey === 'vzdelani' || polozkaFiltrKey === 'nabozenske_vyznani' || polozkaFiltrKey === 'narodnosti') {
+          let filteredPoslanci = this.PoslanciVstupniPolozky;
 
-              const itemPropertyValueToTest = poslanec[this.filtrNastaveni[polozkaFiltrKey].property];
+          filteredPoslanci = filteredPoslanci.filter((poslanec) => {
 
-              //console.log("itemPropertyValueToTest", itemPropertyValueToTest);
+            let itemSatisfyFilter = [];
 
-              const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected);
 
-              //console.log("thisFilterItemSelectedItems", thisFilterItemSelectedItems);
+            // filter
+            Object.keys(this.filtrNastaveni).forEach((polozkaFiltrKey) => {
 
-              const tempFilterResults = []; // here will be several boolean variables true or false, we need to get at last one true for the filter item to be true as such and this the item passes the filter
+              // filter these properties
 
-              thisFilterItemSelectedItems.forEach(validator => {
+              const itemPropertyToTest = this.filtrNastaveni[polozkaFiltrKey].property;
 
-                tempFilterResults.push(validator.validate(itemPropertyValueToTest))
 
-              });
+              let tempFilterResults = []; // here will be several boolean variables true or false, we need to get at last one true for the filter item to be true as such and this the item passes the filter
 
-              //console.log("tempFilterResults", tempFilterResults);
 
-              itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
+              // filter section either have multiple items for only one item, then the itemPropertyToTest is a string
+              // or multiple items for multiple "poslanec" properties, then attribute "property" must be for each filter item as well as "property" for the filter section must be an array
+              if (!Array.isArray(itemPropertyToTest)) {
 
-              //console.log("itemSatisfyFilter", itemSatisfyFilter);
+                // we are testing one property with multiple values
 
-            }
+                const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected || (item.selected && item.default));
+
+                thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
+
+
+                  tempFilterResults.push(itemFiltervalidator.validate(poslanec[itemPropertyToTest]));
+
+                });
+
+                itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)]; // includes at least one "true" anwwer to if it the item satisfies at least one from the multiple filter section
+
+              } else {
+
+
+                itemPropertyToTest.forEach(itemPropertyToTestIndividual => {
+
+                  const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter( item => (item.selected && item.property === itemPropertyToTestIndividual) || (item.selected && item.default) );
+
+                  thisFilterItemSelectedItems.forEach(validator => {
+
+                    tempFilterResults.push(validator.validate(poslanec[itemPropertyToTestIndividual]));
+
+                  });
+
+                });
+
+                itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
+
+
+              }
+
+            });
+
+            // must be all true
+
+            // new set is just for performance so that ".includes" picks only from max. two array items (true | false)
+            // :TODO: but I am not sure if it is necessary for the performance
+
+            return ![...new Set(itemSatisfyFilter)].includes(false);
+
 
           });
 
-          // must be all true, so
 
-          return ![...new Set(itemSatisfyFilter)].includes(false);
-
-
-        });
+          currentPoslanci = filteredPoslanci;
 
 
-        currentPoslanci = filteredPoslanci;
+        }
 
-      }
+        if (this.radit.hasBeenSelected) {
 
-      if (this.radit.hasBeenSelected) {
+          currentPoslanci = this.getRazeniPoslanciSeznam(this.radit.selectedOptionId, currentPoslanci);
 
-        currentPoslanci = this.getRazeniPoslanciSeznam(this.radit.selectedOptionId, currentPoslanci);
+        }
+
 
       }
+
 
       return currentPoslanci;
 
@@ -340,11 +376,21 @@ export default {
 
       this.radit.selectedOptionId = selectedOptionId;
       this.radit.selectedOptionText = selectedOptionText;
-      this.$el.querySelectorAll(`.selected`).forEach(item => item.classList.remove('selected'));
+      this.$el.querySelectorAll(`.option.selected`).forEach(item => item.classList.remove('selected'));
       this.$el.querySelector(`[data-option-id="${selectedOptionId}"]`).classList.add('selected');
 
     },
 
+
+    // this functions edits the reactive object this.FiltrNastaveni
+    // html elements inside the Sidebar filter will be then automagically, reactivelly re-renders based on the contents of that reactive object this.FiltrNastaveni
+    // so there is no need to manually change the DOM html
+
+    // Also poslanci will be automagically re-rendered and filtered also based on the reactivity of the this.FiltrNastaveni object
+
+    // This function merges together this.FilterNastaveni and the whole subproperty of this object
+    // This function basically selects which filter items are selected and which not.
+    // The filtering as such is done inside the computer property this.poslanci where the whole logic based on this.FilterNastaveni lies
     selectFilterOption(filtrSekceKey, thisObjIndex, multiple, sectionHasReset, $event) {
 
       // just an indicator if the filter has been used at least once
@@ -383,6 +429,11 @@ export default {
 
           });
 
+          // Check if no options are selected, then select vse/reset button
+          if (tempResult.values.filter(item => item.selected).length === 0) {
+            tempResult.values.filter(item => item.reset)[0].selected = true;
+          }
+
 
         } else {
 
@@ -403,6 +454,10 @@ export default {
 
 
       this.filtrNastaveniAktualniPolozky = {[filtrSekceKey]: tempResult};
+
+      console.log("filtr used");
+
+      this.$store.dispatch("setPoslanciFiltrovani", this.poslanci);
 
     },
 

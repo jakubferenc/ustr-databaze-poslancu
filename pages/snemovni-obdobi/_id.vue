@@ -72,7 +72,7 @@
 
     .parlament-detail-map
 
-      h2.typography-section-title Poslanci na mapě
+      h2.typography-section-title Místo narození poslanců
 
       .mapbox()
         <client-only>
@@ -363,16 +363,30 @@
 
         poslanci() {
 
-          let poslanci =  (!this.$store.state.poslanci_filtrovani.length) ?  this.snemovniObdobi.Poslanci : this.$store.state.poslanci_filtrovani;
+          let poslanci =  this.snemovniObdobi.Poslanci;
 
-          //poslanci.filter(item => item.Mandaty.length);
+          // poslanci = [...poslanci];
 
-          // make zakladni razeni sort filter
-          poslanci = [...poslanci].sort((a, b) => (a.Id > b.Id) ? 1 : -1);
+          // poslanci = poslanci.map((item) => {
+
+          //   if (item.DatumNarozeni !== null) {
+          //     item.VekBehemSnemovny = new Date(this.snemovniObdobiDatum.toString()) - new Date(item.DatumNarozeni.toString());
+          //     item.VekBehemSnemovny = Math.floor({...item}.VekBehemSnemovny / (1000 * 60 * 60 * 24 * 365))
+          //   }
+
+          //   return item;
+          // });
 
           return poslanci;
 
         },
+
+        snemovniObdobiDatum() {
+
+          return (this.ukazatDataProKonecneObdobi) ? this.snemovniObdobi.DatumKonce : this.snemovniObdobi.DatumZacatku;
+
+        },
+
 
         nastaveniFiltrace() {
 
@@ -386,11 +400,11 @@
           let maji_vysokou_skolu = [];
 
 
-          this.poslanci.forEach((item) => {
+
+          this.snemovniObdobi.Poslanci.forEach((item) => {
 
             const nabozenstvi_edited = (item.NabozenstviNarozeni === null) ? 'neuvedeno' : item.NabozenstviNarozeni;
             const narodnosti_edited = (!item.Narodnosti.length) ? ['neuvedeno'] : item.Narodnosti;
-
 
             nabozenske_vyznani.push(nabozenstvi_edited);
             narodnosti.push(...narodnosti_edited);
@@ -425,6 +439,10 @@
             };
           });
 
+          // push Neuvedeno to the end of the array
+          /* :TODO: */
+
+
           // add default value
           nabozenske_vyznani = [
             {id: 'vse-nabozenske-vyznani', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
@@ -443,9 +461,6 @@
                     selected: false,
                     validate: (property) => {
 
-                      console.log("item", item);
-                      console.log("property", property);
-
                       if (Array.isArray(property) && property.length === 0) {
 
                         if (item === 'neuvedeno') {
@@ -460,6 +475,11 @@
                   };
 
           });
+
+
+          // push Neuvedeno to the end of the array
+          /* :TODO: */
+
 
           // add default value
           narodnosti = [
@@ -478,6 +498,9 @@
             vysoka_skola[1].disabled = true;
           }
 
+          const snemovniObdobiNazevEdited = this.snemovniObdobi.Nazev.trim();
+
+
           return {
 
             parlamentni_telesa: {
@@ -488,7 +511,7 @@
               order: 'block',
               property: 'Mandaty',
               values: [
-                {id: this.snemovniObdobi.Nazev, text: this.snemovniObdobi.Nazev, default: true, reset: false, selected: true, disabled: true, validate: (property) => property.Parlament === this.snemovniObdobi.Nazev},
+                {id: snemovniObdobiNazevEdited, text: snemovniObdobiNazevEdited, default: true, reset: false, selected: true, disabled: true, validate: (property) => property.filter(item => item.Parlament === snemovniObdobiNazevEdited).length > 0 },
               ]
             },
             pohlavi: {
@@ -531,16 +554,54 @@
               property: 'Narodnosti',
               values: narodnosti
             },
+            vek: {
+              id: 5,
+              title: 'Věk (testuji, neni v dobe snemovniho obdobi)',
+              type: 'radio',
+              multiple: false,
+              reset: true,
+              order: 'block',
+              property: 'Vek',
+              values: [
+                {id: 'vse-vek', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+                {id: 'vek-30', text: '30+', default: false, selected: false, validate: (property) => property >= 30 },
+                {id: 'vek-40', text: '40+', default: false, selected: false, validate: (property) => property >= 40 },
+                {id: 'vek-50', text: '50+', default: false, selected: false, validate: (property) => property >= 50 },
+                {id: 'vek-60', text: '60+', default: false, selected: false, validate: (property) => property >= 60 },
+                {id: 'vek-70', text: '70+', default: false, selected: false, validate: (property) => property >= 70 },
+                {id: 'vek-75', text: '75+', default: false, selected: false, validate: (property) => property >= 75 },
+                {id: 'vek-80', text: '80+', default: false, selected: false, validate: (property) => property >= 80 },
+              ]
+            },
+            mandaty: {
+              id: 5,
+              title: 'Mandáty',
+              type: 'radio',
+              multiple: false,
+              reset: true,
+              order: 'block',
+              property: 'Mandaty',
+              values: [
+                {id: 'vse-mandaty', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+                {id: 'ma-jeden-mandat', text: 'Má aspoň 1 mandát', default: false, selected: false, validate: (property) => property.length > 0 },
+                {id: 'ma-pet-mandat', text: 'Má aspoň 5 mandátů', default: false, selected: false, validate: (property) => property.length > 4 },
+                {id: 'ma-deset-mandat', text: 'Má aspoň 10 mandátů', default: false, selected: false, validate: (property) => property.length > 9 },
+                {id: 'ma-dvanactplus-mandat', text: 'Má 12+ mandátů', default: false, selected: false, validate: (property) => property.length > 11 },
+              ]
+            },
             dalsi: {
               id: 6,
               title: 'Další vlastnosti',
               type: 'checkbox',
               multiple: true,
+              reset: true,
+              property: ['OsobniVztahyPrimarni', 'Soubory'],
               order: 'block',
               values: [
-                {id: 'ma-fotku', text: 'Má fotku', default: false, selected: false, db_property: 'Soubory', validate: (property) => property.length },
-                {id: 'ma-sociálni-vazby', text: 'Má sociální vazby', default: false, selected: false},
-                {id: 'ma-galerii-medii', text: 'Má galerii médií', default: false, selected: false},
+                {id: 'vse-dalsi', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+                {id: 'ma-fotku', text: 'Má fotku', default: false, selected: false, property: 'Soubory', validate: (property) => property.length },
+                {id: 'ma-galerii', text: 'Má galerii', default: false, selected: false, property: 'Soubory', validate: (property) => property.length > 1 },
+                {id: 'ma-sociálni-vazby', text: 'Má sociální vazby', property: 'OsobniVztahyPrimarni', default: false, selected: false, validate: (property) => property.length > 0 },
               ],
             }
 
@@ -564,7 +625,7 @@
           // in such case poslance are already filtered, we have them in the store in the variable "poslanci_filtrovani"
           // if we have not filtered "poslanci" yet, we get them from the snemovniObdobi.Poslanci item via this.poslanci computed property
 
-          const whichPoslanci = this.poslanci;
+          let whichPoslanci = (this.$store.state.poslanci_filtrovani.length) ?  this.$store.state.poslanci_filtrovani : this.snemovniObdobi.Poslanci;
 
           return whichPoslanci
           .filter(poslanec => (poslanec.Adresy && poslanec.Adresy.length > 0))

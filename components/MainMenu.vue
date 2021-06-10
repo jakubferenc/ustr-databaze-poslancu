@@ -8,7 +8,7 @@
     span &nbsp;|
     NuxtLink.link-parlamenty(to="/parlamenty") Parlamenty
     span &nbsp;|
-    NuxtLink(to="/rodinne-vazby") Sociální mapy
+    NuxtLink(to="/socialni-mapy") Sociální mapy
     span &nbsp;|
     NuxtLink(to="/slovnik") Slovník
     span &nbsp;|
