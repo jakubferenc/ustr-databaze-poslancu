@@ -22,7 +22,7 @@
 
 export default {
 
-    // :NOTE: {params, error, payload, store} is a deconstructed "context" variable
+    // :NOTE: {params, error, payload, store} is a deconstructed "context" object
     async asyncData({params, error, payload, store}) {
 
       if (payload) {

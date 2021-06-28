@@ -29,7 +29,7 @@
       .rozcestnik-item-title Ženy v parlamentu
       .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
       .rozcestnik-item-image
-        img(src="~/assets/images/zeny-v-parlamentu-thumb.jpg" alt="")
+        img(src="~/assets/images/zeny-v-parlamentu-thumb.png" alt="")
 
 </template>
 
@@ -54,6 +54,15 @@
       margin: 1rem 0
       +from($widescreen)
         margin: 30px 0
+
+
+    .rozcestnik-item-image
+      height: 265px
+
+      img
+        width: 100%
+        height: 100%
+        object-fit: cover
 
 </style>
 

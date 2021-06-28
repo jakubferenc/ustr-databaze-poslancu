@@ -9,7 +9,6 @@
       PoslanciSeznam(
         :PoslanciVstupniPolozky="poslanci"
         :NastaveniFiltrace="nastaveniFiltrace"
-        :PoslanciFiltrovani="poslanci_filtrovani"
         :PoslanciStatistiky="poslanciStatistiky"
         :MaPaginaci="true"
         :MaFiltr="true"

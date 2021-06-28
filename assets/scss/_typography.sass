@@ -1,7 +1,8 @@
 $margin-from-desktop: 130px
 $margin-until-desktop: 50px
-$section-content-fixed-max-width: 75%
+$section-content-fixed-max-width: 1422px
 $large-circle-height: 160px
+$filter-button-width: 340px
 
 .alt-bg
   background-color: #F4F4F4
@@ -23,7 +24,6 @@ $large-circle-height: 160px
 
 .typography-alt-heading
   font-family: 'Courier', monospace
-
 
 .typography-hero-title
 
@@ -92,6 +92,10 @@ $large-circle-height: 160px
   +from($desktop)
 
   +from($fullhd)
+
+  &.smaller-bottom-margin
+    +from($desktop)
+      margin-bottom: $margin-from-desktop/4
 
 .typography-poslanec-thumb-title
   @extend .typography-alt-heading
@@ -205,6 +209,11 @@ $large-circle-height: 160px
   max-width: $section-content-fixed-max-width
   margin: 0 auto
 
+  +from($desktop)
+    padding-left: 0
+    padding-right: 0
+
+
 .button
   $button-height: 35px
 
@@ -217,6 +226,34 @@ $large-circle-height: 160px
   line-height: $button-height
   cursor: pointer
 
+
+.button-large
+  border-radius: 12px
+  background-color: #000
+  min-width: $filter-button-width
+  height: 60px
+  color: #fff
+  cursor: pointer
+  font-family: Courier, monospace
+  font-size: 15px
+  display: flex
+  align-items: center
+  justify-content: center
+  text-decoration: none
+
+.filter-seznam-bar
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: 40px
+
+.button.button-filter
+  width: $filter-button-width
+
+  &.active,
+  &:hover
+    background-color: #000
+    color: #fff
 
 .real-content-text
   p
@@ -248,18 +285,12 @@ $large-circle-height: 160px
 .typography-has-no-margin-bottom
   margin-bottom: 0
 
-.typography-text-block
-  display: flex
-  justify-content: space-between
+.typography-centered-text-content
   text-align: center
-  align-items: center
 
-  .text-block-image
-
-    &.next-to-text
-      +from($widescreen)
-        padding-right: $margin-until-desktop
-
+  .row-in-text
+    display: flex
+    justify-content: center
 
 .typography-image-thumb-larger
   +from($widescreen)
@@ -270,4 +301,6 @@ $large-circle-height: 160px
     max-width: 570px
 
 
+
+.typofra
 

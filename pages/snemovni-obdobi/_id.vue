@@ -85,11 +85,17 @@
             )
             <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true}">
               <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
-                <l-popup :content="item.PopupHTML"></l-popup>
+                <l-popup>
+                  <NuxtLink to="">
+                    div(v-html="item.PopupHTML")
+                  </NuxtLink>
+                </l-popup>
                 <l-icon :icon-anchor="[0,0]" :icon-size="[56, 56]" class-name="map-person-thumb-head-icon">
-                  <div class="is-hidden headline">test content</div>
-                  span(v-if="item.Soubory.length > 0")
-                    img(:src="item.Soubory[0].URLNahled" class="map-person-thumb-head-icon-image")
+                  <NuxtLink :to="`/poslanec/${item.Id}`">
+                    <div class="is-hidden headline">test content</div>
+                    span(v-if="item.Soubory.length > 0")
+                      img(:src="item.Soubory[0].URLNahled" class="map-person-thumb-head-icon-image")
+                  </NuxtLink>
                 </l-icon>
               </l-marker>
             </v-marker-cluster>
@@ -105,7 +111,7 @@
 
         .text-block-image.next-to-text.column.is-full.is-full-tablet.is-half-desktop
           img(v-if="snemovniObdobi.UvodniFotografie" :src="snemovniObdobi.UvodniFotografie" :alt="snemovniObdobi.Nazev")
-        .text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
+        .typography-body-text.text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
 
     .parlament-detail-events.section-padding-h-margin-v
@@ -316,12 +322,9 @@
 
       mounted() {
 
-        this.$nextTick(() => {
 
-          // will center the map based on the position of all the markers on the map
-          this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);
-
-        });
+        // will center the map based on the position of all the markers on the map
+        this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);
 
         const schemaCircles = this.$el.querySelectorAll('.component-snemovna-schema svg circle');
 
@@ -633,12 +636,13 @@
 
             return {
 
+              Id: poslanec.Id,
               LatLng: [poslanec.Adresy[0].GeoX, poslanec.Adresy[0].GeoY],
               Nazev: poslanec.Adresy[0].Nazev,
               Druh: poslanec.Adresy[0].Druh,
               CeleJmenoReadable: poslanec.Jmeno + ' ' + poslanec.Prijmeni,
               Soubory: poslanec.Soubory || null,
-              PopupHTML: `<h1>${poslanec.Jmeno} ${poslanec.Prijmeni}</h1>`,
+              PopupHTML: `${poslanec.Jmeno} ${poslanec.Prijmeni}`,
 
             }
 

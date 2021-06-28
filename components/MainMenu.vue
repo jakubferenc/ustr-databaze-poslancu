@@ -8,7 +8,7 @@
     span &nbsp;|
     NuxtLink.link-parlamenty(to="/parlamenty") Parlamenty
     span &nbsp;|
-    NuxtLink(to="/socialni-mapy") Sociální mapy
+    NuxtLink.link-socialni-mapy(to="/socialni-mapy") Sociální mapy
     span &nbsp;|
     NuxtLink(to="/slovnik") Slovník
     span &nbsp;|
@@ -28,6 +28,9 @@
       text-decoration: underline
 
   html.subpage-parlament .link-parlamenty
+    @extend .nuxt-link-exact-active
+
+  html.subpage-socialni-mapa .link-socialni-mapy
     @extend .nuxt-link-exact-active
 
 </style>

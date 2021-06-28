@@ -137,6 +137,12 @@
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
 
+  .statistics-diagram
+    display: flex
+    justify-content: center
+    align-item: center
+
+
   label.disabled,
   input:disabled
     cursor: not-allowed
@@ -455,7 +461,6 @@ export default {
 
       this.filtrNastaveniAktualniPolozky = {[filtrSekceKey]: tempResult};
 
-      console.log("filtr used");
 
       this.$store.dispatch("setPoslanciFiltrovani", this.poslanci);
 

@@ -34,11 +34,17 @@ export const state = () => ({
   snemovni_obdobi_detail: {},
   casova_osa: [],
   popup_timeline_detail: {},
+  rodiny_socialni_mapy: [],
 });
 /*
 this will update the state with the posts
 */
 export const mutations = {
+
+  updateRodinySocialniMapy: (state, rodiny_socialni_mapy) => {
+    state.rodiny_socialni_mapy = rodiny_socialni_mapy;
+  },
+
   updateStranky: (state, stranky) => {
     state.stranky = stranky;
   },
@@ -91,16 +97,6 @@ and then commits the mutation to update it
 */
 export const actions = {
 
-  getUnique ({ state, commit }, popup_timeline_detail) {
-    try {
-
-      commit("updatePopupTimelineDetail", popup_timeline_detail);
-
-    } catch (err) {
-      console.log(err);
-    }
-  },
-
 
   setPopupTimelineDetail ({ state, commit }, popup_timeline_detail) {
     try {
@@ -118,6 +114,42 @@ export const actions = {
 
       commit("updatePoslanciFiltrovani", poslanci_filtrovani);
       dispatch("countPoslanciStatistiky");
+
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+
+  async getRodinySocialniMapy ({ state, commit }) {
+
+    if (state.rodiny_socialni_mapy.length) return;
+
+    try {
+
+      let rodiny = await fetch(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
+      .then(res => res.json());
+
+      rodiny = rodiny
+        .filter(item => item.status === "publish")
+        .map(({ id, date, slug, title, content, excerpt, _embedded, rodina_datum, rodina_osoby_ids, acf }) => ({
+          id: id,
+          date: date,
+          slug: slug,
+          title: title.rendered,
+          content: content.rendered,
+          excerpt: excerpt.rendered,
+          featured_image: _embedded['wp:featuredmedia'][0].media_details,
+          author: _embedded.author, /* will return an array of authors and their meta data */
+          datum: rodina_datum,
+          osoby_ids: rodina_osoby_ids.split(', '),
+          pocet_osob: rodina_osoby_ids.split(', ').length,
+          casova_osa: acf.casova_osa,
+          galerie: acf.galerie
+        }));
+
+
+      commit("updateRodinySocialniMapy", rodiny);
 
     } catch (err) {
       console.log(err);
@@ -261,12 +293,7 @@ export const actions = {
       try {
 
         snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
-
         snemovniObdobiObj = snemovniObdobiObj.data;
-
-
-        let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
-        snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
 
         snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
         snemovniObdobiObj.PocetPoslancu = snemovniObdobiObj.Poslanci.length;
@@ -278,78 +305,76 @@ export const actions = {
         snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu);
 
 
+        let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
+        snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
+
         // get wordpress content referenced via Id
         let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
 
-        // checking potential errors
-        if (!thisWPSnemovniObdobiObj.length) {
-          throw new Error(`There is not Wordpress Parlament object matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
-          return;
-        }
 
-        if (thisWPSnemovniObdobiObj.length > 1) {
-          throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. snemovniObdobiObj.Id is: ${snemovniObdobiObj.Id}. 'Parlament name is: ${snemovniObdobiObj.Nazev}`);
-          return;
-        }
+        if (thisWPSnemovniObdobiObj.length && thisWPSnemovniObdobiObj === 1) {
 
-        snemovniObdobiObjWpData = thisWPSnemovniObdobiObj[0];
+          snemovniObdobiObjWpData = thisWPSnemovniObdobiObj[0];
 
-        snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
-        snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
-        snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
+          snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
+          snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
+          snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
 
-        if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
-          snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
+          if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
+            snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
 
-          // sort by date
-          snemovniObdobiObj.CasovaOsa.sort();
+            // sort by date
+            snemovniObdobiObj.CasovaOsa.sort();
 
-          // add auto generated beginning and the end date of the snemovni obdobi
+            // add auto generated beginning and the end date of the snemovni obdobi
 
-          /*
-          {
-            "datum_udalosti": "1968-01-01",
-            "nazev_udalosti": "Test událost",
-            "dulezita": [
-            "true"
-            ]
-          },
+            /*
+            {
+              "datum_udalosti": "1968-01-01",
+              "nazev_udalosti": "Test událost",
+              "dulezita": [
+              "true"
+              ]
+            },
 
 
-          const beginningOfTheSnemovniObdobiObj = {
-            "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
-            "nazev_udalosti": "Začátek sněmovny",
-            "dulezita": [
-            "true"
-            ]
-          };
+            const beginningOfTheSnemovniObdobiObj = {
+              "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
+              "nazev_udalosti": "Začátek sněmovny",
+              "dulezita": [
+              "true"
+              ]
+            };
 
-          const endOfTheSnemovniObdobiObj = {
-            "datum_udalosti": snemovniObdobiObj.DatumKonce.split('T')[0],
-            "nazev_udalosti": "Konec sněmovny",
-            "dulezita": [
-            "true"
-            ]
-          };
+            const endOfTheSnemovniObdobiObj = {
+              "datum_udalosti": snemovniObdobiObj.DatumKonce.split('T')[0],
+              "nazev_udalosti": "Konec sněmovny",
+              "dulezita": [
+              "true"
+              ]
+            };
 
-          snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
-          */
+            snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
+            */
 
-        }
+          }
 
-        if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
+          if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
 
-          snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie;
+            snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie;
 
-        }
+          }
 
-        snemovniObdobiObj.UvodniFotografie = false;
+          snemovniObdobiObj.UvodniFotografie = false;
 
-        if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
+          if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
 
-          snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
+            snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
+
+          }
 
         }
+
 
         commit("addSnemovniObdobi", snemovniObdobiObj);
         commit("updateSnemovniObdobiDetail", snemovniObdobiObj);

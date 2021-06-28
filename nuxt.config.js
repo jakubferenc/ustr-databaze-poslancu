@@ -13,6 +13,8 @@ export default {
     host: 'localhost',
     timing: false
   },*/
+
+
   publicRuntimeConfig: {
     wordpressAPIURLWebsite,
     databazePoslancuURL
@@ -30,16 +32,36 @@ export default {
   generate: {
     async routes() {
 
-      const res = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages`);
+      let routes = [];
 
-      return res.data.map(stranka => {
+      const strankyRes = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
+      const rodinyRes = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`);
+
+      const strankyRoutes = strankyRes.data.map(item => {
 
         return {
-          route: `/stranka/${stranka.slug}`,
-          payload: stranka // thanks to the payload, we are caching results for the subpage here
+          route: `/stranka/${item.slug}`,
+          payload: item // thanks to the payload, we are caching results for the subpage here
         };
 
       });
+
+      const rodinyRoutes = rodinyRes.data.map(item => {
+
+        // load osoby
+
+        const rodina_osoby_ids = item.rodina_osoby_ids.split(',');
+
+        return {
+          route: `/socialni-mapa/${item.slug}`,
+          payload: item // thanks to the payload, we are caching results for the subpage here
+        };
+
+      });
+
+      routes = [...strankyRoutes, ...rodinyRoutes, ...routes];
+
+      return routes;
 
     }
   },
@@ -80,7 +102,9 @@ export default {
   styleResources: {
     sass: ['~bulma/sass/utilities/all']
   },
-  plugins: [{ src: '~plugins/vue-leaflet.js', ssr: false }],
+  plugins: [
+    { src: '~plugins/vue-leaflet.js', ssr: false },
+  ],
   proxy: {
     '/Api/snemovny/seznam': `${databazePoslancuURL}`,
     '/Api/snemovny/': `${databazePoslancuURL}`,
