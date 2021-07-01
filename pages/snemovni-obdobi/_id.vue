@@ -75,7 +75,7 @@
       h2.typography-section-title Místo narození poslanců
 
       .mapbox()
-        <client-only>
+
           <l-map ref="mapbox" :options="{scrollWheelZoom: false}" :zoom=13 :center="[55.9464418,8.1277591]">
             l-tile-layer(
               id='',
@@ -101,7 +101,7 @@
             </v-marker-cluster>
 
           </l-map>
-        </client-only>
+
 
     .parlament-detail-about.section-padding-h-margin-v
 
@@ -691,7 +691,12 @@
             },
             narodnost: {
               id: 'narodnost',
-              title: 'podle národnosti',
+              title: 'národnosti',
+              data: this.statistiky.Narodnosti,
+            },
+            vybory: {
+              id: 'vybory',
+              title: 'výbory',
               data: this.statistiky.Narodnosti,
             }
           };

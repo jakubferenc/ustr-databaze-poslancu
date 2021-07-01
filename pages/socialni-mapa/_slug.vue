@@ -114,7 +114,7 @@
 
     .rodina-detail-events.section-padding-h-margin-v
 
-      h2.typography-section-title Důležité události rodiny
+      h2.typography-section-title Důležité události
 
       CasovaOsa(:Data="rodina.casova_osa" v-if="rodina.casova_osa")
 

@@ -144,7 +144,7 @@
 
   export default {
 
-    components: { ParlamentNahledObecnyImage },
+    components: {  },
 
 
     props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa', 'Galerie'],
