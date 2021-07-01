@@ -4,7 +4,7 @@
 
     .parlament-radek-content.columns.is-multiline
       .parlament-radek-image.column.is-full-tablet.is-half-desktop
-        <ParlamentNahledObecnyImage />
+
       .parlament-radek-text.column.is-full-tablet.is-half-desktop
 
         h2.parlament-radek-title.typography-section-title {{Nazev}}
@@ -111,7 +111,7 @@
 
 <script>
 
-  import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+  // import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
 
   const snemovnyHTMLHelperContainer = (data, parlamentId) => {
