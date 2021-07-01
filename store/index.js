@@ -375,7 +375,6 @@ export const actions = {
 
         }
 
-
         commit("addSnemovniObdobi", snemovniObdobiObj);
         commit("updateSnemovniObdobiDetail", snemovniObdobiObj);
 

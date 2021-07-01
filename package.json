@@ -8,8 +8,9 @@
     "author": "Jakub A. Ferenc <hello@jakubferenc.cz> (https://jakubferenc.cz)",
     "scripts": {
         "dev": "nuxt",
-        "build": "nuxt generate",
-        "start": "nuxt start"
+        "build": "nuxt build",
+        "start": "nuxt start",
+        "generate": "nuxt generate"
     },
     "dependencies": {
         "@nuxtjs/axios": "^5.13.1",
