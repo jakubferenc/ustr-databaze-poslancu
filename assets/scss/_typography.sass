@@ -1,6 +1,6 @@
 $margin-from-desktop: 130px
 $margin-until-desktop: 50px
-$section-content-fixed-max-width: 1422px
+$section-content-fixed-max-width: 1440px
 $large-circle-height: 160px
 $filter-button-width: 340px
 
@@ -24,6 +24,12 @@ $filter-button-width: 340px
 
 .typography-alt-heading
   font-family: 'Courier', monospace
+
+.typography-metadata-section-title
+  @extend .typography-alt-heading
+
+  font-size: 15px
+  letter-spacing: 2.7px
 
 .typography-hero-title
 
@@ -74,6 +80,10 @@ $filter-button-width: 340px
 
   +from($fullhd)
     font-size: 56px
+
+
+  &.no-margin-bottom
+    margin-bottom: 0
 
 .typography-section-title
 
@@ -207,7 +217,8 @@ $filter-button-width: 340px
 .section-content-max-width
 
   max-width: $section-content-fixed-max-width
-  margin: 0 auto
+  margin-left: auto
+  margin-right: auto
 
   +from($desktop)
     padding-left: 0

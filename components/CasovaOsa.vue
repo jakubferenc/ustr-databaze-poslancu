@@ -9,7 +9,7 @@
       .casova-osa-items
 
         .casova-osa-item(v-for="udaj in Data" :key="udaj.datum_udalosti")
-          .casova-osa-circle(:class="{small: udaj.dulezita != 'true'}") {{ udaj.datum_udalosti.split('-')[0] }}
+          .casova-osa-circle(:class="{small: udaj.dulezita.toString() != 'true'}") {{ udaj.datum_udalosti.split('-')[0] }}
           .casova-osa-item-text {{udaj.nazev_udalosti}}
 
 

@@ -36,6 +36,18 @@ export default {
 
       const strankyRes = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
       const rodinyRes = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`);
+      const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
+
+      console.log("osobyRes", osobyRes);
+
+      const osobyRoutes = osobyRes.data.map(item => {
+
+        return {
+          route: `/poslanec/${item.id}`,
+          payload: item // thanks to the payload, we are caching results for the subpage here
+        };
+
+      });
 
       const strankyRoutes = strankyRes.data.map(item => {
 
@@ -59,7 +71,7 @@ export default {
 
       });
 
-      routes = [...strankyRoutes, ...rodinyRoutes, ...routes];
+      routes = [...osobyRoutes,...strankyRoutes, ...rodinyRoutes, ...routes];
 
       return routes;
 

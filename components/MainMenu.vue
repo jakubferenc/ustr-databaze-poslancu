@@ -4,7 +4,7 @@
     span &nbsp;|
     NuxtLink(to="/vyvoj-parlamentu") Vývoj parlamentarismu
     span &nbsp;|
-    NuxtLink(to="/poslanci") Poslanci
+    NuxtLink.link-poslanci(to="/poslanci") Poslanci
     span &nbsp;|
     NuxtLink.link-parlamenty(to="/parlamenty") Parlamenty
     span &nbsp;|
@@ -31,6 +31,9 @@
     @extend .nuxt-link-exact-active
 
   html.subpage-socialni-mapa .link-socialni-mapy
+    @extend .nuxt-link-exact-active
+
+  html.subpage-poslanci .link-poslanci
     @extend .nuxt-link-exact-active
 
 </style>

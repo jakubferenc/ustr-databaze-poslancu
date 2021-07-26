@@ -16,7 +16,7 @@
 export default {
 
 
-    async fetch ({store}) {
+    async asyncData ({store}) {
 
       await store.dispatch("getSlovnikovaHesla");
 

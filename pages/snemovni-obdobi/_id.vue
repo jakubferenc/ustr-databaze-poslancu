@@ -303,7 +303,7 @@
 
       components: { ParlamentNahledObecnyImage },
 
-      async fetch ({store, params}) {
+      async asyncData ({store, params}) {
 
         await store.dispatch("getSnemovniObdobiDetail", {
           snemovniObdobiId: params.id

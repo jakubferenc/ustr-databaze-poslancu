@@ -24,7 +24,7 @@
 <script>
 export default {
 
-    async fetch ({store}) {
+    async asyncData ({store}) {
       await store.dispatch("getPoslanciSeznam", {
         limit: 200,
         stranka: 1,

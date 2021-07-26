@@ -110,8 +110,6 @@
               .image
 
 
-
-
     .rodina-detail-events.section-padding-h-margin-v
 
       h2.typography-section-title Důležité události

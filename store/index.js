@@ -23,6 +23,7 @@ const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
 export const state = () => ({
   slovnikova_hesla: [],
   parlamenty: [],
+  poslanec: {},
   poslanci: [],
   poslanci_filtrovani: [],
   poslanci_homepage: [],
@@ -40,6 +41,12 @@ export const state = () => ({
 this will update the state with the posts
 */
 export const mutations = {
+
+  updatePoslanecDetail: ( state, poslanec ) => {
+
+    state.poslanec = poslanec;
+
+  },
 
   updateRodinySocialniMapy: (state, rodiny_socialni_mapy) => {
     state.rodiny_socialni_mapy = rodiny_socialni_mapy;
@@ -529,6 +536,25 @@ export const actions = {
 
   },
 
+  async getPoslanecDetail({ state, commit, dispatch }, {poslanecId}) {
+
+    // :TODO: get cached poslanec if already in the store
+    // :TODO: cache via http cache?
+
+    try {
+
+      let poslanec = await this.$axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
+
+      poslanec = poslanec.data;
+
+      commit("updatePoslanecDetail", poslanec);
+
+
+    } catch (err) {
+      console.log(err);
+    };
+
+  },
 
   async getPoslanciSeznam({ state, commit, dispatch }, {limit = 20, stranka = 1, filterCallback = null} ) {
     if (state.poslanci.length) return;
