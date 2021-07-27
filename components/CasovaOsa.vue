@@ -8,10 +8,9 @@
 
       .casova-osa-items
 
-        .casova-osa-item(v-for="udaj in Data" :key="udaj.datum_udalosti")
-          .casova-osa-circle(:class="{small: udaj.dulezita.toString() != 'true'}") {{ udaj.datum_udalosti.split('-')[0] }}
+        .casova-osa-item(v-for="udaj, index in Data" :key="index" :class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true'}")
+          .casova-osa-circle(:class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true'}") {{ udaj.datum_udalosti.split('-')[0] }}
           .casova-osa-item-text {{udaj.nazev_udalosti}}
-
 
 
     .slovnik-slider-nav(role="navigation" v-if="showNavigation")
@@ -28,33 +27,44 @@
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
 
+  .casova-osa-component
+    display: flex // it will primarily center the navigation buttons
+    align-items: center
+    flex-direction: column
+
   .slovnik-slider-nav
 
     margin-top: $margin-until-desktop
+    display: flex
+    justify-content: space-between
+
+    +from($widescreen)
+      width: 215px
 
     .slider-nav-item
-
       cursor: pointer
 
-    svg *
-      user-select: none
 
-    svg circle
-      fill: #fff
+      svg *
+        user-select: none
 
-    &:hover
       svg circle
-        fill: #000
-      svg text
         fill: #fff
+
+      &:hover
+        svg circle
+          fill: #000
+        svg text
+          fill: #fff
 
 
 
   .casova-osa-items-container
 
     position: relative
-    overflow-x: scroll
     margin-top: $margin-until-desktop
+    width: 100%
+    padding-bottom: $margin-until-desktop / 2
 
   .casova-osa-line
     border-bottom: 5px dotted #000
@@ -72,16 +82,24 @@
     align-items: flex-start
     flex-wrap: nowrap
     -webkit-overflow-scrolling: touch
+    overflow-x: scroll
+
+
     -ms-overflow-style: -ms-autohiding-scrollbar
     position: relative
     z-index: 1
     scroll-behavior: smooth
+    width: 100%
 
     .casova-osa-item
       display: flex
       flex-direction: column
       align-items: center
       max-width: 160px
+
+      &.small
+        padding-left: $margin-until-desktop / 2
+        padding-right: $margin-until-desktop / 2
 
     .casova-osa-item-text
       margin-top: $margin-until-desktop / 4
@@ -107,10 +125,10 @@
 
       &.large
 
-      @extend .typography-timeline-large-text
+        @extend .typography-timeline-large-text
 
-      width: 160px
-      height: 160px
+        width: 160px
+        height: 160px
 
 
 
@@ -128,16 +146,17 @@ export default {
 
   mounted() {
 
-    this.$element = this.$el.querySelector(`.casova-osa-items-container`);
     this.$casovaOsaContainer = this.$el.querySelector('.casova-osa-items-container');
+    this.$casovaOsaItemsElement = this.$el.querySelector(`.casova-osa-items`);
 
-    this.showNavigation = this.$casovaOsaContainer.scrollWidth > this.$casovaOsaContainer.clientWidth;
+
+    this.showNavigation = this.$casovaOsaItemsElement.scrollWidth > this.$casovaOsaItemsElement.clientWidth;
 
   },
    data() {
       return {
         leftPosition: 0,
-        $element: null,
+        $casovaOsaItemsElement: null,
         canMove: false,
         intervalRef: null,
         $casovaOsaContainer: null,
@@ -165,7 +184,7 @@ export default {
 
             if (this.canMove) {
 
-              this.$element.scrollBy({
+              this.$casovaOsaItemsElement.scrollBy({
                 top: 0,
                 left: direction == 'right' ? amount : -amount,
                 behavior: 'smooth'
@@ -178,6 +197,15 @@ export default {
             }
 
           }, 100);
+
+      } else {
+
+        this.$casovaOsaItemsElement.scrollBy({
+          top: 0,
+          left: direction == 'right' ? amount : -amount,
+          behavior: 'smooth'
+        });
+
 
       }
 
