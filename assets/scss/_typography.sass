@@ -63,11 +63,11 @@ $filter-button-width: 340px
   line-height: 1.1
 
   +until($desktop)
-    margin-top: 50px
+    padding-top: 50px
     margin-bottom: 50px
 
   +from($desktop)
-    margin-top: 100px
+    padding-top: 100px
     margin-bottom: 100px
 
   font-size: 2.91666667vw * 2.5
@@ -290,6 +290,14 @@ $filter-button-width: 340px
         margin-top: -0.75rem
 
 
+.typography-has-no-h-padding
+  padding-left: 0
+  padding-right: 0
+
+.typography-has-no-v-padding
+  padding-top: 0
+  padding-bottom: 0
+
 .typography-has-no-margin-top
   margin-top: 0
 
@@ -313,5 +321,19 @@ $filter-button-width: 340px
 
 
 
-.typofra
+.typography-snemovna-obr-nadpis
 
+  @extend .is-title
+  line-height: 1.25
+  font-weight: 300
+
+  font-size: 1.6667vw * 2.5
+
+  +from($tablet)
+    font-size: 1.6667vw * 2
+
+  +from($desktop)
+    font-size: 1.6667vw * 1.5
+
+  +from($fullhd)
+    font-size: 2rem
