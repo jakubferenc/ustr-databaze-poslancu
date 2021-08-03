@@ -67,7 +67,7 @@
 
 
     .parlament-meta-tab-navigation
-      TabNavigace(:nastaveni="tabNavigaceNastaveni" typ="parlament-detail-navigace")
+      TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-detail-navigace")
 
 
     .parlament-detail-map
@@ -673,32 +673,35 @@
         tabNavigaceNastaveni() {
 
           return {
-            poslaneckeKluby: {
-              id: 'poslanecke-kluby',
-              title: 'poslanecké kluby',
-              data: this.statistiky.PoslaneckeKluby,
-              aktivni: true
+            polozky: {
+              poslaneckeKluby: {
+                id: 'poslanecke-kluby',
+                title: 'poslanecké kluby',
+                data: this.statistiky.PoslaneckeKluby,
+                aktivni: true
+              },
+              volebniStrany: {
+                id: 'volebni-strany',
+                title: 'volební strany',
+                data: this.statistiky.VolebniStrany,
+              },
+              kurie: {
+                id: 'kurie',
+                title: 'kurie',
+                data: this.statistiky.Kurie,
+              },
+              narodnost: {
+                id: 'narodnost',
+                title: 'národnosti',
+                data: this.statistiky.Narodnosti,
+              },
+              vybory: {
+                id: 'vybory',
+                title: 'výbory',
+                data: this.statistiky.Narodnosti,
+              }
             },
-            volebniStrany: {
-              id: 'volebni-strany',
-              title: 'volební strany',
-              data: this.statistiky.VolebniStrany,
-            },
-            kurie: {
-              id: 'kurie',
-              title: 'kurie',
-              data: this.statistiky.Kurie,
-            },
-            narodnost: {
-              id: 'narodnost',
-              title: 'národnosti',
-              data: this.statistiky.Narodnosti,
-            },
-            vybory: {
-              id: 'vybory',
-              title: 'výbory',
-              data: this.statistiky.Narodnosti,
-            }
+
           };
 
         },

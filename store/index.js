@@ -19,6 +19,88 @@ const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
 
 };
 
+const getCasovaOsaDataForPoslanec = (poslanec) => {
+
+  console.log("from get casova osa poslanec", poslanec);
+
+  console.log("from get casova osa poslanec datumNarozeni", poslanec.DatumNarozeni);
+  console.log("from get casova osa poslanec datumUmrti", poslanec.DatumUmrti);
+  console.log("mandaty", poslanec.Mandaty);
+
+
+  let casovaOsaPolozky = [];
+
+  if (poslanec.DatumNarozeni) {
+
+    casovaOsaPolozky = [...casovaOsaPolozky, {
+
+      datum_udalosti: poslanec.DatumNarozeni.split("T")[0],
+      dulezita: true,
+      nazev_udalosti: `Datum narození ${poslanec.DatumNarozeniZobrazene}`,
+
+    }];
+
+  }
+
+  if (poslanec.DatumUmrti) {
+
+    casovaOsaPolozky = [...casovaOsaPolozky, {
+
+      datum_udalosti: poslanec.DatumUmrti.split("T")[0],
+      dulezita: true,
+      nazev_udalosti: 'Datum úmrtí',
+
+    }];
+
+  }
+
+  if (poslanec.Mandaty) {
+
+    const casovePolozkyMandatyCalculated = poslanec.Mandaty.reduce((acc, mandat, index) => {
+
+      if (mandat.DatumZacatku) {
+
+        acc.push({
+
+          datum_udalosti: mandat.DatumZacatku.split("T")[0],
+          dulezita: false,
+          nazev_udalosti: `Začátek mandátu (${mandat.DatumZacatkuZobrazene || 'Neuvedeno'} — ${mandat.DatumKonceZobrazene || 'Neuvedeno'})`,
+
+        });
+
+      }
+
+      if (mandat.DatumKonce) {
+
+        acc.push({
+
+          datum_udalosti: mandat.DatumKonce.split("T")[0],
+          dulezita: false,
+          nazev_udalosti: `Konec mandátu (${mandat.DatumZacatkuZobrazene || 'Neuvedeno'} — ${mandat.DatumKonceZobrazene || 'Neuvedeno'})`,
+
+        });
+
+      }
+
+
+      return acc;
+
+    }, []);
+
+    casovaOsaPolozky = [...casovaOsaPolozky,...casovePolozkyMandatyCalculated];
+
+
+  }
+
+
+
+  casovaOsaPolozky = casovaOsaPolozky.sort((a, b) => (a.datum_udalosti > b.datum_udalosti) ? 1 : (a.datum_udalosti < b.datum_udalosti ) ? -1 : 0);
+
+  return casovaOsaPolozky;
+
+
+};
+
 
 export const state = () => ({
   slovnikova_hesla: [],
@@ -546,6 +628,10 @@ export const actions = {
       let poslanec = await this.$axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
 
       poslanec = poslanec.data;
+
+
+      // prepare data for casova osa
+      poslanec.casova_osa = getCasovaOsaDataForPoslanec(poslanec);
 
       commit("updatePoslanecDetail", poslanec);
 

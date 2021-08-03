@@ -1,26 +1,27 @@
 <template lang="pug">
 
-.tab-navigation(:class="typ")
+.tab-navigation(:class="Typ" :style="componentStyles")
 
   nav.parlament-tabs-nav.tabs-nav
     .tabs.columns
-      a.tab.column.is-one-fourth(v-for="(item, key) in nastaveni" @click.prevent="selectActiveTab(nastaveni[key].id)" :class="{ active: nastaveni[key].id === activeTabId}" href="#") {{ nastaveni[key].title }}
+      a.tab.column.is-one-fourth(v-for="(item, key) in Nastaveni.polozky" @click.prevent="selectActiveTab(item.id)" :class="{ active: item.id === activeTabId}" href="#")
+        span {{ item.title }}
+        span.count-items(v-if="item.pocetPolozekNadpis != undefined") &nbsp;({{item.pocetPolozekNadpis}})
     .line
 
-  .tab-navigation-content-container.parlament-tabs-content-container(v-if="typ =='parlament-radek' ")
+  .tab-navigation-content-container.parlament-tabs-content-container(v-if="Typ =='parlament-radek' ")
 
-    .tab-navigation-content-item.parlament-tabs-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }")
+    .tab-navigation-content-item.parlament-tabs-content-item(v-for="(item, key) in Nastaveni.polozky" :id="item.id" :class="{ active: item.id === activeTabId, [item.id]: true }")
 
-      CasovaOsa(:Data="nastaveni[key].obsah" v-if="key === 'duleziteUdalosti' ")
-      GalerieMediiSeznam(v-else-if="key === 'galerieMedia' " :Soubory="nastaveni[key].obsah" :MaButtonMore="false" :MaFilter="false")
-      div(v-else v-html="nastaveni[key].obsah")
+      CasovaOsa(:Data="item.obsah" v-if="key === 'duleziteUdalosti' ")
+      GalerieMediiSeznam(v-else-if="key === 'galerieMedia' " :Soubory="item.obsah" :MaButtonMore="false" :MaFilter="false")
+      div(v-else v-html="item.obsah")
 
   // :TODO: #6 Create a separate component to display tab nav for this page type?
   // probably temporary
   // better to have a separate component to display tab navigation for this page type
-  .tab-navigation-content-container(v-if="typ =='parlament-detail-navigace' ")
-
-    .tab-navigation-content-item(v-for="(item, key) in nastaveni" :id="nastaveni[key].id" :class="{ active: nastaveni[key].id === activeTabId, [nastaveni[key].id]: true }")
+  .tab-navigation-content-container(v-if="Typ == 'parlament-detail-navigace'")
+    .tab-navigation-content-item(v-for="(item, key) in Nastaveni.polozky" :id="item.id" :class="{ active: item.id === activeTabId, [item.id]: true }")
 
       .parlament-detail-data-item-circle-container.section-padding.smaller-vertical-margin
 
@@ -29,6 +30,120 @@
             .text-data-main {{polozka.PocetNavazanychPoslancu}}
           .chart-text {{polozka.Nazev}}
 
+  .tab-navigation-content-container.parlament-tabs-content-container(v-if="Typ =='mandat-radek' ")
+
+    .tab-navigation-content-item.parlament-tabs-content-item(v-for="(item, key) in Nastaveni.polozky" :key="item.id" :class="{ active: item.id === activeTabId, [item.id]: true }")
+
+      .columns.is-multiline(v-if=" item.id === 'zakladni-informace' ")
+
+        .column.is-one-third-widescreen
+
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Začátek mandátu
+            .metadata-section-content.typography-item-detail-text
+              div {{item.mandat.DatumZacatkuZobrazene}}
+
+
+
+        .column.is-one-third-widescreen
+
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Konec mandátu
+            .metadata-section-content.typography-item-detail-text
+              div {{item.mandat.DatumKonceZobrazene}}
+
+
+        .column.is-one-third-widescreen
+
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Délka mandátu
+            .metadata-section-content.typography-item-detail-text
+              div
+                span(v-if="item.mandat.Delka.Roky > 0")
+                  span {{item.mandat.Delka.Roky}}
+                  span(v-if="item.mandat.Delka.Roky > 4") &nbsp;let,&nbsp;
+                  span(v-if="item.mandat.Delka.Roky < 5 && item.mandat.Delka.Roky > 1") &nbsp;roky,&nbsp;
+                  span(v-if="item.mandat.Delka.Roky == 1") &nbsp;rok,&nbsp;
+                span(v-if="item.mandat.Delka.Dny > 0")
+                  span {{item.mandat.Delka.Dny}}
+                  span(v-if="item.mandat.Delka.Dny > 4") &nbsp;dnů
+                  span(v-if="item.mandat.Delka.Dny < 5 && item.mandat.Delka.Roky > 1") &nbsp;dny
+                  span(v-if="item.mandat.Delka.Dny == 1") &nbsp;den
+
+        .column.is-one-third-widescreen
+
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Forma Ukončení mandátu
+            .metadata-section-content.typography-item-detail-text
+              div tssfdfadsfsd
+              //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
+              //- div {{adresaNarozeni.zeme}}
+
+        .column.is-one-third-widescreen(v-if="item.mandat.VolebniStrana")
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Volební strana
+            .metadata-section-content.typography-item-detail-text
+              div {{item.mandat.VolebniStrana}}
+
+        .column.is-one-third-widescreen(v-if="item.mandat.Kurie")
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Kurie
+            .metadata-section-content.typography-item-detail-text
+              div {{item.mandat.Kurie}}
+
+        .column.is-one-third-widescreen(v-if="item.mandat.Profese")
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Profese (v době zvolení)
+            .metadata-section-content.typography-item-detail-text
+              div {{item.mandat.Profese}}
+
+        .column.is-one-third-widescreen(v-if="item.mandat.VekNaZacatkuMandatu")
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Věk na začátku mandátu
+            .metadata-section-content.typography-item-detail-text
+              div {{item.mandat.VekNaZacatkuMandatu}}
+
+        .column.is-one-third-widescreen(v-if="item.mandat.VekNaKonciMandatu")
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Věk na konci mandátu
+            .metadata-section-content.typography-item-detail-text
+              div {{item.mandat.VekNaKonciMandatu}}
+
+
+      .columns.is-multiline(v-if=" item.id === 'parlamentni-funkce' ")
+
+        div(v-if="item.mandat.Funkce.length" )
+          .column.is-one-third-widescreen(v-for="(funkce, index) in item.mandat.Funkce" :key="index")
+
+            .metadata-section
+              .metadata-section-title.typography-metadata-section-title
+                h3 Název funkce
+              .metadata-section-content.typography-item-detail-text
+                div {{funkce}}
+
+        div(v-else) {{$t('components.TabNavigation.tabHasNoItems')}}
+
+      .columns.is-multiline(v-if=" item.id === 'vybory' ")
+
+
+        .column.is-one-third-widescreen(v-if="item.mandat.Vybory.length && item.mandat.Vybory.length > 0" v-for="(vybor, index) in item.mandat.Vybory" :key="index")
+
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Název výboru
+            .metadata-section-content.typography-item-detail-text
+              div {{vybor}}
+
+        div(v-else) {{$t('components.TabNavigation.tabHasNoItems')}}
 
 </template>
 
@@ -40,7 +155,6 @@
 
 
   .tab-navigation.parlament-detail-navigace
-
 
     .parlament-detail-data-item-circle-container
 
@@ -101,45 +215,48 @@
         text-decoration: underline
 
 
-  .tab-navigation.parlament-radek
+  .tab-navigation
     margin-top: 100px
 
-    .parlament-tabs-nav
+    &.mandat-radek,
+    &.parlament-radek
 
-      .line
-        height: 1px
-        background: #000
-        position: relative
-        z-index: 0
+      .parlament-tabs-nav
 
-      .tabs
-        display: flex
-        margin-bottom: 0
+        .line
+          height: 1px
+          background: #000
+          position: relative
+          z-index: 0
 
-      .tab
-        height: 100px
-        text-align: center
-        position: relative
-        bottom: -1px
-        margin-left: -1px
-        display: flex
-        align-items: center
-        justify-content: center
-        text-decoration: none
-        border-width: 1px
-        border-style: solid
-        border-color: transparent
+        .tabs
+          display: flex
+          margin-bottom: 0
 
-        &:hover,
-        &.active
-          border-top-left-radius: 15px
-          border-top-right-radius: 15px
-          border-color: #000
-          border-bottom: 1px solid #F8F6F1
-          z-index: 2
+        .tab
+          height: 100px
+          text-align: center
+          position: relative
+          bottom: -1px
+          margin-left: -1px
+          display: flex
+          align-items: center
+          justify-content: center
+          text-decoration: none
+          border-width: 1px
+          border-style: solid
+          border-color: transparent
 
-        &.active
-          text-decoration: underline
+          &:hover,
+          &.active
+            border-top-left-radius: 15px
+            border-top-right-radius: 15px
+            border-color: #000
+            border-bottom: 1px solid #F8F6F1
+            z-index: 2
+
+          &.active
+            text-decoration: underline
 
     .parlament-tabs-content-item
       padding: 50px 20px 0 20px
@@ -161,13 +278,20 @@
 
 <script>
 export default {
-  props: ['nastaveni', 'typ'],
+  props: ['Nastaveni', 'Typ'],
   data() {
     return {
-      activeTabId: Object.values(this.nastaveni).filter(item => item.aktivni === true)[0].id
+      defaultStyles: {},
+      activeTabId: Object.values(this.Nastaveni.polozky).filter(item => item.aktivni === true)[0].id
     }
   },
   computed: {
+
+    componentStyles() {
+
+      return Object.assign({}, this.defaultStyles, this.Nastaveni?.tabNavigaceNastaveni?.style ? this.Nastaveni.tabNavigaceNastaveni.style : {});
+
+    },
 
   },
 

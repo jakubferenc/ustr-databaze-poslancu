@@ -11,7 +11,7 @@
 
         .parlament-radek-desc.typography-item-detail-text.real-content-text(v-html="StrucnyPopis")
 
-    TabNavigace(:nastaveni="tabNavigaceNastaveni" typ="parlament-radek")
+    TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-radek")
 
 </template>
 
@@ -157,27 +157,30 @@
       tabNavigaceNastaveni() {
 
         return {
-          snemovny: {
-            id: 'snemovny',
-            title: 'sněmovny',
-            obsah: snemovnyHTMLHelperContainer(this.SnemovniObdobi, this.Id),
-            aktivni: true
+          tabNavigaceNastaveni: {},
+          polozky: {
+            snemovny: {
+              id: 'snemovny',
+              title: 'sněmovny',
+              obsah: snemovnyHTMLHelperContainer(this.SnemovniObdobi, this.Id),
+              aktivni: true
+            },
+            dalsiInformace: {
+              id: 'dalsi-informace',
+              title: 'podrobné informace',
+              obsah: this.Popis
+            },
+            duleziteUdalosti: {
+              id: 'dulezite-udalosti',
+              title: 'důležité události',
+              obsah: this.CasovaOsa
+            },
+            galerieMedia: {
+              id: 'galerie-medii',
+              title: 'galerie médií',
+              obsah: this.Galerie
+            }
           },
-          dalsiInformace: {
-            id: 'dalsi-informace',
-            title: 'podrobné informace',
-            obsah: this.Popis
-          },
-          duleziteUdalosti: {
-            id: 'dulezite-udalosti',
-            title: 'důležité události',
-            obsah: this.CasovaOsa
-          },
-          galerieMedia: {
-            id: 'galerie-medii',
-            title: 'galerie médií',
-            obsah: this.Galerie
-          }
         };
 
       },
