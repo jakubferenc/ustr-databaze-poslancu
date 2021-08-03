@@ -20,6 +20,7 @@
         "chart.js": "^3.2.1",
         "leaflet": "^1.7.1",
         "nuxt": "^2.2.0",
+        "nuxt-i18n": "^6.28.0",
         "vue-chartjs": "^3.5.1",
         "vue2-leaflet": "^2.7.0",
         "vue2-leaflet-markercluster": "^3.1.0"

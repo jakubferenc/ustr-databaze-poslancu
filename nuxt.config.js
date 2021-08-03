@@ -93,38 +93,50 @@ export default {
   publicRuntimeConfig: {
     globalTitle: 'Databáze poslanců.cz'
   },
-  modules: ['@nuxtjs/style-resources', '@nuxtjs/proxy',  '@nuxtjs/axios', /*'@nuxtjs/sentry'*/],
-  sentry: {
-    dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
-    // Additional Module Options go here
-    // https://sentry.nuxtjs.org/sentry/options
-    config: {
-      // Add native Sentry config here
-      // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
-    },
-  },
-  axios: {
-    proxy: true
-  },
+  modules: [
+    ['@nuxtjs/style-resources', {
+      sass: ['~bulma/sass/utilities/all']
+    }],
+    ['@nuxtjs/proxy', {
+      '/Api/snemovny/seznam': `${databazePoslancuURL}`,
+      '/Api/snemovny/': `${databazePoslancuURL}`,
+      '/Api/osoby': `${databazePoslancuURL}`,
+      '/Api/soubory': `${databazePoslancuURL}`,
+      '/wp/v2/slovnik': `${wordpressAPIURLWebsite}`,
+      '/wp/v2/pages': `${wordpressAPIURLWebsite}`,
+    }],
+    ['@nuxtjs/sentry', {
+      dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
+      // Additional Module Options go here
+      // https://sentry.nuxtjs.org/sentry/options
+      config: {
+        // Add native Sentry config here
+        // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
+      },
+    }],
+    ['nuxt-i18n', {
+      locales: [
+        {code: 'cs', iso: 'cs-CZ', file: 'cs-CZ.js', dir: 'ltr'}
+      ],
+      lazy: true,
+      langDir: '~lang/',
+      defaultLocale: 'cs',
+      vueI18n: {
+        fallbackLocale: 'cs',
+      },
+    }],
+    ['@nuxtjs/axios', {
+      proxy: true
+    }],
+  ],
   css: [
     '~assets/scss/main.sass',
     { src: 'leaflet.markercluster/dist/MarkerCluster.css', lang: 'css' },
     { src: 'leaflet.markercluster/dist/MarkerCluster.Default.css', lang: 'css' }
   ],
-  styleResources: {
-    sass: ['~bulma/sass/utilities/all']
-  },
   plugins: [
     { src: '~plugins/vue-leaflet.js', ssr: false },
   ],
-  proxy: {
-    '/Api/snemovny/seznam': `${databazePoslancuURL}`,
-    '/Api/snemovny/': `${databazePoslancuURL}`,
-    '/Api/osoby': `${databazePoslancuURL}`,
-    '/Api/soubory': `${databazePoslancuURL}`,
-    '/wp/v2/slovnik': `${wordpressAPIURLWebsite}`,
-    '/wp/v2/pages': `${wordpressAPIURLWebsite}`,
-  },
   head: {
     title: 'Databáze poslanců.cz',
     htmlAttrs: {
