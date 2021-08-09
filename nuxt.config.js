@@ -1,24 +1,23 @@
 import axios from "axios";
 
 
-const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
-const databazePoslancuURL = 'https://parliament.ustrcr.cz';
+const config = {
+  wordpressAPIURLWebsite: 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json',
+  databazePoslancuURL: 'https://parliament.ustrcr.cz',
+  globalTitle: 'Databáze poslanců.cz'
+};
 
 export default {
   /*env: {
-    baseUrl: process.env.BASE_URL || 'https://localhost:8000'
+    baseUrl: process.env.BASE_URL || 'https://localhost:3000'
   },
   server: {
-    port: 8000,
+    port: 3000,
     host: 'localhost',
     timing: false
   },*/
 
-
-  publicRuntimeConfig: {
-    wordpressAPIURLWebsite,
-    databazePoslancuURL
-  },
+  publicRuntimeConfig: {...config},
   render: {
     static: {
       setHeaders(res) {
@@ -34,20 +33,18 @@ export default {
 
       let routes = [];
 
-      const strankyRes = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
-      const rodinyRes = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`);
-      const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
+      const strankyRes = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
+      const rodinyRes = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/rodina?_embed`);
+      //const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
 
-      console.log("osobyRes", osobyRes);
+      // const osobyRoutes = osobyRes.data.map(item => {
 
-      const osobyRoutes = osobyRes.data.map(item => {
+      //   return {
+      //     route: `/poslanec/${item.id}`,
+      //     payload: item // thanks to the payload, we are caching results for the subpage here
+      //   };
 
-        return {
-          route: `/poslanec/${item.id}`,
-          payload: item // thanks to the payload, we are caching results for the subpage here
-        };
-
-      });
+      // });
 
       const strankyRoutes = strankyRes.data.map(item => {
 
@@ -71,7 +68,7 @@ export default {
 
       });
 
-      routes = [...osobyRoutes,...strankyRoutes, ...rodinyRoutes, ...routes];
+      routes = [...strankyRoutes, ...rodinyRoutes];
 
       return routes;
 
@@ -79,7 +76,8 @@ export default {
   },
   build: {
     loaders: {
-      scss: { sourceMap: true },
+      sass: { sourceMap: false },
+      scss: { sourceMap: false },
       vue: { cacheBusting: false },
     }
   },
@@ -90,20 +88,17 @@ export default {
   target: 'static', // default is 'server'
   ssr: true,
   components: true,
-  publicRuntimeConfig: {
-    globalTitle: 'Databáze poslanců.cz'
-  },
   modules: [
     ['@nuxtjs/style-resources', {
       sass: ['~bulma/sass/utilities/all']
     }],
     ['@nuxtjs/proxy', {
-      '/Api/snemovny/seznam': `${databazePoslancuURL}`,
-      '/Api/snemovny/': `${databazePoslancuURL}`,
-      '/Api/osoby': `${databazePoslancuURL}`,
-      '/Api/soubory': `${databazePoslancuURL}`,
-      '/wp/v2/slovnik': `${wordpressAPIURLWebsite}`,
-      '/wp/v2/pages': `${wordpressAPIURLWebsite}`,
+      '/Api/snemovny/seznam': `${config.databazePoslancuURL}`,
+      '/Api/snemovny/': `${config.databazePoslancuURL}`,
+      '/Api/osoby': `${config.databazePoslancuURL}`,
+      '/Api/soubory': `${config.databazePoslancuURL}`,
+      '/wp/v2/slovnik': `${config.wordpressAPIURLWebsite}`,
+      '/wp/v2/pages': `${config.wordpressAPIURLWebsite}`,
     }],
     ['@nuxtjs/sentry', {
       dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
