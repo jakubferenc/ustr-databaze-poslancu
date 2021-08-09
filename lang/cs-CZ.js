@@ -1,5 +1,6 @@
 export default {
   welcome: 'Welcome World',
+  showDataForWhen: 'Zobrazit data k',
   error: {
     notDefined: 'Neuvedeno',
   },
