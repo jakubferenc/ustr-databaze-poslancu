@@ -29,85 +29,8 @@
 
       .social-mapping-network-container
 
-        .person-social-network-container(v-for="poslanec in rodina.osoby" :key="poslanec.Id")
-
-          svg.svg-layer
-
-          .person-social-network-title.typography-section-title.smaller-bottom-margin sociální mapa pro: {{poslanec.CeleJmeno}}
-
-          .person-category-section.primarny-vztahy-rodice-section(data-section-title="Rodiče" v-if="poslanec.OsobniVztahyPrimarni.map(item => item.Druh === 'otec' || item.Druh === 'matka' ).length > 0")
-
-            .person-social-network-item(v-for="(osoba, index) in poslanec.OsobniVztahyPrimarni" v-if="osoba.Druh === 'otec' || osoba.Druh === 'matka' " :key="index")
-
-              .content-container
-
-                .header.typography-body-text
-                  .category {{osoba.Druh}}
-
-                .content.typography-alt-heading
-                  .name <strong>{{osoba.Jmeno}}</strong>
-
-              .image
-
-          .person-category-section.person-poslanec-section(data-section-title="Poslanec")
-
-            NuxtLink.person-social-network-item.person-social-network-item-poslanec(:to="`/poslanec/${poslanec.Id}`")
-
-              .content-container
-
-                .header.typography-body-text
-                  .category
-                    span(v-if="poslanec.Pohlavi === 1") poslanec
-                    span(v-if="poslanec.Pohlavi === 2") poslankyně
-
-                .content.typography-alt-heading
-                  .name <strong>{{poslanec.CeleJmeno}}</strong>
-                  .birth → <span>{{poslanec.DatumNarozeniZobrazene}}</span>
-                  .death(v-if="poslanec.DatumUmrtiZobrazene") ← <span>{{poslanec.DatumUmrtiZobrazene}}</span>
-
-              .image
-
-            .person-social-network-item(v-for="(osoba, index) in poslanec.OsobniVztahyPrimarni" v-if="osoba.Druh === 'manžel' || osoba.Druh === 'manželka' " :key="index")
-
-              .content-container
-
-                .header.typography-body-text
-                  .category {{osoba.Druh}}
-
-                .content.typography-alt-heading
-                  .name <strong>{{osoba.Jmeno}}</strong>
-
-              .image
-
-
-
-          .person-category-section.primarny-vztahy-section(data-section-title="Primární vztahy" v-if="poslanec.OsobniVztahyPrimarni")
-
-            .person-social-network-item(v-for="(osoba, index) in poslanec.OsobniVztahyPrimarni" v-if="osoba.Druh !== 'otec' && osoba.Druh !== 'matka' && osoba.Druh !== 'manžel' && osoba.Druh !== 'manželka' " :key="index")
-
-              .content-container
-
-                .header.typography-body-text
-                  .category {{osoba.Druh}}
-
-                .content.typography-alt-heading
-                  .name <strong>{{osoba.Jmeno}}</strong>
-
-              .image
-
-          .person-category-section.sekundarni-vztahy-section(data-section-title="Sekundární vztahy"  v-if="poslanec.OsobniVztahySekundarni.length > 0")
-
-            .person-social-network-item(v-for="(osoba, index) in poslanec.OsobniVztahySekundarni" :key="index")
-
-              .content-container
-
-                .header.typography-body-text
-                  .category {{osoba.Druh}}
-
-                .content.typography-alt-heading
-                  .name <strong>{{osoba.Jmeno}}</strong>
-
-              .image
+        // begin :social map component
+        <SocialniMapa v-for="poslanec in rodina.osoby" :key="poslanec.Id" :Poslanec="poslanec" :hasNadpis="true" />
 
 
     .rodina-detail-events.section-padding-h-margin-v
@@ -128,87 +51,6 @@
 <style lang="sass" scoped>
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/main"
-
-  .svg-layer
-    position: absolute
-    top: 0
-    left: 0
-    pointer-events: none
-    width: 100%
-    height: 100%
-
-  .person-category-section
-    position: relative
-
-    &:before
-      @extend .typography-body-text
-
-      position: absolute
-      top: 0
-      left: 0
-      content: attr(data-section-title)
-      font-size: 18px
-      color: #B9B9B9
-
-
-
-  .person-poslanec-section
-
-    .person-social-network-item-poslanec
-      position: relative
-      z-index: 9
-
-      background-color: #fefefe
-
-
-  .person-social-network-container
-    @extend .alt-bg
-    padding: 40px
-    margin-bottom: 4rem
-
-
-  .person-category-section
-    display: flex
-    justify-content: center
-    margin-bottom: 2rem
-
-
-  .person-social-network-item
-    width: 375px
-    border-radius: 14px
-    padding: 20px
-    background-color: #EBEBEB
-    text-decoration: none
-    margin-right: $margin-until-desktop/2
-
-    display: flex
-    justify-content: space-between
-    align-items: center
-
-    .is-poslanec
-      font-size: 12px
-      font-style: italic
-
-    .image
-      border-radius: 100%
-      width: 124px
-      height: 124px
-      background-color: lightgray
-
-    .content-container
-      display: flex
-      flex-direction: column
-      justify-content: space-between
-      min-height: 157px
-
-      .header
-        line-height: 1.1
-
-      .content
-        font-size: 14px
-        line-height: 1.1
-        max-width: 200px
-
 
 
   .columns.rodina-thumb.typography-row-with-image.typography-centered-text-content
@@ -268,7 +110,7 @@
 export default {
 
     // :NOTE: {params, error, payload, store} is a deconstructed "context" variable
-    async asyncData({params, error, payload, store, $axios}) {
+    async asyncData({params, error, payload, store, $axios, $config}) {
 
       if (payload) {
         return {
@@ -279,14 +121,11 @@ export default {
         // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
         await store.dispatch("getRodinySocialniMapy");
 
-        const databazePoslancuURL = 'https://parliament.ustrcr.cz';
-
-
         let rodina = {...store.state.rodiny_socialni_mapy.filter(rodina => rodina.slug === params.slug)[0]};
 
         rodina.osoby = await Promise.all(rodina.osoby_ids.map(async (osoba_id) => {
 
-            let osoba = await $axios.get(`${databazePoslancuURL}/Api/osoby/${osoba_id}`);
+            let osoba = await $axios.get(`${$config.databazePoslancuURL}/Api/osoby/${osoba_id}`);
 
             return osoba.data;
 

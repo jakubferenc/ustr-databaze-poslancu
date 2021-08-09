@@ -158,33 +158,7 @@
 @import "~/assets/scss/bulma"
 @import "~/assets/scss/typography"
 
-.mapbox
 
-    position: relative
-    z-index: 0
-
-    +from($widescreen)
-     height: calc(100vh - 80px)
-
-.map-person-thumb-head-icon
-  width: 56px
-  height: 56px
-  background: gray
-  border-radius: 100%
-  overflow: hidden
-
-  .map-person-thumb-head-icon-image
-    width: 100%
-    height: 100%
-    position: absolute
-    object-fit: cover
-
-.parlament-detail-map
-
-  .typography-section-title
-    position: relative
-    z-index: 2
-    margin-bottom: -140px
 
 .parlament-meta-tab-navigation
   margin: $margin-until-desktop / 2 0
@@ -326,39 +300,39 @@
         // will center the map based on the position of all the markers on the map
         this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);
 
-        const schemaCircles = this.$el.querySelectorAll('.component-snemovna-schema svg circle');
+        // const schemaCircles = this.$el.querySelectorAll('.component-snemovna-schema svg circle');
 
-        schemaCircles.forEach((el, index) => {
+        // schemaCircles.forEach((el, index) => {
 
-          if (index <= 40) {
-            el.style.fill = "#C0E4F1"
-          }
+        //   if (index <= 40) {
+        //     el.style.fill = "#C0E4F1"
+        //   }
 
-          if (index > 40 && index <= 80) {
-            el.style.fill = "#ACD0C0"
-          }
+        //   if (index > 40 && index <= 80) {
+        //     el.style.fill = "#ACD0C0"
+        //   }
 
-          if (index > 80 && index <= 180) {
-            el.style.fill = "#DDC3B6"
-          }
+        //   if (index > 80 && index <= 180) {
+        //     el.style.fill = "#DDC3B6"
+        //   }
 
-          if (index > 180 && index <= schemaCircles.length+1) {
-            el.style.fill = "#E8D7AD"
-          }
+        //   if (index > 180 && index <= schemaCircles.length+1) {
+        //     el.style.fill = "#E8D7AD"
+        //   }
 
-          el.addEventListener('mouseenter', (e) => {
-            e.target.classList.add('active');
-          });
+        //   el.addEventListener('mouseenter', (e) => {
+        //     e.target.classList.add('active');
+        //   });
 
-          el.addEventListener('mouseleave', (e) => {
-            e.target.classList.remove('active');
-          });
+        //   el.addEventListener('mouseleave', (e) => {
+        //     e.target.classList.remove('active');
+        //   });
 
-          el.addEventListener('click', (e) => {
+        //   el.addEventListener('click', (e) => {
 
-          });
+        //   });
 
-        });
+        // });
 
       },
 

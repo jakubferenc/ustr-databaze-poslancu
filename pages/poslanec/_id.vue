@@ -8,7 +8,7 @@
 
         .main-title-container
           h1.typography-main-title.no-margin-bottom(v-if="!showFullNameWithTitles") {{poslanec.Jmeno}} {{poslanec.Prijmeni}}
-          h1.typography-main-title.no-margin-bottom(v-if="showFullNameWithTitles") {{tituly}} {{poslanec.CeleJmeno}}
+          h1.typography-main-title.no-margin-bottom(v-if="showFullNameWithTitles") {{poslanec.CeleJmeno}} <br> <span class="typography-section-title-smaller-line-height">{{tituly}}</span>
           a(href="#" @click="toggleFullNameWithTitles($event)").button-show-full-name.typography-body-text
             span(v-if="!showFullNameWithTitles") Zobrazit celé jméno a tituly
             span(v-if="showFullNameWithTitles") Skrýt celé jméno s tituly
@@ -22,6 +22,7 @@
 
               .gallery-widget-container
                 .gallery-widget
+                  img(v-if="profileImage" :src="profileImage")
 
 
 
@@ -32,7 +33,9 @@
 
                   .metadata-section
                     .metadata-section-title.typography-metadata-section-title
-                      h3 Narozen/a :TODO:
+                      h3
+                        span(v-if="poslanec.Pohlavi === 1") Narozen
+                        span(v-if="poslanec.Pohlavi === 2") Narozena
                     .metadata-section-content.typography-item-detail-text
                       div {{poslanec.DatumNarozeniZobrazene}}
                       //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
@@ -84,7 +87,7 @@
 
       h2.typography-section-title Důležité události poslance
 
-      CasovaOsa(:Data="poslanec.casova_osa" v-if="poslanec.casova_osa")
+      CasovaOsa(:Data="poslanec.CasovaOsa" v-if="poslanec.CasovaOsa")
 
     .section-padding-h-margin-v.typography-has-no-h-padding
 
@@ -92,10 +95,66 @@
 
       <MandatRadek v-for="mandat in poslanec.Mandaty" :key="mandat.Id" :Mandat="mandat"/>
 
-      //- MandatRadek(
-      //-   v-for="mandat in poslanec.Mandaty" :key="mandat.Id"
-      //-   :Id="mandat.Id"
-      //- )
+    .parlament-detail-map
+
+      h2.typography-section-title Adresy poslance
+
+      .mapbox()
+
+          <l-map ref="mapbox" :options="{scrollWheelZoom: false}" :zoom=13 :center="[55.9464418,8.1277591]">
+            l-tile-layer(
+              id='',
+              accessToken='pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
+              attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
+              url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
+            )
+            <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: true, zoomToBoundsOnClick: true}">
+              <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
+                <l-popup>
+                  .is-map-card.person-social-network-item.person-social-network-item-poslanec
+
+                    .content-container
+
+                      .header.typography-body-text.typography-karta-nadpis
+                        .category {{item.DruhNazev}}
+
+
+                      .content.typography-alt-heading
+                        // show only if the addresses are not birth nor death
+                        .desc(v-if="item.Druh != 5 && item.Druh != 1")
+                          p {{item.Parlament}}
+                          p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
+                        .name {{item.Nazev}}
+
+                </l-popup>
+                <l-icon :icon-anchor="[0,0]" :icon-size="[35, 35]" class-name="map-address-icon">
+
+                  div(v-if="item.Druh != 5 && item.Druh != 1")
+                    span {{index}}
+
+
+                  <MapaIkonaNarozeni v-if="item.Druh == 1" />
+                  <MapaIkonaUmrti v-if="item.Druh == 5" />
+
+
+                </l-icon>
+              </l-marker>
+            </v-marker-cluster>
+
+          </l-map>
+
+    .section-padding-h-margin-v.typography-has-no-h-padding
+
+
+        <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
+
+
+    .parlament-detail-galerie-medii.section-padding.alt-bg-02(v-if="poslanec.Soubory.length > 0")
+
+      h2.typography-section-title Galerie médií
+
+      GalerieMediiSeznam(:Soubory="poslanec.Soubory" :MaButtonMore="false" :MaFilter="false")
+
 
 
 </template>
@@ -116,7 +175,7 @@
 
 .gallery-widget
 
-  background: red
+  background: #eee
 
   +from($widescreen)
     height: 380px
@@ -142,9 +201,14 @@
 
 <script>
 
+  import MapaIkonaNarozeni from "~/assets/images/mapa-icon-birth.svg?inline";
+  import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
+  import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+
+
   export default {
 
-      components: {  },
+      components: { MapaIkonaNarozeni,  MapaIkonaUmrti, ParlamentNahledObecnyImage },
 
       async asyncData({params, error, payload, store, $axios}) {
 
@@ -169,9 +233,6 @@
       data() {
         return {
           showFullNameWithTitles: false,
-          poslanec: {
-            Adresy: undefined
-          }
         }
       },
 
@@ -189,13 +250,66 @@
 
       mounted() {
 
-        console.log(this.poslanec.Mandaty);
+        console.info("OsobniVztahyPrimarni", this.poslanec.OsobniVztahyPrimarni);
+        console.info("OsobniVztahySekundarni", this.poslanec.OsobniVztahySekundarni);
+
+        this.$nextTick(() => {
+
+          this.$refs.mapbox.mapObject.fitBounds(this.geojsonBoundsOnly);
+        });
 
 
       },
 
       computed: {
 
+        profileImage() {
+
+          const hasProfileImage = this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
+
+          if (hasProfileImage) {
+            return hasProfileImage[0].URLNahled;
+          } else {
+            return false;
+          }
+
+        },
+
+
+        geojsonBoundsOnly() {
+
+          return this.poslanec.AdresyProMapu.map((adresa) => {
+
+            return [adresa.GeoX, adresa.GeoY];
+
+
+          });
+
+        },
+
+
+
+        geojson() {
+
+          return this.poslanec.AdresyProMapu.map((adresa) => {
+
+            return {
+
+              LatLng: [adresa.GeoX, adresa.GeoY],
+              Nazev: adresa.Nazev,
+              Druh: adresa.Druh,
+              Parlament: adresa.Parlament,
+              DatumZacatkuZobrazene: adresa.DatumZacatkuZobrazene,
+              DatumKonceZobrazene: adresa.DatumKonceZobrazene,
+              DruhNazev: adresa.DruhNazev,
+
+              PopupHTML: ``,
+
+            }
+
+          });
+
+        },
 
         tituly() {
 
@@ -204,7 +318,7 @@
         },
 
         pocetMandatu() {
-          return this.poslanec?.Mandaty?.length || 'Neuvedeno';
+          // return this.poslanec?.Mandaty?.length || this.$t('error.notDefined');
         },
 
         profese() {
@@ -214,7 +328,7 @@
             const profeseArray = this.poslanec.Mandaty.reduce((acc, mandat) => {
 
               return [{
-                profese: mandat.Profese === null ? 'Neuvedeno' : mandat.Profese,
+                profese: mandat.Profese === null ? this.$t('error.notDefined') : mandat.Profese,
                 datumZacatku: mandat.DatumZacatkuZobrazene,
                 datumKonce: mandat.DatumKonceZobrazene,
                 mandatId: mandat.Id
@@ -236,7 +350,7 @@
           const nabozenstviNarozeni = this.poslanec?.NabozenstviNarozeni;
 
           if (nabozenstviNarozeni === null) {
-            return 'Neuvedeno'; // :TODO: It would be better to get the string via config, not hard-coded into the code here
+            return this.$t('error.notDefined'); // :TODO: It would be better to get the string via config, not hard-coded into the code here
           } else {
             return nabozenstviNarozeni;
           }
@@ -256,7 +370,7 @@
               const city = parts[0];
 
               const countryParts = parts[1].split(',');
-              const country = countryParts[countryParts.length-1];
+              // const country = countryParts[countryParts.length-1];
 
               return {
 
@@ -276,13 +390,13 @@
           // the current form of the string "City | Information, Country"
 
           // :TODO: Refactor, make the function global
-          const addressObject = this.poslanec.Adresy.filter(adresa => adresa.Druh === 5)[0] ?? undefined;
+          const addressObject = this.poslanec.Adresy.filter(adresa => adresa.Druh === 5)[0] ?? false;
           if (addressObject) {
 
             const parts = addressObject.Nazev.split('|');
             const city = parts[0];
             const countryParts = parts[1].split(',');
-            const country = countryParts[countryParts.length-1];
+            // const country = countryParts[countryParts.length-1];
 
             return {
 

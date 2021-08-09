@@ -107,10 +107,18 @@ $filter-button-width: 340px
     +from($desktop)
       margin-bottom: $margin-from-desktop/4
 
+.typography-section-title-smaller-line-height
+  @extend .typography-section-title
+  line-height: .75
+
 .typography-poslanec-thumb-title
   @extend .typography-alt-heading
   font-size: 16px
   font-weight: bold
+
+.typography-karta-nadpis
+  @extend .typography-body-text
+  font-size: 18px
 
 .typography-filter-text
   @extend .typography-body-text

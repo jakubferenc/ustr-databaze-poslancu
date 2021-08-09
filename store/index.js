@@ -19,13 +19,100 @@ const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
 
 };
 
+const getAdresaDruhHumanReadableName = (adresaDruhNumber) => {
+
+  if (adresaDruhNumber == 1) {
+    return 'Místo narození';
+  }
+
+  if (adresaDruhNumber == 2) {
+    return 'Adresa bydliště při zvolení';
+  }
+
+  if (adresaDruhNumber == 3) {
+    return 'Adresa bydliště při začátku mandátu';
+  }
+
+  if (adresaDruhNumber == 4) {
+    return 'Adresa bydliště při svatbě';
+  }
+
+  if (adresaDruhNumber == 5) {
+    return 'Adresa bydliště při úmrtí';
+  }
+
+  if (adresaDruhNumber == 6) {
+    return 'Místo hrobu';
+  }
+
+  if (adresaDruhNumber == 255) {
+    return 'Ostatní typ adresy';
+  }
+
+};
+
+const getAdresyProMapuForPoslanec = (poslanec) => {
+
+
+  let adresyPolozky = [];
+  let adresyMandaty = [];
+
+  if (poslanec.Adresy) {
+    adresyPolozky = [...adresyPolozky, ...poslanec.Adresy.map((adresa) => {
+
+      adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
+
+      return adresa;
+
+    })];
+  }
+
+  if (poslanec.Mandaty && poslanec.Mandaty.length > 0) {
+
+
+    poslanec.Mandaty.forEach((mandat, index) => {
+
+      if (mandat.AdresyVykonMandatu) {
+        adresyMandaty = [...adresyMandaty, ...mandat.AdresyVykonMandatu
+          .filter(adresa => adresa.Druh != 1 && adresa.Druh != 5)
+          .map((adresa) => {
+          adresa._mandatId = mandat.Id;
+          adresa.Parlament = mandat.Parlament;
+          adresa.DatumZacatkuZobrazene = mandat.DatumZacatkuZobrazene;
+          adresa.DatumKonceZobrazene = mandat.DatumKonceZobrazene;
+          adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
+          adresa.DruhTyp = 'AdresaVykonMandatu';
+          return adresa;
+        })];
+      }
+      if (mandat.AdresyZvoleni) {
+        adresyMandaty = [...adresyMandaty, ...mandat.AdresyZvoleni
+          .filter(adresa => adresa.Druh != 1 && adresa.Druh != 5)
+          .map((adresa) => {
+          adresa._mandatId = mandat.Id;
+          adresa.Parlament = mandat.Parlament;
+          adresa.DatumZacatkuZobrazene = mandat.DatumZacatkuZobrazene;
+          adresa.DatumKonceZobrazene = mandat.DatumKonceZobrazene;
+          adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
+          adresa.DruhTyp = 'AdresaZvoleni';
+          return adresa;
+        })];
+      }
+
+    });
+
+    console.info("adresyMandaty", adresyMandaty);
+
+
+
+  }
+
+  return [...adresyPolozky, ...adresyMandaty];
+
+
+};
+
 const getCasovaOsaDataForPoslanec = (poslanec) => {
-
-  console.log("from get casova osa poslanec", poslanec);
-
-  console.log("from get casova osa poslanec datumNarozeni", poslanec.DatumNarozeni);
-  console.log("from get casova osa poslanec datumUmrti", poslanec.DatumUmrti);
-  console.log("mandaty", poslanec.Mandaty);
 
 
   let casovaOsaPolozky = [];
@@ -193,7 +280,7 @@ export const actions = {
       commit("updatePopupTimelineDetail", popup_timeline_detail);
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   },
 
@@ -205,7 +292,7 @@ export const actions = {
       dispatch("countPoslanciStatistiky");
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   },
 
@@ -241,7 +328,7 @@ export const actions = {
       commit("updateRodinySocialniMapy", rodiny);
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   },
 
@@ -270,7 +357,7 @@ export const actions = {
       commit("updateStranky", stranky);
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   },
 
@@ -305,7 +392,7 @@ export const actions = {
 
     } catch (err) {
 
-      console.log(err);
+      console.warn(err);
 
     }
   },
@@ -334,7 +421,7 @@ export const actions = {
 
     } catch (err) {
 
-      console.log(err);
+      console.warn(err);
 
     }
   },
@@ -355,7 +442,7 @@ export const actions = {
       commit("updateMedia", media_soubory);
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   },
 
@@ -390,8 +477,12 @@ export const actions = {
         // prepare statistics, make them integer
         snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);
         snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu);
+        snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku);
+
+
         snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu);
         snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu);
+        snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku);
 
 
         let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
@@ -469,7 +560,7 @@ export const actions = {
 
 
       } catch (err) {
-        console.log(err);
+        console.warn(err);
       }
 
     }
@@ -557,7 +648,7 @@ export const actions = {
 
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   },
 
@@ -589,7 +680,7 @@ export const actions = {
       commit("updatePoslanciHomepage", poslanci);
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   },
 
@@ -629,15 +720,17 @@ export const actions = {
 
       poslanec = poslanec.data;
 
-
       // prepare data for casova osa
-      poslanec.casova_osa = getCasovaOsaDataForPoslanec(poslanec);
+      poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
+
+      poslanec.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+
 
       commit("updatePoslanecDetail", poslanec);
 
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     };
 
   },
@@ -671,7 +764,7 @@ export const actions = {
       dispatch("setPoslanciFiltrovani", poslanci);
 
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
   }
 

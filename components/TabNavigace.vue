@@ -77,7 +77,7 @@
 
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
-              h3 Forma Ukončení mandátu
+              h3 Forma ukončení mandátu
             .metadata-section-content.typography-item-detail-text
               div tssfdfadsfsd
               //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
