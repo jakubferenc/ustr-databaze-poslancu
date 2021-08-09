@@ -28,7 +28,7 @@
 
           .chart-widget.text-right.chart-pie
             .chart-graphics.text-data
-              .text-data-main {{ parseInt(statistiky.PocetMazaku / (snemovniObdobi.PocetPoslancu / 100))  }}<small class="text-data-sub">%</small>
+              .text-data-main {{ parseInt(statistiky.PocetMazaku / (statistiky.CelkovyPocetPoslancu / 100))  }}<small class="text-data-sub">%</small>
               .text-data-sub
             .chart-text Znovuzvolených
 
@@ -83,7 +83,7 @@
               attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
               url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
             )
-            <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true}">
+            <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: true, zoomToBoundsOnClick: true}">
               <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
                 <l-popup>
                   <NuxtLink to="">
@@ -147,7 +147,16 @@
 
       h2.typography-section-title Kompletní informace o sněmovně
 
-      p fadfsd
+      p :TODO: DOPLNIT
+
+
+
+    .parlament-detail-navigation
+      .parlament-detail-navigation-title {{$t('showDataForWhen')}}
+
+      .button-toggler-component.normal
+        .button-toggle(title="Začátek sněmovního období" :class="{active: buttonToggleTypeActive === 'start'}" @click="toggleDate('start', $event)") {{snemovniObdobi.DatumZacatkuZobrazene}}
+        .button-toggle(title="Konec sněmovního období" :class="{active: buttonToggleTypeActive === 'end'}" @click="toggleDate('end', $event)") {{snemovniObdobi.DatumKonceZobrazene}}
 
 
 
@@ -157,6 +166,48 @@
 <style lang="sass">
 @import "~/assets/scss/bulma"
 @import "~/assets/scss/typography"
+
+.button-toggler-component
+  display: flex
+  justify-content: space-between
+  overflow: hidden
+
+  @extend .typography-alt-heading
+
+  &.normal
+    background-color: #fff
+    border: 1px solid #000
+    border-radius: 10px
+
+  .button-toggle
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 35px
+    flex: 1
+    cursor: pointer
+
+    &.active
+      background-color: #000
+      color: #fff
+
+.parlament-detail-navigation
+  @extend .typography-alt-heading
+
+  position: fixed
+  bottom: $margin-until-desktop
+  left: $margin-until-desktop
+  width: 300px
+
+  .parlament-detail-navigation-title
+    margin-bottom: 15px
+
+
+
+
+
+
+
 
 
 
@@ -287,6 +338,7 @@
 
       data() {
         return {
+          buttonToggleTypeActive: 'start',
           ukazatDataProKonecneObdobi: false,
           mapboxAccessToken: '',
           zoom: 8,
@@ -294,8 +346,28 @@
         }
       },
 
+      methods: {
+
+        toggleDate(type, event) {
+
+          if (type === 'start') {
+            this.ukazatDataProKonecneObdobi = false;
+            this.buttonToggleTypeActive = 'start';
+          }
+
+          if (type === 'end') {
+            this.ukazatDataProKonecneObdobi = true;
+            this.buttonToggleTypeActive = 'end';
+          }
+
+        },
+
+      },
+
       mounted() {
 
+
+        this.snemovniObdobi.Poslanci.map(poslanec => console.info(poslanec.Soubory));
 
         // will center the map based on the position of all the markers on the map
         this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);
@@ -672,7 +744,7 @@
               vybory: {
                 id: 'vybory',
                 title: 'výbory',
-                data: this.statistiky.Narodnosti,
+                data: this.statistiky.Vybory,
               }
             },
 
