@@ -2,26 +2,31 @@
 
     .galerie-medii-seznam
 
-      <FilterSeznam v-if="MaFilter" :RaditZakladniPolozka="{id: '', value: '', text: 'řadit dle'}" :RaditDle="[{id: '', value: 'test-01', text: 'Test 01'}, {id: '', value: 'test-02', text: 'Test 02'}, {id: '', value: 'test-03', text: 'Test 03'}]" />
+      //<FilterSeznam v-if="MaFilter" :RaditZakladniPolozka="{id: '', value: '', text: 'řadit dle'}" :RaditDle="[{id: '', value: 'test-01', text: 'Test 01'}, {id: '', value: 'test-02', text: 'Test 02'}, {id: '', value: 'test-03', text: 'Test 03'}]" />
 
       .columns.is-multiline.is-mobile
 
         div.column.file-thumb(v-for="soubor in Soubory").is-one-fifth-desktop.is-one-third-tablet.is-half-mobile
-          img.file-image(:src="soubor.url" alt="")
-          .file-thumb-footer
-            .file-title {{soubor.title}}
-            .file-type
-              <IconFileTypeImage v-if="soubor.mime_type === 'image/jpeg' " />
+          NuxtLink.file-link(:to="`media/${soubor.id}`")
+            .image-container(v-if="soubor.media_details.sizes.medium")
+              img.file-image(:src="soubor.media_details.sizes.medium.source_url" alt="")
+            .file-thumb-footer
+              .file-title(v-html="soubor.caption.rendered")
+              .file-type
+                <IconFileTypeImage  />
 
       .component-footer(v-if="MaButtonMore")
 
-        button.typo-form-button.button-large Zobrazit celou galerii
+        NuxtLink.typo-form-button.button-large(to="/galerie-medii") Zobrazit celou galerii
 
 </template>
 
 <style lang="sass" scoped>
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
+
+  .file-link
+    text-decoration: none
 
   .galerie-medii-seznam
 
@@ -60,7 +65,7 @@
         width: 100%
         height: 206px
         object-fit: cover
-
+        object-position: top
 
 
       .file-thumb-footer
@@ -85,6 +90,11 @@ import IconFileTypeDocument from "~/assets/images/icon-file-document.svg?inline"
 export default {
 
   components: { IconFileTypeImage, IconFileTypeVideo, IconFileTypeDocument },
+
+  mounted() {
+
+
+  },
 
    props: ['Soubory', 'MaButtonMore', 'MaFilter'],
 }

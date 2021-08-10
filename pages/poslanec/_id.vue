@@ -163,6 +163,7 @@
 @import "~/assets/scss/bulma"
 @import "~/assets/scss/typography"
 
+  
 
 .profese
   .profese-date-range

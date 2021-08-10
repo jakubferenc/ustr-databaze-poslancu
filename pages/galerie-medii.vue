@@ -18,6 +18,12 @@ export default {
       await store.dispatch("getMedia");
     },
 
+    mounted() {
+
+      console.log("from mounted", this.soubory);
+
+    },
+
     computed: {
       soubory() {
         return this.$store.state.media_soubory;

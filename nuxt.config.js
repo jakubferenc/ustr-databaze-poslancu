@@ -35,6 +35,29 @@ export default {
 
       const strankyRes = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
       const rodinyRes = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/rodina?_embed`);
+
+      // generate media
+      const wpFetchHeaders = {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Expose-Headers': 'x-wp-total'
+        }
+      };
+
+      const { headers } = await this.$axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100`, wpFetchHeaders);
+      const totalPages = headers['x-wp-totalpages'];
+
+      let mediaRes = [];
+
+      for (let page = 1; page <=totalPages; page++) {
+
+        let posts = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
+        mediaRes = [...mediaRes, ...posts.data];
+
+      }
+
+      mediaRes = mediaRes.filter(soubor => soubor.media_details.sizes !== undefined);
+
       //const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
 
       // const osobyRoutes = osobyRes.data.map(item => {
@@ -45,6 +68,17 @@ export default {
       //   };
 
       // });
+
+      const mediaRoutes = mediaRes.map(item => {
+
+        return {
+
+          route: `/media/${item.id}`,
+          payload: item // thanks to the payload, we are caching results for the subpage here
+
+        };
+
+      });
 
       const strankyRoutes = strankyRes.data.map(item => {
 
@@ -68,7 +102,7 @@ export default {
 
       });
 
-      routes = [...strankyRoutes, ...rodinyRoutes];
+      routes = [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes];
 
       return routes;
 

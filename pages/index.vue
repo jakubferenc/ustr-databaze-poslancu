@@ -42,7 +42,12 @@ export default {
 
     computed: {
       soubory() {
-        return this.$store.state.media_soubory;
+
+        const limit = 10;
+
+        let media = [...this.$store.state.media_soubory];
+
+        return media.slice(0, limit);
       },
       poslanci() {
         return this.$store.state.poslanci_homepage;

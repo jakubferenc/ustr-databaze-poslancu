@@ -426,18 +426,38 @@ export const actions = {
     }
   },
 
-  async getMedia({ state, commit }) {
+  async getMedia({ state, commit }, limit = 100 ) {
 
     // ÚSTR custom API reference — http://parliament.ustrcr.cz/Api/Help/Api/GET-soubory_Limit_Stranka_Mime
     // Wordpress media REST API reference — https://developer.wordpress.org/rest-api/reference/media/#list-media
+
+    let media_soubory = [];
+
+    const wpFetchHeaders = {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Expose-Headers': 'x-wp-total'
+      }
+    };
 
     if (state.media_soubory.length) return;
 
     try {
 
-      let media_soubory = await this.$axios.get(`${databazePoslancuURL}/Api/soubory?limit=100`);
+      const { headers } = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}`, wpFetchHeaders);
+      const totalPages = headers['x-wp-totalpages'];
 
-      media_soubory = media_soubory.data.map(normalizeUstrApiMediaObjectForWordpress);
+
+
+      for (let page = 1; page <=totalPages; page++) {
+
+        let posts = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
+        media_soubory = [...media_soubory, ...posts.data];
+
+      }
+
+      media_soubory = media_soubory.filter(soubor => soubor.media_details.sizes !== undefined);
+
 
       commit("updateMedia", media_soubory);
 
