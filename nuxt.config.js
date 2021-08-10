@@ -44,14 +44,14 @@ export default {
         }
       };
 
-      const { headers } = await this.$axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100`, wpFetchHeaders);
+      const { headers } = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100`, wpFetchHeaders);
       const totalPages = headers['x-wp-totalpages'];
 
       let mediaRes = [];
 
       for (let page = 1; page <=totalPages; page++) {
 
-        let posts = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
+        let posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
         mediaRes = [...mediaRes, ...posts.data];
 
       }
