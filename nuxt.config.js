@@ -51,7 +51,7 @@ export default {
 
       for (let page = 1; page <=totalPages; page++) {
 
-        let posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
+        let posts = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
         mediaRes = [...mediaRes, ...posts.data];
 
       }
