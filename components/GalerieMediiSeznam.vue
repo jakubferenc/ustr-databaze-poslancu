@@ -7,7 +7,7 @@
       .columns.is-multiline.is-mobile
 
         div.column.file-thumb(v-for="soubor in Soubory").is-one-fifth-desktop.is-one-third-tablet.is-half-mobile
-          NuxtLink.file-link(:to="`media/${soubor.id}`")
+          NuxtLink.file-link(:to="`/media/${soubor.id}`")
 
             .image-container(v-if="Typ == 'WPMediaDetails' ")
               img.file-image(:src="soubor.media_details.sizes.medium.source_url" alt="")
