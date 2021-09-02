@@ -1,11 +1,10 @@
 import axios from "axios";
+import projectConfig from './project.config';
 
 
-const config = {
-  wordpressAPIURLWebsite: 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json',
-  databazePoslancuURL: 'https://parliament.ustrcr.cz',
-  globalTitle: 'Databáze poslanců.cz',
-};
+const dev = process.env.NODE_ENV !== 'production';
+
+const config = {dev, ...projectConfig};
 
 export default {
   /*env: {
@@ -121,6 +120,10 @@ export default {
   },
   buildModules: [
     "@nuxtjs/svg",
+    ['@nuxt/image', {
+      // The screen sizes predefined by `@nuxt/image`:
+      screens: config.responsive.breakpoints,
+    }],
   ],
   globalName: 'databaze-poslancu',
   target: 'static', // default is 'server'
