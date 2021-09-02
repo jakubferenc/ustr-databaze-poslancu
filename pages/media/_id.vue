@@ -9,7 +9,6 @@
       .image-item-detail.columns.is-multiline
 
         .image-container(v-if="soubor.media_details.sizes.full").column.is-four-fifths-desktop.is-two-thirds-tablet.is-full-mobile
-          img.file-image(:src="soubor.media_details.sizes.full.source_url" alt="")
 
           nuxt-picture.slider-image(
             format="webp"
