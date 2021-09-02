@@ -7,7 +7,7 @@
       .excerpt-container.typography-row-with-image(:class="excerptKontejnerStyly")
 
         .row-in-image.featured-image()
-          img(:src="stranka.featured_image.sizes.large.source_url")
+          img(:src="stranka.featured_image.sizes.full.source_url")
         .row-in-text.excerpt-text.typography-item-detail-text
           p
             i(v-html="stranka.excerpt")
@@ -42,6 +42,10 @@ export default {
 
     },
 
+    mounted() {
+      console.log(this.stranka);
+    },
+
     data() {
       return {
         excerptKontejnerStyly: {
@@ -51,7 +55,7 @@ export default {
     },
     head () {
       return {
-        title: `${this.slug} — ${this.$config.globalTitle}`,
+        title: `${this.stranka.slug} — ${this.$config.globalTitle}`,
         htmlAttrs: {
           class: 'page genericka-stranka'
         }

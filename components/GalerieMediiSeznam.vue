@@ -8,8 +8,12 @@
 
         div.column.file-thumb(v-for="soubor in Soubory").is-one-fifth-desktop.is-one-third-tablet.is-half-mobile
           NuxtLink.file-link(:to="`media/${soubor.id}`")
-            .image-container(v-if="soubor.media_details.sizes.medium")
+
+            .image-container(v-if="Typ == 'WPMediaDetails' ")
               img.file-image(:src="soubor.media_details.sizes.medium.source_url" alt="")
+            .image-container(v-else)
+              img.file-image(:src="soubor.sizes.medium" alt="")
+
             .file-thumb-footer
               .file-title(v-html="soubor.caption.rendered")
               .file-type
@@ -86,16 +90,21 @@ import IconFileTypeImage from "~/assets/images/icon-file-image.svg?inline";
 import IconFileTypeVideo from "~/assets/images/icon-file-video.svg?inline";
 import IconFileTypeDocument from "~/assets/images/icon-file-document.svg?inline";
 
+let i = 0;
 
 export default {
+
+  props: ['Soubory', 'MaButtonMore', 'MaFilter', 'Typ'],
 
   components: { IconFileTypeImage, IconFileTypeVideo, IconFileTypeDocument },
 
   mounted() {
 
+    console.log("from gallery component", i++, this.Soubory);
+
 
   },
 
-   props: ['Soubory', 'MaButtonMore', 'MaFilter'],
+
 }
 </script>

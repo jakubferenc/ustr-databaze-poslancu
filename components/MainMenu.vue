@@ -12,7 +12,7 @@
     span &nbsp;|
     NuxtLink(to="/slovnik") Slovník
     span &nbsp;|
-    NuxtLink(to="/galerie-medii") Galerie médií
+    NuxtLink.link-galerie-medii(to="/galerie-medii") Galerie médií
 </template>
 
 
@@ -35,6 +35,10 @@
 
   html.subpage-poslanci .link-poslanci
     @extend .nuxt-link-exact-active
+
+  html.subpage-media .link-galerie-medii
+    @extend .nuxt-link-exact-active
+
 
 </style>
 

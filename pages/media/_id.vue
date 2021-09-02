@@ -62,7 +62,7 @@ export default {
       } else {
 
         // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
-        await store.dispatch("getMedia");
+        await store.dispatch("getMedia", {id: params.id});
 
         let storeItems = [...store.state.media_soubory];
 
@@ -89,9 +89,8 @@ export default {
       return {
         title: `DOPLNIT — ${this.$config.globalTitle}`,
         htmlAttrs: {
-          class: 'alt-bg'
+          class: 'alt-bg subpage-media'
         },
-
       }
     }
 

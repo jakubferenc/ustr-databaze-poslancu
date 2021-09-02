@@ -124,6 +124,7 @@
                         .desc(v-if="item.Druh != 5 && item.Druh != 1")
                           p {{item.Parlament}}
                           p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
+                          p {{item.DruhTyp}}
                         .name {{item.Nazev}}
 
                 </l-popup>
@@ -163,7 +164,7 @@
 @import "~/assets/scss/bulma"
 @import "~/assets/scss/typography"
 
-  
+
 
 .profese
   .profese-date-range
@@ -298,6 +299,7 @@
 
               LatLng: [adresa.GeoX, adresa.GeoY],
               Nazev: adresa.Nazev,
+              DruhTyp: adresa.DruhTyp,
               Druh: adresa.Druh,
               Parlament: adresa.Parlament,
               DatumZacatkuZobrazene: adresa.DatumZacatkuZobrazene,

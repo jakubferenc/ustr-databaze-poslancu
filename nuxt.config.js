@@ -4,7 +4,7 @@ import axios from "axios";
 const config = {
   wordpressAPIURLWebsite: 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json',
   databazePoslancuURL: 'https://parliament.ustrcr.cz',
-  globalTitle: 'Databáze poslanců.cz'
+  globalTitle: 'Databáze poslanců.cz',
 };
 
 export default {
@@ -29,6 +29,10 @@ export default {
     }
   },
   generate: {
+    exclude: [
+      /^\/poslanec/ // path starts with /admin
+    ],
+    crawler: true,
     async routes() {
 
       let routes = [];

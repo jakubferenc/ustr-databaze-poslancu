@@ -132,8 +132,6 @@ export default {
 
   mounted() {
 
-    console.log("from component soc mapy", this.Poslanec);
-
 
   },
    data() {

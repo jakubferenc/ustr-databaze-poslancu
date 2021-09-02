@@ -13,9 +13,13 @@
 
     .tab-navigation-content-item.parlament-tabs-content-item(v-for="(item, key) in Nastaveni.polozky" :id="item.id" :class="{ active: item.id === activeTabId, [item.id]: true }")
 
-      CasovaOsa(:Data="item.obsah" v-if="key === 'duleziteUdalosti' ")
-      GalerieMediiSeznam(v-else-if="key === 'galerieMedia' " :Soubory="item.obsah" :MaButtonMore="false" :MaFilter="false")
-      div(v-else v-html="item.obsah")
+      .casova-osa-container(v-if="key === 'duleziteUdalosti' ")
+        CasovaOsa(:Data="item.obsah" )
+      .galerie-medii-container(v-else-if="key === 'galerieMedia' " )
+        GalerieMediiSeznam(v-if="Array.isArray(item.obsah)" :Soubory="item.obsah" :MaButtonMore="false" :MaFilter="false")
+        div(v-else) Parlamentní těleso {{ item.title }} neobsahuje galerii
+      .obsah-container(v-else)
+        div(v-html="item.obsah")
 
   // :TODO: #6 Create a separate component to display tab nav for this page type?
   // probably temporary
@@ -293,6 +297,10 @@ export default {
 
     },
 
+  },
+
+  mounted() {
+    console.log(this.Nastaveni.polozky);
   },
 
   methods: {

@@ -27,6 +27,7 @@ export default {
     async asyncData({store}) {
 
       await store.dispatch("getParlamenty");
+
     },
 
     computed: {

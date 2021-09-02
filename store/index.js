@@ -19,6 +19,18 @@ const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
 
 };
 
+const normalizeMediaAttrs = (item) => {
+
+  if (!item.sizes) {
+    if (item.media_details) {
+      item.sizes = item.media_details.sizes;
+    }
+  }
+
+  return item;
+
+};
+
 const getAdresaDruhHumanReadableName = (adresaDruhNumber) => {
 
   if (adresaDruhNumber == 1) {
@@ -303,8 +315,8 @@ export const actions = {
 
     try {
 
-      let rodiny = await fetch(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
-      .then(res => res.json());
+      let rodiny = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
+      .then(res => res.data);
 
       rodiny = rodiny
         .filter(item => item.status === "publish")
@@ -318,11 +330,25 @@ export const actions = {
           featured_image: _embedded['wp:featuredmedia'][0].media_details,
           author: _embedded.author, /* will return an array of authors and their meta data */
           datum: rodina_datum,
-          osoby_ids: rodina_osoby_ids.split(', '),
-          pocet_osob: rodina_osoby_ids.split(', ').length,
+          osoby_ids: rodina_osoby_ids.replace(/ +/g, "").split(','), // remove whitespace between commas
+          pocet_osob: rodina_osoby_ids.replace(/ +/g, "").split(',').length,
           casova_osa: acf.casova_osa,
           galerie: acf.galerie
         }));
+
+      rodiny = await Promise.all(rodiny.map(async (rodina) => {
+
+        rodina.osoby = await Promise.all(rodina.osoby_ids.map(async (osoba_id) => {
+
+          let osoba = await this.$axios.get(`${databazePoslancuURL}/Api/osoby/${osoba_id}`);
+
+          return osoba.data;
+
+        }));
+
+        return rodina;
+
+      }));
 
 
       commit("updateRodinySocialniMapy", rodiny);
@@ -338,8 +364,8 @@ export const actions = {
 
     try {
 
-      let stranky = await fetch(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`)
-      .then(res => res.json());
+      let stranky = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`)
+      .then(res => res.data);
 
       stranky = stranky
         .filter(page => page.status === "publish")
@@ -426,7 +452,7 @@ export const actions = {
     }
   },
 
-  async getMedia({ state, commit }, limit = 100 ) {
+  async getMedia({ state, commit }, opts = {limit: 100, id: false} ) {
 
     // ÚSTR custom API reference — http://parliament.ustrcr.cz/Api/Help/Api/GET-soubory_Limit_Stranka_Mime
     // Wordpress media REST API reference — https://developer.wordpress.org/rest-api/reference/media/#list-media
@@ -440,30 +466,62 @@ export const actions = {
       }
     };
 
-    if (state.media_soubory.length) return;
+    if (opts.id) {
+      // we want a specific media id
 
-    try {
+      // check if we have it in the store
+      const storeItems = [...state.media_soubory];
+      const storeItem = storeItems.filter(soubor => soubor.id == opts.id);
 
-      const { headers } = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}`, wpFetchHeaders);
-      const totalPages = headers['x-wp-totalpages'];
+      if (storeItem.length && storeItem.length > 0) {
+        // return the required item from the store
+        return storeItem[0];
 
+      } else {
 
+        // we do not have the item in the store, we need to make the axios call to the API
 
-      for (let page = 1; page <=totalPages; page++) {
+        try {
+          let post = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media/${opts.id}?embed`);
+          post = post.data;
 
-        let posts = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
-        media_soubory = [...media_soubory, ...posts.data];
+          const media_soubory = [...state.media_soubory, post];
+
+          commit("updateMedia", media_soubory);
+          return;
+
+        } catch (err) {
+          console.warn(err);
+        }
 
       }
 
-      media_soubory = media_soubory.filter(soubor => soubor.media_details.sizes !== undefined);
+    } else {
+
+      try {
+
+        const { headers } = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}`, wpFetchHeaders);
+        const totalPages = headers['x-wp-totalpages'];
 
 
-      commit("updateMedia", media_soubory);
+        for (let page = 1; page <=totalPages; page++) {
 
-    } catch (err) {
-      console.warn(err);
+          let posts = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}&page=${page}`, wpFetchHeaders);
+          media_soubory = [...media_soubory, ...posts.data];
+
+        }
+
+        media_soubory = media_soubory.filter(soubor => soubor.media_details.sizes !== undefined);
+
+
+        commit("updateMedia", media_soubory);
+
+      } catch (err) {
+        console.warn(err);
+      }
+
     }
+
   },
 
   async getSnemovniObdobiDetail({ state, commit }, { snemovniObdobiId }) {
@@ -658,7 +716,6 @@ export const actions = {
           parlament.Galerie = thisWPParlamentObj.acf.galerie;
 
         }
-
 
         return parlament;
 

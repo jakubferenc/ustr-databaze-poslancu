@@ -87,19 +87,21 @@ export default {
 
     async asyncData({params, error, payload, store}) {
 
-      await store.dispatch("getRodinySocialniMapy");
 
-      return {
-        rodiny: store.state.rodiny_socialni_mapy
+      try {
+
+        await store.dispatch("getRodinySocialniMapy");
+
+        return {
+          rodiny: store.state.rodiny_socialni_mapy
+        }
+
+      } catch (err) {
+        console.warn(err);
       }
 
     },
 
-
-    mounted() {
-
-
-    },
 
     data() {
       return {

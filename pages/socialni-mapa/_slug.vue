@@ -19,7 +19,7 @@
 
           .column.row-in-image.is-half-desktop
             .rodina-thumb-image.typography-image-thumb-larger
-              img(:src="rodina.featured_image.sizes.full.source_url")
+              //- img(:src="rodina.featured_image.sizes.full.source_url")
           .column.row-in-text.is-half-desktop.typography-body-text
             .rodina-thumb-text(v-html="rodina.content")
 
@@ -33,13 +33,13 @@
         <SocialniMapa v-for="poslanec in rodina.osoby" :key="poslanec.Id" :Poslanec="poslanec" :hasNadpis="true" />
 
 
-    .rodina-detail-events.section-padding-h-margin-v
+    .rodina-detail-events.section-padding-h-margin-v(v-if="rodina.casova_osa")
 
       h2.typography-section-title Důležité události
 
-      CasovaOsa(:Data="rodina.casova_osa" v-if="rodina.casova_osa")
+      CasovaOsa(:Data="rodina.casova_osa")
 
-    .parlament-detail-galerie-medii.section-padding.alt-bg
+    .parlament-detail-galerie-medii.section-padding.alt-bg(v-if="rodina.galerie")
 
       h2.typography-section-title Galerie médií
 
@@ -112,37 +112,38 @@ export default {
     // :NOTE: {params, error, payload, store} is a deconstructed "context" variable
     async asyncData({params, error, payload, store, $axios, $config}) {
 
-      if (payload) {
-        return {
-          rodina: payload
-        }
-      } else {
+      try {
 
-        // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
-        await store.dispatch("getRodinySocialniMapy");
+        // check if the payload exists for the static generated page
+        if (payload) {
+          return {
+            rodina: payload
+          }
+        } else {
 
-        let rodina = {...store.state.rodiny_socialni_mapy.filter(rodina => rodina.slug === params.slug)[0]};
+          // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
+          await store.dispatch("getRodinySocialniMapy");
 
-        rodina.osoby = await Promise.all(rodina.osoby_ids.map(async (osoba_id) => {
-
-            let osoba = await $axios.get(`${$config.databazePoslancuURL}/Api/osoby/${osoba_id}`);
-
-            return osoba.data;
-
-        }));
+          const rodina = store.state.rodiny_socialni_mapy.filter(rodina => rodina.slug === params.slug)[0];
 
 
+          return {
+            rodina: rodina
+          }
 
-        return {
-          rodina: rodina
         }
 
 
+
+      } catch (err) {
+        console.warn(err);
       }
 
     },
 
     mounted() {
+
+      console.log(this.rodina);
 
       const lines = [];
 

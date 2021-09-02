@@ -156,6 +156,7 @@
 
       tabNavigaceNastaveni() {
 
+
         return {
           tabNavigaceNastaveni: {},
           polozky: {
@@ -178,7 +179,8 @@
             galerieMedia: {
               id: 'galerie-medii',
               title: 'galerie médií',
-              obsah: this.Galerie
+              obsah: this.Galerie,
+              pocetPolozekNadpis: (this.Galerie) ? this.Galerie.length : 0,
             }
           },
         };

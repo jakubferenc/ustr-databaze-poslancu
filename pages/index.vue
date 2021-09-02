@@ -18,7 +18,7 @@
 
       h2.typography-section-title() Galerie médií
 
-      GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="true" :MaFilter="false")
+      GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="true" :MaFilter="false" Typ="WPMediaDetails")
 
 </template>
 
@@ -43,7 +43,7 @@ export default {
     computed: {
       soubory() {
 
-        const limit = 10;
+        const limit = 20;
 
         let media = [...this.$store.state.media_soubory];
 
