@@ -2,10 +2,8 @@
 this is where we will eventually hold the data for all of our posts
 */
 /*eslint no-unsafe-optional-chaining: "error"*/
-
-
-const wordpressAPIURLWebsite = 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json';
-const databazePoslancuURL = 'https://parliament.ustrcr.cz';
+import apiFactory from '../factories';
+import projectConfig from '../project.config';
 
 const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
 
@@ -309,47 +307,13 @@ export const actions = {
   },
 
 
-  async getRodinySocialniMapy ({ state, commit }) {
+  async getRodinySocialniMapy ({ state, commit }, ctx) {
 
     if (state.rodiny_socialni_mapy.length) return;
 
     try {
 
-      let rodiny = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
-      .then(res => res.data);
-
-      rodiny = rodiny
-        .filter(item => item.status === "publish")
-        .map(({ id, date, slug, title, content, excerpt, _embedded, rodina_datum, rodina_osoby_ids, acf }) => ({
-          id: id,
-          date: date,
-          slug: slug,
-          title: title.rendered,
-          content: content.rendered,
-          excerpt: excerpt.rendered,
-          featured_image: _embedded['wp:featuredmedia'][0].media_details,
-          author: _embedded.author, /* will return an array of authors and their meta data */
-          datum: rodina_datum,
-          osoby_ids: rodina_osoby_ids.replace(/ +/g, "").split(','), // remove whitespace between commas
-          pocet_osob: rodina_osoby_ids.replace(/ +/g, "").split(',').length,
-          casova_osa: acf.casova_osa,
-          galerie: acf.galerie
-        }));
-
-      rodiny = await Promise.all(rodiny.map(async (rodina) => {
-
-        rodina.osoby = await Promise.all(rodina.osoby_ids.map(async (osoba_id) => {
-
-          let osoba = await this.$axios.get(`${databazePoslancuURL}/Api/osoby/${osoba_id}`);
-
-          return osoba.data;
-
-        }));
-
-        return rodina;
-
-      }));
-
+      const rodiny = await apiFactory.getRodinySocialniMapyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
 
       commit("updateRodinySocialniMapy", rodiny);
 
@@ -364,7 +328,7 @@ export const actions = {
 
     try {
 
-      let stranky = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`)
+      let stranky = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/pages?_embed`)
       .then(res => res.data);
 
       stranky = stranky
@@ -393,7 +357,7 @@ export const actions = {
 
     try {
 
-      let casova_osa = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=100`);
+      let casova_osa = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=100`);
 
       casova_osa = casova_osa.data;
 
@@ -429,7 +393,7 @@ export const actions = {
 
     try {
 
-      let slovnikova_hesla = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`);
+      let slovnikova_hesla = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`);
 
       slovnikova_hesla = slovnikova_hesla.data;
 
@@ -482,7 +446,7 @@ export const actions = {
         // we do not have the item in the store, we need to make the axios call to the API
 
         try {
-          let post = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media/${opts.id}?embed`);
+          let post = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media/${opts.id}?embed`);
           post = post.data;
 
           const media_soubory = [...state.media_soubory, post];
@@ -500,19 +464,17 @@ export const actions = {
 
       try {
 
-        const { headers } = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}`, wpFetchHeaders);
+        const { headers } = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}`, wpFetchHeaders);
         const totalPages = headers['x-wp-totalpages'];
-
 
         for (let page = 1; page <=totalPages; page++) {
 
-          let posts = await this.$axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}&page=${page}`, wpFetchHeaders);
+          let posts = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}&page=${page}`, wpFetchHeaders);
           media_soubory = [...media_soubory, ...posts.data];
 
         }
 
         media_soubory = media_soubory.filter(soubor => soubor.media_details.sizes !== undefined);
-
 
         commit("updateMedia", media_soubory);
 
@@ -546,7 +508,7 @@ export const actions = {
 
       try {
 
-        snemovniObdobiObj = await this.$axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
+        snemovniObdobiObj = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
         snemovniObdobiObj = snemovniObdobiObj.data;
 
         snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
@@ -563,7 +525,7 @@ export const actions = {
         snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku);
 
 
-        let snemovniObdobiObjWpData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
+        let snemovniObdobiObjWpData = await this.$axios.get( `${projectConfig.wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
         snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
 
         // get wordpress content referenced via Id
@@ -650,15 +612,15 @@ export const actions = {
     if (state.parlamenty.length) return;
     try {
 
-      let parlamenty = await this.$axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
+      let parlamenty = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/snemovny/seznam`);
       parlamenty = parlamenty.data;
 
-      let parlamentyWPData = await this.$axios.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
+      let parlamentyWPData = await this.$axios.get( `${projectConfig.wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
       parlamentyWPData = parlamentyWPData.data;
 
       parlamenty = await Promise.all(parlamenty.map(async (parlament) => {
 
-        const getSnemovniObdobi = await this.$axios.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
+        const getSnemovniObdobi = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
 
         parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
 
@@ -733,7 +695,7 @@ export const actions = {
     if (state.poslanci.length) return;
     try {
 
-      let poslanci = await this.$axios.get(`${databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
 
       if (filterCallback !== null) {
         poslanci = poslanci.filter(filterCallback);
@@ -793,7 +755,7 @@ export const actions = {
 
     try {
 
-      let poslanec = await this.$axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
+      let poslanec = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${poslanecId}`);
 
       poslanec = poslanec.data;
 
@@ -816,7 +778,7 @@ export const actions = {
     if (state.poslanci.length) return;
     try {
 
-      let poslanci = await this.$axios.get(`${databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
 
       if (filterCallback !== null) {
         poslanci = poslanci.filter(filterCallback);

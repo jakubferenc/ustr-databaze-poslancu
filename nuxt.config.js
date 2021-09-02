@@ -1,22 +1,18 @@
 import axios from "axios";
+import apiFactory from './factories';
 import projectConfig from './project.config';
-
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const config = {dev, ...projectConfig};
+const $config = {dev, ...projectConfig};
 
 export default {
-  /*env: {
-    baseUrl: process.env.BASE_URL || 'https://localhost:3000'
-  },
-  server: {
-    port: 3000,
-    host: 'localhost',
-    timing: false
-  },*/
+  globalName: 'databaze-poslancu',
+  target: 'static', // default is 'server'
+  ssr: true,
+  components: true,
+  publicRuntimeConfig: {...$config},
 
-  publicRuntimeConfig: {...config},
   render: {
     static: {
       setHeaders(res) {
@@ -36,8 +32,9 @@ export default {
 
       let routes = [];
 
-      const strankyRes = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
-      const rodinyRes = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/rodina?_embed`);
+      const rodinyRes =  await apiFactory.getRodinySocialniMapyFactory($config.wordpressAPIURLWebsite, $config.databazePoslancuURL);
+
+      const strankyRes = await axios.get(`${$config.wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
 
       // generate media
       const wpFetchHeaders = {
@@ -47,14 +44,14 @@ export default {
         }
       };
 
-      const { headers } = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100`, wpFetchHeaders);
+      const { headers } = await axios.get(`${$config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100`, wpFetchHeaders);
       const totalPages = headers['x-wp-totalpages'];
 
       let mediaRes = [];
 
       for (let page = 1; page <=totalPages; page++) {
 
-        let posts = await axios.get(`${config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
+        let posts = await axios.get(`${$config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
         mediaRes = [...mediaRes, ...posts.data];
 
       }
@@ -122,24 +119,20 @@ export default {
     "@nuxtjs/svg",
     ['@nuxt/image', {
       // The screen sizes predefined by `@nuxt/image`:
-      screens: config.responsive.breakpoints,
+      screens: $config.responsive.breakpoints,
     }],
   ],
-  globalName: 'databaze-poslancu',
-  target: 'static', // default is 'server'
-  ssr: true,
-  components: true,
   modules: [
     ['@nuxtjs/style-resources', {
       sass: ['~bulma/sass/utilities/all']
     }],
     ['@nuxtjs/proxy', {
-      '/Api/snemovny/seznam': `${config.databazePoslancuURL}`,
-      '/Api/snemovny/': `${config.databazePoslancuURL}`,
-      '/Api/osoby': `${config.databazePoslancuURL}`,
-      '/Api/soubory': `${config.databazePoslancuURL}`,
-      '/wp/v2/slovnik': `${config.wordpressAPIURLWebsite}`,
-      '/wp/v2/pages': `${config.wordpressAPIURLWebsite}`,
+      '/Api/snemovny/seznam': `${$config.databazePoslancuURL}`,
+      '/Api/snemovny/': `${$config.databazePoslancuURL}`,
+      '/Api/osoby': `${$config.databazePoslancuURL}`,
+      '/Api/soubory': `${$config.databazePoslancuURL}`,
+      '/wp/v2/slovnik': `${$config.wordpressAPIURLWebsite}`,
+      '/wp/v2/pages': `${$config.wordpressAPIURLWebsite}`,
     }],
     ['@nuxtjs/sentry', {
       dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here

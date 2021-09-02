@@ -19,7 +19,7 @@
 
           .column.row-in-image.is-half-desktop
             .rodina-thumb-image.typography-image-thumb-larger
-              //- img(:src="rodina.featured_image.sizes.full.source_url")
+              img(:src="rodina.featured_image.sizes.full.source_url")
           .column.row-in-text.is-half-desktop.typography-body-text
             .rodina-thumb-text(v-html="rodina.content")
 

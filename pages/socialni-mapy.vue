@@ -85,12 +85,12 @@
 export default {
 
 
-    async asyncData({params, error, payload, store}) {
+    async asyncData({params, error, payload, store, $config}) {
 
 
       try {
 
-        await store.dispatch("getRodinySocialniMapy");
+        await store.dispatch("getRodinySocialniMapy", {$config});
 
         return {
           rodiny: store.state.rodiny_socialni_mapy
