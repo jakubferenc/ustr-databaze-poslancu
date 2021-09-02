@@ -70,7 +70,7 @@ export default {
 
       });
 
-      const rodinyRoutes = rodinyRes.data.map(item => {
+      const rodinyRoutes = rodinyRes.map(item => {
 
         // load osoby
 
