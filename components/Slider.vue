@@ -7,7 +7,13 @@
           span.slider-footer-descriotion-image
             <SliderFooterLogo01Image />
           span.slider-footer-description-text Thunovský palác, popisek se nastaví ve Wordpressu
-      img.slider-image
+      nuxt-picture.slider-image(
+        format="webp"
+        quality="50"
+        loading="lazy"
+        src="/images/slider-homepage.jpg"
+        sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:100vw"
+      )
 </template>
 
 
@@ -16,7 +22,6 @@
   @import "~/assets/scss/typography"
 
   .slider-item[data-slider-item="first"]
-    background-image: url(~/assets/images/slider-homepage.jpg)
 
   html:not(.has-slider) .slider
     display: none
