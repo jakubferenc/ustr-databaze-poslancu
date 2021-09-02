@@ -2,6 +2,34 @@ import axios from "axios";
 import projectConfig from './project.config';
 
 
+const getAllMediaFactory = async(wordpressAPIURLWebsite, databazePoslancuURL, limit) => {
+
+  let media_soubory = [];
+
+  // generate media
+  const wpFetchHeaders = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Expose-Headers': 'x-wp-total'
+    }
+  };
+
+  const { headers } = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}`, wpFetchHeaders);
+  const totalPages = headers['x-wp-totalpages'];
+
+  for (let page = 1; page <=totalPages; page++) {
+
+    let posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
+    media_soubory = [...media_soubory, ...posts.data];
+
+  }
+
+  media_soubory = media_soubory.filter(soubor => soubor.media_details.sizes !== undefined);
+
+  return media_soubory;
+
+};
+
 const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL) => {
 
   let rodiny = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
@@ -45,5 +73,6 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
 
 export default {
   getRodinySocialniMapyFactory: getRodinySocialniMapyFactory,
+  getAllMediaFactory: getAllMediaFactory,
 };
 

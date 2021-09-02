@@ -100,8 +100,6 @@ export default {
 
   mounted() {
 
-    console.log("from gallery component", i++, this.Soubory);
-
 
   },
 

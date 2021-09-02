@@ -143,7 +143,6 @@ export default {
 
     mounted() {
 
-      console.log(this.rodina);
 
       const lines = [];
 

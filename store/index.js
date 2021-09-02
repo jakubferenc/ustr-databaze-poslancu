@@ -215,6 +215,11 @@ export const state = () => ({
   casova_osa: [],
   popup_timeline_detail: {},
   rodiny_socialni_mapy: [],
+  is_downloaded: {
+    stranky: false,
+    snemovni_obdobi: false,
+    media_soubory: false
+  },
 });
 /*
 this will update the state with the posts
@@ -274,6 +279,9 @@ export const mutations = {
   },
   updatePopupTimelineDetail: (state, popup_timeline_detail) => {
     state.popup_timeline_detail = popup_timeline_detail;
+  },
+  updateIsDownloaded(state, object_name) {
+    state.is_downloaded[object_name] = true;
   }
 };
 /*
@@ -423,12 +431,6 @@ export const actions = {
 
     let media_soubory = [];
 
-    const wpFetchHeaders = {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Expose-Headers': 'x-wp-total'
-      }
-    };
 
     if (opts.id) {
       // we want a specific media id
@@ -449,7 +451,7 @@ export const actions = {
           let post = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media/${opts.id}?embed`);
           post = post.data;
 
-          const media_soubory = [...state.media_soubory, post];
+          let media_soubory = [...state.media_soubory, post];
 
           commit("updateMedia", media_soubory);
           return;
@@ -462,24 +464,21 @@ export const actions = {
 
     } else {
 
-      try {
+      if (state.is_downloaded.media_soubory) {
+        return state.media_soubory;
+      } else {
 
-        const { headers } = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}`, wpFetchHeaders);
-        const totalPages = headers['x-wp-totalpages'];
+        try {
 
-        for (let page = 1; page <=totalPages; page++) {
+          let media_soubory = await apiFactory.getAllMediaFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, opts.limit);
 
-          let posts = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media?per_page=${opts.limit}&page=${page}`, wpFetchHeaders);
-          media_soubory = [...media_soubory, ...posts.data];
+          commit("updateMedia", media_soubory);
+          commit("updateIsDownloaded", 'media_soubory');
 
+        } catch (err) {
+          console.warn(err);
         }
 
-        media_soubory = media_soubory.filter(soubor => soubor.media_details.sizes !== undefined);
-
-        commit("updateMedia", media_soubory);
-
-      } catch (err) {
-        console.warn(err);
       }
 
     }

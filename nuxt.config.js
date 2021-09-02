@@ -36,27 +36,8 @@ export default {
 
       const strankyRes = await axios.get(`${$config.wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
 
-      // generate media
-      const wpFetchHeaders = {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Expose-Headers': 'x-wp-total'
-        }
-      };
+      const mediaRes = await apiFactory.getAllMediaFactory($config.wordpressAPIURLWebsite, $config.databazePoslancuURL, 100);
 
-      const { headers } = await axios.get(`${$config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100`, wpFetchHeaders);
-      const totalPages = headers['x-wp-totalpages'];
-
-      let mediaRes = [];
-
-      for (let page = 1; page <=totalPages; page++) {
-
-        let posts = await axios.get(`${$config.wordpressAPIURLWebsite}/wp/v2/media?per_page=100&page=${page}`, wpFetchHeaders);
-        mediaRes = [...mediaRes, ...posts.data];
-
-      }
-
-      mediaRes = mediaRes.filter(soubor => soubor.media_details.sizes !== undefined);
 
       //const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
 

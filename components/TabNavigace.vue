@@ -300,7 +300,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.Nastaveni.polozky);
   },
 
   methods: {
