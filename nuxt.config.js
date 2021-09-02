@@ -72,9 +72,7 @@ export default {
 
       const rodinyRoutes = rodinyRes.map(item => {
 
-        // load osoby
-
-        const rodina_osoby_ids = item.rodina_osoby_ids.split(',');
+        // load persons in a family
 
         return {
           route: `/socialni-mapa/${item.slug}`,
