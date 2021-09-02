@@ -11,6 +11,14 @@
         .image-container(v-if="soubor.media_details.sizes.full").column.is-four-fifths-desktop.is-two-thirds-tablet.is-full-mobile
           img.file-image(:src="soubor.media_details.sizes.full.source_url" alt="")
 
+          nuxt-picture.slider-image(
+            format="webp"
+            quality="50"
+            loading="lazy"
+            src="/images/slider-homepage.jpg"
+            sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:80vw"
+          )
+
         .image-item-detail-content.is-one-fifth-desktop.column.is-one-third-tablet.is-full-mobile
 
           .file-thumb-footer
