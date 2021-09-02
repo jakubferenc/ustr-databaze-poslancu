@@ -20,6 +20,7 @@ The `dev` branch is the main development branch. Merge all accepted feature bran
 * [Vue JS](https://vuejs.org/)
 * [Nuxt framework](https://nuxtjs.org/)
 * [Nuxt Storybook](https://storybook.nuxtjs.org/)
+* [@nuxt/image](https://image.nuxtjs.org/)
 
 ## Začni vyvíjet
 * Clone the repository from [MDH team](https://github.com/jakubferenc/ustr-mdh-mapa)
