@@ -22,7 +22,7 @@
             .chart-graphics.text-data
               .text-data-main {{statistiky.ProcentoVysokoskolaku}}<small class="text-data-sub">%</small>
               .text-data-sub
-            .chart-text vysokoškoláků
+            .chart-text Vysokoškoláků
 
         .chart-row
 
