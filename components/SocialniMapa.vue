@@ -52,7 +52,7 @@
 
 
 
-    .person-category-section.primarny-vztahy-section(data-section-title="Primární vztahy" v-if="Poslanec.OsobniVztahyPrimarni")
+    .person-category-section.primarny-vztahy-section(data-section-title="Primární vztahy" v-if="Poslanec.OsobniVztahyPrimarni.length > 0 && hasPrimaryRelationsDifferentThanImmediateFamily(Poslanec)")
 
       .person-social-network-item(v-for="(osoba, index) in Poslanec.OsobniVztahyPrimarni" v-if="osoba.Druh !== 'otec' && osoba.Druh !== 'matka' && osoba.Druh !== 'manžel' && osoba.Druh !== 'manželka' " :key="index")
 
@@ -130,8 +130,40 @@ export default {
 
   components: {},
 
-  mounted() {
+  methods: {
 
+    hasPrimaryRelationsDifferentThanImmediateFamily(poslanec) {
+
+      console.log(poslanec);
+
+      let hasDifferent = false;
+
+      if (Array.isArray(poslanec.OsobniVztahyPrimarni)) {
+
+        let osobniVztahyPrimarni = [...poslanec.OsobniVztahyPrimarni];
+
+        osobniVztahyPrimarni = osobniVztahyPrimarni.filter(osoba => osoba.Druh !== 'otec' && osoba.Druh !== 'matka' && osoba.Druh !== 'manžel' && osoba.Druh !== 'manželka');
+
+        if ( osobniVztahyPrimarni.length > 0 ) {
+          hasDifferent = true;
+        }
+
+      } else {
+
+        hasDifferent = false;
+
+      }
+
+      console.log(hasDifferent);
+
+      return hasDifferent;
+
+
+    }
+
+  },
+
+  mounted() {
 
   },
    data() {
@@ -139,11 +171,6 @@ export default {
 
       }
     },
-
-  methods: {
-
-
-  }
 
 }
 </script>
