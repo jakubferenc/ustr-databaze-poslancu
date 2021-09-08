@@ -8,8 +8,8 @@ const mobile = tablet-1;
 
 export default {
   wordpressAPIURLWebsite: 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json',
+  wordpressURLWebsite: 'https://ustr-databaze-poslancu.jakubferenc.cz/',
   databazePoslancuURL: 'https://parliament.ustrcr.cz',
-  globalTitle: 'Databáze poslanců.cz',
   globalTitle: 'Databáze poslanců.cz',
   baseURL: 'https://www.databazeposlancu.cz',
   responsive: {

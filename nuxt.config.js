@@ -25,7 +25,7 @@ export default {
   },
   generate: {
     exclude: [
-      /^\/poslanec/ // path starts with /admin
+      /^\/poslanec/ // path starts with /poslanec
     ],
     crawler: true,
     async routes() {
@@ -96,6 +96,7 @@ export default {
     ['@nuxt/image', {
       // The screen sizes predefined by `@nuxt/image`:
       screens: $config.responsive.breakpoints,
+      domains: [$config.wordpressURLWebsite]
     }],
   ],
   modules: [
@@ -143,7 +144,7 @@ export default {
     { src: '~plugins/vue-leaflet.js', ssr: false },
   ],
   head: {
-    title: 'Databáze poslanců.cz',
+    title: $config.globalTitle,
     htmlAttrs: {
       lang: 'cs',
     },

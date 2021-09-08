@@ -2,7 +2,7 @@
 
   .section
 
-    h1.typography-main-title(v-html="soubor.caption.rendered")
+    h1.typography-main-title(v-if="soubor.caption" v-html="soubor.caption.rendered")
 
     .section-padding-h-margin-v
 
@@ -14,7 +14,7 @@
             format="webp"
             quality="50"
             loading="lazy"
-            src="/images/slider-homepage.jpg"
+            :src="soubor.media_details.sizes.full.source_url"
             sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:80vw"
           )
 
@@ -22,15 +22,14 @@
 
           .file-thumb-footer
             .file-type
+              // :TODO: #8 #7 Enable icons for more file types
               <IconFileTypeImage  />
 
-          .desc(v-html="soubor.description.rendered.replace(/<[^>]*>?/gm, '')")
+          .desc(v-if="soubor.description" v-html="soubor.description.rendered.replace(/<[^>]*>?/gm, '')")
 
           .source
             p Zdroj:
             p {{soubor.alt_text}}
-
-
 
 
 </template>
