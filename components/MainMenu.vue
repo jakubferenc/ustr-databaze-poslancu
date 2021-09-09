@@ -14,7 +14,7 @@
     span &nbsp;|
     NuxtLink.link-galerie-medii(to="/galerie-medii") Galerie
     span &nbsp;|
-    NuxtLink.link-galerie-medii(to="/stranka/o-projektu") O projektu
+    NuxtLink(to="/stranka/o-projektu") O projektu
 </template>
 
 
