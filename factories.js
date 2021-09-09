@@ -1,6 +1,26 @@
 import axios from "axios";
-import projectConfig from './project.config';
 
+const getAllStrankyFactory = async (wordpressAPIURLWebsite) => {
+
+  let strankyRes =  await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
+
+  strankyRes = strankyRes.data
+    .filter(page => page.status === "publish")
+    .map(({ id, date, slug, title, content, excerpt, _embedded }) => ({
+      id: id,
+      date: date,
+      slug: slug,
+      title: title.rendered,
+      content: content.rendered,
+      excerpt: excerpt.rendered,
+      featured_image: (Array.isArray(_embedded['wp:featuredmedia'])) ? _embedded['wp:featuredmedia'][0].media_details : false,
+      author: _embedded.author /* will return an array of authors and their meta data */
+    }));
+
+
+  return strankyRes;
+
+};
 
 const getAllMediaFactory = async(wordpressAPIURLWebsite, databazePoslancuURL, limit) => {
 
@@ -74,5 +94,6 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
 export default {
   getRodinySocialniMapyFactory: getRodinySocialniMapyFactory,
   getAllMediaFactory: getAllMediaFactory,
+  getAllStrankyFactory: getAllStrankyFactory,
 };
 

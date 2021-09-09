@@ -34,7 +34,7 @@ export default {
 
       const rodinyRes = await apiFactory.getRodinySocialniMapyFactory($config.wordpressAPIURLWebsite, $config.databazePoslancuURL);
       const mediaRes =  await apiFactory.getAllMediaFactory($config.wordpressAPIURLWebsite, $config.databazePoslancuURL, 100);
-      const strankyRes =  await axios.get(`${$config.wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
+      const strankyRes =  await apiFactory.getAllStrankyFactory($config.wordpressAPIURLWebsite);
 
       //const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
 

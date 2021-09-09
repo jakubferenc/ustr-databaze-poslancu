@@ -431,21 +431,7 @@ export const actions = {
 
     try {
 
-      let stranky = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/pages?_embed`)
-      .then(res => res.data);
-
-      stranky = stranky
-        .filter(page => page.status === "publish")
-        .map(({ id, date, slug, title, content, excerpt, _embedded }) => ({
-          id: id,
-          date: date,
-          slug: slug,
-          title: title.rendered,
-          content: content.rendered,
-          excerpt: excerpt.rendered,
-          featured_image: (Array.isArray(_embedded['wp:featuredmedia'])) ? _embedded['wp:featuredmedia'][0].media_details : false,
-          author: _embedded.author /* will return an array of authors and their meta data */
-        }));
+      const stranky = await apiFactory.getAllStrankyFactory(projectConfig.wordpressAPIURLWebsite);
 
       commit("updateStranky", stranky);
 
