@@ -1,6 +1,6 @@
 <template lang="pug">
   nav.main-menu(role="navigation" aria-label="Primary")
-    NuxtLink(to="/") Hlavní stránka
+    NuxtLink(to="/") Úvod
     span &nbsp;|
     NuxtLink(to="/vyvoj-parlamentu") Vývoj parlamentarismu
     span &nbsp;|
@@ -12,7 +12,7 @@
     span &nbsp;|
     NuxtLink(to="/slovnik") Slovník
     span &nbsp;|
-    NuxtLink.link-galerie-medii(to="/galerie-medii") Galerie médií
+    NuxtLink.link-galerie-medii(to="/galerie-medii") Galerie
 </template>
 
 
