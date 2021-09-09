@@ -443,7 +443,7 @@ export const actions = {
           title: title.rendered,
           content: content.rendered,
           excerpt: excerpt.rendered,
-          // featured_image: _embedded['wp:featuredmedia'][0].media_details,
+          featured_image: (Array.isArray(_embedded['wp:featuredmedia'])) ? _embedded['wp:featuredmedia'][0].media_details : false,
           author: _embedded.author /* will return an array of authors and their meta data */
         }));
 

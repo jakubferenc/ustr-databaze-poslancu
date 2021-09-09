@@ -1,16 +1,13 @@
 <template lang="pug">
 
-    .section-content-max-width.section-padding-h-margin-v
+    .section-content-max-width.section-padding-h-margin-v.section-stranka
 
       h1.typography-main-title {{stranka.title}}
 
       .excerpt-container.typography-row-with-image(:class="excerptKontejnerStyly")
 
-        .row-in-image.featured-image()
+        .row-in-image.featured-image(v-if="stranka.featured_image")
           img(:src="stranka.featured_image.sizes.full.source_url")
-        .row-in-text.excerpt-text.typography-item-detail-text
-          p
-            i(v-html="stranka.excerpt")
 
       .real-content-container.real-content-text
         .typography-item-detail-text(v-html="stranka.content")
@@ -18,6 +15,14 @@
 
 </template>
 
+<style lang="sass">
+
+  .section-stranka
+    .typography-main-title
+      margin-top: 0
+      padding-top: 0
+
+</style>
 <script>
 
 export default {
