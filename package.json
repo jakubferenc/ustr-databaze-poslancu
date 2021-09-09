@@ -9,8 +9,8 @@
     "scripts": {
       "dev": "nuxt",
       "build": "nuxt build",
-      "analyze": "nuxt build --modern --analyze",
-      "generate": "nuxt generate --modern",
+      "analyze": "nuxt build --analyze",
+      "generate": "nuxt generate",
       "start": "nuxt start"
     },
     "dependencies": {
