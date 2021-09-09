@@ -134,8 +134,6 @@ export default {
 
     hasPrimaryRelationsDifferentThanImmediateFamily(poslanec) {
 
-      console.log(poslanec);
-
       let hasDifferent = false;
 
       if (Array.isArray(poslanec.OsobniVztahyPrimarni)) {
@@ -153,8 +151,6 @@ export default {
         hasDifferent = false;
 
       }
-
-      console.log(hasDifferent);
 
       return hasDifferent;
 

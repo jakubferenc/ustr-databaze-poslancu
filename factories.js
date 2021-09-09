@@ -24,7 +24,7 @@ const getAllStrankyFactory = async (wordpressAPIURLWebsite) => {
 
 };
 
-const getAllMediaFactory = async(wordpressAPIURLWebsite, databazePoslancuURL, limit) => {
+const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, limit) => {
 
   let media_soubory = [];
 
