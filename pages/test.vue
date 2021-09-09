@@ -7,18 +7,13 @@ export default {
 
     async asyncData ({store}) {
 
-      await store.dispatch("getMedia");
+      await store.dispatch("getPoslanciAll");
 
-      await store.dispatch("getPoslanciHomepage", {
-        limit: 20,
-        stranka: 1
-      });
+    },
 
-      await store.dispatch("getParlamenty");
+    mounted() {
 
-      await store.dispatch("getSlovnikovaHesla");
-
-      await store.dispatch("getSnemovniObdobiDetail", {snemovniObdobiId: 95});
+      //console.log(this.poslanci.length);
 
     },
 
@@ -27,7 +22,7 @@ export default {
         return this.$store.state.media_soubory;
       },
       poslanci() {
-        return this.$store.state.poslanci_homepage;
+        return this.$store.state.poslanci;
       },
       parlamenty() {
         return this.$store.state.parlamenty;

@@ -198,6 +198,82 @@ const getCasovaOsaDataForPoslanec = (poslanec) => {
 
 };
 
+const getFilterDataFromPoslanciAll = (poslanci) => {
+
+  let filterData = {};
+
+  let nabozenske_vyznani = [];
+  let narodnosti = [];
+  let mandaty = [];
+  let maFotku = [];
+  let maGalerii = [];
+  let maPrimarniSocialniVazby = [];
+  let maSekundarniSocialniVazby = [];
+
+  let vysoka_skola = [];
+  let maji_vysokou_skolu = [];
+
+  poslanci.forEach((item) => {
+
+    const nabozenstvi_edited = (item.NabozenstviNarozeni === null || Array.isArray(item.NabozenstviNarozeni)) ? 'neuvedeno' : item.NabozenstviNarozeni;
+    const narodnosti_edited = (item.Narodnosti === null || !Array.isArray(item.Narodnosti)) ? 'neuvedeno' : item.Narodnosti;
+
+    const mandaty_edited = (item.Mandaty === null || !Array.isArray(item.Mandaty)) ? 'neuvedeno' : item.Mandaty;
+    const soubory_edited = (item.Soubory === null) ? [] : item.Soubory;
+
+    const vztahy_primarni_edited = (item.OsobniVztahyPrimarni === null) ? [] : item.OsobniVztahyPrimarni;
+    const vztahy_sekundarni_edited = (item.OsobniVztahySekundarni === null) ? [] : item.OsobniVztahySekundarni;
+
+    nabozenske_vyznani.push(nabozenstvi_edited);
+
+    if (Array.isArray(narodnosti_edited)) {
+      narodnosti.push(...narodnosti_edited);
+    } else {
+      narodnosti.push(narodnosti_edited);
+    }
+
+    maji_vysokou_skolu.push(item.UniverzitniVzdelani);
+
+
+    if (Array.isArray(mandaty_edited )) {
+      mandaty.push(mandaty_edited.length);
+    } else {
+      mandaty.push(0);
+    }
+
+    maFotku.push(soubory_edited.length);
+    maGalerii.push(soubory_edited.length > 1);
+    maPrimarniSocialniVazby.push(vztahy_primarni_edited.length);
+    maSekundarniSocialniVazby.push(vztahy_sekundarni_edited.length);
+
+  });
+
+  // make unique values
+  nabozenske_vyznani = [...new Set(nabozenske_vyznani)].sort((a,b) => a.toString().localeCompare(b));
+  narodnosti = [...new Set(narodnosti)].sort((a,b) => a.toString().localeCompare(b));
+  mandaty = [...new Set(mandaty)];
+  maji_vysokou_skolu = [...new Set(maji_vysokou_skolu)];
+  maFotku = [...new Set(maFotku)];
+  maGalerii = [...new Set(maGalerii)];
+  maPrimarniSocialniVazby = [...new Set(maPrimarniSocialniVazby)];
+  maSekundarniSocialniVazby = [...new Set(maSekundarniSocialniVazby)];
+
+
+  filterData = {
+    pocet: poslanci.length,
+    nabozenske_vyznani,
+    narodnosti,
+    mandaty,
+    maFotku,
+    maGalerii,
+    maPrimarniSocialniVazby,
+    maSekundarniSocialniVazby,
+  };
+
+  return filterData;
+
+};
+
 
 export const state = () => ({
   slovnikova_hesla: [],
@@ -205,6 +281,19 @@ export const state = () => ({
   poslanec: {},
   poslanci: [],
   poslanci_filtrovani: [],
+  filter_data: {},
+  poslanci_filter_data: {
+    count: null,
+    narodnosti: [],
+    vyznani: [],
+    parlamentni_telesa: [],
+    volebni_strany: [],
+    politicke_strany: [],
+    poslanecke_kluby: [],
+    kurie: [],
+    kooptace: {},
+    pozice: [],
+  },
   poslanci_homepage: [],
   poslanci_statistiky: {},
   media_soubory: [],
@@ -225,6 +314,12 @@ export const state = () => ({
 this will update the state with the posts
 */
 export const mutations = {
+
+  updateFilterData: ( state, filter_data ) => {
+
+    state.filter_data = filter_data;
+
+  },
 
   updatePoslanecDetail: ( state, poslanec ) => {
 
@@ -804,6 +899,27 @@ export const actions = {
     } catch (err) {
       console.warn(err);
     }
-  }
+  },
+
+
+  async getPoslanciAll({ state, commit, dispatch }) {
+
+    try {
+
+      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Poslanec=true&Limit=99999`).then(res => res.data);
+
+      const filterData = getFilterDataFromPoslanciAll(poslanci);
+
+      commit("updatePoslanci", poslanci);
+      commit("updateFilterData", filterData);
+
+
+    } catch (err) {
+      console.warn(err);
+    }
+
+  },
 
 };
+
+

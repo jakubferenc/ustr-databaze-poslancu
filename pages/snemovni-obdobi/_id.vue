@@ -450,7 +450,7 @@
 
 
 
-          this.snemovniObdobi.Poslanci.forEach((item) => {
+          this.poslanci.forEach((item) => {
 
             const nabozenstvi_edited = (item.NabozenstviNarozeni === null) ? 'neuvedeno' : item.NabozenstviNarozeni;
             const narodnosti_edited = (!item.Narodnosti.length) ? ['neuvedeno'] : item.Narodnosti;
@@ -463,7 +463,7 @@
 
           // make unique values
           nabozenske_vyznani = [...new Set(nabozenske_vyznani)]
-          .sort((a,b) => a.localeCompare(b))
+          .sort((a,b) => a.toString().localeCompare(b))
           .map(item => {
 
             const itemId = (item === 'neuvedeno') ? 'nabozenstvi-neuvedeno' : item;
@@ -499,7 +499,7 @@
           ];
 
           narodnosti = [...new Set(narodnosti)]
-          .sort((a,b) => a.localeCompare(b))
+          .sort((a,b) => a.toString().localeCompare(b))
           .map(item => {
 
             const itemId = (item === 'neuvedeno') ? 'narodnost-neuvedeno' : item;

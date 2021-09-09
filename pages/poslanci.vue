@@ -25,15 +25,12 @@
 export default {
 
     async asyncData ({store}) {
-      await store.dispatch("getPoslanciSeznam", {
-        limit: 200,
-        stranka: 1,
-      });
+      await store.dispatch("getPoslanciAll");
     },
 
     computed: {
       poslanci() {
-        return this.$store.state.poslanci
+        return this.$store.state.poslanci;
       },
       poslanci_filtrovani() {
         return this.$store.state.poslanci_filtrovani;
@@ -61,7 +58,7 @@ export default {
           this.poslanci.forEach((item) => {
 
             const nabozenstvi_edited = (item.NabozenstviNarozeni === null) ? 'neuvedeno' : item.NabozenstviNarozeni;
-            const narodnosti_edited = (!item.Narodnosti.length) ? ['neuvedeno'] : item.Narodnosti;
+            const narodnosti_edited = (!item.Narodnosti || item.Narodnosti.length === 0) ? ['neuvedeno'] : item.Narodnosti;
 
             nabozenske_vyznani.push(nabozenstvi_edited);
             narodnosti.push(...narodnosti_edited);
@@ -71,7 +68,7 @@ export default {
 
           // make unique values
           nabozenske_vyznani = [...new Set(nabozenske_vyznani)]
-          .sort((a,b) => a.localeCompare(b))
+          .sort((a,b) => a.toString().localeCompare(b))
           .map(item => {
 
             const itemId = (item === 'neuvedeno') ? 'nabozenstvi-neuvedeno' : item;
@@ -107,7 +104,7 @@ export default {
           ];
 
           narodnosti = [...new Set(narodnosti)]
-          .sort((a,b) => a.localeCompare(b))
+          .sort((a,b) => a.toString().localeCompare(b))
           .map(item => {
 
             const itemId = (item === 'neuvedeno') ? 'narodnost-neuvedeno' : item;

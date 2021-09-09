@@ -1,6 +1,7 @@
 <template lang="pug">
 
-  .poslanci-seznam.seznam-with-filter()
+
+  #scroll-top.poslanci-seznam.seznam-with-filter()
 
     .filter-seznam
 
@@ -124,11 +125,30 @@
                 class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
                 )
 
-            .component-footer(v-if="MaButtonMore")
+            .component-footer(v-if="MaPaginaci")
 
-              a(v-if="MaButtonMore && ButtonMoreLink" :href="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
+              .pagination-bar
+                .to-the-top
+                  a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
+                .pagination-list
+                  a.pagination-list-prev.pagination-item(href="#") &lt;
+                  .pagination-list-number
+                    a.pagination-list-number.pagination-item(href="#") 1
+                    a.pagination-list-number.pagination-item(href="#") 2
+                    a.pagination-list-number.pagination-item(href="#") 3
+                    a.pagination-list-number.pagination-item(href="#") 4
+                    a.pagination-list-number.pagination-item(href="#") 5
+                  .pagination-list-last-number
+                    .pagination-item.bullets ...
+                    a(href="#").pagination-item 40
 
-              a(v-if="MaButtonMore && MaPaginaci" href="").typo-form-button.button-large Načíst další poslance
+                  a.pagination-list-next.pagination-item(href="#") &gt;
+
+
+              .buttons-more
+                a(v-if="MaButtonMore && ButtonMoreLink" :href="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
+
+                a(v-if="MaButtonMore && MaPaginaci" href="").typo-form-button.button-large Načíst další poslance
 
 </template>
 
@@ -136,6 +156,35 @@
 
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
+
+  .component-footer
+
+    .buttons-more
+      display: flex
+      align-items: center
+      justify-content: center
+
+  .pagination-bar
+    display: flex
+    justify-content: space-between
+    margin-bottom: 3em
+
+    .pagination-item
+      text-decoration: none
+      min-width: 30px
+      text-align: center
+      display: inline-block
+      border: 1px solid transparent
+
+      &:not(.bullets):hover
+        border-color: #000
+
+
+    .pagination-list
+      display: flex
+      justify-content: space-between
+
+
 
   .statistics-diagram
     display: flex
@@ -240,7 +289,7 @@ export default {
 
     poslanci() {
 
-      let currentPoslanci = (this.$store.state.poslanci_filtrovani.length) ?  this.$store.state.poslanci_filtrovani : this.PoslanciVstupniPolozky;
+      let currentPoslanci = this.PoslanciVstupniPolozky;
 
       if (this.MaFiltr) {
 
@@ -257,7 +306,7 @@ export default {
 
           // here filtering based on the this.filterNastaveni
 
-          let filteredPoslanci = this.PoslanciVstupniPolozky;
+          let filteredPoslanci = currentPoslanci;
 
           filteredPoslanci = filteredPoslanci.filter((poslanec) => {
 
@@ -275,7 +324,7 @@ export default {
               let tempFilterResults = []; // here will be several boolean variables true or false, we need to get at last one true for the filter item to be true as such and this the item passes the filter
 
 
-              // filter section either have multiple items for only one item, then the itemPropertyToTest is a string
+              // filter section either has multiple items for only one item, then the itemPropertyToTest is a string
               // or multiple items for multiple "poslanec" properties, then attribute "property" must be for each filter item as well as "property" for the filter section must be an array
               if (!Array.isArray(itemPropertyToTest)) {
 
@@ -462,7 +511,7 @@ export default {
       this.filtrNastaveniAktualniPolozky = {[filtrSekceKey]: tempResult};
 
 
-      this.$store.dispatch("setPoslanciFiltrovani", this.poslanci);
+      //this.$store.dispatch("setPoslanciFiltrovani", this.poslanci);
 
     },
 
@@ -555,6 +604,22 @@ export default {
   mounted() {
 
     this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
+
+    if (this.MaPaginaci) {
+
+      const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
+      $scrollIntoViewBtn.addEventListener('click', (e) => {
+
+        e.preventDefault();
+
+        const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
+        $target.scrollIntoView();
+
+
+      });
+
+    }
+
 
 
   },
