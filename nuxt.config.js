@@ -58,7 +58,7 @@ export default {
 
       });
 
-      const strankyRoutes = strankyRes.data.map(item => {
+      const strankyRoutes = strankyRes.map(item => {
 
         return {
           route: `/stranka/${item.slug}`,
