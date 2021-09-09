@@ -2,9 +2,11 @@ import axios from "axios";
 
 const getAllStrankyFactory = async (wordpressAPIURLWebsite) => {
 
-  let strankyRes =  await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
+  const strankyResource =  await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
 
-  strankyRes = strankyRes.data
+  let strankyRes = strankyResource.data;
+
+  strankyRes = strankyRes
     .filter(page => page.status === "publish")
     .map(({ id, date, slug, title, content, excerpt, _embedded }) => ({
       id: id,
