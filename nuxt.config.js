@@ -96,7 +96,7 @@ export default {
     ['@nuxt/image', {
       // The screen sizes predefined by `@nuxt/image`:
       screens: $config.responsive.breakpoints,
-      domains: [$config.wordpressURLWebsite]
+      domains: [$config.wordpressURLWebsite, $config.netlifyURL]
     }],
   ],
   modules: [
