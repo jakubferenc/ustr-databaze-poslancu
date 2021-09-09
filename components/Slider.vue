@@ -1,7 +1,7 @@
 <template lang="pug">
   .slider
     .slider-item(data-slider-item="first")
-      .slider-text.typography-hero-title.slider-text-light Úvodní text. Představení projektu. Zde by tedy měl být jeden delší odstavec nebo dva, které stručně, jasně a úderně shrnou, o čem aplikace je.
+      .slider-text.typography-hero-title.slider-text-light(v-html="stranka_homepage_obsah.content")
       .slider-footer
         .slider-footer-description
           span.slider-footer-descriotion-image
@@ -76,6 +76,17 @@
   import SliderFooterLogo01Image from "~/assets/images/slider-footer-logo-01.svg?inline";
 
   export default {
+
     components: { SliderFooterLogo01Image },
+
+    computed: {
+
+      stranka_homepage_obsah() {
+
+        return this.$store.state.stranky.filter(item => item.id == 538)[0];
+
+      },
+
+    },
   };
 </script>

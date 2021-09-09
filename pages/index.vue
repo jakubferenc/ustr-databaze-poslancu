@@ -38,9 +38,13 @@ export default {
 
       await store.dispatch("getSlovnikovaHesla");
 
+      await store.dispatch("getStranky");
+
+
     },
 
     computed: {
+
       soubory() {
 
         const limit = 20;
@@ -58,6 +62,10 @@ export default {
       slovnikova_hesla() {
         return this.$store.state.slovnikova_hesla;
       },
+    },
+
+    mounted() {
+
     },
 
     data() {
