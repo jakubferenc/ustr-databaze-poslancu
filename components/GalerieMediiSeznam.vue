@@ -21,13 +21,25 @@
 
       .component-footer(v-if="MaButtonMore")
 
-        NuxtLink.typo-form-button.button-large(to="/galerie-medii") Zobrazit celou galerii
+        .buttons-more
+
+          NuxtLink.typo-form-button.button-large(to="/galerie-medii") Zobrazit celou galerii
 
 </template>
 
 <style lang="sass" scoped>
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/typography"
+
+  .component-footer
+
+    .buttons-more
+      display: flex
+      align-items: center
+      justify-content: center
+
+      .button-large, .button-large
+        display: inline-flex
 
   .file-link
     text-decoration: none

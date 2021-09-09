@@ -77,6 +77,12 @@
 
   export default {
 
+    async fetch() {
+
+      await this.$store.dispatch("getStranky");
+
+    },
+
     components: { SliderFooterLogo01Image },
 
     computed: {

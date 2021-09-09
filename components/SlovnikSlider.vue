@@ -19,7 +19,9 @@
 
     .component-footer(v-if="MaButtonMore")
 
-      NuxtLink(class="typo-form-button button-large" :to="`/slovnik/`") Zobrazit všechny pojmy
+      .buttons-more
+
+        NuxtLink(class="typo-form-button button-large" :to="`/slovnik/`") Zobrazit všechny pojmy
 
 
 </template>

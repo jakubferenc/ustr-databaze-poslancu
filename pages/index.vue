@@ -38,8 +38,6 @@ export default {
 
       await store.dispatch("getSlovnikovaHesla");
 
-      await store.dispatch("getStranky");
-
 
     },
 
