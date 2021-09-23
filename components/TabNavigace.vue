@@ -83,7 +83,7 @@
             .metadata-section-title.typography-metadata-section-title
               h3 Forma ukončení mandátu
             .metadata-section-content.typography-item-detail-text
-              div tssfdfadsfsd
+              div DOPLNIT formu ukončení nemáme v API
               //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
               //- div {{adresaNarozeni.zeme}}
 

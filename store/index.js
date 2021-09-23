@@ -200,11 +200,14 @@ const getCasovaOsaDataForPoslanec = (poslanec) => {
 
 const getFilterDataFromPoslanciAll = (poslanci) => {
 
+  // the values must fit the API points and data formats!
+
   let filterData = {};
 
   let nabozenske_vyznani = [];
   let narodnosti = [];
   let mandaty = [];
+  let parlamenty = [];
   let maFotku = [];
   let maGalerii = [];
   let maPrimarniSocialniVazby = [];
@@ -224,12 +227,20 @@ const getFilterDataFromPoslanciAll = (poslanci) => {
     const vztahy_primarni_edited = (item.OsobniVztahyPrimarni === null) ? [] : item.OsobniVztahyPrimarni;
     const vztahy_sekundarni_edited = (item.OsobniVztahySekundarni === null) ? [] : item.OsobniVztahySekundarni;
 
+    const parlamenty_edited = (item.Mandaty === null || !Array.isArray(item.Mandaty)) ? 'neuvedeno' : item.Mandaty.map(mandat => mandat.Parlament);
+
     nabozenske_vyznani.push(nabozenstvi_edited);
 
     if (Array.isArray(narodnosti_edited)) {
       narodnosti.push(...narodnosti_edited);
     } else {
       narodnosti.push(narodnosti_edited);
+    }
+
+    if (Array.isArray(parlamenty_edited)) {
+      parlamenty.push(...parlamenty_edited);
+    } else {
+      parlamenty.push(parlamenty_edited);
     }
 
     maji_vysokou_skolu.push(item.UniverzitniVzdelani);
@@ -252,7 +263,11 @@ const getFilterDataFromPoslanciAll = (poslanci) => {
   nabozenske_vyznani = [...new Set(nabozenske_vyznani)].sort((a,b) => a.toString().localeCompare(b));
   narodnosti = [...new Set(narodnosti)].sort((a,b) => a.toString().localeCompare(b));
   mandaty = [...new Set(mandaty)];
-  maji_vysokou_skolu = [...new Set(maji_vysokou_skolu)];
+  parlamenty = [...new Set(parlamenty)];
+
+  maji_vysokou_skolu = [...new Set(maji_vysokou_skolu)].includes(true);
+
+
   maFotku = [...new Set(maFotku)];
   maGalerii = [...new Set(maGalerii)];
   maPrimarniSocialniVazby = [...new Set(maPrimarniSocialniVazby)];
@@ -264,11 +279,13 @@ const getFilterDataFromPoslanciAll = (poslanci) => {
     nabozenske_vyznani,
     narodnosti,
     mandaty,
+    parlamenty,
     maFotku,
     maGalerii,
     maPrimarniSocialniVazby,
     maSekundarniSocialniVazby,
   };
+
 
   return filterData;
 
@@ -281,19 +298,11 @@ export const state = () => ({
   poslanec: {},
   poslanci: [],
   poslanci_filtrovani: [],
-  filter_data: {},
-  poslanci_filter_data: {
-    count: null,
-    narodnosti: [],
-    vyznani: [],
-    parlamentni_telesa: [],
-    volebni_strany: [],
-    politicke_strany: [],
-    poslanecke_kluby: [],
-    kurie: [],
-    kooptace: {},
-    pozice: [],
+  filter_data: {
+    filterData: {},
+    filterSettings: {},
   },
+  poslanci_filter_data: {},
   poslanci_homepage: [],
   poslanci_statistiky: {},
   media_soubory: [],
@@ -889,6 +898,8 @@ export const actions = {
 
 
   async getPoslanciAll({ state, commit, dispatch }) {
+
+    if (state.poslanci.length) return;
 
     try {
 
