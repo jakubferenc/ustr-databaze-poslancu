@@ -6,7 +6,7 @@
 
       .rozcestnik-item-title Časová osa
 
-      NuxtLink(to="/stranka/vyvoj-parlamentu")
+      NuxtLink(to="/vyvoj-parlamentu")
         .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
         .rozcestnik-item-image
           img(src="~/assets/images/risska-rada-01-thumb.jpg" alt="")
