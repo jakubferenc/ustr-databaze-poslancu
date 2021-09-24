@@ -77,13 +77,14 @@
                   span(v-if="item.mandat.Delka.Dny < 5 && item.mandat.Delka.Roky > 1") &nbsp;dny
                   span(v-if="item.mandat.Delka.Dny == 1") &nbsp;den
 
+
         .column.is-one-third-widescreen
 
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Forma ukončení mandátu
             .metadata-section-content.typography-item-detail-text
-              div DOPLNIT formu ukončení nemáme v API
+              div.first-letter-capitalize {{item.mandat.DruhKonce}}
               //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
               //- div {{adresaNarozeni.zeme}}
 

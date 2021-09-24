@@ -6,6 +6,8 @@
 
     .section-padding-h-margin-v.section-content-max-width
 
+      .main-perex.typography-body-text Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+
       .columns.rodina-thumb.typography-row-with-image.typography-centered-text-content(v-for="(rodina, index) in rodiny" :key="rodina.id" :index="index" :class="{'rodina-thumb-reverse': (index % 2 === 0 || index === 0) ? false : true}")
 
         .column.row-in-image.is-half-desktop
@@ -32,6 +34,15 @@
 <style lang="sass" scoped>
   @import "~/assets/scss/bulma"
   @import "~/assets/scss/main"
+
+  .main-perex
+    margin-top: -3em
+    margin-bottom: 5em
+    margin-left: auto
+    margin-right: auto
+
+    +from($desktop)
+      width: 66%
 
   .button-container
 

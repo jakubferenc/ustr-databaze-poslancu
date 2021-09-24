@@ -11,7 +11,7 @@
 
           .popup-content.columns.is-multiline
             .image-container.column.is-one-half-tablet
-              img(v-if="popupTimelineDetailContent.featured_image" :src="popupTimelineDetailContent.featured_image.sizes.medium_large.source_url")
+              img(v-if="popupTimelineDetailContent.featured_image" :src="popupTimelineDetailContent.featured_image.sizes.medium_large")
               .timeline-item-image-description(v-if="popupTimelineDetailContent.featured_image_description !== null")
                 small {{popupTimelineDetailContent.featured_image_description}}
             .text-container.column.is-one-half-tablet(v-html="popupTimelineDetailContent.content")

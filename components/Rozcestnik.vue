@@ -23,17 +23,19 @@
     .rozcestnik-item.is-full.is-one-quarter-tablet.column
 
       .rozcestnik-item-title Společenské vazby
-      .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
-      .rozcestnik-item-image
-        img(src="~/assets/images/risska-rada-01-thumb.jpg" alt="")
+      NuxtLink(to="/socialni-mapy")
+        .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
+        .rozcestnik-item-image
+          img(src="~/assets/images/risska-rada-01-thumb.jpg" alt="")
 
 
     .rozcestnik-item.is-full.is-one-quarter-tablet.column
 
       .rozcestnik-item-title Ženy v parlamentu
-      .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
-      .rozcestnik-item-image
-        img(src="~/assets/images/zeny-v-parlamentu-thumb.png" alt="")
+      NuxtLink(to="/stranka/zeny-v-parlamentu")
+        .rozcestnik-item-text.typography-body-text Zde bude text, který představí danou sekci webu. onsetetur sadipscing elitr, sed diam nonumy eirmod et dolore magna aliquyam erat, sed.
+        .rozcestnik-item-image
+          img(src="~/assets/images/zeny-v-parlamentu-thumb.png" alt="")
 
 </template>
 

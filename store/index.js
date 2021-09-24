@@ -462,7 +462,7 @@ export const actions = {
       casova_osa = casova_osa
       .filter(el => el.status === "publish")
       .sort((a, b) => (a.casova_osa_datum > b.casova_osa_datum) ? 1 : (a.casova_osa_datum < b.casova_osa_datum ) ? -1 : 0) // sort from the lowest date, format yyyy-mm-dd
-      .map(({ id, slug, title, date, content, casova_osa_datum, _embedded, casova_osa_dulezita }) => ({
+      .map(({ id, slug, title, date, content, casova_osa_datum, acf , casova_osa_dulezita }) => ({
         id,
         slug,
         title: title.rendered,
@@ -470,8 +470,8 @@ export const actions = {
         content: content.rendered,
         casova_osa_rok: casova_osa_datum.split('-')[0],
         casova_osa_datum,
-        featured_image: (_embedded) ? _embedded['wp:featuredmedia'][0].media_details : null,
-        featured_image_description: (_embedded) ?_embedded['wp:featuredmedia'][0].title.rendered : null,
+        featured_image: (acf.galerie) ? acf.galerie[0] : null,
+        featured_image_description: (acf.galerie) ? acf.galerie[0].description : null,
         casova_osa_dulezita,
       }));
 
@@ -847,6 +847,7 @@ export const actions = {
       let poslanec = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${poslanecId}`);
 
       poslanec = poslanec.data;
+
 
       // prepare data for casova osa
       poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);

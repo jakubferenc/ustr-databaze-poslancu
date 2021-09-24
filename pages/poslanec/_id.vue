@@ -63,17 +63,20 @@
                   .metadata-section(v-if="profese")
                     .metadata-section-title.typography-metadata-section-title
                       h3 Profese
-                    .metadata-section-content.typography-item-detail-text
-                      div.profese(v-for="profeseItem in profese" :key="profese.mandatId")
+                    .metadata-section-content.typography-item-detail-text.metadata-content-multiple
+                      div.profese.item(v-for="profeseItem in profese" :key="profese.mandatId")
                         div.profese-title {{profeseItem.profese}}
                         div.profese-date-range (během mandátu {{profeseItem.datumZacatku}} &mdash; {{profeseItem.datumKonce}})
 
                 .column.is-one-third-widescreen
-                  .metadata-section
+                  .metadata-section.metadata-section-education
                     .metadata-section-title.typography-metadata-section-title
                       h3 Vzdělání
-                    .metadata-section-content.typography-item-detail-text
-                      div {{poslanec.Vzdelani}}
+                    .metadata-section-content.typography-item-detail-text(v-for="(vzdelaniItem, index) in poslanec.Vzdelani" :key="index")
+                      div.metadata-content-multiple(v-if="poslanec.Vzdelani.length > 1")
+                        div.item {{vzdelaniItem.Nazev}}
+                      div(v-else)
+                        div {{vzdelaniItem.Nazev}}
 
                 .column.is-one-third-widescreen
                   .metadata-section
@@ -168,7 +171,7 @@
 
 .profese
   .profese-date-range
-    font-size: 16px
+    font-size: 80%
 
 .gallery-widget-container
   +from($widescreen)
@@ -187,8 +190,18 @@
 .metadata-section
   margin-bottom: $margin-until-desktop
 
+  .metadata-content-multiple
+
+    .item
+      margin-bottom: .5em
+      font-size: 80%
+
   .metadata-section-title
     margin-bottom: 1em
+
+  &.metadata-section-education
+
+
 
 .main-title-container
   margin: 0 auto
@@ -252,8 +265,6 @@
 
       mounted() {
 
-        console.info("OsobniVztahyPrimarni", this.poslanec.OsobniVztahyPrimarni);
-        console.info("OsobniVztahySekundarni", this.poslanec.OsobniVztahySekundarni);
 
         this.$nextTick(() => {
 
@@ -264,6 +275,17 @@
       },
 
       computed: {
+
+        mandatyChronologicky() {
+
+          this.poslanec.Mandaty.sort((mandat) => {
+
+
+            
+
+          });
+
+        },
 
         profileImage() {
 
@@ -321,23 +343,31 @@
         },
 
         pocetMandatu() {
-          // return this.poslanec?.Mandaty?.length || this.$t('error.notDefined');
+
+          if (this.poslanec.Mandaty) {
+            return this.poslanec.Mandaty.length;
+          } else {
+            return this.$t('error.notDefined');
+          }
         },
 
         profese() {
 
           if (this.poslanec.Mandaty) {
 
-            const profeseArray = this.poslanec.Mandaty.reduce((acc, mandat) => {
+            const profeseArray = this.poslanec.Mandaty
+            .filter((mandat) => {
+              return mandat.Profese !== null
+            }).map((mandat) => {
 
-              return [{
-                profese: mandat.Profese === null ? this.$t('error.notDefined') : mandat.Profese,
+              return {
+                profese: mandat.Profese,
                 datumZacatku: mandat.DatumZacatkuZobrazene,
                 datumKonce: mandat.DatumKonceZobrazene,
                 mandatId: mandat.Id
-              }];
+              };
 
-            }, [{}]);
+            });
 
 
             return profeseArray;

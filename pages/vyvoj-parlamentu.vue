@@ -16,10 +16,11 @@
 
             .timeline-item-image-container
 
-              img.timeline-item-image.typography-image-thumb-medium(v-if="item.featured_image !== null" :src="item.featured_image.sizes.medium_large.source_url" :alt="item.featured_image_description")
+              img.timeline-item-image.typography-image-thumb-medium(v-if="item.featured_image !== null" :src="item.featured_image.sizes.medium_large" :alt="item.featured_image_description")
 
               .timeline-item-image-description(v-if="item.featured_image_description !== null")
-                span {{item.featured_image_description}}
+                small
+                  span {{item.featured_image_description}}
 
           .timeline-item-box.timeline-item-box-date.timeline-item-date
             .casova-osa-circle(:class="{large: item.casova_osa_dulezita == '1', small: item.casova_osa_dulezita != '1'}") {{item.casova_osa_rok}}
@@ -107,8 +108,8 @@
           max-width: 500px
 
       .timeline-item-image-description
-        position: absolute
         margin-top: $margin-until-desktop / 4
+        line-height: 1.4
 
 
     .timeline-item-title
