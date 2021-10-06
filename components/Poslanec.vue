@@ -6,7 +6,9 @@
     .poslanec-metadata
       .poslanec-title {{ Jmeno }} {{ Prijmeni }}
 
-      .poslanec-years(v-if="DatumNarozeniZobrazene && DatumUmrtiZobrazene") ({{DatumNarozeniZobrazene}} — {{DatumUmrtiZobrazene}})
+      .poslanec-years(v-if="DatumNarozeniZobrazene || DatumUmrtiZobrazene")
+        span(v-if="DatumNarozeniZobrazene") ({{DatumNarozeniZobrazene}}&nbsp;&mdash;
+        span(v-if="DatumUmrtiZobrazene") &nbsp;{{DatumUmrtiZobrazene}})
       .mandaty(v-if="ZobrazitMandaty")
         span {{ pocetMandatu }}&nbsp;
         span(v-show="pocetMandatu > 4") mandátů
