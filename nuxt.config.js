@@ -7,7 +7,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const $config = {dev, ...projectConfig};
 
 export default {
-  globalName: 'databaze-poslancu',
+  globalName: $config.globalTitle,
   target: 'static', // default is 'server'
   ssr: true,
   components: true,
