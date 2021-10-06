@@ -16,7 +16,7 @@
 
             .timeline-item-image-container
 
-              img.timeline-item-image.typography-image-thumb-medium(v-if="item.featured_image !== null" :src="item.featured_image.sizes.medium_large" :alt="item.featured_image_description")
+              img.timeline-item-image.typography-image-thumb-medium(v-if="item.featured_image !== null" :src="item.featured_image.url" :alt="item.featured_image_description")
 
               .timeline-item-image-description(v-if="item.featured_image_description !== null")
                 small
@@ -75,6 +75,9 @@
     position: relative
     align-items: center
     margin-bottom: 120px
+
+    &:nth-child(2n+1)
+      flex-direction: row-reverse
 
     &.reverse
       flex-direction: row-reverse
@@ -175,7 +178,7 @@ export default {
 
       openPopUpDetail: function(item, e) {
 
-
+        console.log(item);
         item.scrollTop = window.scrollY;
 
         this.$store.dispatch("setPopupTimelineDetail", item);

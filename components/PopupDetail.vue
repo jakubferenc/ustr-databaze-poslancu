@@ -11,7 +11,7 @@
 
           .popup-content.columns.is-multiline
             .image-container.column.is-one-half-tablet
-              img(v-if="popupTimelineDetailContent.featured_image" :src="popupTimelineDetailContent.featured_image.sizes.medium_large")
+              img(v-if="popupTimelineDetailContent.featured_image" :src="popupTimelineDetailContent.featured_image.url")
               .timeline-item-image-description(v-if="popupTimelineDetailContent.featured_image_description !== null")
                 small {{popupTimelineDetailContent.featured_image_description}}
             .text-container.column.is-one-half-tablet(v-html="popupTimelineDetailContent.content")
@@ -21,6 +21,9 @@
 <style lang="sass" scoped>
 
   @import 'bulma/sass/utilities/mixins.sass'
+
+  .timeline-item-image-description
+    line-height: 1.2
 
   .popup-content
 
@@ -110,11 +113,11 @@ export default {
     this.$popupRealContent = this.$el.querySelector('.popup-timeline-detail-content');
 
     this.$popupRealContent.addEventListener('transitions', (e) => {
-      console.log("transition ended!");
+      // console.log("transition ended!");
     });
 
     this.$popupRealContent.addEventListener('transitionend', (e) => {
-      console.log("transition ended!");
+      // console.log("transition ended!");
     });
 
   },
