@@ -2,9 +2,10 @@
 
   .section
 
-    h1.typography-main-title(v-if="soubor.caption" v-html="soubor.caption.rendered")
 
-    .section-padding-h-margin-v
+    .section-padding-h-margin-v.typography-has-no-margin-top
+
+      h1.typography-main-title(v-if="soubor.caption" v-html="soubor.caption.rendered")
 
       .image-item-detail.columns.is-multiline
 
