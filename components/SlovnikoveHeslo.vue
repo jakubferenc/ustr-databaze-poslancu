@@ -1,8 +1,8 @@
 <template lang="pug">
 
   .keyword()
-    .title /{{ title }}/
-    .description(v-html="description")
+    NuxtLink(:to="`/slovnik/${Slug}`").title /{{ Title }}/
+    .description(v-html="Description")
 
 
 </template>
@@ -50,6 +50,6 @@
 
 <script>
 export default {
- props: ['title', 'description']
+ props: ['Title', 'Slug', 'Description']
 }
 </script>

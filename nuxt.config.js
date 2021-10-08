@@ -36,6 +36,8 @@ export default {
       const mediaRes =  await apiFactory.getAllMediaFactory($config.wordpressAPIURLWebsite, $config.databazePoslancuURL, 100);
       const strankyRes =  await apiFactory.getAllStrankyFactory($config.wordpressAPIURLWebsite);
 
+      const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory($config.wordpressAPIURLWebsite);
+
       //const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
 
       // const osobyRoutes = osobyRes.data.map(item => {

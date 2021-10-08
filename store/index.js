@@ -124,6 +124,7 @@ const getAdresyProMapuForPoslanec = (poslanec) => {
 
 const getCasovaOsaDataForPoslanec = (poslanec) => {
 
+  const randomColors = [];
 
   let casovaOsaPolozky = [];
 
@@ -139,17 +140,6 @@ const getCasovaOsaDataForPoslanec = (poslanec) => {
 
   }
 
-  if (poslanec.DatumUmrti) {
-
-    casovaOsaPolozky = [...casovaOsaPolozky, {
-
-      datum_udalosti: poslanec.DatumUmrti.split("T")[0],
-      dulezita: true,
-      nazev_udalosti: 'Datum úmrtí',
-
-    }];
-
-  }
 
   if (poslanec.Mandaty) {
 
@@ -161,7 +151,7 @@ const getCasovaOsaDataForPoslanec = (poslanec) => {
 
           datum_udalosti: mandat.DatumZacatku.split("T")[0],
           dulezita: false,
-          nazev_udalosti: `Začátek mandátu (${mandat.DatumZacatkuZobrazene || 'Neuvedeno'} — ${mandat.DatumKonceZobrazene || 'Neuvedeno'})`,
+          nazev_udalosti: `Začátek mandátu (${mandat.DatumZacatkuZobrazene || 'Neuvedeno'})`,
 
         });
 
@@ -173,7 +163,7 @@ const getCasovaOsaDataForPoslanec = (poslanec) => {
 
           datum_udalosti: mandat.DatumKonce.split("T")[0],
           dulezita: false,
-          nazev_udalosti: `Konec mandátu (${mandat.DatumZacatkuZobrazene || 'Neuvedeno'} — ${mandat.DatumKonceZobrazene || 'Neuvedeno'})`,
+          nazev_udalosti: `Konec mandátu (${mandat.DatumKonceZobrazene || 'Neuvedeno'})`,
 
         });
 
@@ -190,8 +180,19 @@ const getCasovaOsaDataForPoslanec = (poslanec) => {
   }
 
 
-
   casovaOsaPolozky = casovaOsaPolozky.sort((a, b) => (a.datum_udalosti > b.datum_udalosti) ? 1 : (a.datum_udalosti < b.datum_udalosti ) ? -1 : 0);
+
+  if (poslanec.DatumUmrti) {
+
+    casovaOsaPolozky = [...casovaOsaPolozky, {
+
+      datum_udalosti: poslanec.DatumUmrti.split("T")[0],
+      dulezita: true,
+      nazev_udalosti: `Datum úmrtí ${poslanec.DatumUmrtiZobrazene}`,
+
+    }];
+
+  }
 
   return casovaOsaPolozky;
 
@@ -491,19 +492,7 @@ export const actions = {
 
     try {
 
-      let slovnikova_hesla = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`);
-
-      slovnikova_hesla = slovnikova_hesla.data;
-
-      slovnikova_hesla = slovnikova_hesla
-      .filter(el => el.status === "publish")
-      .map(({ id, slug, title, date, content }) => ({
-        id,
-        slug,
-        title,
-        date,
-        content,
-      }));
+      const slovnikova_hesla = await apiFactory.getSlovnikovaHeslaFactory(projectConfig.wordpressAPIURLWebsite);
 
       commit("updateSlovnikovaHesla", slovnikova_hesla);
 
@@ -848,6 +837,7 @@ export const actions = {
 
       poslanec = poslanec.data;
 
+      // poslanec.Mandaty = poslanec.Mandaty.sort((mandatPrev, mandatNext) => {});
 
       // prepare data for casova osa
       poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);

@@ -4,6 +4,12 @@
 
     <Rozcestnik />
 
+    .section-padding.alt-bg
+
+      h2.typography-section-title() Mapová data poslanců
+
+      p ZDE bude neinteraktivní grafika mapy => odkaz na /poslanci a "reklama na mapové funkce aplikace"
+
     .section-padding-h-margin-v
 
       h2.typography-section-title Seznam poslanců

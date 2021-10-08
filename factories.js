@@ -300,10 +300,41 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
 
 };
 
+
+const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
+
+
+  try {
+
+    let slovnikova_hesla = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`);
+
+    slovnikova_hesla = slovnikova_hesla.data;
+
+    slovnikova_hesla = slovnikova_hesla
+    .filter(el => el.status === "publish")
+    .map(({ id, slug, title, date, content }) => ({
+      id,
+      slug,
+      title,
+      date,
+      content,
+    }));
+
+   return slovnikova_hesla;
+
+  } catch (err) {
+
+    console.warn(err);
+
+  }
+};
+
+
 export default {
   getRodinySocialniMapyFactory: getRodinySocialniMapyFactory,
   getAllMediaFactory: getAllMediaFactory,
   getAllStrankyFactory: getAllStrankyFactory,
   createFilterSettingsFactory: createFilterSettingsFactory,
+  getSlovnikovaHeslaFactory: getSlovnikovaHeslaFactory,
 };
 
