@@ -8,7 +8,7 @@
 
       h2.typography-section-title() Mapová data poslanců
 
-      p ZDE bude neinteraktivní grafika mapy => odkaz na /poslanci a "reklama na mapové funkce aplikace"
+      p ZDE bude neinteraktivní grafika mapy + sociálních map => odkaz na /poslanci a "reklama na mapové funkce aplikace"
 
     .section-padding-h-margin-v
 

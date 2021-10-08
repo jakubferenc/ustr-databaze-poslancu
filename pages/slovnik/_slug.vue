@@ -48,6 +48,9 @@ export default {
     },
 
     mounted() {
+
+      console.log("test page slovnik");
+
     },
 
     data() {

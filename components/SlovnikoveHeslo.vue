@@ -1,13 +1,14 @@
 <template lang="pug">
 
   .keyword()
-    NuxtLink(:to="`/slovnik/${Slug}`").title /{{ Title }}/
+    NuxtLink(:to="`/slovnik/${Slug}/`").title /{{ Title }}/
     .description(v-html="Description")
 
 
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
+
 @import "~/assets/scss/bulma"
 @import "~/assets/scss/typography"
 
@@ -30,6 +31,7 @@
     line-height: 0.75
 
     font-size: 6.19791667vw
+    text-decoration: none
 
     +from($tablet)
       font-size: 6.19791667vw
