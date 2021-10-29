@@ -5,17 +5,17 @@
 
     .section-padding-h-margin-v.typography-has-no-margin-top
 
-      h1.typography-main-title(v-if="soubor.caption" v-html="soubor.caption.rendered")
+      h1.typography-main-title(v-if="soubor.caption" v-html="soubor.caption")
 
       .image-item-detail.columns.is-multiline
 
-        .image-container(v-if="soubor.media_details.sizes.full").column.is-four-fifths-desktop.is-two-thirds-tablet.is-full-mobile
+        .image-container(v-if="soubor.image.full_url").column.is-four-fifths-desktop.is-two-thirds-tablet.is-full-mobile
 
           nuxt-picture.slider-image(
             format="webp"
             quality="50"
             loading="lazy"
-            :src="soubor.media_details.sizes.full.source_url"
+            :src="soubor.image.full_url"
             sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:80vw"
           )
 
@@ -71,12 +71,11 @@ export default {
         // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
         await store.dispatch("getMedia", {id: params.id});
 
-        let storeItems = [...store.state.media_soubory];
+        const storeItem = [...store.state.media_soubory].filter(soubor => soubor.id == params.id)[0];
 
-        storeItems = storeItems.filter(soubor => soubor.id == params.id)[0];
 
         return {
-          soubor: storeItems
+          soubor: storeItem
         }
 
       }

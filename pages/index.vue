@@ -24,7 +24,7 @@
 
       h2.typography-section-title() Galerie médií
 
-      GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="true" :MaFilter="false" Typ="WPMediaDetails")
+      GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="true" :MaFilter="false")
 
 </template>
 
@@ -69,6 +69,8 @@ export default {
     },
 
     mounted() {
+
+      console.log("this.soubory", this.soubory);
 
     },
 

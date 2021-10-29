@@ -1,4 +1,5 @@
 import axios from "axios";
+import { normalizeSouborAttrs } from './utils/functions';
 
 
 const createFilterSettingsFactory = (nabozenske_vyznani, narodnosti, parlamenty, vysoka_skola) => {
@@ -253,7 +254,9 @@ const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, l
 
   }
 
-  media_soubory = media_soubory.filter(soubor => soubor.media_details.sizes !== undefined);
+  media_soubory = media_soubory.map(item => {
+    return normalizeSouborAttrs(item);
+  });
 
   return media_soubory;
 
@@ -267,9 +270,9 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
   rodiny = rodiny
     .filter(item => item.status === "publish")
     .map(({ id, date, slug, title, content, excerpt, _embedded, rodina_datum, rodina_osoby_ids, acf }) => ({
-      id: id,
-      date: date,
-      slug: slug,
+      id,
+      date,
+      slug,
       title: title.rendered,
       content: content.rendered,
       excerpt: excerpt.rendered,
@@ -281,6 +284,24 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
       casova_osa: acf.casova_osa,
       galerie: acf.galerie
     }));
+
+  rodiny = rodiny.map(item => {
+
+    if (item.galerie && item.galerie.length) {
+
+      item.galerie = item.galerie.map(file => {
+
+        return normalizeSouborAttrs(file);
+      });
+
+    }
+
+    return item;
+
+  });
+
+  // normalize gallery files if there's a gallery
+
 
   rodiny = await Promise.all(rodiny.map(async (rodina) => {
 

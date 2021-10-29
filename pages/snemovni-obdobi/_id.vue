@@ -83,7 +83,7 @@
               attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
               url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
             )
-            <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: true, zoomToBoundsOnClick: true}">
+            <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true}">
               <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
                 <l-popup>
                   <NuxtLink to="">
