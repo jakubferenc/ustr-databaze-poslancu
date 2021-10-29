@@ -17,8 +17,6 @@
 html
   font-size: 12px
 
-  scroll-behavior: smooth
-
   box-sizing: border-box;
   min-width: 1400px; /* :TODO: */
   overflow: auto; /* :TODO: */
@@ -411,3 +409,11 @@ input[type="checkbox"]
 
 
 /****************************************************/
+
+page-enter-active,
+.page-leave-active
+  transition: opacity 0.5s
+
+.page-enter,
+.page-leave-to
+  opacity: 0
