@@ -15,7 +15,7 @@
 
     .slovnik-slider-items-container(:style="generatedStyles")
       .slovnik-slider-item(v-for="item in SlovnikovaHesla")
-        SlovnikoveHeslo(:key="item.id" :title="item.title.rendered" :description="item.content.rendered" class="")
+        SlovnikoveHeslo(:key="item.id" :Title="item.title.rendered" :Description="item.content.rendered" class="")
 
     .component-footer(v-if="MaButtonMore")
 
