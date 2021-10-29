@@ -1,7 +1,7 @@
 <template lang="pug">
 
   .keyword()
-    NuxtLink(:to="`/slovnik/${Slug}/`").title /{{ Title }}/
+    NuxtLink.title(:to="`/slovnikove-heslo/${Slug}/`") /{{ Title }}/
     .description(v-html="Description")
 
 

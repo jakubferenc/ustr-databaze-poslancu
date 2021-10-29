@@ -2,20 +2,25 @@
 
     .section-content-max-width.section-padding-h-margin-v.section-stranka
 
-      h1.typography-main-title {{slovnikove_heslo.title}}
+      h1.typography-main-title {{slovnikove_heslo.title.rendered}}
 
-      .excerpt-container.typography-row-with-image(:class="excerptKontejnerStyly")
+      .excerpt-container.typography-row-with-image.has-featured-image(:class="excerptKontejnerStyly")
 
         .row-in-image.featured-image(v-if="slovnikove_heslo.featured_image")
-          img(:src="slovnikove_heslo.featured_image.sizes.full.source_url")
+          img(:src="slovnikove_heslo.featured_image.image.full_url")
 
-      .real-content-container.real-content-text
-        .typography-item-detail-text(v-html="slovnikove_heslo.content")
+        .row-in-text.real-content-container.real-content-text
+          .typography-item-detail-text(v-html="slovnikove_heslo.content.rendered")
+          p Autor hesla: Jakub Ferenc
+
+
 
 
 </template>
 
 <style lang="sass">
+
+  .real-content-text
 
   .section-stranka
     .typography-main-title
@@ -40,7 +45,7 @@ export default {
         await store.dispatch("getSlovnikovaHesla");
 
         return {
-          slovnikove_heslo: store.state.slovnikova_hesla.filter(slovnikove_heslo => slovnikove_heslo.slug === params.slug)[0]
+          slovnikove_heslo: store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0]
         }
 
       }
@@ -50,6 +55,7 @@ export default {
     mounted() {
 
       console.log("test page slovnik");
+      console.log(this.slovnikove_heslo);
 
     },
 

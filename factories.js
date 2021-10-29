@@ -327,19 +327,21 @@ const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
 
   try {
 
-    let slovnikova_hesla = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100`);
+    let slovnikova_hesla = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100&_embed`);
 
     slovnikova_hesla = slovnikova_hesla.data;
 
     slovnikova_hesla = slovnikova_hesla
     .filter(el => el.status === "publish")
-    .map(({ id, slug, title, date, content }) => ({
+    .map(({ id, slug, title, date, content, _embedded }) => ({
       id,
       slug,
       title,
       date,
       content,
+      featured_image: (_embedded ) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
     }));
+
 
    return slovnikova_hesla;
 
