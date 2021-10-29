@@ -6,7 +6,7 @@
 
     .section-padding-h-margin-v
 
-      GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="false" :MaFilter="true" Typ="WPMediaDetails")
+      GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="false" :MaFilter="true")
 
 </template>
 

@@ -248,7 +248,7 @@ export const actions = {
         // we do not have the item in the store, we need to make the axios call to the API
 
         try {
-          let post = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media/${opts.id}?embed`);
+          let post = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media/${opts.id}`);
           post = post.data;
 
           let media_soubory = [...state.media_soubory, post];

@@ -373,13 +373,13 @@ export const normalizeSouborAttrs = (file) => {
     newFile.alt_text = file.alt_text;
     newFile.slug = file.slug;
 
-    if (file.media_details.sizes.medium_large) {
+    if (file.media_details.sizes && file.media_details.sizes.medium_large) {
       newFile.image.thumb_url = file.media_details.sizes.medium_large.source_url;
-    } else if (file.media_details.sizes.medium)  {
+    } else if (file.media_details.sizes && file.media_details.sizes.medium)  {
       newFile.image.thumb_url = file.media_details.sizes.medium.source_url;
     }
 
-    if (file.media_details.sizes.full) {
+    if (file.media_details.sizes && file.media_details.sizes.full) {
       newFile.image.full_url = file.media_details.sizes.full.source_url;
     }
 
