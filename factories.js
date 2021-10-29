@@ -333,15 +333,15 @@ const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
 
     slovnikova_hesla = slovnikova_hesla
     .filter(el => el.status === "publish")
-    .map(({ id, slug, title, date, content, _embedded }) => ({
+    .map(({ id, slug, title, date, excerpt, content, _embedded }) => ({
       id,
       slug,
       title,
       date,
+      excerpt,
       content,
-      featured_image: (_embedded ) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
+      featured_image: (_embedded && _embedded['wp:featuredmedia']) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
     }));
-
 
    return slovnikova_hesla;
 

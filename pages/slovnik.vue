@@ -11,6 +11,7 @@
           :key="item.id"
           :Title="item.title.rendered"
           :Slug="item.slug"
+          :Excerpt="item.excerpt.rendered"
           :Description="item.content.rendered"
           class="is-one-third column"
         )
@@ -28,7 +29,6 @@ export default {
       await store.dispatch("getSlovnikovaHesla");
 
     },
-
 
     computed: {
       slovnikova_hesla() {

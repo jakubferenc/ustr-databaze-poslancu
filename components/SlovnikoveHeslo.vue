@@ -2,7 +2,7 @@
 
   .keyword()
     NuxtLink.title(:to="`/slovnikove-heslo/${Slug}/`") /{{ Title }}/
-    .description(v-html="Description")
+    .description(v-html="Excerpt")
 
 
 </template>
@@ -52,6 +52,6 @@
 
 <script>
 export default {
- props: ['Title', 'Slug', 'Description']
+ props: ['Title', 'Slug', 'Excerpt', 'Description']
 }
 </script>

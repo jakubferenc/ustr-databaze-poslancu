@@ -4,14 +4,13 @@
 
       h1.typography-main-title {{slovnikove_heslo.title.rendered}}
 
-      .excerpt-container.typography-row-with-image.has-featured-image(:class="excerptKontejnerStyly")
+      .excerpt-container.typography-row-with-image(:class="excerptKontejnerStyly")
 
         .row-in-image.featured-image(v-if="slovnikove_heslo.featured_image")
           img(:src="slovnikove_heslo.featured_image.image.full_url")
 
         .row-in-text.real-content-container.real-content-text
           .typography-item-detail-text(v-html="slovnikove_heslo.content.rendered")
-          p Autor hesla: Jakub Ferenc
 
 
 
@@ -26,6 +25,11 @@
     .typography-main-title
       margin-top: 0
       padding-top: 0
+
+  .typography-row-with-image:not(.has-featured-image)
+    display: flex
+    align-items: center
+    justify-content: center
 
 </style>
 <script>
@@ -44,26 +48,35 @@ export default {
         // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
         await store.dispatch("getSlovnikovaHesla");
 
+        const slovnikove_heslo = store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0];
+
         return {
-          slovnikove_heslo: store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0]
+          slovnikove_heslo,
         }
 
       }
 
     },
 
-    mounted() {
+    computed: {
 
-      console.log("test page slovnik");
-      console.log(this.slovnikove_heslo);
+        excerptKontejnerStyly() {
+
+          return {
+            'has-featured-image': this.slovnikove_heslo.featured_image,
+          }
+
+        },
+
+    },
+
+    mounted() {
 
     },
 
     data() {
       return {
-        excerptKontejnerStyly: {
-          'has-featured-image': true,
-        }
+
       }
     },
     head () {
