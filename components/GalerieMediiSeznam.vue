@@ -7,7 +7,7 @@
       .columns.is-multiline.is-mobile
 
         div.column.file-thumb(v-for="soubor in Soubory").is-one-fifth-desktop.is-one-third-tablet.is-half-mobile
-          NuxtLink.file-link(:to="`/media/${soubor.id}`")
+          NuxtLink.file-link(:to="`/media/${soubor.id}/`")
 
             .image-container
               img.file-image(v-if="soubor.image.thumb_url" :src="soubor.image.thumb_url" :alt="soubor.caption.rendered")
@@ -21,7 +21,7 @@
 
         .buttons-more
 
-          NuxtLink.typo-form-button.button-large(to="/galerie-medii") Zobrazit celou galerii
+          NuxtLink.typo-form-button.button-large(to="/galerie-medii/") Zobrazit celou galerii
 
 </template>
 

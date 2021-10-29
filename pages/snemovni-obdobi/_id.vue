@@ -91,7 +91,7 @@
                   </NuxtLink>
                 </l-popup>
                 <l-icon :icon-anchor="[0,0]" :icon-size="[56, 56]" class-name="map-person-thumb-head-icon">
-                  <NuxtLink :to="`/poslanec/${item.Id}`">
+                  <NuxtLink :to="`/poslanec/${item.Id}/`">
                     <div class="is-hidden headline">test content</div>
                     span(v-if="item.Soubory.length > 0")
                       img(:src="item.Soubory[0].URLNahled" class="map-person-thumb-head-icon-image")

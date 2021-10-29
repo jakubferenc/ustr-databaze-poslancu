@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  NuxtLink(class="poslanec-thumb" :to="`/poslanec/${Id}`")
+  NuxtLink(class="poslanec-thumb" :to="`/poslanec/${Id}/`")
     .poslanec-image
 
     .poslanec-metadata

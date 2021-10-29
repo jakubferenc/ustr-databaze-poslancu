@@ -22,7 +22,7 @@
 
     .person-category-section.person-poslanec-section(data-section-title="Poslanec")
 
-      NuxtLink.person-social-network-item.person-social-network-item-poslanec(:to="`/poslanec/${Poslanec.Id}`")
+      NuxtLink.person-social-network-item.person-social-network-item-poslanec(:to="`/poslanec/${Poslanec.Id}/`")
 
         .content-container
 

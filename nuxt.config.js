@@ -12,7 +12,6 @@ export default {
   ssr: true,
   components: true,
   publicRuntimeConfig: {...$config},
-
   render: {
     static: {
       setHeaders(res) {
@@ -85,6 +84,9 @@ export default {
       return routes;
 
     }
+  },
+  router: {
+    trailingSlash: true,
   },
   build: {
     loaders: {

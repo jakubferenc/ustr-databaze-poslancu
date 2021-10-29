@@ -24,7 +24,7 @@
               span &nbsp;v rodině
             div(v-html="rodina.excerpt")
             .button-container
-                NuxtLink.button.button-large(:to="`/socialni-mapa/${rodina.slug}`") Zobrazit detail rodiny
+                NuxtLink.button.button-large(:to="`/socialni-mapa/${rodina.slug}/`") Zobrazit detail rodiny
 
 
 
