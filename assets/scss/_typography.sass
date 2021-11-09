@@ -81,28 +81,6 @@
   &.no-margin-bottom
     margin-bottom: 0
 
-%typography-section-title
-
-  @extend %is-title
-  text-align: center
-  line-height: 1.2
-
-  +until($desktop)
-
-  +from($desktop)
-    margin-bottom: $margin-from-desktop/1.5
-    font-size: 45px
-
-  +from($tablet)
-
-  +from($desktop)
-
-  +from($fullhd)
-
-  &.smaller-bottom-margin
-    +from($desktop)
-      margin-bottom: $margin-from-desktop/4
-
 .typography-section-title-smaller-line-height
   @extend %typography-section-title
   line-height: .75

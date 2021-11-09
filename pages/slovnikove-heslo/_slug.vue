@@ -1,6 +1,6 @@
 <template lang="pug">
 
-    .section-content-max-width.section-padding-h-margin-v.section-stranka
+    .section-content-max-width.section-padding-h-margin-v.section-stranka(v-if="slovnikove_heslo !== undefined")
 
       h1.typography-main-title {{slovnikove_heslo.title.rendered}}
 
@@ -12,10 +12,15 @@
         .row-in-text.real-content-container.real-content-text
           .typography-item-detail-text(v-html="slovnikove_heslo.content.rendered")
 
+    .section-content-max-width.section-padding-h-margin-v.section-stranka(v-else)
+
+      h1.typography-main-title Vámi hledané slovníkové heslo „<small>{{slug}}</small>“ jsme nemohli najít, nebo neexistuje.
+
 
 
 
 </template>
+
 
 <style lang="sass">
 
@@ -48,10 +53,15 @@ export default {
         // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
         await store.dispatch("getSlovnikovaHesla");
 
-        const slovnikove_heslo = store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0];
+
+
+        const slovnikove_heslo = (store.state.slovnikova_hesla) ? store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0] : undefined;
+
+
 
         return {
           slovnikove_heslo,
+          slug: params.slug,
         }
 
       }
@@ -76,12 +86,12 @@ export default {
 
     data() {
       return {
-
+        pageTitle: (this.slovnikove_heslo && this.slovnikove_heslo.slug) ? this.slovnikove_heslo.slug : 'Nenalezeno'
       }
     },
     head () {
       return {
-        title: `${this.slovnikove_heslo.slug} — ${this.$config.globalTitle}`,
+        title: `${this.pageTitle} — ${this.$config.globalTitle}`,
         htmlAttrs: {
           class: 'subpage-slovnik'
         }

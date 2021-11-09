@@ -109,7 +109,6 @@ export default {
 
   mounted() {
 
-    console.log("soubory from galerie medii", this.Soubory);
 
 
   },

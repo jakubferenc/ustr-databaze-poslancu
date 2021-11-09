@@ -2,20 +2,21 @@
 
 .slovnik-slider.section-padding-h-margin-v
 
-  h2.typography-section-title() {{componentTitle}}
+  h2.section-title {{componentTitle}}
 
   .slovnik-slider-container
 
-    .slovnik-slider-nav(role="navigation")
-      a.slider-nav-left(href="#" @click="move('prev', $event)")
-        <SlovnikSliderImageArrowLeft />
-
-      a.slider-nav-right(href="#" @click="move('next', $event)")
-        <SlovnikSliderImageArrowRight />
-
     .slovnik-slider-items-container(:style="generatedStyles")
       .slovnik-slider-item(v-for="item in SlovnikovaHesla")
-        SlovnikoveHeslo(:key="item.id" :Title="item.title.rendered" :Description="item.content.rendered" class="")
+        SlovnikoveHeslo(:key="item.id" :Title="item.title.rendered" :InSlider="true" :Description="item.content.rendered" class="")
+
+    .slovnik-slider-nav(role="navigation")
+      a.slider-nav-item.slider-nav-left(href="#" @click="move('prev', $event)")
+        <SlovnikSliderImageArrowLeft />
+
+      a.slider-nav-item.slider-nav-right(href="#" @click="move('next', $event)")
+        <SlovnikSliderImageArrowRight />
+
 
     .component-footer(v-if="MaButtonMore")
 
@@ -27,6 +28,13 @@
 </template>
 
 <style lang="sass" scoped>
+
+.component-footer
+  margin-top: 50px
+
+.section-title
+  @extend %typography-section-title
+
 
 .slovnik-slider-container
 
@@ -44,10 +52,11 @@
     width: calc(100% - 100px)
 
   .slovnik-slider-nav
-    position: absolute
-    width: 100%
+    max-width: 150px
     display: flex
     justify-content: space-between
+    margin-left: auto
+    margin-right: auto
     z-index: 2
 
     a:hover

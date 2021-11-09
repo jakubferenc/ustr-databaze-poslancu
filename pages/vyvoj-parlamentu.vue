@@ -177,7 +177,6 @@ export default {
 
       openPopUpDetail: function(item, e) {
 
-        console.log(item);
         item.scrollTop = window.scrollY;
 
         this.$store.dispatch("setPopupTimelineDetail", item);

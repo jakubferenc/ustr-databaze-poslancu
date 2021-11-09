@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .keyword()
+  .keyword(:class="{'in-slider': this.InSlider}")
     NuxtLink.keyword-title(:to="`/slovnikove-heslo/${Slug}/`") /{{ Title }}/
     .description(v-html="Excerpt")
 
@@ -12,17 +12,18 @@
 
 .keyword
   text-align: center
-  margin-bottom: 100px
   display: flex
   flex-direction: column
   justify-content: center
   align-items: center
 
-  +until($desktop)
-    margin-bottom: 50px
+  &:not(.in-slider)
 
-  +from($desktop)
-    margin-bottom: 100px
+    +until($desktop)
+      margin-bottom: 50px
+
+    +from($desktop)
+      margin-bottom: 100px
 
   .keyword-title
     @extend %typography-main-title
@@ -41,6 +42,6 @@
 
 <script>
 export default {
- props: ['Title', 'Slug', 'Excerpt', 'Description']
+ props: ['Title', 'Slug', 'Excerpt', 'Description', 'InSlider']
 }
 </script>

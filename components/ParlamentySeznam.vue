@@ -2,7 +2,7 @@
 
   .snemovny-seznam.section-padding.alt-bg
 
-    h2.typography-section-title() Parlamentní tělesa
+    h2.section-title Parlamentní tělesa
 
     .container-list.columns.is-multiline
 
@@ -18,6 +18,8 @@
 
 <style lang="sass" scoped>
 
+  .section-title
+    @extend %typography-section-title
 
   .snemovny-seznam
 

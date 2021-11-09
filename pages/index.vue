@@ -2,17 +2,17 @@
 
   .section
 
-    <Rozcestnik />
+    //- <Rozcestnik />
 
     .section-padding.alt-bg
 
-      h2.typography-section-title() Mapová data poslanců
+      h2.section-title Mapová data poslanců
 
       p ZDE bude neinteraktivní grafika mapy + sociálních map => odkaz na /poslanci a "reklama na mapové funkce aplikace"
 
     .section-padding-h-margin-v
 
-      h2.typography-section-title Seznam poslanců
+      h2.section-title Seznam poslanců
 
       PoslanciSeznam(:PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
 
@@ -22,14 +22,25 @@
 
     .section-padding.alt-bg
 
-      h2.typography-section-title() Galerie médií
+      h2.section-title Galerie médií
 
       GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="true" :MaFilter="false")
 
 </template>
 
+<style lang="sass" scoped>
+
+  .section-title
+    @extend %typography-section-title
+
+</style>
+
 <script>
+
 export default {
+
+    components: {  },
+
 
     async asyncData ({store}) {
 
@@ -69,8 +80,6 @@ export default {
     },
 
     mounted() {
-
-      console.log("this.soubory", this.soubory);
 
     },
 
