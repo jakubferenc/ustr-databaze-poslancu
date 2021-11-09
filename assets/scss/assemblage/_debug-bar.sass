@@ -1,0 +1,39 @@
+@charset "utf-8"
+
+/****************************************************/
+/* :DEBUG: */
+.debug-bar
+  position: fixed
+  bottom: 0
+  right: 0
+  width: 100px
+  height: 25px
+  background: #fff
+  text-align: center
+  display: flex
+  justify-content: center
+  align-items: center
+  font-size: 90%
+
+  &:after
+    content: "mobile"
+
+  +from($tablet)
+    &:after
+      content: "tablet"
+
+  +from($desktop)
+    &:after
+      content: "desktop"
+
+  +from($widescreen)
+    &:after
+      content: "widescreen"
+
+  +from($fullhd)
+    &:after
+      content: "fullhd"
+
+
+
+/****************************************************/

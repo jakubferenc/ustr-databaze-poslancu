@@ -27,8 +27,6 @@
 </template>
 
 <style lang="sass" scoped>
-@import "~/assets/scss/bulma"
-@import "~/assets/scss/typography"
 
 .slovnik-slider-container
 

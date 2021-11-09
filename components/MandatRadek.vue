@@ -14,8 +14,6 @@
 </template>
 
 <style lang="sass">
-@import "~/assets/scss/bulma"
-@import "~/assets/scss/typography"
 
 
 .parlament-snemovni-obdobi-list
@@ -47,7 +45,7 @@
     position: relative
     background-color: rgba(0,0,0,.4)
     color: #fff
-    @extend .typography-alt-heading
+    @extend %typography-alt-heading
     display: flex
     align-items: center
     justify-content: center

@@ -49,9 +49,6 @@
 </template>
 
 <style lang="sass" scoped>
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/main"
-
 
   .columns.rodina-thumb.typography-row-with-image.typography-centered-text-content
     text-align: left

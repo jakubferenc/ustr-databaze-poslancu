@@ -24,8 +24,7 @@
 
 
 <style lang="sass">
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
 
   .casova-osa-component
     display: flex // it will primarily center the navigation buttons
@@ -116,7 +115,7 @@
 
       &.small
 
-        @extend .typography-timeline-small-text
+        @extend %typography-timeline-small-text
 
         width: 80px
         height: 80px
@@ -125,7 +124,7 @@
 
       &.large
 
-        @extend .typography-timeline-large-text
+        @extend %typography-timeline-large-text
 
         width: 160px
         height: 160px

@@ -18,8 +18,7 @@
 
 
 <style lang="sass" scoped>
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
 
   .slider-item[data-slider-item="first"]
 

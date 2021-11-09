@@ -41,8 +41,7 @@
 
 
 <style lang="sass">
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
 
   a
     text-decoration: none

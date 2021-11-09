@@ -45,7 +45,7 @@
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Začátek mandátu
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{item.mandat.DatumZacatkuZobrazene}}
 
 
@@ -55,7 +55,7 @@
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Konec mandátu
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{item.mandat.DatumKonceZobrazene}}
 
 
@@ -64,7 +64,7 @@
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Délka mandátu
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div
                 span(v-if="item.mandat.Delka.Roky > 0")
                   span {{item.mandat.Delka.Roky}}
@@ -83,7 +83,7 @@
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Forma ukončení mandátu
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div.first-letter-capitalize {{item.mandat.DruhKonce}}
               //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
               //- div {{adresaNarozeni.zeme}}
@@ -92,35 +92,35 @@
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Volební strana
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{item.mandat.VolebniStrana}}
 
         .column.is-one-third-widescreen(v-if="item.mandat.Kurie")
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Kurie
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{item.mandat.Kurie}}
 
         .column.is-one-third-widescreen(v-if="item.mandat.Profese")
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Profese (v době zvolení)
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{item.mandat.Profese}}
 
         .column.is-one-third-widescreen(v-if="item.mandat.VekNaZacatkuMandatu")
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Věk na začátku mandátu
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{item.mandat.VekNaZacatkuMandatu}}
 
         .column.is-one-third-widescreen(v-if="item.mandat.VekNaKonciMandatu")
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Věk na konci mandátu
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{item.mandat.VekNaKonciMandatu}}
 
 
@@ -132,7 +132,7 @@
             .metadata-section
               .metadata-section-title.typography-metadata-section-title
                 h3 Název funkce
-              .metadata-section-content.typography-item-detail-text
+              .metadata-section-content
                 div {{funkce}}
 
         div(v-else) {{$t('components.TabNavigation.tabHasNoItems')}}
@@ -145,7 +145,7 @@
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
               h3 Název výboru
-            .metadata-section-content.typography-item-detail-text
+            .metadata-section-content
               div {{vybor}}
 
         div(v-else) {{$t('components.TabNavigation.tabHasNoItems')}}
@@ -154,10 +154,10 @@
 
 
 <style lang="sass">
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
 
 
+  .metadata-section-content
+    @extend %typography-item-detail-text
 
   .tab-navigation.parlament-detail-navigace
 
@@ -204,7 +204,7 @@
       margin: 0 auto
 
     .tab
-      @extend .typography-filter-heading
+      @extend %typography-filter-heading
 
       width: 175px
       height: 41px

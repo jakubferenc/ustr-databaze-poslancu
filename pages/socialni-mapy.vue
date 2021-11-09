@@ -32,8 +32,6 @@
 
 
 <style lang="sass" scoped>
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/main"
 
   .main-perex
     margin-top: -3em

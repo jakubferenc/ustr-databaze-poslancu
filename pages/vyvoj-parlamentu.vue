@@ -32,8 +32,7 @@
 
 
 <style lang="sass" scoped>
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
 
   .timeline-vertical
     position: relative
@@ -117,7 +116,7 @@
 
     .timeline-item-title
 
-      @extend .typography-section-title
+      @extend %typography-section-title
 
       max-width: 300px
       cursor: pointer

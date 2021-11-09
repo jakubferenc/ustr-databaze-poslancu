@@ -164,15 +164,13 @@
 </template>
 
 <style lang="sass">
-@import "~/assets/scss/bulma"
-@import "~/assets/scss/typography"
 
 .button-toggler-component
   display: flex
   justify-content: space-between
   overflow: hidden
 
-  @extend .typography-alt-heading
+  @extend %typography-alt-heading
 
   &.normal
     background-color: #fff
@@ -192,7 +190,7 @@
       color: #fff
 
 .parlament-detail-navigation
-  @extend .typography-alt-heading
+  @extend %typography-alt-heading
 
   position: fixed
   bottom: $margin-until-desktop
@@ -267,7 +265,7 @@
   justify-content: center
 
   .chart-text
-    @extend .typography-filter-heading
+    @extend %typography-filter-heading
 
   &.text-left
     flex-direction: row-reverse
@@ -296,7 +294,7 @@
       flex-direction: column
 
       .text-data-main
-        @extend .typography-grafy-data-text
+        @extend %typography-grafy-data-text
 
       .text-data-sub
         margin-top: 3px

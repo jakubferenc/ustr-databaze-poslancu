@@ -4,22 +4,38 @@ import projectConfig from './project.config';
 
 const dev = process.env.NODE_ENV !== 'production';
 
-const $config = {dev, ...projectConfig};
+const config = {dev, ...projectConfig};
 
 export default {
-  globalName: $config.globalTitle,
   target: 'static', // default is 'server'
   ssr: true,
   components: true,
-  publicRuntimeConfig: {...$config},
+  server: {
+    port: 8000, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
+  router: {
+    trailingSlash: true,
+  },
+  publicRuntimeConfig: config,
+  env: {
+    baseUrl: process.env.BASE_URL || 'https://localhost:3000'
+  },
+  sitemap: {
+    hostname: !dev ? config.baseURL.production : config.baseURL.development,
+    trailingSlash: true,
+  },
   render: {
     static: {
+      // Add CORS header to static files.
       setHeaders(res) {
-        res.setHeader('X-Frame-Options', 'ALLOWALL');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'GET');
-        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-      }
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader(
+          'Access-Control-Allow-Headers',
+          'Origin, X-Requested-With, Content-Type, Accept'
+        );
+      },
     }
   },
   generate: {
@@ -31,13 +47,13 @@ export default {
 
       let routes = [];
 
-      const rodinyRes = await apiFactory.getRodinySocialniMapyFactory($config.wordpressAPIURLWebsite, $config.databazePoslancuURL);
-      const mediaRes =  await apiFactory.getAllMediaFactory($config.wordpressAPIURLWebsite, $config.databazePoslancuURL, 100);
-      const strankyRes =  await apiFactory.getAllStrankyFactory($config.wordpressAPIURLWebsite);
+      const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+      const mediaRes =  await apiFactory.getAllMediaFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, 100);
+      const strankyRes =  await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
 
-      const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory($config.wordpressAPIURLWebsite);
+      const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(config.wordpressAPIURLWebsite);
 
-      //const osobyRes = await axios.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
+      //const osobyRes = await y.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
 
       // const osobyRoutes = osobyRes.data.map(item => {
 
@@ -85,9 +101,6 @@ export default {
 
     }
   },
-  router: {
-    trailingSlash: true,
-  },
   build: {
     loaders: {
       sass: { sourceMap: false },
@@ -96,24 +109,29 @@ export default {
     }
   },
   buildModules: [
+    ['@nuxtjs/style-resources', {
+      // your settings here
+      sass: [
+        '~assets/scss/defs/_all.sass',
+      ],
+      scss: [],
+      hoistUseStatements: true  // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
+    }],
     "@nuxtjs/svg",
     ['@nuxt/image', {
       // The screen sizes predefined by `@nuxt/image`:
-      screens: $config.responsive.breakpoints,
-      domains: [$config.wordpressURLWebsite, $config.netlifyURL]
+      screens: config.responsive.breakpoints,
+      domains: [config.wordpressURLWebsite, config.netlifyURL]
     }],
   ],
   modules: [
-    ['@nuxtjs/style-resources', {
-      sass: ['~bulma/sass/utilities/all']
-    }],
     ['@nuxtjs/proxy', {
-      '/Api/snemovny/seznam': `${$config.databazePoslancuURL}`,
-      '/Api/snemovny/': `${$config.databazePoslancuURL}`,
-      '/Api/osoby': `${$config.databazePoslancuURL}`,
-      '/Api/soubory': `${$config.databazePoslancuURL}`,
-      '/wp/v2/slovnik': `${$config.wordpressAPIURLWebsite}`,
-      '/wp/v2/pages': `${$config.wordpressAPIURLWebsite}`,
+      '/Api/snemovny/seznam': `${config.databazePoslancuURL}`,
+      '/Api/snemovny/': `${config.databazePoslancuURL}`,
+      '/Api/osoby': `${config.databazePoslancuURL}`,
+      '/Api/soubory': `${config.databazePoslancuURL}`,
+      '/wp/v2/slovnik': `${config.wordpressAPIURLWebsite}`,
+      '/wp/v2/pages': `${config.wordpressAPIURLWebsite}`,
     }],
     ['@nuxtjs/sentry', {
       dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
@@ -148,7 +166,7 @@ export default {
     { src: '~plugins/vue-leaflet.js', ssr: false },
   ],
   head: {
-    title: $config.globalTitle,
+    title: config.globalTitle,
     htmlAttrs: {
       lang: 'cs',
     },

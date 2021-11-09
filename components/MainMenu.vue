@@ -10,7 +10,7 @@
     span &nbsp;|
     NuxtLink.link-socialni-mapy(to="/socialni-mapy/") Sociální mapy
     span &nbsp;|
-    NuxtLink(to="/slovnik/") Slovník
+    NuxtLink.link-slovnik(to="/slovnik/") Slovník
     span &nbsp;|
     NuxtLink.link-galerie-medii(to="/galerie-medii/") Galerie
     span &nbsp;|
@@ -39,6 +39,9 @@
     @extend .nuxt-link-exact-active
 
   html.subpage-media .link-galerie-medii
+    @extend .nuxt-link-exact-active
+
+  html.subpage-slovnik .link-slovnik
     @extend .nuxt-link-exact-active
 
 

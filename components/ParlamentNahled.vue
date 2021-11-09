@@ -9,8 +9,7 @@
 </template>
 
 <style lang="sass">
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
 
   .parlament-nahled
     text-align: center

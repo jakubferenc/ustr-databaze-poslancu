@@ -12,10 +12,10 @@
 
         .content-container
 
-          .header.typography-body-text.typography-karta-nadpis
+          .header
             .category {{osoba.Druh}}
 
-          .content.typography-alt-heading
+          .content
             .name <strong>{{osoba.Jmeno}}</strong>
 
         .image
@@ -26,12 +26,12 @@
 
         .content-container
 
-          .header.typography-body-text.typography-karta-nadpis
+          .header
             .category
               span(v-if="Poslanec.Pohlavi === 1") poslanec
               span(v-if="Poslanec.Pohlavi === 2") poslankyně
 
-          .content.typography-alt-heading
+          .content
             .name <strong>{{Poslanec.CeleJmeno}}</strong>
             .birth → <span>{{Poslanec.DatumNarozeniZobrazene}}</span>
             .death(v-if="Poslanec.DatumUmrtiZobrazene") ← <span>{{Poslanec.DatumUmrtiZobrazene}}</span>
@@ -42,10 +42,10 @@
 
         .content-container
 
-          .header.typography-body-text.typography-karta-nadpis
+          .header
             .category {{osoba.Druh}}
 
-          .content.typography-alt-heading
+          .content
             .name <strong>{{osoba.Jmeno}}</strong>
 
         .image
@@ -58,10 +58,10 @@
 
         .content-container
 
-          .header.typography-body-text.typography-karta-nadpis
+          .header
             .category {{osoba.Druh}}
 
-          .content.typography-alt-heading
+          .content
             .name <strong>{{osoba.Jmeno}}</strong>
 
         .image
@@ -72,10 +72,10 @@
 
         .content-container
 
-          .header.typography-body-text.typography-karta-nadpis
+          .header
             .category {{osoba.Druh}}
 
-          .content.typography-alt-heading
+          .content
             .name <strong>{{osoba.Jmeno}}</strong>
 
         .image
@@ -85,12 +85,19 @@
 
 
 <style lang="sass">
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
+  .person-social-network-item
+
+    .header
+      @extend %typography-body-text
+      @extend %typography-karta-nadpis
+
+    .content
+      @extend %typography-alt-heading
 
 
   .person-social-network-container
-    @extend .alt-bg
+    @extend %alt-bg
     padding: 40px
     margin-bottom: 4rem
 
@@ -110,7 +117,7 @@
       margin-bottom: 2rem
 
       &:before
-        @extend .typography-body-text
+        @extend %typography-body-text
 
         position: absolute
         top: 0

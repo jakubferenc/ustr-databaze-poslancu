@@ -1,7 +1,7 @@
 <template lang="pug">
 
   .keyword()
-    NuxtLink.title(:to="`/slovnikove-heslo/${Slug}/`") /{{ Title }}/
+    NuxtLink.keyword-title(:to="`/slovnikove-heslo/${Slug}/`") /{{ Title }}/
     .description(v-html="Excerpt")
 
 
@@ -9,8 +9,6 @@
 
 <style lang="sass">
 
-@import "~/assets/scss/bulma"
-@import "~/assets/scss/typography"
 
 .keyword
   text-align: center
@@ -26,21 +24,12 @@
   +from($desktop)
     margin-bottom: 100px
 
-  .title
-    @extend .is-title
+  .keyword-title
+    @extend %typography-main-title
+    margin-bottom: 0
+    padding-top: 0
     line-height: 0.75
-
-    font-size: 6.19791667vw
     text-decoration: none
-
-    +from($tablet)
-      font-size: 6.19791667vw
-
-    +from($desktop)
-      font-size: 6.19791667vw
-
-    +from($fullhd)
-      font-size: 100px
 
   .description
     font-size: 1rem

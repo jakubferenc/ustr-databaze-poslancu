@@ -9,16 +9,16 @@
 
         h2.parlament-radek-title.typography-section-title {{Nazev}}
 
-        .parlament-radek-desc.typography-item-detail-text.real-content-text(v-html="StrucnyPopis")
+        .parlament-radek-desc.real-content-text(v-html="StrucnyPopis")
 
     TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-radek")
 
 </template>
 
 <style lang="sass">
-@import "~/assets/scss/bulma"
-@import "~/assets/scss/typography"
 
+.parlament-radek-desc
+  @extend %typography-item-detail-text
 
 .parlament-snemovni-obdobi-list
   display: flex
@@ -49,7 +49,7 @@
     position: relative
     background-color: rgba(0,0,0,.4)
     color: #fff
-    @extend .typography-alt-heading
+    @extend %typography-alt-heading
     display: flex
     align-items: center
     justify-content: center

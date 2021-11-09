@@ -1,0 +1,22 @@
+@charset "utf-8"
+
+/****************************************************/
+/* :RESET: */
+
+a
+  color: inherit
+  text-decoration: underline
+
+/* Removes the forced telephone styling on mobile phones */
+a[href^="tel"]
+  color: inherit /* Inherit text color of parent element. */
+  text-decoration: none /* Remove underline. */
+  /* Additional css `propery: value` pairs here */
+
+[data-rel]
+  cursor: pointer
+
+// https://web.dev/optimize-cls/?utm_source=lighthouse&utm_medium=lr#images-without-dimensions
+img
+  aspect-ratio: attr(width) / attr(height)
+/****************************************************/

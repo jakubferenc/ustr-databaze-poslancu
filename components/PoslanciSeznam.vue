@@ -154,8 +154,7 @@
 
 <style lang="sass" scoped>
 
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
 
   .component-footer
 
@@ -215,7 +214,7 @@
 
     $custom-select-width: 260px
 
-    @extend .button
+    @extend %button
 
     cursor: pointer
     width: $custom-select-width

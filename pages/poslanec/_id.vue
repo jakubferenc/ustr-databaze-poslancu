@@ -118,11 +118,11 @@
 
                     .content-container
 
-                      .header.typography-body-text.typography-karta-nadpis
+                      .header
                         .category {{item.DruhNazev}}
 
 
-                      .content.typography-alt-heading
+                      .content
                         // show only if the addresses are not birth nor death
                         .desc(v-if="item.Druh != 5 && item.Druh != 1")
                           p {{item.Parlament}}
@@ -164,9 +164,14 @@
 </template>
 
 <style lang="sass">
-@import "~/assets/scss/bulma"
-@import "~/assets/scss/typography"
 
+.person-social-network-item
+
+  .header
+    @extend %typography-body-text
+
+  .content
+    @extend %typography-alt-heading
 
 
 .profese
@@ -281,7 +286,7 @@
           this.poslanec.Mandaty.sort((mandat) => {
 
 
-            
+
 
           });
 

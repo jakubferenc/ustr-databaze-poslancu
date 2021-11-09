@@ -19,8 +19,7 @@
 </template>
 
 <style lang="sass" scoped>
-  @import "~/assets/scss/bulma"
-  @import "~/assets/scss/typography"
+
 
   .poslanec-thumb
     text-align: center
@@ -41,7 +40,7 @@
       margin-top: 20px
 
     .poslanec-title
-      @extend .typography-poslanec-thumb-title
+      @extend %typography-poslanec-thumb-title
 
 </style>
 

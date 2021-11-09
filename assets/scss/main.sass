@@ -2,13 +2,16 @@
 
 // bulma
 // Import only what you need from Bulma
-@import "bulma"
+@import "bulma/all"
 
 // fonts
 @import url("https://use.typekit.net/pau2dqq.css")
 
+// assemblage
+@import "assemblage/all"
+
 // custom library
-@import "lib/all"
+@import "defs/all"
 
 // typography
 @import "typography"
@@ -40,10 +43,6 @@ html
     .app-content
       overflow: hidden
       position: fixed
-
-
-
-
 
 
 
@@ -230,7 +229,7 @@ input[type="checkbox"]
       justify-content: center
 
       .diagram-graphics-value
-        @extend .typography-body-text
+        @extend %typography-body-text
         font-size: 45px
         line-height: 1
 

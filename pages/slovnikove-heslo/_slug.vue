@@ -83,7 +83,7 @@ export default {
       return {
         title: `${this.slovnikove_heslo.slug} — ${this.$config.globalTitle}`,
         htmlAttrs: {
-          class: 'page genericka-stranka'
+          class: 'subpage-slovnik'
         }
       }
     }

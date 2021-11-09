@@ -1,10 +1,10 @@
 
 
-.alt-bg
+%alt-bg
   background-color: #F4F4F4
 
 
-.alt-bg-02
+%alt-bg-02
   background-color: #F8F6F1
 
 %is-title
@@ -15,19 +15,19 @@
 %typography-body-text
   font-family: Helvetica, Arial, sans-serif
 
-.typography-smaller-text
+%typography-smaller-text
   font-size: 12px
 
-.typography-alt-heading
+%typography-alt-heading
   font-family: 'Courier', monospace
 
-.typography-metadata-section-title
+%typography-metadata-section-title
   @extend %typography-alt-heading
 
   font-size: 15px
   letter-spacing: 2.7px
 
-.typography-hero-title
+%typography-hero-title
 
   @extend %is-title
   line-height: 1.1
@@ -52,7 +52,7 @@
   +from($fullhd)
     font-size: 65px
 
-.typography-main-title
+%typography-main-title
 
   @extend %is-title
   text-align: center
@@ -103,29 +103,63 @@
     +from($desktop)
       margin-bottom: $margin-from-desktop/4
 
-.typography-section-title-smaller-line-height
+%typography-section-title-smaller-line-height
   @extend %typography-section-title
   line-height: .75
 
-.typography-karta-nadpis
+%typography-poslanec-thumb-title
+  @extend %typography-alt-heading
+  font-size: 16px
+  font-weight: bold
+
+%typography-karta-nadpis
   @extend %typography-body-text
   font-size: 18px
 
-.typography-filter-text
+%typography-filter-text
   @extend %typography-body-text
   font-size: 13px
   color: #002896
 
+%typography-filter-heading
+  @extend %typography-alt-heading
+  font-size: 15px
+  font-weight: normal
 
-
-.typography-item-detail-text
+%typography-item-detail-text
   @extend %typography-body-text
   font-size: 22px
   line-height: 1.4
   letter-spacing: .5px
 
+%typography-body-text-popisy
+  @extend %typography-body-text
+  font-size: 18px
+  line-height: 1.4
+  letter-spacing: .5px
 
-.section-margin-h-margin-v
+%typography-grafy-data-text
+  @extend %typography-body-text
+
+  color: #000
+  font-size: 45px
+  line-height: 1
+
+
+%typography-timeline-small-text
+  @extend %typography-body-text
+
+  line-height: 1
+  font-size: 18px
+
+%typography-timeline-large-text
+  @extend %typography-body-text
+
+  line-height: 1
+  font-size: 32px
+
+
+%section-margin-h-margin-v
 
   +from($desktop)
     padding-left: $margin-from-desktop
@@ -134,7 +168,7 @@
     margin-bottom: $margin-from-desktop
 
 
-.section-padding-h-margin-v
+%section-padding-h-margin-v
   padding-left: $margin-until-desktop
   padding-right: $margin-until-desktop
   margin-top: $margin-until-desktop
@@ -146,7 +180,7 @@
     margin-top: $margin-from-desktop
     margin-bottom: $margin-from-desktop
 
-.section-padding
+%section-padding
   padding-top: $margin-until-desktop
   padding-bottom: $margin-until-desktop
   padding-left: $margin-until-desktop
@@ -159,9 +193,9 @@
     padding-right: $margin-from-desktop
 
 
-.section-padding.smaller-vertical-margin
+%section-padding.smaller-vertical-margin
 
-  @extend .section-padding
+  @extend %section-padding
 
   padding-top: $margin-until-desktop/1.5
   padding-bottom: $margin-until-desktop/1.5
@@ -184,7 +218,7 @@
       padding-right: $margin-from-desktop
 
 
-.section-content-max-width
+%section-content-max-width
 
   max-width: $section-content-fixed-max-width
   margin-left: auto
@@ -195,7 +229,7 @@
     padding-right: 0
 
 
-.button
+%button
   $button-height: 35px
 
   background-color: #fff
@@ -208,7 +242,7 @@
   cursor: pointer
 
 
-.button-large
+%button-large
   border-radius: 12px
   background-color: #000
   min-width: $filter-button-width
@@ -228,7 +262,7 @@
   justify-content: space-between
   margin-bottom: 40px
 
-.button.button-filter
+%button%button-filter
   width: $filter-button-width
 
   &.active,
@@ -241,57 +275,39 @@
     margin-bottom: 1em
 
 
-.typography-row-with-image
 
-  &.has-featured-image
-
-    @extend .columns
-    @extend .is-multiline
-
-    .row-in-image,
-    .row-in-text
-
-      @extend .column
-      @extend .is-half-desktop
-
-
-    .row-in-text
-      +from($desktop)
-        margin-top: -0.5em
-
-
-.typography-has-no-h-padding
+%typography-has-no-h-padding
   padding-left: 0
   padding-right: 0
 
-.typography-has-no-v-padding
+%typography-has-no-v-padding
   padding-top: 0
   padding-bottom: 0
 
-.typography-has-no-margin-top
+%typography-has-no-margin-top
   margin-top: 0
 
-.typography-has-no-margin-bottom
+%typography-has-no-margin-bottom
   margin-bottom: 0
 
-.typography-centered-text-content
+%typography-centered-text-content
   text-align: center
 
   .row-in-text
     display: flex
     justify-content: center
 
-.typography-image-thumb-larger
+%typography-image-thumb-larger
   +from($widescreen)
     width: 636px
 
-.typography-image-thumb-medium
+%typography-image-thumb-medium
   +from($widescreen)
     max-width: 570px
 
 
 
-.typography-snemovna-obr-nadpis
+%typography-snemovna-obr-nadpis
 
   @extend %is-title
   line-height: 1.25
@@ -309,7 +325,7 @@
     font-size: 2rem
 
 
-.first-letter-capitalize
+%first-letter-capitalize
 
   &::first-letter
     text-transform: uppercase

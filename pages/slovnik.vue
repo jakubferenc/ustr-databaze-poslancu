@@ -2,7 +2,7 @@
 
     .section
 
-      h1.typography-main-title {{title}}
+      h1.main-title {{title}}
 
       .container-list.columns.is-multiline.section-padding-h-margin-v
 
@@ -18,6 +18,13 @@
 
 
 </template>
+
+<style lang="sass">
+
+  .main-title
+    @extend %typography-main-title
+
+</style>
 
 
 <script>
