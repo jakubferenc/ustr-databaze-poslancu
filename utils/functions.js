@@ -1,4 +1,21 @@
+import { fixTypos } from 'typopo';
+
+export const truncate = (str, max, suffix) => str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))}${suffix}`;
+
+
+export const stripHTMLTags = (htmlText) => {
+
+  return htmlText.replace(/(<([^>]+)>)/gi, "");
+
+};
+
 export const getOpenGraphMeta = (meta) => {
+
+  const countSocialMediaMetaDataDescription = 160;
+
+  const descriptionToEdit = (meta && meta.description) || description;
+  const truncatedDescription = truncate(descriptionToEdit, countSocialMediaMetaDataDescription, '...');
+
   return [
     {
       hid: "og:site_name",
@@ -8,7 +25,7 @@ export const getOpenGraphMeta = (meta) => {
     {
       hid: "description",
       name: "description",
-      content: (meta && meta.description) || description,
+      content: truncatedDescription,
     },
     {
       hid: "og:type",
@@ -28,7 +45,7 @@ export const getOpenGraphMeta = (meta) => {
     {
       hid: "og:description",
       property: "og:description",
-      content: (meta && meta.description) || description,
+      content: truncatedDescription,
     },
     {
       hid: "og:image",
@@ -48,7 +65,7 @@ export const getOpenGraphMeta = (meta) => {
     {
       hid: "twitter:description",
       name: "twitter:description",
-      content: (meta && meta.description) || description,
+      content: truncatedDescription,
     },
     {
       hid: "twitter:image",
@@ -369,7 +386,7 @@ export const normalizeSouborAttrs = (file) => {
   if (file.media_details) {
     // most probably a file from wordpress media gallery
 
-    newFile.caption = file.caption.rendered;
+    newFile.caption = stripHTMLTags(file.caption.rendered); // remove html from the caption
     newFile.alt_text = file.alt_text;
     newFile.slug = file.slug;
 

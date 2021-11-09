@@ -4,6 +4,7 @@ this is where we will eventually hold the data for all of our posts
 /*eslint no-unsafe-optional-chaining: "error"*/
 import apiFactory from '../factories';
 import projectConfig from '../project.config';
+import { stripHTMLTags } from '../utils/functions';
 
 import {
   normalizeUstrApiMediaObjectForWordpress,
@@ -227,7 +228,6 @@ export const actions = {
 
   async getMedia({ state, commit }, opts = {limit: 100, id: false} ) {
 
-    // ÚSTR custom API reference — http://parliament.ustrcr.cz/Api/Help/Api/GET-soubory_Limit_Stranka_Mime
     // Wordpress media REST API reference — https://developer.wordpress.org/rest-api/reference/media/#list-media
 
     let media_soubory = [];

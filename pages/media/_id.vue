@@ -87,12 +87,12 @@ export default {
 
     data() {
       return {
-        media: {}
+        media: {},
       }
     },
     head () {
       return {
-        title: `DOPLNIT — ${this.$config.globalTitle}`,
+        title: `${this.soubor.caption} — ${this.$config.globalTitle}`,
         htmlAttrs: {
           class: 'alt-bg subpage-media'
         },
