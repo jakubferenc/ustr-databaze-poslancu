@@ -10,24 +10,58 @@
           h1.typography-main-title {{popupTimelineDetailContent.title}}
 
           .popup-content.columns.is-multiline
-            .image-container.column.is-one-half-tablet
-              img(v-if="popupTimelineDetailContent.featured_image" :src="popupTimelineDetailContent.featured_image.url")
-              .timeline-item-image-description(v-if="popupTimelineDetailContent.featured_image_description !== null")
-                small {{popupTimelineDetailContent.featured_image_description}}
+
+            .gallery-container.column.is-one-half-tablet
+              .image-gallery-container(v-if="popupTimelineDetailContent.galerie")
+                .image-gallery-item(v-for="(imageItem, index) in popupTimelineDetailContent.galerie" :index="imageItem.id" )
+                  img(@click="changeImageGallery(index)" :src="imageItem.image.thumb_url" :alt="(imageItem.caption) ? imageItem.caption : '' " :title="(imageItem.caption) ? imageItem.caption : '' ")
+
+              .image-main-container(v-if="popupTimelineDetailContent.galerie[activeImageId]")
+                NuxtLink(v-on:click.native="redirectToDetail()" :to="`/media/${popupTimelineDetailContent.galerie[activeImageId].id}/`")
+                  img(v-if="popupTimelineDetailContent.galerie[activeImageId]" :src="popupTimelineDetailContent.galerie[activeImageId].image.thumb_url")
+                .timeline-item-image-description(v-if="popupTimelineDetailContent.galerie[activeImageId].description")
+                  div
+                    .image-main-caption {{popupTimelineDetailContent.galerie[activeImageId].caption}}
+                    br
+                    small.image-main-description {{popupTimelineDetailContent.galerie[activeImageId].description}}
+                    br
+                    br
+                    small.image-main-source Zdroj: {{popupTimelineDetailContent.galerie[activeImageId].alt_text}}
             .text-container.column.is-one-half-tablet(v-html="popupTimelineDetailContent.content")
 </template>
 
 
 <style lang="sass" scoped>
 
-  @import 'bulma/sass/utilities/mixins.sass'
+
+  .gallery-container
+    display: flex
+
+    .image-gallery-container
+      margin-right: 5px
+
+
+  .image-gallery-item
+    width: 150px
+    height: 150px
+    position: relative
+    margin-bottom: 5px
+    cursor: pointer
+
+    img
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      object-fit: cover
 
   .timeline-item-image-description
     line-height: 1.2
 
   .popup-content
 
-    .image-container,
+    .gallery-container,
     .text-container
 
 
@@ -88,7 +122,7 @@ export default {
 
   data() {
     return {
-
+      activeImageId: 0,
     }
   },
   computed: {
@@ -101,6 +135,7 @@ export default {
     popupTimelineDetailContent() {
       return this.$store.state.popup_timeline_detail;
     },
+
     isPopUpVisible() {
       return Object.keys(this.$store.state.popup_timeline_detail).length > 0;
     }
@@ -109,20 +144,23 @@ export default {
 
   mounted() {
 
-    this.$element = this.$el.querySelector(`.popup-timeline-detail`);
-    this.$popupRealContent = this.$el.querySelector('.popup-timeline-detail-content');
-
-    this.$popupRealContent.addEventListener('transitions', (e) => {
-      // console.log("transition ended!");
-    });
-
-    this.$popupRealContent.addEventListener('transitionend', (e) => {
-      // console.log("transition ended!");
-    });
 
   },
 
   methods: {
+
+    changeImageGallery(index) {
+
+      this.activeImageId = index;
+
+    },
+
+    redirectToDetail() {
+
+      this.closePopup();
+
+    },
+
     closePopup: function() {
 
       this.$store.dispatch("setPopupTimelineDetail", {}); // remove content from the store

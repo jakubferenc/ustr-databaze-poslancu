@@ -7,7 +7,7 @@
       <Main />
       <Footer />
 
-    <PopupDetail/>
+    <PopupDetail v-if="isPopUpVisible" />
 
     .debug-bar
 
@@ -16,15 +16,34 @@
 
 
 <script>
-import Header from "~/components/Header.vue";
-import Main from "~/components/Main.vue";
-import Footer from "~/components/Footer.vue";
-import PopupDetail from "~/components/PopupDetail.vue";
 
 export default {
 
-      components: { Header, Main, Footer, PopupDetail },
+    async asyncData ({store}) {
 
+    },
+
+    computed: {
+
+      isPopUpVisible() {
+
+        if (this.$store.state.popup_timeline_detail && Object.keys(this.$store.state.popup_timeline_detail).hasOwnProperty('length')) {
+          return Object.keys(this.$store.state.popup_timeline_detail).length > 0;
+        } else {
+          return false;
+        }
+
+
+      }
+
+
+    },
+
+
+    data() {
+      return {
+      }
+    },
 
 }
 </script>

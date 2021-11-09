@@ -8,7 +8,9 @@
 
       .poslanec-years(v-if="DatumNarozeniZobrazene || DatumUmrtiZobrazene")
         span(v-if="DatumNarozeniZobrazene") ({{DatumNarozeniZobrazene}}&nbsp;&mdash;
+        span(v-else) (?&nbsp;&mdash;
         span(v-if="DatumUmrtiZobrazene") &nbsp;{{DatumUmrtiZobrazene}})
+        span(v-else) &nbsp;?)
       .mandaty(v-if="ZobrazitMandaty")
         span {{ pocetMandatu }}&nbsp;
         span(v-show="pocetMandatu > 4") mandátů

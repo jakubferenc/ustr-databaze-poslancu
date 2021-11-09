@@ -179,25 +179,53 @@ export const actions = {
 
     try {
 
-      let casova_osa = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=100`);
 
-      casova_osa = casova_osa.data;
+
+      let casova_osa = [];
+
+      // generate media
+      const wpFetchHeaders = {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Expose-Headers': 'x-wp-total'
+        }
+      };
+
+      const limit = 100;
+
+      const { headers } = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/casova_osa?per_page=${limit}`, wpFetchHeaders);
+      const totalPages = headers['x-wp-totalpages'];
+
+      for (let page = 1; page <=totalPages; page++) {
+
+        let posts = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
+        casova_osa = [...casova_osa, ...posts.data];
+
+      }
 
       casova_osa = casova_osa
       .filter(el => el.status === "publish")
       .sort((a, b) => (a.casova_osa_datum > b.casova_osa_datum) ? 1 : (a.casova_osa_datum < b.casova_osa_datum ) ? -1 : 0) // sort from the lowest date, format yyyy-mm-dd
-      .map(({ id, slug, title, date, content, casova_osa_datum, acf , casova_osa_dulezita }) => ({
-        id,
-        slug,
-        title: title.rendered,
-        date,
-        content: content.rendered,
-        casova_osa_rok: casova_osa_datum.split('-')[0],
-        casova_osa_datum,
-        featured_image: (acf.galerie) ? acf.galerie[0] : null,
-        featured_image_description: (acf.galerie) ? acf.galerie[0].description : null,
-        casova_osa_dulezita,
-      }));
+      .map(({ id, slug, title, date, content, casova_osa_datum, acf , casova_osa_dulezita }) => {
+
+        const galerie_all = (acf.galerie) ? acf.galerie.map(item => {
+          return normalizeSouborAttrs(item);
+        }) : null;
+
+        return {
+          id,
+          slug,
+          title: title.rendered,
+          date,
+          content: content.rendered,
+          casova_osa_rok: casova_osa_datum.split('-')[0],
+          casova_osa_datum,
+          featured_image: (galerie_all) ? galerie_all[0] : null,
+          galerie: (galerie_all) ? galerie_all.slice(1) : null,
+          casova_osa_dulezita,
+        };
+
+      });
 
 
       commit("updateCasovaOsa", casova_osa);

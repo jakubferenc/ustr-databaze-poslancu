@@ -18,7 +18,7 @@
 
     <ParlamentySeznam :Parlamenty="parlamenty"/>
 
-    SlovnikSlider(:MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
+    SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 
     .section-padding.alt-bg
 

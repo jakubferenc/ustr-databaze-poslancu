@@ -16,11 +16,11 @@
 
             .timeline-item-image-container
 
-              img.timeline-item-image.typography-image-thumb-medium(v-if="item.featured_image !== null" :src="item.featured_image.url" :alt="item.featured_image_description")
+              img.timeline-item-image.typography-image-thumb-medium(v-if="item.featured_image !== null" :src="item.featured_image.image.thumb_url" :alt="item.featured_image.description")
 
-              .timeline-item-image-description(v-if="item.featured_image_description !== null")
+              .timeline-item-image-description(v-if="item.featured_image.description !== null")
                 small
-                  span {{item.featured_image_description}}
+                  span {{item.featured_image.description}}
 
           .timeline-item-box.timeline-item-box-date.timeline-item-date
             .casova-osa-circle(:class="{large: item.casova_osa_dulezita == '1', small: item.casova_osa_dulezita != '1'}") {{item.casova_osa_rok}}
