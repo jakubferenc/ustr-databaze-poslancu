@@ -1,5 +1,8 @@
 # docs: https://www.netlify.com/docs/headers-and-basic-auth/#multi-key-header-rules
 
+[build.environment]
+  NODE_VERSION="15.8.0"
+
 [[headers]]
   for = "/_nuxt/*"
   [headers.values]
