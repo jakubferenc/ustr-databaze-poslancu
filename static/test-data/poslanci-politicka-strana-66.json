@@ -1,0 +1,2397 @@
+[
+  {
+    "Id": 1185,
+    "Jmeno": "Jozef",
+    "Prijmeni": "Brúha",
+    "CeleJmeno": "Jozef Brúha",
+    "Tituly": ["JUDr."],
+    "DatumNarozeni": "1908-01-26T00:00:00",
+    "DatumNarozeniZobrazene": "26. 1. 1908",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 113,
+    "Narodnosti": ["česká"],
+    "NabozenstviNarozeni": "katolická církev římského ritu",
+    "Vzdelani": [
+      {
+        "Nazev": "Právnická fakulta Univerzity Komenského v Bratislavě",
+        "Adresa": {
+          "GeoX": 48.14924,
+          "GeoY": 17.107,
+          "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+          "Druh": 255
+        }
+      }
+    ],
+    "OsobniVztahyPrimarni": [
+      { "Jmeno": "? jméno Brúhová", "Id": 20295, "Druh": "manželka" }
+    ],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 11419,
+        "Profese": null,
+        "DatumZacatku": "1946-05-26T00:00:00",
+        "DatumZacatkuZobrazene": "26. 5. 1946",
+        "DatumKonce": "1948-05-29T00:00:00",
+        "DatumKonceZobrazene": "29. 5. 1948",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2083536197,
+            "GeoY": 16.3725041967,
+            "Nazev": "Vídeň (Wien) | Hlavní město, Rakousko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 255
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2083536197,
+            "GeoY": 16.3725041967,
+            "Nazev": "Vídeň (Wien) | Hlavní město, Rakousko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 255
+          }
+        ],
+        "Parlament": "Ústavodárné Národní shromáždění republiky Československé ",
+        "Funkce": [],
+        "VolebniStrana": null,
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [null],
+        "Kooptace": false,
+        "Delka": { "Roky": 2, "Dny": 3 },
+        "VekNaZacatkuMandatu": 38,
+        "VekNaKonciMandatu": 40
+      },
+      {
+        "Id": 18596,
+        "Profese": "hlavní odborný rada",
+        "DatumZacatku": "1946-05-26T00:00:00",
+        "DatumZacatkuZobrazene": "26. 5. 1946",
+        "DatumKonce": "1948-05-29T00:00:00",
+        "DatumKonceZobrazene": "29. 5. 1948",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2083536197,
+            "GeoY": 16.3725041967,
+            "Nazev": "Vídeň (Wien) | Hlavní město, Rakousko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 255
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2083536197,
+            "GeoY": 16.3725041967,
+            "Nazev": "Vídeň (Wien) | Hlavní město, Rakousko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 255
+          }
+        ],
+        "Parlament": "Ústavodárné Národní shromáždění republiky Československé ",
+        "Funkce": [],
+        "VolebniStrana": "Strana slobody",
+        "Kluby": [],
+        "Kurie": "296.1. Strana svobody",
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 2, "Dny": 3 },
+        "VekNaZacatkuMandatu": 38,
+        "VekNaKonciMandatu": 40
+      },
+      {
+        "Id": 11420,
+        "Profese": null,
+        "DatumZacatku": "1948-05-30T00:00:00",
+        "DatumZacatkuZobrazene": "30. 5. 1948",
+        "DatumKonce": "1948-06-09T00:00:00",
+        "DatumKonceZobrazene": "9. 6. 1948",
+        "DruhKonce": "vzdání se mandátu",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2083536197,
+            "GeoY": 16.3725041967,
+            "Nazev": "Vídeň (Wien) | Hlavní město, Rakousko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 255
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2083536197,
+            "GeoY": 16.3725041967,
+            "Nazev": "Vídeň (Wien) | Hlavní město, Rakousko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 255
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 0, "Dny": 10 },
+        "VekNaZacatkuMandatu": 40,
+        "VekNaKonciMandatu": 40
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.2083536197,
+        "GeoY": 16.3725041967,
+        "Nazev": "Vídeň (Wien) | Hlavní město, Rakousko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.14924,
+        "GeoY": 17.107,
+        "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+        "Druh": 255
+      }
+    ],
+    "UniverzitniVzdelani": true,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 2982,
+    "Jmeno": "Ľudovít",
+    "Prijmeni": "Hanúsek",
+    "CeleJmeno": "Ľudovít Hanúsek",
+    "Tituly": ["???", "svobodník v záloze"],
+    "DatumNarozeni": "1925-02-17T00:00:00",
+    "DatumNarozeniZobrazene": "17. 2. 1925",
+    "DatumUmrti": "1972-10-12T00:00:00",
+    "DatumUmrtiZobrazene": "12. 10. 1972",
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 47,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [
+      {
+        "Nazev": "Právnická fakulta Univerzity Komenského v Bratislavě",
+        "Adresa": {
+          "GeoX": 48.14924,
+          "GeoY": 17.107,
+          "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+          "Druh": 255
+        }
+      }
+    ],
+    "OsobniVztahyPrimarni": [
+      {
+        "Jmeno": "Marcela Hanúsková | rodné příjmení: Hajtmánková",
+        "Id": 28866,
+        "Druh": "manželka"
+      },
+      { "Jmeno": "Jaroslav ? příjmení", "Id": 28867, "Druh": "syn" },
+      { "Jmeno": "Hana ? příjmení", "Id": 28868, "Druh": "dcera" },
+      {
+        "Jmeno": "Mária Hanúsková | rodné příjmení: Klamová",
+        "Id": 28859,
+        "Druh": "matka"
+      }
+    ],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 13944,
+        "Profese": null,
+        "DatumZacatku": null,
+        "DatumZacatkuZobrazene": null,
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.1633833278,
+            "GeoY": 17.1668295574,
+            "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.311759347,
+            "GeoY": 17.2668727867,
+            "Nazev": "Cajlanská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.1633833278,
+            "GeoY": 17.1668295574,
+            "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.311759347,
+            "GeoY": 17.2668727867,
+            "Nazev": "Cajlanská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR - Sněmovna lidu",
+        "Funkce": [
+          "Místopředseda vícekomorového parlamentu",
+          "Člen předsednictva vícekomorového parlamentu"
+        ],
+        "VolebniStrana": null,
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": ["Výbor zahraniční"],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 43,
+        "VekNaKonciMandatu": 46
+      },
+      {
+        "Id": 13943,
+        "Profese": null,
+        "DatumZacatku": "1964-06-14T00:00:00",
+        "DatumZacatkuZobrazene": "14. 6. 1964",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.1633833278,
+            "GeoY": 17.1668295574,
+            "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.311759347,
+            "GeoY": 17.2668727867,
+            "Nazev": "Cajlanská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.311759347,
+            "GeoY": 17.2668727867,
+            "Nazev": "Cajlanská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 39,
+        "VekNaKonciMandatu": 46
+      },
+      {
+        "Id": 12612,
+        "Profese": null,
+        "DatumZacatku": "1971-11-27T00:00:00",
+        "DatumZacatkuZobrazene": "27. 11. 1971",
+        "DatumKonce": "1972-10-12T00:00:00",
+        "DatumKonceZobrazene": "12. 10. 1972",
+        "DruhKonce": "smrt",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.1633833278,
+            "GeoY": 17.1668295574,
+            "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.311759347,
+            "GeoY": 17.2668727867,
+            "Nazev": "Cajlanská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1633833278,
+            "GeoY": 17.1668295574,
+            "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.1633833278,
+            "GeoY": 17.1668295574,
+            "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.311759347,
+            "GeoY": 17.2668727867,
+            "Nazev": "Cajlanská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1633833278,
+            "GeoY": 17.1668295574,
+            "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": ["Místopředseda vícekomorového parlamentu"],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 0, "Dny": 320 },
+        "VekNaZacatkuMandatu": 46,
+        "VekNaKonciMandatu": 47
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.1633833278,
+        "GeoY": 17.1668295574,
+        "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 48.2854538855,
+        "GeoY": 17.2701939567,
+        "Nazev": "Pezinok | Město, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.311759347,
+        "GeoY": 17.2668727867,
+        "Nazev": "Cajlanská | Ulice, Pezinok, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 48.1561121928,
+        "GeoY": 17.0678992799,
+        "Nazev": "Hřbitov Slávičie údolie | Hřbitov, Staré grunty 232/47, Bratislava - Karlova Ves, Slovensko",
+        "Druh": 6
+      },
+      {
+        "GeoX": 48.1633833278,
+        "GeoY": 17.1668295574,
+        "Nazev": "Mesačná | Ulice, Bratislava, Slovensko",
+        "Druh": 2
+      }
+    ],
+    "UniverzitniVzdelani": true,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3148,
+    "Jmeno": "Vincent",
+    "Prijmeni": "Pokojný",
+    "CeleJmeno": "Vincent Pokojný",
+    "Tituly": ["Řád 25. února 1948 I. stupně"],
+    "DatumNarozeni": "1899-01-02T00:00:00",
+    "DatumNarozeniZobrazene": "2. 1. 1899",
+    "DatumUmrti": "1982-09-08T00:00:00",
+    "DatumUmrtiZobrazene": "08.09.1982",
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 83,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [],
+    "OsobniVztahyPrimarni": [
+      {
+        "Jmeno": "Pavlína Pokojná | rodné příjmení: Kočiová",
+        "Id": 9406,
+        "Druh": "manželka"
+      }
+    ],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 2638,
+        "Profese": null,
+        "DatumZacatku": "1948-05-30T00:00:00",
+        "DatumZacatkuZobrazene": "30. 5. 1948",
+        "DatumKonce": "1954-11-28T00:00:00",
+        "DatumKonceZobrazene": "28. 11. 1954",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.36721,
+            "GeoY": 17.3403,
+            "Nazev": "Dubová | okres Pezinok, kraj Bratislavský, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 5
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.36721,
+            "GeoY": 17.3403,
+            "Nazev": "Dubová | okres Pezinok, kraj Bratislavský, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 5
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 6, "Dny": 182 },
+        "VekNaZacatkuMandatu": 49,
+        "VekNaKonciMandatu": 55
+      },
+      {
+        "Id": 2639,
+        "Profese": null,
+        "DatumZacatku": "1954-11-28T00:00:00",
+        "DatumZacatkuZobrazene": "28. 11. 1954",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": "1956",
+        "DruhKonce": "vzdání se mandátu",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.36721,
+            "GeoY": 17.3403,
+            "Nazev": "Dubová | okres Pezinok, kraj Bratislavský, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 5
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.36721,
+            "GeoY": 17.3403,
+            "Nazev": "Dubová | okres Pezinok, kraj Bratislavský, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 5
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 55,
+        "VekNaKonciMandatu": 61
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.36721,
+        "GeoY": 17.3403,
+        "Nazev": "Dubová | okres Pezinok, kraj Bratislavský, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.14924,
+        "GeoY": 17.107,
+        "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+        "Druh": 5
+      }
+    ],
+    "UniverzitniVzdelani": false,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3154,
+    "Jmeno": "Michal",
+    "Prijmeni": "Hanúsek",
+    "CeleJmeno": "Michal Hanúsek",
+    "Tituly": [],
+    "DatumNarozeni": "1899-09-30T00:00:00",
+    "DatumNarozeniZobrazene": "30. 9. 1899",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 122,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [],
+    "OsobniVztahyPrimarni": [
+      { "Jmeno": "Anna Hanúsková", "Id": 28861, "Druh": "dcera" },
+      { "Jmeno": "Mária Hanúsková", "Id": 28862, "Druh": "dcera" },
+      {
+        "Jmeno": "Mária Hanúsková | rodné příjmení: Klamová",
+        "Id": 28859,
+        "Druh": "manželka"
+      },
+      { "Jmeno": "Ľudovít Hanúsek", "Id": 2982, "Druh": "syn" }
+    ],
+    "OsobniVztahySekundarni": [
+      { "Jmeno": "Miroslav Hanúsek", "Id": 28863, "Druh": "pastorek" },
+      { "Jmeno": "Jaroslav ? příjmení", "Id": 28867, "Druh": "vnuk" },
+      { "Jmeno": "Hana ? příjmení", "Id": 28868, "Druh": "vnučka" },
+      {
+        "Jmeno": "Marcela Hanúsková | rodné příjmení: Hajtmánková",
+        "Id": 28866,
+        "Druh": "snacha"
+      }
+    ],
+    "Mandaty": [
+      {
+        "Id": 13942,
+        "Profese": null,
+        "DatumZacatku": "1954-11-28T00:00:00",
+        "DatumZacatkuZobrazene": "28. 11. 1954",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.281631683,
+            "GeoY": 17.2653184329,
+            "Nazev": "Svätojurská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2854538855,
+            "GeoY": 17.2701939567,
+            "Nazev": "Pezinok | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.281631683,
+            "GeoY": 17.2653184329,
+            "Nazev": "Svätojurská | Ulice, Pezinok, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 55,
+        "VekNaKonciMandatu": 60
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.2854538855,
+        "GeoY": 17.2701939567,
+        "Nazev": "Pezinok | Město, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.281631683,
+        "GeoY": 17.2653184329,
+        "Nazev": "Svätojurská | Ulice, Pezinok, Slovensko",
+        "Druh": 2
+      }
+    ],
+    "UniverzitniVzdelani": false,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3156,
+    "Jmeno": "Vincent",
+    "Prijmeni": "Bohuš",
+    "CeleJmeno": "Vincent Bohuš",
+    "Tituly": [],
+    "DatumNarozeni": "1900-05-14T00:00:00",
+    "DatumNarozeniZobrazene": "14. 5. 1900",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 121,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": "katolická církev římského ritu",
+    "Vzdelani": [],
+    "OsobniVztahyPrimarni": [
+      { "Jmeno": "? jméno Bohušová", "Id": 16718, "Druh": "manželka" }
+    ],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 10326,
+        "Profese": null,
+        "DatumZacatku": "1948-05-30T00:00:00",
+        "DatumZacatkuZobrazene": "30. 5. 1948",
+        "DatumKonce": "1954-11-28T00:00:00",
+        "DatumKonceZobrazene": "28. 11. 1954",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.8944726064,
+            "GeoY": 18.0148345606,
+            "Nazev": "Javorová 174/27 | Trenčín, okres Trenčín, kraj Trenčiansky, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2331093833,
+            "GeoY": 19.0661639691,
+            "Nazev": "Štefanová | Terchová, okres Žilina, kraj Žilinský, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.8944726064,
+            "GeoY": 18.0148345606,
+            "Nazev": "Javorová 174/27 | Trenčín, okres Trenčín, kraj Trenčiansky, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2331093833,
+            "GeoY": 19.0661639691,
+            "Nazev": "Štefanová | Terchová, okres Žilina, kraj Žilinský, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 6, "Dny": 182 },
+        "VekNaZacatkuMandatu": 48,
+        "VekNaKonciMandatu": 54
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.8944726064,
+        "GeoY": 18.0148345606,
+        "Nazev": "Javorová 174/27 | Trenčín, okres Trenčín, kraj Trenčiansky, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 49.2331093833,
+        "GeoY": 19.0661639691,
+        "Nazev": "Štefanová | Terchová, okres Žilina, kraj Žilinský, Slovensko",
+        "Druh": 1
+      }
+    ],
+    "UniverzitniVzdelani": false,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3175,
+    "Jmeno": "Pavol",
+    "Prijmeni": "Blaho",
+    "CeleJmeno": "Pavol Blaho",
+    "Tituly": ["Ing."],
+    "DatumNarozeni": "1903-06-14T00:00:00",
+    "DatumNarozeniZobrazene": "14. 6. 1903",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 118,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": "katolická církev římského ritu",
+    "Vzdelani": [
+      {
+        "Nazev": "České vysoké učení technické v Praze (ČVUT)",
+        "Adresa": {
+          "GeoX": 50.0835493857,
+          "GeoY": 14.4341412988,
+          "Nazev": "Praha | Hlavní město, Česko",
+          "Druh": 255
+        }
+      }
+    ],
+    "OsobniVztahyPrimarni": [
+      { "Jmeno": "? jméno Blahová", "Id": 16190, "Druh": "manželka" }
+    ],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 10027,
+        "Profese": null,
+        "DatumZacatku": "1945-10-28T00:00:00",
+        "DatumZacatkuZobrazene": "28. 10. 1945",
+        "DatumKonce": "1946-05-16T00:00:00",
+        "DatumKonceZobrazene": "16. 5. 1946",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.14924,
+            "GeoY": 17.107,
+            "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Prozatímní Národní shromáždění republiky Československé ",
+        "Funkce": [],
+        "VolebniStrana": "Demokratická strana (DS)",
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": ["Rozpočtový výbor", "Výbor zemědělský"],
+        "Kooptace": false,
+        "Delka": { "Roky": 0, "Dny": 200 },
+        "VekNaZacatkuMandatu": 42,
+        "VekNaKonciMandatu": 42
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.14924,
+        "GeoY": 17.107,
+        "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+        "Druh": 2
+      }
+    ],
+    "UniverzitniVzdelani": true,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3267,
+    "Jmeno": "Jozef",
+    "Prijmeni": "Hanzel",
+    "CeleJmeno": "Jozef Hanzel",
+    "Tituly": [],
+    "DatumNarozeni": "1914-03-15T00:00:00",
+    "DatumNarozeniZobrazene": "15. 3. 1914",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 107,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": "katolická církev římského ritu",
+    "Vzdelani": [],
+    "OsobniVztahyPrimarni": [],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 13941,
+        "Profese": null,
+        "DatumZacatku": null,
+        "DatumZacatkuZobrazene": null,
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": null,
+        "AdresyZvoleni": null,
+        "Parlament": "Slovenská národní rada (SNR)",
+        "Funkce": [],
+        "VolebniStrana": "Demokratická strana (DS)",
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 107,
+        "VekNaKonciMandatu": 107
+      },
+      {
+        "Id": 13940,
+        "Profese": "ředitel školy",
+        "DatumZacatku": "1946-05-26T00:00:00",
+        "DatumZacatkuZobrazene": "26. 5. 1946",
+        "DatumKonce": "1948-05-29T00:00:00",
+        "DatumKonceZobrazene": "29. 5. 1948",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.9424486625,
+            "GeoY": 18.8066251392,
+            "Nazev": "Ondrašová | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.3127555768,
+            "GeoY": 18.0872292909,
+            "Nazev": "Štefánikova trieda 8 | Adresa, Nitra, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 50.0885140408,
+            "GeoY": 14.3993607584,
+            "Nazev": "Nerudova | ulice, Praha, Česko",
+            "Druh": 3
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.9424486625,
+            "GeoY": 18.8066251392,
+            "Nazev": "Ondrašová | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.3127555768,
+            "GeoY": 18.0872292909,
+            "Nazev": "Štefánikova trieda 8 | Adresa, Nitra, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 50.0885140408,
+            "GeoY": 14.3993607584,
+            "Nazev": "Nerudova | ulice, Praha, Česko",
+            "Druh": 3
+          }
+        ],
+        "Parlament": "Ústavodárné Národní shromáždění republiky Československé ",
+        "Funkce": [],
+        "VolebniStrana": "Strana slobody",
+        "Kluby": [],
+        "Kurie": "297.2. Strana svobody",
+        "Vybory": ["Sociálně-politický výbor"],
+        "Kooptace": false,
+        "Delka": { "Roky": 2, "Dny": 3 },
+        "VekNaZacatkuMandatu": 32,
+        "VekNaKonciMandatu": 34
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.9424486625,
+        "GeoY": 18.8066251392,
+        "Nazev": "Ondrašová | Vesnice, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.3127555768,
+        "GeoY": 18.0872292909,
+        "Nazev": "Štefánikova trieda 8 | Adresa, Nitra, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 50.0885140408,
+        "GeoY": 14.3993607584,
+        "Nazev": "Nerudova | ulice, Praha, Česko",
+        "Druh": 3
+      }
+    ],
+    "UniverzitniVzdelani": false,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3292,
+    "Jmeno": "Michal",
+    "Prijmeni": "Žákovič",
+    "CeleJmeno": "Michal Žákovič",
+    "Tituly": [
+      "JUDr.",
+      "Za zásluhy o výstavbu",
+      "Řád Vítězného února",
+      "Řád práce",
+      "Československá cena míru"
+    ],
+    "DatumNarozeni": "1916-04-27T00:00:00",
+    "DatumNarozeniZobrazene": "27. 4. 1916",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 105,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [
+      {
+        "Nazev": "Právnická fakulta Univerzity Komenského v Bratislavě",
+        "Adresa": {
+          "GeoX": 48.14924,
+          "GeoY": 17.107,
+          "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+          "Druh": 255
+        }
+      }
+    ],
+    "OsobniVztahyPrimarni": [],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 18480,
+        "Profese": null,
+        "DatumZacatku": "1969-01-01T00:00:00",
+        "DatumZacatkuZobrazene": "1. 1. 1969",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": [],
+        "VolebniStrana": null,
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": true,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 52,
+        "VekNaKonciMandatu": 55
+      },
+      {
+        "Id": 12643,
+        "Profese": "Místopředseda FS",
+        "DatumZacatku": "1976-10-23T00:00:00",
+        "DatumZacatkuZobrazene": "23. 10. 1976",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": [
+          "Místopředseda vícekomorového parlamentu",
+          "Člen předsednictva"
+        ],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 60,
+        "VekNaKonciMandatu": 65
+      },
+      {
+        "Id": 9976,
+        "Profese": "Místopředseda FS",
+        "DatumZacatku": "1981-06-06T00:00:00",
+        "DatumZacatkuZobrazene": "6. 6. 1981",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": [
+          "Místopředseda vícekomorového parlamentu",
+          "Člen předsednictva vícekomorového parlamentu"
+        ],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 65,
+        "VekNaKonciMandatu": 70
+      },
+      {
+        "Id": 1723,
+        "Profese": "Předseda Strany slobody, Bratislava ",
+        "DatumZacatku": "1986-05-24T00:00:00",
+        "DatumZacatkuZobrazene": "24. 5. 1986",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1907602889,
+            "GeoY": 17.2529970535,
+            "Nazev": "Trenčianska | Ulice, Ivanka pri Dunaji, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 50.0797919257,
+            "GeoY": 14.4317955175,
+            "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1907602889,
+            "GeoY": 17.2529970535,
+            "Nazev": "Trenčianska | Ulice, Ivanka pri Dunaji, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 49.2176883183,
+            "GeoY": 19.3787118237,
+            "Nazev": "Pucov | Vesnice, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.154143158,
+            "GeoY": 17.1212758681,
+            "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": [],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 70,
+        "VekNaKonciMandatu": 74
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 50.0797919257,
+        "GeoY": 14.4317955175,
+        "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 50.0797919257,
+        "GeoY": 14.4317955175,
+        "Nazev": "Vinohradská 52/1 | Adresa, Praha 1 - Vinohrady, Česko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 48.1907602889,
+        "GeoY": 17.2529970535,
+        "Nazev": "Trenčianska | Ulice, Ivanka pri Dunaji, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 49.2176883183,
+        "GeoY": 19.3787118237,
+        "Nazev": "Pucov | Vesnice, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.154143158,
+        "GeoY": 17.1212758681,
+        "Nazev": "Blumentálska 2725/11 | Adresa, Bratislava, Slovensko",
+        "Druh": 2
+      }
+    ],
+    "UniverzitniVzdelani": true,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3358,
+    "Jmeno": "Ján",
+    "Prijmeni": "Bandžák",
+    "CeleJmeno": "Ján Bandžák",
+    "Tituly": [],
+    "DatumNarozeni": "1921-02-22T00:00:00",
+    "DatumNarozeniZobrazene": "22. 2. 1921",
+    "DatumUmrti": "1990-06-12T00:00:00",
+    "DatumUmrtiZobrazene": "12. 6. 1990",
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 69,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [],
+    "OsobniVztahyPrimarni": [],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 468,
+        "Profese": null,
+        "DatumZacatku": null,
+        "DatumZacatkuZobrazene": "1976",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": "1981",
+        "DruhKonce": "",
+        "AdresyVykonMandatu": null,
+        "AdresyZvoleni": null,
+        "Parlament": "Slovenská národní rada (SNR)",
+        "Funkce": ["Člen předsednictva"],
+        "VolebniStrana": null,
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 100,
+        "VekNaKonciMandatu": 100
+      },
+      {
+        "Id": 467,
+        "Profese": null,
+        "DatumZacatku": "1972-12-16T00:00:00",
+        "DatumZacatkuZobrazene": "16. 12. 1972",
+        "DatumKonce": "1976-10-22T00:00:00",
+        "DatumKonceZobrazene": "22. 10. 1976",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 49.1687585394,
+            "GeoY": 21.4504475528,
+            "Nazev": "Marhaň | Vesnice, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 49.1687585394,
+            "GeoY": 21.4504475528,
+            "Nazev": "Marhaň | Vesnice, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": ["Místopředseda vícekomorového parlamentu"],
+        "VolebniStrana": null,
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 3, "Dny": 311 },
+        "VekNaZacatkuMandatu": 51,
+        "VekNaKonciMandatu": 55
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 49.1687585394,
+        "GeoY": 21.4504475528,
+        "Nazev": "Marhaň | Vesnice, Slovensko",
+        "Druh": 1
+      }
+    ],
+    "UniverzitniVzdelani": false,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3398,
+    "Jmeno": "Jozef",
+    "Prijmeni": "Škula",
+    "CeleJmeno": "Jozef Škula",
+    "Tituly": ["JUDr.", "Řád práce"],
+    "DatumNarozeni": "1923-03-24T00:00:00",
+    "DatumNarozeniZobrazene": "24. 3. 1923",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 98,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [
+      {
+        "Nazev": "Právnická fakulta Univerzity Komenského v Bratislavě",
+        "Adresa": {
+          "GeoX": 48.14924,
+          "GeoY": 17.107,
+          "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+          "Druh": 255
+        }
+      }
+    ],
+    "OsobniVztahyPrimarni": [],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 18818,
+        "Profese": null,
+        "DatumZacatku": "1964-06-14T00:00:00",
+        "DatumZacatkuZobrazene": "14. 6. 1964",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 41,
+        "VekNaKonciMandatu": 48
+      },
+      {
+        "Id": 12559,
+        "Profese": null,
+        "DatumZacatku": "1971-11-27T00:00:00",
+        "DatumZacatkuZobrazene": "27. 11. 1971",
+        "DatumKonce": "1976-10-22T00:00:00",
+        "DatumKonceZobrazene": "22. 10. 1976",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": [],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Československé strany lidové"],
+        "Kurie": null,
+        "Vybory": ["Mandátový a imunitní výbor", "Výbor pro sociální politiku"],
+        "Kooptace": false,
+        "Delka": { "Roky": 4, "Dny": 330 },
+        "VekNaZacatkuMandatu": 48,
+        "VekNaKonciMandatu": 53
+      },
+      {
+        "Id": 12561,
+        "Profese": "Vedoucí hospodářské provozovny OÚNZ Galanta",
+        "DatumZacatku": "1976-10-23T00:00:00",
+        "DatumZacatkuZobrazene": "23. 10. 1976",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1518497812,
+            "GeoY": 17.8717789839,
+            "Nazev": "Nemocničná | Ulice, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1518497812,
+            "GeoY": 17.8717789839,
+            "Nazev": "Nemocničná | Ulice, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": ["Ověřovatel"],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": ["Mandátový a imunitní výbor", "Výbor pro sociální politiku"],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 53,
+        "VekNaKonciMandatu": 58
+      },
+      {
+        "Id": 9968,
+        "Profese": "Vedoucí hospodářskotechnický pracovník, Nemocnica s poliklinikou, Šaľa",
+        "DatumZacatku": "1981-06-06T00:00:00",
+        "DatumZacatkuZobrazene": "6. 6. 1981",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1517913217,
+            "GeoY": 17.8708639382,
+            "Nazev": "Nemocničná 833/1 | Adresa, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1518497812,
+            "GeoY": 17.8717789839,
+            "Nazev": "Nemocničná | Ulice, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1517913217,
+            "GeoY": 17.8708639382,
+            "Nazev": "Nemocničná 833/1 | Adresa, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1518497812,
+            "GeoY": 17.8717789839,
+            "Nazev": "Nemocničná | Ulice, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": ["Ověřovatel"],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [
+          "Výbor pro sociální politiku ",
+          "Mandátový a imunitní výbor"
+        ],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 58,
+        "VekNaKonciMandatu": 63
+      },
+      {
+        "Id": 1516,
+        "Profese": "Důchodce",
+        "DatumZacatku": "1986-05-24T00:00:00",
+        "DatumZacatkuZobrazene": "24. 5. 1986",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1517913217,
+            "GeoY": 17.8708639382,
+            "Nazev": "Nemocničná 833/1 | Adresa, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1518497812,
+            "GeoY": 17.8717789839,
+            "Nazev": "Nemocničná | Ulice, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1568892372,
+            "GeoY": 17.8729868215,
+            "Nazev": "Vajanského 1022/7 | Adresa, Šaľa, Slovensko",
+            "Druh": 3
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.151378974,
+            "GeoY": 17.8748586681,
+            "Nazev": "Šaľa | Město, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1517913217,
+            "GeoY": 17.8708639382,
+            "Nazev": "Nemocničná 833/1 | Adresa, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.1518497812,
+            "GeoY": 17.8717789839,
+            "Nazev": "Nemocničná | Ulice, Šaľa, Slovensko",
+            "Druh": 2
+          },
+          {
+            "GeoX": 48.400879817,
+            "GeoY": 18.3255667047,
+            "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1568892372,
+            "GeoY": 17.8729868215,
+            "Nazev": "Vajanského 1022/7 | Adresa, Šaľa, Slovensko",
+            "Druh": 3
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna lidu",
+        "Funkce": ["Ověřovatel"],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": ["Mandátový a imunitní výbor", "Výbor pro sociální politiku"],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 63,
+        "VekNaKonciMandatu": 67
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.151378974,
+        "GeoY": 17.8748586681,
+        "Nazev": "Šaľa | Město, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 48.1517913217,
+        "GeoY": 17.8708639382,
+        "Nazev": "Nemocničná 833/1 | Adresa, Šaľa, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 48.1518497812,
+        "GeoY": 17.8717789839,
+        "Nazev": "Nemocničná | Ulice, Šaľa, Slovensko",
+        "Druh": 2
+      },
+      {
+        "GeoX": 48.400879817,
+        "GeoY": 18.3255667047,
+        "Nazev": "Horné Sľažany | Část obce, Sľažany, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.1568892372,
+        "GeoY": 17.8729868215,
+        "Nazev": "Vajanského 1022/7 | Adresa, Šaľa, Slovensko",
+        "Druh": 3
+      }
+    ],
+    "UniverzitniVzdelani": true,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3434,
+    "Jmeno": "Emil",
+    "Prijmeni": "Hojnoš",
+    "CeleJmeno": "Emil Hojnoš",
+    "Tituly": ["desátník v záloze", "Za vynikající práci"],
+    "DatumNarozeni": "1924-09-04T00:00:00",
+    "DatumNarozeniZobrazene": "4. 9. 1924",
+    "DatumUmrti": "2009-06-11T00:00:00",
+    "DatumUmrtiZobrazene": "11. 6. 2009",
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 84,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [
+      {
+        "Nazev": "Slovenská vysoká škola ekonomická v Bratislavě",
+        "Adresa": {
+          "GeoX": 48.1516987436,
+          "GeoY": 17.1093062589,
+          "Nazev": "Bratislava | Hlavní město, Slovensko",
+          "Druh": 255
+        }
+      },
+      {
+        "Nazev": "Slovenská vysoká škola technická v Bratislavě",
+        "Adresa": {
+          "GeoX": 48.14924,
+          "GeoY": 17.107,
+          "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+          "Druh": 255
+        }
+      }
+    ],
+    "OsobniVztahyPrimarni": [
+      { "Jmeno": "Ladislav Hojnoš", "Id": 25283, "Druh": "syn" },
+      { "Jmeno": "Pavol Hojnoš", "Id": 25284, "Druh": "syn" },
+      {
+        "Jmeno": "Vilma Hojnošová | rodné příjmení: Mojžíšková",
+        "Id": 25281,
+        "Druh": "manželka"
+      },
+      { "Jmeno": "Katarina Hojnošová", "Id": 25282, "Druh": "dcera" },
+      { "Jmeno": "Eva Hojnošová", "Id": 25285, "Druh": "dcera" }
+    ],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 12563,
+        "Profese": "výzkumný pracovník Ústav ekonomiky a organizace stavebnictví Bratislava",
+        "DatumZacatku": "1976-10-23T00:00:00",
+        "DatumZacatkuZobrazene": "23. 10. 1976",
+        "DatumKonce": "1981-06-05T00:00:00",
+        "DatumKonceZobrazene": "5. 6. 1981",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 49.0251115783,
+            "GeoY": 20.587998918,
+            "Nazev": "Levoča | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1883346175,
+            "GeoY": 17.0462840351,
+            "Nazev": "Lamačská cesta 1747/133 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 49.0251115783,
+            "GeoY": 20.587998918,
+            "Nazev": "Levoča | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1883346175,
+            "GeoY": 17.0462840351,
+            "Nazev": "Lamačská cesta 1747/133 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": [],
+        "VolebniStrana": "Strana slobody (SSl) | Bratislava | Hlavní město, Slovensko",
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": ["Výbor pro průmysl, dopravu a obchod "],
+        "Kooptace": false,
+        "Delka": { "Roky": 4, "Dny": 225 },
+        "VekNaZacatkuMandatu": 52,
+        "VekNaKonciMandatu": 56
+      },
+      {
+        "Id": 12564,
+        "Profese": null,
+        "DatumZacatku": "1981-06-07T00:00:00",
+        "DatumZacatkuZobrazene": "7. 6. 1981",
+        "DatumKonce": "1986-05-23T00:00:00",
+        "DatumKonceZobrazene": "23. 5. 1986",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 49.0251115783,
+            "GeoY": 20.587998918,
+            "Nazev": "Levoča | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1883346175,
+            "GeoY": 17.0462840351,
+            "Nazev": "Lamačská cesta 1747/133 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 49.0251115783,
+            "GeoY": 20.587998918,
+            "Nazev": "Levoča | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1883346175,
+            "GeoY": 17.0462840351,
+            "Nazev": "Lamačská cesta 1747/133 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": [],
+        "VolebniStrana": "Strana slobody (SSl) | Bratislava | Hlavní město, Slovensko",
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 4, "Dny": 350 },
+        "VekNaZacatkuMandatu": 56,
+        "VekNaKonciMandatu": 61
+      },
+      {
+        "Id": 12565,
+        "Profese": null,
+        "DatumZacatku": "1986-05-24T00:00:00",
+        "DatumZacatkuZobrazene": "24. 5. 1986",
+        "DatumKonce": "1990-01-29T00:00:00",
+        "DatumKonceZobrazene": "29. 1. 1990",
+        "DruhKonce": "zrušení mandátu",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 49.0251115783,
+            "GeoY": 20.587998918,
+            "Nazev": "Levoča | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1883346175,
+            "GeoY": 17.0462840351,
+            "Nazev": "Lamačská cesta 1747/133 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 49.0251115783,
+            "GeoY": 20.587998918,
+            "Nazev": "Levoča | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.1883346175,
+            "GeoY": 17.0462840351,
+            "Nazev": "Lamačská cesta 1747/133 | Adresa, Bratislava, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": ["Člen předsednictva vícekomorového parlamentu"],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": 3, "Dny": 250 },
+        "VekNaZacatkuMandatu": 61,
+        "VekNaKonciMandatu": 65
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 49.0251115783,
+        "GeoY": 20.587998918,
+        "Nazev": "Levoča | Město, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.1883346175,
+        "GeoY": 17.0462840351,
+        "Nazev": "Lamačská cesta 1747/133 | Adresa, Bratislava, Slovensko",
+        "Druh": 2
+      }
+    ],
+    "UniverzitniVzdelani": true,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3534,
+    "Jmeno": "Ferdinand",
+    "Prijmeni": "Tomášik",
+    "CeleJmeno": "Ferdinand Tomášik",
+    "Tituly": [],
+    "DatumNarozeni": "1929-01-04T00:00:00",
+    "DatumNarozeniZobrazene": "4. 1. 1929",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 92,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [],
+    "OsobniVztahyPrimarni": [],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 15034,
+        "Profese": null,
+        "DatumZacatku": "1954-11-28T00:00:00",
+        "DatumZacatkuZobrazene": "28. 11. 1954",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 25,
+        "VekNaKonciMandatu": 31
+      },
+      {
+        "Id": 18769,
+        "Profese": null,
+        "DatumZacatku": "1960-06-12T00:00:00",
+        "DatumZacatkuZobrazene": "12. 6. 1960",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": "Národní fronta Čechů a Slováků (NF)",
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 31,
+        "VekNaKonciMandatu": 35
+      },
+      {
+        "Id": 18828,
+        "Profese": null,
+        "DatumZacatku": "1964-06-14T00:00:00",
+        "DatumZacatkuZobrazene": "14. 6. 1964",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Národní shromáždění ČSR/ČSSR",
+        "Funkce": [],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 35,
+        "VekNaKonciMandatu": 42
+      },
+      {
+        "Id": 17150,
+        "Profese": null,
+        "DatumZacatku": "1971-11-27T00:00:00",
+        "DatumZacatkuZobrazene": "27. 11. 1971",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": ["Ověřovatel předsednictva"],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany slovenské obrody"],
+        "Kurie": null,
+        "Vybory": ["Výbor pro plán a rozpočet"],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 42,
+        "VekNaKonciMandatu": 47
+      },
+      {
+        "Id": 17207,
+        "Profese": "vedoucí tajemník KV Strany slobody Banská Bystrica",
+        "DatumZacatku": "1976-10-23T00:00:00",
+        "DatumZacatkuZobrazene": "23. 10. 1976",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": ["Ověřovatel"],
+        "VolebniStrana": null,
+        "Kluby": ["Klub poslanců Strany svobody"],
+        "Kurie": null,
+        "Vybory": ["Výbor pro plán a rozpočet "],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 47,
+        "VekNaKonciMandatu": 52
+      },
+      {
+        "Id": 17262,
+        "Profese": null,
+        "DatumZacatku": "1981-06-06T00:00:00",
+        "DatumZacatkuZobrazene": "6. 6. 1981",
+        "DatumKonce": null,
+        "DatumKonceZobrazene": null,
+        "DruhKonce": "",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.2409222589,
+            "GeoY": 19.3341710608,
+            "Nazev": "Modrý Kameň | Město, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": ["Ověřovatel"],
+        "VolebniStrana": null,
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": false,
+        "Delka": { "Roky": null, "Dny": null },
+        "VekNaZacatkuMandatu": 52,
+        "VekNaKonciMandatu": 57
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.2409222589,
+        "GeoY": 19.3341710608,
+        "Nazev": "Modrý Kameň | Město, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.2409222589,
+        "GeoY": 19.3341710608,
+        "Nazev": "Modrý Kameň | Město, Slovensko",
+        "Druh": 2
+      }
+    ],
+    "UniverzitniVzdelani": false,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  },
+  {
+    "Id": 3645,
+    "Jmeno": "Kamil",
+    "Prijmeni": "Brodziansky",
+    "CeleJmeno": "Kamil Brodziansky",
+    "Tituly": ["JUDr."],
+    "DatumNarozeni": "1936-03-22T00:00:00",
+    "DatumNarozeniZobrazene": "22. 3. 1936",
+    "DatumUmrti": null,
+    "DatumUmrtiZobrazene": null,
+    "ZivotniData": null,
+    "Pohlavi": 1,
+    "Vek": 85,
+    "Narodnosti": ["slovenská"],
+    "NabozenstviNarozeni": null,
+    "Vzdelani": [
+      {
+        "Nazev": "Právnická fakulta Univerzity Komenského v Bratislavě",
+        "Adresa": {
+          "GeoX": 48.14924,
+          "GeoY": 17.107,
+          "Nazev": "Bratislava | okres Bratislava, kraj Bratislavský, Slovensko",
+          "Druh": 255
+        }
+      }
+    ],
+    "OsobniVztahyPrimarni": [
+      { "Jmeno": "Lýdia Brodzianská", "Id": 20230, "Druh": "manželka" },
+      { "Jmeno": "Kamila Brodzianská", "Id": 20231, "Druh": "dcera" },
+      { "Jmeno": "Anna Brodzianská", "Id": 20233, "Druh": "matka" },
+      { "Jmeno": "Anton Brodziansky", "Id": 20232, "Druh": "otec" }
+    ],
+    "OsobniVztahySekundarni": [],
+    "Mandaty": [
+      {
+        "Id": 11410,
+        "Profese": null,
+        "DatumZacatku": "1969-01-01T00:00:00",
+        "DatumZacatkuZobrazene": "1. 1. 1969",
+        "DatumKonce": "1971-11-26T00:00:00",
+        "DatumKonceZobrazene": "26. 11. 1971",
+        "DruhKonce": "konec funkčního období",
+        "AdresyVykonMandatu": [
+          {
+            "GeoX": 48.42465,
+            "GeoY": 18.63942,
+            "Nazev": "Nová Baňa | okres Žarnovica, kraj Banskobystrický, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.427141401,
+            "GeoY": 18.624819808,
+            "Nazev": "Starohutská 444/2 | Nová Baňa, okres Žarnovica, kraj Banskobystrický, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "AdresyZvoleni": [
+          {
+            "GeoX": 48.42465,
+            "GeoY": 18.63942,
+            "Nazev": "Nová Baňa | okres Žarnovica, kraj Banskobystrický, Slovensko",
+            "Druh": 1
+          },
+          {
+            "GeoX": 48.427141401,
+            "GeoY": 18.624819808,
+            "Nazev": "Starohutská 444/2 | Nová Baňa, okres Žarnovica, kraj Banskobystrický, Slovensko",
+            "Druh": 2
+          }
+        ],
+        "Parlament": "Federální shromáždění ČSSR/ČSFR - Sněmovna národů",
+        "Funkce": [],
+        "VolebniStrana": null,
+        "Kluby": [],
+        "Kurie": null,
+        "Vybory": [],
+        "Kooptace": true,
+        "Delka": { "Roky": 2, "Dny": 329 },
+        "VekNaZacatkuMandatu": 32,
+        "VekNaKonciMandatu": 35
+      }
+    ],
+    "Soubory": [],
+    "Adresy": [
+      {
+        "GeoX": 48.42465,
+        "GeoY": 18.63942,
+        "Nazev": "Nová Baňa | okres Žarnovica, kraj Banskobystrický, Slovensko",
+        "Druh": 1
+      },
+      {
+        "GeoX": 48.427141401,
+        "GeoY": 18.624819808,
+        "Nazev": "Starohutská 444/2 | Nová Baňa, okres Žarnovica, kraj Banskobystrický, Slovensko",
+        "Druh": 2
+      }
+    ],
+    "UniverzitniVzdelani": true,
+    "UvedeneVzdelani": null,
+    "Novacek": null,
+    "Mazak": null
+  }
+]
