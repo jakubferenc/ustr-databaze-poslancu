@@ -7,7 +7,7 @@
         <ParlamentNahledObecnyImage />
       .parlament-radek-text.column.is-full-tablet.is-half-desktop
 
-        h2.parlament-radek-title.typography-section-title {{Nazev}}
+        h2.parlament-radek-title {{Nazev}}
 
         .parlament-radek-desc.real-content-text(v-html="StrucnyPopis")
 
@@ -16,6 +16,9 @@
 </template>
 
 <style lang="sass">
+
+.parlament-radek-title
+  @extend %typography-section-title
 
 .parlament-radek-desc
   @extend %typography-item-detail-text
@@ -130,7 +133,7 @@
       dateYearEnd = dateYearEnd.split(". ")[2];
 
       content = content + `
-        <a href="/snemovni-obdobi/${item.Id}" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
+        <a href="/snemovni-obdobi/${item.Id}/" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
           <span class="parlament-snemovni-obdobi-in">
             <span class="image"></span>
             <span class="date">(${dateYearStart}–${dateYearEnd})</span>

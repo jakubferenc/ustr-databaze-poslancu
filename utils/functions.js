@@ -383,12 +383,22 @@ export const normalizeSouborAttrs = (file) => {
     },
   };
 
+
   if (file.media_details) {
     // most probably a file from wordpress media gallery
 
-    newFile.caption = stripHTMLTags(file.caption.rendered); // remove html from the caption
+    newFile.caption = (file.caption.rendered) ? fixTypos(stripHTMLTags(file.caption.rendered)) : undefined; // remove html from the caption
     newFile.alt_text = file.alt_text;
     newFile.slug = file.slug;
+
+    if (file.description.rendered) {
+
+      // we need to clean up the description from the wordpress media gallery
+      // media gallery joins together description and html for displaying the subpage for the given attachment
+
+      newFile.description = fixTypos(stripHTMLTags(file.description.rendered.split('</a></p>')[1]));
+
+    }
 
     if (file.media_details.sizes && file.media_details.sizes.medium_large) {
       newFile.image.thumb_url = file.media_details.sizes.medium_large.source_url;
@@ -405,7 +415,7 @@ export const normalizeSouborAttrs = (file) => {
   if  (file.sizes) {
     // most probably a file from acf gallery
 
-    newFile.caption = file.caption;
+    newFile.caption = file.caption; // works as a description
     newFile.alt_text = file.alt;
     newFile.slug = file.name;
     newFile.title = file.title;

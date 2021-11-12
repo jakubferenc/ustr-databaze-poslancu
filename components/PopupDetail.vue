@@ -1,8 +1,8 @@
 <template lang="pug">
-  .popup-timeline-detail(v-if="popupTimelineDetailContent")
+  .popup-timeline-detail(v-if="popupTimelineDetailContent && popupTimelineDetailContent.galerie")
     .background-shadow
 
-    .popup-timeline-detail-content(:style="{top: `calc(30% + ${elementScrollTop}px)`}")
+    .popup-timeline-detail-content(:style="{top: `calc(25% + ${elementScrollTop}px)`}")
 
       .button-close(@click="closePopup()") X Zavřít detail
       .section-padding-h-margin-v
@@ -12,11 +12,11 @@
           .popup-content.columns.is-multiline
 
             .gallery-container.column.is-one-half-tablet
-              .image-gallery-container(v-if="popupTimelineDetailContent.galerie")
+              .image-gallery-container
                 .image-gallery-item(v-for="(imageItem, index) in popupTimelineDetailContent.galerie" :index="imageItem.id" )
-                  img(@click="changeImageGallery(index)" :src="imageItem.image.thumb_url" :alt="(imageItem.caption) ? imageItem.caption : '' " :title="(imageItem.caption) ? imageItem.caption : '' ")
+                  img(@click="changeImageGallery(index)" @mouseenter="changeImageGallery(index)" :src="imageItem.image.thumb_url" :alt="(imageItem.caption) ? imageItem.caption : '' " :title="(imageItem.caption) ? imageItem.caption : '' ")
 
-              .image-main-container(v-if="popupTimelineDetailContent.galerie[activeImageId]")
+              .image-main-container(v-if="popupTimelineDetailContent && popupTimelineDetailContent.galerie[activeImageId]")
                 NuxtLink(v-on:click.native="redirectToDetail()" :to="`/media/${popupTimelineDetailContent.galerie[activeImageId].id}/`")
                   img(v-if="popupTimelineDetailContent.galerie[activeImageId]" :src="popupTimelineDetailContent.galerie[activeImageId].image.thumb_url")
                 .timeline-item-image-description(v-if="popupTimelineDetailContent.galerie[activeImageId].description")
@@ -38,7 +38,7 @@
     display: flex
 
     .image-gallery-container
-      margin-right: 5px
+      margin-right: 30px
 
 
   .image-gallery-item
@@ -136,9 +136,6 @@ export default {
       return this.$store.state.popup_timeline_detail;
     },
 
-    isPopUpVisible() {
-      return Object.keys(this.$store.state.popup_timeline_detail).length > 0;
-    }
 
   },
 

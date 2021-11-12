@@ -181,6 +181,7 @@ export default {
 
         this.$store.dispatch("setPopupTimelineDetail", item);
         document.getElementsByTagName('html')[0].classList.add('popup-detail-on');
+
       }
 
     },

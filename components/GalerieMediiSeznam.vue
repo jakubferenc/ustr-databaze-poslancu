@@ -10,10 +10,10 @@
           NuxtLink.file-link(:to="`/media/${soubor.id}/`")
 
             .image-container
-              img.file-image(v-if="soubor.image.thumb_url" :src="soubor.image.thumb_url" :alt="soubor.caption.rendered")
+              img.file-image(v-if="soubor.image.thumb_url" :src="soubor.image.thumb_url" :alt="soubor.caption")
 
             .file-thumb-footer
-              .file-title(v-html="soubor.caption.rendered")
+              .file-title(v-html="soubor.caption")
               .file-type
                 <IconFileTypeImage  />
 
@@ -87,6 +87,9 @@
 
         .file-title
           text-align: left
+
+          +from($desktop)
+            font-size: 14px
 
         .file-type
           margin-left: $margin-until-desktop / 4

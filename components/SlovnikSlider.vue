@@ -8,7 +8,14 @@
 
     .slovnik-slider-items-container(:style="generatedStyles")
       .slovnik-slider-item(v-for="item in SlovnikovaHesla")
-        SlovnikoveHeslo(:key="item.id" :Title="item.title.rendered" :InSlider="true" :Description="item.content.rendered" class="")
+        SlovnikoveHeslo(
+          :key="item.id"
+          :Title="item.title.rendered"
+          :Slug="item.slug"
+          InSlider="true"
+          :Description="item.content.rendered"
+          class=""
+        )
 
     .slovnik-slider-nav(role="navigation")
       a.slider-nav-item.slider-nav-left(href="#" @click="move('prev', $event)")

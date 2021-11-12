@@ -26,9 +26,9 @@
               // :TODO: #8 #7 Enable icons for more file types
               <IconFileTypeImage  />
 
-          .desc(v-if="soubor.description" v-html="soubor.description.rendered.replace(/<[^>]*>?/gm, '')")
+          .desc(v-if="soubor.description") {{soubor.description}}
 
-          .source
+          .source(v-if="soubor.alt_text")
             p Zdroj:
             p {{soubor.alt_text}}
 
@@ -47,6 +47,7 @@
 
   .source
     margin-top: 1em
+    word-break: break-word
 
 </style>
 
@@ -82,6 +83,8 @@ export default {
     },
 
     mounted() {
+
+      console.log("soubor", this.soubor);
 
     },
 

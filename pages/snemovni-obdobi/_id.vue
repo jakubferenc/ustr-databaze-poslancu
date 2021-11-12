@@ -72,7 +72,7 @@
 
     .parlament-detail-map
 
-      h2.typography-section-title Místo narození poslanců
+      h2.section-title Místo narození poslanců
 
       .mapbox()
 
@@ -84,20 +84,14 @@
               url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
             )
             <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true}">
-              <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
-                <l-popup>
-                  <NuxtLink to="">
-                    div(v-html="item.PopupHTML")
-                  </NuxtLink>
-                </l-popup>
-                <l-icon :icon-anchor="[0,0]" :icon-size="[56, 56]" class-name="map-person-thumb-head-icon">
+              l-marker(v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng")
+                <l-icon :icon-anchor="[0,0]" :icon-size="[40, 40]" class-name="map-person-thumb-head-icon">
                   <NuxtLink :to="`/poslanec/${item.Id}/`">
                     <div class="is-hidden headline">test content</div>
                     span(v-if="item.Soubory.length > 0")
                       img(:src="item.Soubory[0].URLNahled" class="map-person-thumb-head-icon-image")
                   </NuxtLink>
                 </l-icon>
-              </l-marker>
             </v-marker-cluster>
 
           </l-map>
@@ -105,7 +99,7 @@
 
     .parlament-detail-about.section-padding-h-margin-v
 
-      h2.typography-section-title  O sněmovně
+      h2.section-title  O sněmovně
 
       .typography-text-block.columns.is-multiline
 
@@ -116,14 +110,14 @@
 
     .parlament-detail-events.section-padding-h-margin-v
 
-      h2.typography-section-title Důležité události
+      h2.section-title Důležité události
 
       CasovaOsa(:Data="snemovniObdobi.CasovaOsa" v-if="snemovniObdobi.CasovaOsa")
 
 
     .parlament-detail-poslanci.section-padding-h-margin-v
 
-      h2.typography-section-title Poslanci
+      h2.section-title Poslanci
 
       PoslanciSeznam(
         :PoslanciVstupniPolozky="poslanci"
@@ -139,13 +133,13 @@
 
     .parlament-detail-galerie-medii.section-padding-h-margin-v
 
-      h2.typography-section-title Galerie médií
+      h2.section-title Galerie médií
 
       GalerieMediiSeznam(:Soubory="snemovniObdobi.Galerie" :MaButtonMore="false" :MaFilter="false")
 
     .parlament-detail-metadata-table.section-padding-h-margin-v
 
-      h2.typography-section-title Kompletní informace o sněmovně
+      h2.section-title Kompletní informace o sněmovně
 
       p :TODO: DOPLNIT
 
@@ -164,6 +158,11 @@
 </template>
 
 <style lang="sass">
+
+.section-title
+
+  @extend %typography-section-title
+
 
 .button-toggler-component
   display: flex

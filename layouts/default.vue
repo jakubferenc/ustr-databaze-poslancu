@@ -7,7 +7,7 @@
       <Main />
       <Footer />
 
-    <PopupDetail v-if="isPopUpVisible" />
+    <PopupDetail />
 
     .debug-bar
 
@@ -27,7 +27,7 @@ export default {
 
       isPopUpVisible() {
 
-        if (this.$store.state.popup_timeline_detail && Object.keys(this.$store.state.popup_timeline_detail).hasOwnProperty('length')) {
+        if (this.$store.state.popup_timeline_detail && this.$store.state.popup_timeline_detail.length) {
           return Object.keys(this.$store.state.popup_timeline_detail).length > 0;
         } else {
           return false;
