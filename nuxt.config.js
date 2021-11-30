@@ -9,7 +9,7 @@ const config = {dev, ...projectConfig};
 export default {
   target: 'static', // default is 'server'
   ssr: true,
-  components: true,
+  components: false,
   server: {
     port: 8000, // default: 3000
     host: '0.0.0.0', // default: localhost
@@ -99,7 +99,8 @@ export default {
 
       return routes;
 
-    }
+    },
+    fallback: true
   },
   build: {
     loaders: {
@@ -125,6 +126,7 @@ export default {
     }],
   ],
   modules: [
+
     ['@nuxtjs/proxy', {
       '/Api/snemovny/seznam': `${config.databazePoslancuURL}`,
       '/Api/snemovny/': `${config.databazePoslancuURL}`,

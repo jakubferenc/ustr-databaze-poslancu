@@ -1,6 +1,6 @@
 <template lang="pug">
   main.main-container(role="main")
-    <Nuxt keep-alive />
+    <Nuxt />
 </template>
 
 

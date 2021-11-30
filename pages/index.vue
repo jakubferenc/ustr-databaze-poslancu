@@ -16,7 +16,7 @@
 
       PoslanciSeznam(:PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
 
-    <ParlamentySeznam :Parlamenty="parlamenty"/>
+    ParlamentySeznam(:Parlamenty="parlamenty")
 
     SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 
@@ -36,15 +36,21 @@
 </style>
 
 <script>
+import Rozcestnik from '~/components/Rozcestnik.vue';
+import PoslanciSeznam from '~/components/PoslanciSeznam.vue';
+import ParlamentySeznam from '~/components/ParlamentySeznam.vue';
+import SlovnikSlider from '~/components/SlovnikSlider.vue';
+import GalerieMediiSeznam from '~/components/GalerieMediiSeznam.vue';
 
 export default {
 
-    components: {  },
-
+    components: { Rozcestnik, PoslanciSeznam, ParlamentySeznam, SlovnikSlider, GalerieMediiSeznam },
 
     async asyncData ({store}) {
 
+      // wordpress api calls
       await store.dispatch("getMedia");
+      await store.dispatch("getSlovnikovaHesla");
 
       await store.dispatch("getPoslanciHomepage", {
         limit: 20,
@@ -52,8 +58,6 @@ export default {
       });
 
       await store.dispatch("getParlamenty");
-
-      await store.dispatch("getSlovnikovaHesla");
 
 
     },

@@ -76,13 +76,15 @@
 </style>
 
 <script>
+import SlovnikoveHeslo from "~/components/SlovnikoveHeslo.vue";
+
 import SlovnikSliderImageArrowLeft from "~/assets/images/slider-arrow-left.svg?inline";
 import SlovnikSliderImageArrowRight from "~/assets/images/slider-arrow-right.svg?inline";
 
 
 export default {
     props: ['MaButtonMore', 'SlovnikovaHesla'],
-    components: { SlovnikSliderImageArrowLeft,  SlovnikSliderImageArrowRight},
+    components: { SlovnikoveHeslo, SlovnikSliderImageArrowLeft,  SlovnikSliderImageArrowRight},
 
     computed: {
       step() {

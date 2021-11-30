@@ -45,7 +45,16 @@ html.has-slider .main-header
 </style>
 
 <script>
+
+import Logo from '../components/Logo.vue';
+import MainMenu from '../components/MainMenu.vue';
+import SearchNav from '../components/SearchNav.vue';
+import Slider from '../components/Slider.vue';
+
 export default {
+
+  components: { Logo, MainMenu, SearchNav, Slider },
+
   data() {
     return {
       data: {}
