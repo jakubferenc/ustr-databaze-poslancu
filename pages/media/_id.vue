@@ -56,6 +56,9 @@ import IconFileTypeImage from "~/assets/images/icon-file-image.svg?inline";
 import IconFileTypeVideo from "~/assets/images/icon-file-video.svg?inline";
 import IconFileTypeDocument from "~/assets/images/icon-file-document.svg?inline";
 
+import MediaData from '~/data/media.json';
+
+
 export default {
      components: { IconFileTypeImage, IconFileTypeVideo, IconFileTypeDocument },
 
@@ -68,15 +71,29 @@ export default {
         }
       } else {
 
-        // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
-        await store.dispatch("getMedia", {id: params.id});
+        if (!$config.useFileCachedAPI) {
 
-        const storeItem = [...store.state.media_soubory].filter(soubor => soubor.id == params.id)[0];
+          // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
+          await store.dispatch("getMedia", {id: params.id});
+
+          const storeItem = [...store.state.media_soubory].filter(soubor => soubor.id == params.id)[0];
 
 
-        return {
-          soubor: storeItem
+          return {
+            soubor: storeItem
+          }
+
+        } else {
+
+          const filteredItem = MediaData.filter(soubor => soubor.id == params.id)[0];
+
+          return {
+            soubor: filteredItem
+          }
+
         }
+
+
 
       }
 

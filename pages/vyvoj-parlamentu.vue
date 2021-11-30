@@ -165,12 +165,18 @@
 </style>
 
 <script>
+
+import CasovaOsaData from '~/data/casova-osa.json';
+
 export default {
 
 
-    async fetch ({store}) {
+    async fetch ({store, $config}) {
 
-      await store.dispatch("getCasovaOsa");
+      if (!$config.useFileCachedAPI) {
+        await store.dispatch("getCasovaOsa");
+      }
+
 
     },
     methods: {
@@ -187,7 +193,14 @@ export default {
     },
     computed: {
       casova_osa() {
-        return this.$store.state.casova_osa;
+
+        if (this.$config.useFileCachedAPI) {
+          return CasovaOsaData;
+        } else {
+           return this.$store.state.casova_osa;
+        }
+
+
       },
       htmlClassComputed() {
         return this.htmlClass.join(' ');

@@ -179,54 +179,7 @@ export const actions = {
 
     try {
 
-
-
-      let casova_osa = [];
-
-      // generate media
-      const wpFetchHeaders = {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Expose-Headers': 'x-wp-total'
-        }
-      };
-
-      const limit = 100;
-
-      const { headers } = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/casova_osa?per_page=${limit}`, wpFetchHeaders);
-      const totalPages = headers['x-wp-totalpages'];
-
-      for (let page = 1; page <=totalPages; page++) {
-
-        let posts = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
-        casova_osa = [...casova_osa, ...posts.data];
-
-      }
-
-      casova_osa = casova_osa
-      .filter(el => el.status === "publish")
-      .sort((a, b) => (a.casova_osa_datum > b.casova_osa_datum) ? 1 : (a.casova_osa_datum < b.casova_osa_datum ) ? -1 : 0) // sort from the lowest date, format yyyy-mm-dd
-      .map(({ id, slug, title, date, content, casova_osa_datum, acf , casova_osa_dulezita }) => {
-
-        const galerie_all = (acf.galerie) ? acf.galerie.map(item => {
-          return normalizeSouborAttrs(item);
-        }) : null;
-
-        return {
-          id,
-          slug,
-          title: title.rendered,
-          date,
-          content: content.rendered,
-          casova_osa_rok: casova_osa_datum.split('-')[0],
-          casova_osa_datum,
-          featured_image: (galerie_all) ? galerie_all[0] : null,
-          galerie: (galerie_all) ? galerie_all.slice(1) : null,
-          casova_osa_dulezita,
-        };
-
-      });
-
+      const casova_osa = await apiFactory.getCasovaOsaFactory(projectConfig.wordpressAPIURLWebsite);
 
       commit("updateCasovaOsa", casova_osa);
 
@@ -442,90 +395,14 @@ export const actions = {
   },
 
   async getParlamenty({ state, commit }) {
+
     if (state.parlamenty.length) return;
-    try {
 
-      let parlamenty = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/snemovny/seznam`);
-      parlamenty = parlamenty.data;
+    const parlamenty = await apiFactory.getParlamentyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
 
-      let parlamentyWPData = await this.$axios.get( `${projectConfig.wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
-      parlamentyWPData = parlamentyWPData.data;
-
-      parlamenty = await Promise.all(parlamenty.map(async (parlament) => {
-
-        const getSnemovniObdobi = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
-
-        parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
-
-        // get wordpress content referenced via Id
-        let thisWPParlamentObj = parlamentyWPData.filter((item) => item.databaze_id == parlament.Id);
+    commit("updateParlamenty", parlamenty);
 
 
-        // checking potential errors
-        if (!thisWPParlamentObj.length) {
-          throw new Error(`There is not Wordpress Parlament object matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
-          return;
-        }
-
-        if (thisWPParlamentObj.length > 1) {
-          throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
-          return;
-        }
-
-        thisWPParlamentObj = thisWPParlamentObj[0];
-        parlament.Popis = thisWPParlamentObj.content.rendered;
-        parlament.WPNazev = thisWPParlamentObj.title.rendered;
-        parlament.StrucnyPopis = thisWPParlamentObj.excerpt.rendered;
-
-        parlament.Barva = thisWPParlamentObj.barva;
-
-        if (thisWPParlamentObj.acf && thisWPParlamentObj.acf.casova_osa) {
-          parlament.CasovaOsa = thisWPParlamentObj.acf.casova_osa;
-
-          // sort by date
-          parlament.CasovaOsa.sort();
-
-          const beginningOfParlamentObj = {
-            "datum_udalosti": parlament.SnemovniObdobi[0].DatumZacatku.split('T')[0],
-            "nazev_udalosti": "Začátek parlamentního tělesa",
-            "dulezita": [
-            "true"
-            ]
-          };
-
-          const endOfParlamentObj = {
-            "datum_udalosti": parlament.SnemovniObdobi[parlament.SnemovniObdobi.length-1].DatumKonce.split('T')[0],
-            "nazev_udalosti": "Konec parlamentního tělesa",
-            "dulezita": [
-            "true"
-            ]
-          };
-
-          parlament.CasovaOsa = [beginningOfParlamentObj, ...parlament.CasovaOsa, endOfParlamentObj];
-
-
-        }
-
-        if (thisWPParlamentObj.acf && thisWPParlamentObj.acf.galerie) {
-
-          parlament.Galerie = thisWPParlamentObj.acf.galerie.map(item => {
-
-            return normalizeSouborAttrs(item);
-
-          });
-
-        }
-
-        return parlament;
-
-      }));
-
-      commit("updateParlamenty", parlamenty);
-
-
-    } catch (err) {
-      console.warn(err);
-    }
   },
 
   async getPoslanciHomepage({ state, commit }, {limit = 20, stranka = 1, filterCallback = null} ) {

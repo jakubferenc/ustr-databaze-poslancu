@@ -282,7 +282,16 @@
 </style>
 
 <script>
+
+const CasovaOsa = () => import('~/components/CasovaOsa.vue');
+const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+
+
 export default {
+
+  components: { CasovaOsa, GalerieMediiSeznam },
+
+
   props: ['Nastaveni', 'Typ'],
   data() {
     return {

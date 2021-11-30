@@ -22,17 +22,35 @@
 
 
 <script>
+
+const ParlamentRadek = () => import('~/components/ParlamentRadek.vue');
+
+
+import ParlamentyData from '~/data/parlamenty.json';
+
+
 export default {
 
-    async asyncData({store}) {
+    components: { ParlamentRadek },
 
-      await store.dispatch("getParlamenty");
+
+    async asyncData({store, $config}) {
+
+      if (!$config.useFileCachedAPI) {
+        await store.dispatch("getParlamenty");
+      }
 
     },
 
     computed: {
       parlamenty() {
-        return this.$store.state.parlamenty;
+
+        if (this.$config.useFileCachedAPI) {
+          return ParlamentyData;
+        } else {
+          return this.$store.state.parlamenty;
+        }
+
       }
     },
 

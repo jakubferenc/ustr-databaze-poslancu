@@ -14,9 +14,9 @@
 
       h2.section-title Seznam poslanců
 
-      PoslanciSeznam(:PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
+      //- PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
 
-    ParlamentySeznam(:Parlamenty="parlamenty")
+    //- ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty")
 
     SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 
@@ -24,7 +24,7 @@
 
       h2.section-title Galerie médií
 
-      GalerieMediiSeznam(:Soubory="soubory" :MaButtonMore="true" :MaFilter="false")
+      GalerieMediiSeznam(v-if="soubory" :Soubory="soubory" :MaButtonMore="true" :MaFilter="false")
 
 </template>
 
@@ -36,29 +36,35 @@
 </style>
 
 <script>
-import Rozcestnik from '~/components/Rozcestnik.vue';
-import PoslanciSeznam from '~/components/PoslanciSeznam.vue';
-import ParlamentySeznam from '~/components/ParlamentySeznam.vue';
-import SlovnikSlider from '~/components/SlovnikSlider.vue';
-import GalerieMediiSeznam from '~/components/GalerieMediiSeznam.vue';
+const Rozcestnik = () => import('~/components/Rozcestnik.vue');
+const PoslanciSeznam = () => import('~/components/PoslanciSeznam.vue');
+const ParlamentySeznam = () => import('~/components/ParlamentySeznam.vue');
+const SlovnikSlider = () => import('~/components/SlovnikSlider.vue');
+const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+
+import SlovnikovaHeslaData from '~/data/slovnik.json';
+import MediaData from '~/data/media.json';
 
 export default {
 
     components: { Rozcestnik, PoslanciSeznam, ParlamentySeznam, SlovnikSlider, GalerieMediiSeznam },
 
-    async asyncData ({store}) {
+    async asyncData ({store, $config}) {
 
-      // wordpress api calls
-      await store.dispatch("getMedia");
-      await store.dispatch("getSlovnikovaHesla");
+      if (!$config.useFileCachedAPI) {
 
-      await store.dispatch("getPoslanciHomepage", {
-        limit: 20,
-        stranka: 1
-      });
+        // wordpress api calls
+        await store.dispatch("getMedia");
+        await store.dispatch("getSlovnikovaHesla");
 
-      await store.dispatch("getParlamenty");
+        await store.dispatch("getPoslanciHomepage", {
+          limit: 20,
+          stranka: 1
+        });
 
+        await store.dispatch("getParlamenty");
+
+      }
 
     },
 
@@ -68,9 +74,15 @@ export default {
 
         const limit = 20;
 
-        let media = [...this.$store.state.media_soubory];
+        let media;
 
-        return media.slice(0, limit);
+        if (this.$config.useFileCachedAPI) {
+          media = MediaData.slice(0, limit);
+        } else {
+          media = [...this.$store.state.media_soubory].slice(0, limit);
+        }
+
+        return media;
       },
       poslanci() {
         return this.$store.state.poslanci_homepage;
@@ -79,8 +91,19 @@ export default {
         return this.$store.state.parlamenty;
       },
       slovnikova_hesla() {
-        return this.$store.state.slovnikova_hesla;
+
+        if (this.$config.useFileCachedAPI) {
+          return SlovnikovaHeslaData;
+        } else {
+          return this.$store.state.slovnikova_hesla;
+        }
+
       },
+    },
+
+    created() {
+
+
     },
 
     mounted() {

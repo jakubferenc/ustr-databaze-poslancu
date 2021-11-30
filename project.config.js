@@ -13,6 +13,7 @@ export default {
   databazePoslancuURL: 'https://parliament.ustrcr.cz',
   globalTitle: 'Databáze poslanců.cz',
   baseURL: 'https://www.databazeposlancu.cz',
+  useFileCachedAPI: true,
   responsive: {
     breakpoints: {
       mobile,

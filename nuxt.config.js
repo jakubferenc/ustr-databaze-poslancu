@@ -14,6 +14,9 @@ export default {
     port: 8000, // default: 3000
     host: '0.0.0.0', // default: localhost
   },
+  serverMiddleware: [
+    "~/server-middleware/index.js",
+  ],
   router: {
     trailingSlash: true,
   },
@@ -95,7 +98,18 @@ export default {
 
       });
 
-      routes = [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes];
+      const slovnikRoutes = slovnikRes.map(item => {
+
+        return {
+
+          route: `/slovnikove-heslo/${item.slug}`,
+          payload: item // thanks to the payload, we are caching results for the subpage here
+
+        };
+
+      });
+
+      routes = [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes, ...slovnikRoutes];
 
       return routes;
 
