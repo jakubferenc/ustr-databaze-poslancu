@@ -20,12 +20,12 @@
 
 .anchor
   min-height: 1px
-  // scroll-margin-top: -80px;
 
-  // margin-top: $margin-until-desktop/1.25
+  margin-top: $margin-until-desktop/1.25
 
-  // &:nth-child(1)
-  //   margin-top: 0
+  &:nth-child(1)
+    margin-top: 0
+
   overflow: hidden
 
 
