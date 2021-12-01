@@ -14,9 +14,9 @@
 
       h2.section-title Seznam poslanců
 
-      //- PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
+    PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
 
-    //- ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty")
+    ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty")
 
     SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 
@@ -45,11 +45,17 @@ const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 import SlovnikovaHeslaData from '~/data/slovnik.json';
 import MediaData from '~/data/media.json';
 
+import ParlamentyData from '~/data/parlamenty.json';
+
+
 export default {
 
     components: { Rozcestnik, PoslanciSeznam, ParlamentySeznam, SlovnikSlider, GalerieMediiSeznam },
 
     async asyncData ({store, $config}) {
+
+      const limit = 20;
+
 
       if (!$config.useFileCachedAPI) {
 
@@ -64,41 +70,39 @@ export default {
 
         await store.dispatch("getParlamenty");
 
+        return {
+          poslanci: store.state.poslanci_homepage,
+          parlamenty: store.state.parlamenty,
+          slovnikova_hesla: store.state.slovnikova_hesla,
+          soubory: [...store.state.media_soubory].slice(0, limit)
+        }
+
+
+      } else {
+
+        await store.dispatch("getPoslanciHomepage", {
+          limit: 20,
+          stranka: 1
+        });
+
+
+
+        return {
+          poslanci: store.state.poslanci_homepage,
+          parlamenty: ParlamentyData,
+          slovnikova_hesla: SlovnikovaHeslaData,
+          soubory: MediaData.slice(0, limit),
+        }
+
+
+
       }
 
     },
 
     computed: {
 
-      soubory() {
 
-        const limit = 20;
-
-        let media;
-
-        if (this.$config.useFileCachedAPI) {
-          media = MediaData.slice(0, limit);
-        } else {
-          media = [...this.$store.state.media_soubory].slice(0, limit);
-        }
-
-        return media;
-      },
-      poslanci() {
-        return this.$store.state.poslanci_homepage;
-      },
-      parlamenty() {
-        return this.$store.state.parlamenty;
-      },
-      slovnikova_hesla() {
-
-        if (this.$config.useFileCachedAPI) {
-          return SlovnikovaHeslaData;
-        } else {
-          return this.$store.state.slovnikova_hesla;
-        }
-
-      },
     },
 
     created() {

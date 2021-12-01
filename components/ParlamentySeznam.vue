@@ -28,7 +28,14 @@
 </style>
 
 <script>
+
+const ParlamentNahled = () => import('~/components/ParlamentNahled.vue');
+
+
 export default {
+
+   components: { ParlamentNahled },
+
 
    props: ['Parlamenty'],
 }

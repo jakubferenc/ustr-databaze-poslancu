@@ -88,19 +88,19 @@
 
     .parlament-detail-events.section-padding-h-margin-v
 
-      h2.typography-section-title Důležité události poslance
+      h2.section-title Důležité události poslance
 
       CasovaOsa(:Data="poslanec.CasovaOsa" v-if="poslanec.CasovaOsa")
 
     .section-padding-h-margin-v.typography-has-no-h-padding
 
-      h2.typography-section-title Mandáty poslance ({{poslanec.Mandaty.length}})
+      h2.section-title Mandáty poslance ({{poslanec.Mandaty.length}})
 
       <MandatRadek v-for="mandat in poslanec.Mandaty" :key="mandat.Id" :Mandat="mandat"/>
 
     .parlament-detail-map
 
-      h2.typography-section-title Adresy poslance
+      h2.section-title Adresy poslance
 
       .mapbox()
 
@@ -155,7 +155,7 @@
 
     .parlament-detail-galerie-medii.section-padding.alt-bg-02(v-if="poslanec.Soubory.length > 0")
 
-      h2.typography-section-title Galerie médií
+      h2.section-title Galerie médií
 
       GalerieMediiSeznam(:Soubory="poslanec.Soubory" :MaButtonMore="false" :MaFilter="false")
 
@@ -164,6 +164,10 @@
 </template>
 
 <style lang="sass">
+
+.section-title
+
+  @extend %typography-section-title
 
 .person-social-network-item
 
@@ -221,6 +225,15 @@
 
 <script>
 
+  const CasovaOsa = () => import('~/components/CasovaOsa.vue');
+
+  const MandatRadek = () => import('~/components/MandatRadek.vue');
+
+  const SocialniMapa = () => import('~/components/SocialniMapa.vue');
+
+  const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+
+
   import MapaIkonaNarozeni from "~/assets/images/mapa-icon-birth.svg?inline";
   import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
@@ -228,7 +241,7 @@
 
   export default {
 
-      components: { MapaIkonaNarozeni,  MapaIkonaUmrti, ParlamentNahledObecnyImage },
+      components: { CasovaOsa, MandatRadek, SocialniMapa, GalerieMediiSeznam, MapaIkonaNarozeni,  MapaIkonaUmrti, ParlamentNahledObecnyImage },
 
       async asyncData({params, error, payload, store, $axios}) {
 

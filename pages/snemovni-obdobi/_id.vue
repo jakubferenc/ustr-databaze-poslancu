@@ -108,11 +108,11 @@
         .typography-body-text.text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
 
-    .parlament-detail-events.section-padding-h-margin-v
+    .parlament-detail-events.section-padding-h-margin-v(v-if="snemovniObdobi.CasovaOsa")
 
       h2.section-title Důležité události
 
-      CasovaOsa(:Data="snemovniObdobi.CasovaOsa" v-if="snemovniObdobi.CasovaOsa")
+      CasovaOsa(:Data="snemovniObdobi.CasovaOsa")
 
 
     .parlament-detail-poslanci.section-padding-h-margin-v
@@ -131,17 +131,17 @@
       )
 
 
-    .parlament-detail-galerie-medii.section-padding-h-margin-v
+    .parlament-detail-galerie-medii.section-padding-h-margin-v(v-if="snemovniObdobi.Galerie")
 
       h2.section-title Galerie médií
 
       GalerieMediiSeznam(:Soubory="snemovniObdobi.Galerie" :MaButtonMore="false" :MaFilter="false")
 
-    .parlament-detail-metadata-table.section-padding-h-margin-v
+    //- .parlament-detail-metadata-table.section-padding-h-margin-v
 
-      h2.section-title Kompletní informace o sněmovně
+    //-   h2.section-title Kompletní informace o sněmovně
 
-      p :TODO: DOPLNIT
+    //-   p :TODO: DOPLNIT
 
 
 
@@ -305,6 +305,9 @@
   const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
   const TabNavigace = () => import('~/components/TabNavigace.vue');
 
+  import SnemovniObdobiData from '~/data/snemovni-obdobi.json';
+
+
 
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
@@ -334,23 +337,26 @@
 
         } else {
 
-          // if (!$config.useFileCachedAPI) {
+          if (!$config.useFileCachedAPI) {
 
             await store.dispatch("getSnemovniObdobiDetail", {
               snemovniObdobiId: params.id
             });
 
-          // } else {
+            return {
+              snemovniObdobi: this.$store.state.snemovni_obdobi_detail
+            }
 
-          //   const filteredSnemovniObdobiDetailItem = SnemovniObdobiData.filter(item => item.Id == params.id)[0];
+          } else {
 
-          //   console.log(filteredSnemovniObdobiDetailItem);
+            const filteredSnemovniObdobiDetailItem = SnemovniObdobiData.filter(item => item.Id == params.id)[0];
 
-          //   return {
-          //     snemovniObdobi: filteredSnemovniObdobiDetailItem
-          //   }
 
-          // }
+            return {
+              snemovniObdobi: filteredSnemovniObdobiDetailItem
+            }
+
+          }
 
         }
 
@@ -385,6 +391,8 @@
       },
 
       mounted() {
+
+        console.log("from mounted", this.snemovniObdobi.SnemovniObdobiStatistikaZacatek);
 
         // will center the map based on the position of all the markers on the map
         this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);
@@ -713,21 +721,12 @@
 
         },
 
-        poslanciStatistiky() {
-
-          return this.$store.state.poslanci_statistiky;
-        },
-        snemovniObdobi() {
-
-          return this.$store.state.snemovni_obdobi_detail;
-        },
-
         statistiky() {
 
           if (!this.ukazatDataProKonecneObdobi) {
-            return this.$store.state.snemovni_obdobi_detail.SnemovniObdobiStatistikaZacatek;
+            return this.snemovniObdobi.SnemovniObdobiStatistikaZacatek;
           } else {
-            return this.$store.state.snemovni_obdobi_detail.SnemovniObdobiStatistikaKonec;
+            return this.snemovniObdobi.SnemovniObdobiStatistikaKonec;
           }
 
         },

@@ -1,6 +1,6 @@
 <template lang="pug">
 
-  .parlament-nahled()
+  NuxtLink(to="/parlamenty/").parlament-nahled()
     .parlament-nahled-image
       <ParlamentNahledObecnyImage />
     .parlament-nahled-title {{ Nazev }}

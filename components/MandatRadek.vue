@@ -133,6 +133,9 @@
 
 <script>
 
+  const TabNavigace = () => import('~/components/TabNavigace.vue');
+
+
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
 
@@ -169,7 +172,7 @@
 
   export default {
 
-    components: { ParlamentNahledObecnyImage },
+    components: { TabNavigace, ParlamentNahledObecnyImage },
 
 
     props: ['Mandat'],
