@@ -14,6 +14,11 @@
         class="is-one-third-desktop is-half-tablet column")
 
 
+    .component-footer(v-if="MaButtonMore")
+
+      .buttons-more
+
+        NuxtLink(class="typo-form-button button-large" :to="`${ButtonMoreLink}`") Zobrazit všechny pojmy
 
 </template>
 
@@ -38,6 +43,6 @@ export default {
    components: { ParlamentNahled },
 
 
-   props: ['Parlamenty'],
+   props: ['Parlamenty', 'MaButtonMore', 'ButtonMoreLink'],
 }
 </script>

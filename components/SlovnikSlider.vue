@@ -36,8 +36,6 @@
 
 <style lang="sass" scoped>
 
-.component-footer
-  margin-top: 50px
 
 .section-title
   @extend %typography-section-title

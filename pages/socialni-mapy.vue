@@ -6,7 +6,7 @@
 
     .section-padding-h-margin-v.section-content-max-width
 
-      .main-perex.typography-body-text Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+      .main-perex Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
       .columns.rodina-thumb.typography-row-with-image.typography-centered-text-content(v-for="(rodina, index) in rodiny" :key="rodina.id" :index="index" :class="{'rodina-thumb-reverse': (index % 2 === 0 || index === 0) ? false : true}")
 
@@ -14,7 +14,7 @@
           .rodina-thumb-image.typography-image-thumb-larger
             img(:src="rodina.featured_image.sizes.full.source_url")
         .column.row-in-text.is-half-desktop
-          .rodina-thumb-text.typography-body-text
+          .rodina-thumb-text
             .typography-section-title.smaller-bottom-margin {{rodina.title}} <br> ({{rodina.datum}})
             .typography-item-detail-text.typography-alt-heading.rodina-thumb-count-people
               span {{rodina.pocet_osob}}&nbsp;
@@ -33,7 +33,16 @@
 
 <style lang="sass" scoped>
 
+  .typography-section-title
+
+    @extend %typography-section-title
+
+  .rodina-thumb-text,
   .main-perex
+    @extend %typography-body-text
+
+  .main-perex
+
     margin-top: -3em
     margin-bottom: 5em
     margin-left: auto
@@ -96,10 +105,9 @@ export default {
 
     async asyncData({params, error, payload, store, $config}) {
 
-
       try {
 
-        await store.dispatch("getRodinySocialniMapy", {$config});
+        await store.dispatch("getRodinySocialniMapy");
 
         return {
           rodiny: store.state.rodiny_socialni_mapy

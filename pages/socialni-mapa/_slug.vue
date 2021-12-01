@@ -50,6 +50,11 @@
 
 <style lang="sass" scoped>
 
+  .typography-section-title
+
+    @extend %typography-section-title
+
+
   .columns.rodina-thumb.typography-row-with-image.typography-centered-text-content
     text-align: left
 
@@ -104,7 +109,17 @@
 
 <script>
 
+const SocialniMapa = () => import('~/components/SocialniMapa.vue');
+
+const CasovaOsa = () => import('~/components/CasovaOsa.vue');
+
+const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+
+
 export default {
+
+    components: { SocialniMapa, CasovaOsa, GalerieMediiSeznam },
+
 
     // :NOTE: {params, error, payload, store} is a deconstructed "context" variable
     async asyncData({params, error, payload, store, $axios, $config}) {

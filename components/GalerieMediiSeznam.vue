@@ -28,16 +28,6 @@
 <style lang="sass" scoped>
 
 
-  .component-footer
-
-    .buttons-more
-      display: flex
-      align-items: center
-      justify-content: center
-
-      .button-large, .button-large
-        display: inline-flex
-
   .file-link
     text-decoration: none
 

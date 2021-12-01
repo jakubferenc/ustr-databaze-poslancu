@@ -143,13 +143,15 @@ export const actions = {
   },
 
 
-  async getRodinySocialniMapy ({ state, commit }, ctx) {
+  async getRodinySocialniMapy ({ state, commit }) {
 
     if (state.rodiny_socialni_mapy.length) return;
 
     try {
 
       const rodiny = await apiFactory.getRodinySocialniMapyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
+
+      console.log("from store", rodiny);
 
       commit("updateRodinySocialniMapy", rodiny);
 

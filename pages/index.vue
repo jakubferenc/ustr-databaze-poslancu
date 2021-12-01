@@ -14,9 +14,9 @@
 
       h2.section-title Seznam poslanců
 
-      PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" :ButtonMoreLink="/poslanci/")
+      PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/")
 
-    ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty")
+    ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
 
     SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 

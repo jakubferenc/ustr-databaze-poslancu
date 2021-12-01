@@ -42,6 +42,11 @@
 
 <style lang="sass">
 
+  .section-padding-h-margin-v.columns
+    @extend %section-padding-h-margin-v
+
+  .typography-body-text
+    @extend %typography-body-text
 
   a
     text-decoration: none

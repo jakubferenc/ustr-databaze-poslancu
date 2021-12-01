@@ -2,9 +2,9 @@
   .popup-timeline-detail(v-if="popupTimelineDetailContent && popupTimelineDetailContent.galerie")
     .background-shadow
 
-    .popup-timeline-detail-content(:style="{top: `calc(25% + ${elementScrollTop}px)`}")
+    .popup-timeline-detail-content
 
-      .button-close(@click="closePopup()") X Zavřít detail
+      .button.button-close(@click="closePopup()") X Zavřít detail
       .section-padding-h-margin-v
 
           h1.typography-main-title {{popupTimelineDetailContent.title}}
@@ -32,6 +32,10 @@
 
 
 <style lang="sass" scoped>
+
+
+  .button
+    @extend %button
 
 
   .gallery-container
@@ -84,11 +88,13 @@
       display: block
 
     .popup-timeline-detail-content
-      position: absolute
+      position: fixed
+      top: 0
       left: 0
       width: 100vw
-      min-height: 100vh
+      height: 100vh
       background: white
+      overflow: scroll
 
       @at-root html.popup-detail-on &
 
@@ -109,7 +115,7 @@
         display: block
 
     .button-close
-      position: absolute
+      position: fixed
       top: 40px
       right: 40px
       cursor: pointer

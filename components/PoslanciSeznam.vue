@@ -125,9 +125,9 @@
                 class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
                 )
 
-            .component-footer(v-if="MaPaginaci")
+            .component-footer(v-if="MaButtonMore || MaPaginaci")
 
-              .pagination-bar
+              .pagination-bar(v-if="MaPaginaci")
                 .to-the-top
                   a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
                 .pagination-list
@@ -146,22 +146,13 @@
 
 
               .buttons-more
-                a(v-if="MaButtonMore && ButtonMoreLink" :href="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
+                NuxtLink(v-if="MaButtonMore && ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
 
                 a(v-if="MaButtonMore && MaPaginaci" href="").typo-form-button.button-large Načíst další poslance
 
 </template>
 
 <style lang="sass" scoped>
-
-
-
-  .component-footer
-
-    .buttons-more
-      display: flex
-      align-items: center
-      justify-content: center
 
   .pagination-bar
     display: flex
