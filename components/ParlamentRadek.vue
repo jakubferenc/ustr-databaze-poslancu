@@ -1,21 +1,36 @@
 <template lang="pug">
 
-  .parlament-radek.section-padding(:style="`background-color: ${BarvaPozadi}`" :data-parlament-id="Id")
+  .anchor(:id="`parlament-${Id}`" )
+    .parlament-radek.section-padding(:style="`background-color: ${BarvaPozadi}`" :data-parlament-id="Id")
 
-    .parlament-radek-content.columns.is-multiline
-      .parlament-radek-image.column.is-full-tablet.is-half-desktop
-        <ParlamentNahledObecnyImage />
-      .parlament-radek-text.column.is-full-tablet.is-half-desktop
+      .parlament-radek-content.columns.is-multiline
+        .parlament-radek-image.column.is-full-tablet.is-half-desktop
+          <ParlamentNahledObecnyImage />
+        .parlament-radek-text.column.is-full-tablet.is-half-desktop
 
-        h2.parlament-radek-title {{Nazev}}
+          h2.parlament-radek-title {{Nazev}}
 
-        .parlament-radek-desc.real-content-text(v-html="StrucnyPopis")
+          .parlament-radek-desc.real-content-text(v-html="StrucnyPopis")
 
-    TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-radek")
+      TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-radek")
 
 </template>
 
 <style lang="sass">
+
+.anchor
+  min-height: 1px
+  // scroll-margin-top: -80px;
+
+  // margin-top: $margin-until-desktop/1.25
+
+  // &:nth-child(1)
+  //   margin-top: 0
+  overflow: hidden
+
+
+.parlament-radek
+  // margin-top: 40px
 
 .parlament-radek-title
   @extend %typography-section-title
@@ -78,9 +93,6 @@
 .parlament-radek
 
   text-align: center
-  margin-top: $margin-until-desktop/1.25
-  &:nth-child(1)
-    margin-top: 0
 
   +until($tablet)
 

@@ -10,6 +10,7 @@
         v-for="parlament in Parlamenty"
         :key="parlament.Id"
         :Nazev="parlament.Nazev"
+        :Id="parlament.Id"
         class="is-one-third-desktop is-half-tablet column")
 
 

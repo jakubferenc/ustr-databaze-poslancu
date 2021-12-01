@@ -238,6 +238,8 @@
   import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
+  // import PoslanciData from '~/data/osoby.json';
+
 
   export default {
 
@@ -253,11 +255,22 @@
 
           //:TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
 
-          await store.dispatch("getPoslanecDetail", {poslanecId: params.id});
+          // if (!$config.useFileCachedAPI) {
 
-          return {
-            poslanec: store.state.poslanec
-          }
+            await store.dispatch("getPoslanecDetail", {poslanecId: params.id});
+
+            return {
+              poslanec: store.state.poslanec
+            }
+
+          // } else {
+
+          //   return {
+          //     poslanec: PoslanciData.filter(item => item.Id == params.id)
+          //   }
+
+          // }
+
 
         }
 
@@ -296,24 +309,21 @@
 
         mandatyChronologicky() {
 
-          this.poslanec.Mandaty.sort((mandat) => {
 
-
-
-
-          });
 
         },
 
         profileImage() {
 
-          const hasProfileImage = this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
+          // const hasProfileImage = this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
 
-          if (hasProfileImage) {
-            return hasProfileImage[0].URLNahled;
-          } else {
-            return false;
-          }
+          // if (hasProfileImage) {
+          //   return hasProfileImage[0].URLNahled;
+          // } else {
+          //   return false;
+          // }
+
+          return ``;
 
         },
 

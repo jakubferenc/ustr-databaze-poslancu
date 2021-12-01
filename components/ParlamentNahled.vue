@@ -1,11 +1,9 @@
 <template lang="pug">
 
-  NuxtLink(to="/parlamenty/").parlament-nahled()
+  NuxtLink.parlament-nahled(@click.native="scrollTo(`#parlament-${Id}`, $event)"  :to="`/parlamenty/`")
     .parlament-nahled-image
       <ParlamentNahledObecnyImage />
     .parlament-nahled-title {{ Nazev }}
-
-
 </template>
 
 <style lang="sass">
@@ -50,6 +48,21 @@
 
   export default {
   components: { ParlamentNahledObecnyImage },
-  props: ['Nazev', 'Id']
+  props: ['Nazev', 'Id'],
+
+  methods: {
+
+      scrollTo: function(hash, e) {
+
+        e.preventDefault();
+
+        setTimeout(() => {
+          document.querySelector(hash).scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+        }, 1000);
+
+
+      }
+    }
+
   }
 </script>

@@ -109,6 +109,7 @@
       display: flex
       align-items: center
       justify-content: center
+      text-align: center
       border-radius: 100%
       color: #fff
       margin: 0 10px 0 10px

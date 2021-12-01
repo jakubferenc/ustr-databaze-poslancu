@@ -211,34 +211,24 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
 
   }
 
-
   if (poslanec.Mandaty) {
 
     const casovePolozkyMandatyCalculated = poslanec.Mandaty.reduce((acc, mandat, index) => {
 
-      if (mandat.DatumZacatku) {
+      const datum_zacatek = mandat.DatumZacatkuZobrazene.split(".")[2] || '';
+      const datum_konec = mandat.DatumKonceZobrazene.split(".")[2] || '';
 
-        acc.push({
+      console.log("ssr mandaty!!!!!", mandat);
+      console.log("from mamndaty", datum_konec);
 
-          datum_udalosti: mandat.DatumZacatku.split("T")[0],
-          dulezita: false,
-          nazev_udalosti: `Začátek mandátu (${mandat.DatumZacatkuZobrazene || 'Neuvedeno'})`,
+      acc.push({
 
-        });
+        datum_udalosti: `${datum_zacatek} ${datum_konec}`,
+        dulezita: true,
+        nazev_udalosti: `(${mandat.Parlament || 'Neuvedeno'})`,
+        typUdalosti: 'mandat'
 
-      }
-
-      if (mandat.DatumKonce) {
-
-        acc.push({
-
-          datum_udalosti: mandat.DatumKonce.split("T")[0],
-          dulezita: false,
-          nazev_udalosti: `Konec mandátu (${mandat.DatumKonceZobrazene || 'Neuvedeno'})`,
-
-        });
-
-      }
+      });
 
 
       return acc;

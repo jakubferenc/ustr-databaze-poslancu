@@ -371,7 +371,6 @@ export const actions = {
 
       poslanec = poslanec.data;
 
-      // poslanec.Mandaty = poslanec.Mandaty.sort((mandatPrev, mandatNext) => {});
 
       // prepare data for casova osa
       poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);

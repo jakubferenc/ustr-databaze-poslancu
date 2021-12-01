@@ -8,11 +8,11 @@
     "author": "Jakub A. Ferenc <hello@jakubferenc.cz> (https://jakubferenc.cz)",
     "type": "module",
     "scripts": {
-        "dev": "nuxt",
-        "build": "nuxt build",
-        "analyze": "nuxt build --analyze",
-        "generate": "nuxt generate",
-        "start": "nuxt start"
+        "dev": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js",
+        "build": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js build --modern",
+        "analyze": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js build --analyze",
+        "generate": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js generate",
+        "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js start"
     },
     "dependencies": {
         "@nuxtjs/axios": "^5.13.1",

@@ -307,8 +307,6 @@
 
   import SnemovniObdobiData from '~/data/snemovni-obdobi.json';
 
-
-
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
  //import DoughnutChart from '~/components/DoughnutChart';
