@@ -16,12 +16,25 @@ app.use(express.json());
 app.get('/api/snemovni-obdobi/', async (req, res) => {
 
 
-  const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+  const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiWordpressFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
   // const pathToWrite = path.join(__dirname, '..', 'data/snemovni-obdobi.json');
   // writeFileSync(pathToWrite, JSON.stringify(snemovniObdobiWordpressArrRes));
 
+  const snemovniObdobiWordpressArrResDatabaseIds = snemovniObdobiWordpressArrRes.map(item => item.databaze_id);
 
-  res.send(snemovniObdobiWordpressArrRes);
+  const snemovniObdobiObjs = await Promise.all(snemovniObdobiWordpressArrResDatabaseIds.map(async (snemovniObdobiId) => {
+
+    const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, snemovniObdobiId);
+
+    return snemovniObdobiObj;
+
+
+  }));
+
+  const pathToWrite = path.join(__dirname, '..', 'data/snemovni-obdobi.json');
+  writeFileSync(pathToWrite, JSON.stringify(snemovniObdobiObjs));
+
+  res.send(snemovniObdobiObjs);
 
 });
 

@@ -262,6 +262,7 @@ const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, l
 
 };
 
+
 const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL) => {
 
   let rodiny = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
@@ -505,7 +506,7 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
   }
 };
 
-const getAllSnemovniObdobiWordpressFactory = async(wordpressAPIURLWebsite, databazePoslancuURL) => {
+const getAllSnemovniObdobiWordpressFactory = async(wordpressAPIURLWebsite, databazePoslancuURL = null) => {
 
   let snemovni_obdobi = [];
   const limit = 100;
