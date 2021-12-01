@@ -11,21 +11,22 @@ const app = express();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-app.get('/api/stranky/', async (req,res) => {
 
-  // const strankyRes = await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
 
-  const strankyRes = await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
-  const pathToWriteStranky = path.join(__dirname, '..', 'data/stranky.json');
-  writeFileSync(pathToWriteStranky, JSON.stringify(strankyRes));
+app.get('/api/snemovni-obdobi/', async (req, res) => {
 
-  // const mediaRes =  await apiFactory.getAllMediaFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, 100);
-  // const pathToWriteMedia = path.join(__dirname, '..', 'data/media.json');
-  // writeFileSync(pathToWriteMedia, JSON.stringify(mediaRes));
 
-  res.send(strankyRes);
+  const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+  // const pathToWrite = path.join(__dirname, '..', 'data/snemovni-obdobi.json');
+  // writeFileSync(pathToWrite, JSON.stringify(snemovniObdobiWordpressArrRes));
+
+
+  res.send(snemovniObdobiWordpressArrRes);
 
 });
+
+
+
 
 app.get('/api/stranky/', async (req,res) => {
 

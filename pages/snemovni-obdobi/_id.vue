@@ -200,14 +200,6 @@
     margin-bottom: 15px
 
 
-
-
-
-
-
-
-
-
 .parlament-meta-tab-navigation
   margin: $margin-until-desktop / 2 0
 
@@ -307,6 +299,13 @@
 </style>
 
 <script>
+
+  const PoslanciSeznam = () => import('~/components/PoslanciSeznam.vue');
+  const CasovaOsa = () => import('~/components/CasovaOsa.vue');
+  const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+  const TabNavigace = () => import('~/components/TabNavigace.vue');
+
+
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
  //import DoughnutChart from '~/components/DoughnutChart';
@@ -323,13 +322,37 @@
 
   export default {
 
-      components: { ParlamentNahledObecnyImage },
+      components: { PoslanciSeznam, CasovaOsa, GalerieMediiSeznam, TabNavigace, ParlamentNahledObecnyImage },
 
-      async asyncData ({store, params}) {
+      async asyncData({params, error, payload, store, $config}) {
 
-        await store.dispatch("getSnemovniObdobiDetail", {
-          snemovniObdobiId: params.id
-        });
+        if (payload) {
+
+          return {
+            snemovniObdobi: payload
+          }
+
+        } else {
+
+          // if (!$config.useFileCachedAPI) {
+
+            await store.dispatch("getSnemovniObdobiDetail", {
+              snemovniObdobiId: params.id
+            });
+
+          // } else {
+
+          //   const filteredSnemovniObdobiDetailItem = SnemovniObdobiData.filter(item => item.Id == params.id)[0];
+
+          //   console.log(filteredSnemovniObdobiDetailItem);
+
+          //   return {
+          //     snemovniObdobi: filteredSnemovniObdobiDetailItem
+          //   }
+
+          // }
+
+        }
 
       },
 
@@ -362,9 +385,6 @@
       },
 
       mounted() {
-
-
-        this.snemovniObdobi.Poslanci.map(poslanec => console.info(poslanec.Soubory));
 
         // will center the map based on the position of all the markers on the map
         this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);

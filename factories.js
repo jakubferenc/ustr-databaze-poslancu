@@ -321,6 +321,7 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
 
 };
 
+
 const getCasovaOsaFactory = async (wordpressAPIURLWebsite) => {
 
 
@@ -504,8 +505,169 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
   }
 };
 
+const getAllSnemovniObdobiWordpressFactory = async(wordpressAPIURLWebsite, databazePoslancuURL) => {
+
+  let snemovni_obdobi = [];
+  const limit = 100;
+
+  // generate media
+  const wpFetchHeaders = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Expose-Headers': 'x-wp-total'
+    }
+  };
+
+  const { headers } = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=${limit}`, wpFetchHeaders);
+  const totalPages = headers['x-wp-totalpages'];
+
+  for (let page = 1; page <=totalPages; page++) {
+
+    let posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
+    snemovni_obdobi = [...snemovni_obdobi, ...posts.data];
+
+  }
+
+  return snemovni_obdobi;
+
+  // let parlamenty = await axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
+  // parlamenty = parlamenty.data;
+
+  // let snemovni_obdobi_ids = [];
+
+  // let snemovni_obdobi_detail_arr = [];
+
+  // await Promise.all(parlamenty.map(async (parlament) => {
+
+  //   const getSnemovniObdobi = await axios.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
+
+  //   getSnemovniObdobi.data.SnemovniObdobi.every(item => {
+
+  //     snemovni_obdobi_ids.push(item.Id);
+
+  //   });
+
+  // }));
+
+  // snemovni_obdobi_detail_arr = await Promise.all(snemovni_obdobi_ids.map(async (itemId) => {
+
+  //   const snemovni_obdobi_detail = await getSnemovniObdobiDetailFactory(wordpressAPIURLWebsite, databazePoslancuURL, itemId);
+  //   return snemovni_obdobi_detail;
+  // }));
+
+  // return snemovni_obdobi_detail_arr;
+
+};
+
+const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, snemovniObdobiId) => {
+
+  let snemovniObdobiObj = undefined;
+
+  snemovniObdobiObj = await axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
+  snemovniObdobiObj = snemovniObdobiObj.data;
+
+  snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
+  snemovniObdobiObj.PocetPoslancu = snemovniObdobiObj.Poslanci.length;
+
+  // prepare statistics, make them integer
+  snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);
+  snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu);
+  snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku);
+
+
+  snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu);
+  snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu);
+  snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku);
+
+
+  let snemovniObdobiObjWpData = await axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
+  snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
+
+  // get wordpress content referenced via Id
+  let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
+
+
+  if (thisWPSnemovniObdobiObj.length && thisWPSnemovniObdobiObj.length === 1) {
+
+
+    snemovniObdobiObjWpData = thisWPSnemovniObdobiObj[0];
+
+    snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
+    snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
+    snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
+
+    if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
+      snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
+
+      // sort by date
+      snemovniObdobiObj.CasovaOsa.sort();
+
+      // add auto generated beginning and the end date of the snemovni obdobi
+
+      /*
+      {
+        "datum_udalosti": "1968-01-01",
+        "nazev_udalosti": "Test událost",
+        "dulezita": [
+        "true"
+        ]
+      },
+
+
+      const beginningOfTheSnemovniObdobiObj = {
+        "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
+        "nazev_udalosti": "Začátek sněmovny",
+        "dulezita": [
+        "true"
+        ]
+      };
+
+      const endOfTheSnemovniObdobiObj = {
+        "datum_udalosti": snemovniObdobiObj.DatumKonce.split('T')[0],
+        "nazev_udalosti": "Konec sněmovny",
+        "dulezita": [
+        "true"
+        ]
+      };
+
+      snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
+      */
+
+    }
+
+    // Normalize wordpress ACF gallery
+    if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
+
+
+      snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie.map(item => {
+
+          return normalizeSouborAttrs(item);
+
+        });
+
+    }
+
+    snemovniObdobiObj.UvodniFotografie = false;
+
+    if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
+
+      snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
+
+    }
+
+  }
+
+
+  return snemovniObdobiObj;
+
+
+};
+
+
 
 export default {
+  getAllSnemovniObdobiWordpressFactory: getAllSnemovniObdobiWordpressFactory,
+  getSnemovniObdobiDetailFactory: getSnemovniObdobiDetailFactory,
   getParlamentyFactory: getParlamentyFactory,
   getCasovaOsaFactory: getCasovaOsaFactory,
   getRodinySocialniMapyFactory: getRodinySocialniMapyFactory,

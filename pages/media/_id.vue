@@ -101,8 +101,6 @@ export default {
 
     mounted() {
 
-      console.log("soubor", this.soubor);
-
     },
 
     data() {

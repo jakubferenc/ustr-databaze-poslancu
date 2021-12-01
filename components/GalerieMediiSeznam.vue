@@ -1,4 +1,4 @@
-<template lang="pug">
+<template template lang="pug">
 
     .galerie-medii-seznam
 
@@ -10,7 +10,7 @@
           NuxtLink.file-link(:to="`/media/${soubor.id}/`")
 
             .image-container
-              img.file-image(v-if="soubor.image.thumb_url" :src="soubor.image.thumb_url" :alt="soubor.caption")
+              img.file-image(v-if="soubor.image.thumb_url" loading="lazy" :src="soubor.image.thumb_url" :alt="soubor.caption")
 
             .file-thumb-footer
               .file-title(v-html="soubor.caption")

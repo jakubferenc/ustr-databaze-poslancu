@@ -270,8 +270,14 @@
 
 <script>
 
+const Poslanec = () => import('~/components/Poslanec.vue');
+
 
 export default {
+
+  components: { Poslanec },
+
+
   props: ["PoslanciVstupniPolozky", "KesovatPoslanceInterne", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
 
   computed: {

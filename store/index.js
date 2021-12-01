@@ -275,121 +275,19 @@ export const actions = {
   async getSnemovniObdobiDetail({ state, commit }, { snemovniObdobiId }) {
 
 
-    let snemovniObdobiObj = undefined;
+    try {
 
+      const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, snemovniObdobiId);
 
-    // check if the id is already in the store, if so, return it and do not do axios call
-    const getDetailObjectIfExists = state.snemovni_obdobi.filter(item => item.Id === snemovniObdobiId);
-
-    if (getDetailObjectIfExists.length) {
-
-      snemovniObdobiObj = getDetailObjectIfExists;
-
+      commit("addSnemovniObdobi", snemovniObdobiObj);
       commit("updateSnemovniObdobiDetail", snemovniObdobiObj);
 
-    } else {
+    } catch (err) {
 
-      // object is not either in the snemovni obdobi detail object, not is it in the global snemovni obdobi array
-      // therefore, we need to do API call
-
-      try {
-
-        snemovniObdobiObj = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
-        snemovniObdobiObj = snemovniObdobiObj.data;
-
-        snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
-        snemovniObdobiObj.PocetPoslancu = snemovniObdobiObj.Poslanci.length;
-
-        // prepare statistics, make them integer
-        snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);
-        snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu);
-        snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku);
-
-
-        snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu);
-        snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu);
-        snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku);
-
-
-        let snemovniObdobiObjWpData = await this.$axios.get( `${projectConfig.wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
-        snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
-
-        // get wordpress content referenced via Id
-        let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
-
-
-        if (thisWPSnemovniObdobiObj.length && thisWPSnemovniObdobiObj === 1) {
-
-          snemovniObdobiObjWpData = thisWPSnemovniObdobiObj[0];
-
-          snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
-          snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
-          snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
-
-          if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
-            snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
-
-            // sort by date
-            snemovniObdobiObj.CasovaOsa.sort();
-
-            // add auto generated beginning and the end date of the snemovni obdobi
-
-            /*
-            {
-              "datum_udalosti": "1968-01-01",
-              "nazev_udalosti": "Test událost",
-              "dulezita": [
-              "true"
-              ]
-            },
-
-
-            const beginningOfTheSnemovniObdobiObj = {
-              "datum_udalosti": snemovniObdobiObj.DatumZacatku.split('T')[0],
-              "nazev_udalosti": "Začátek sněmovny",
-              "dulezita": [
-              "true"
-              ]
-            };
-
-            const endOfTheSnemovniObdobiObj = {
-              "datum_udalosti": snemovniObdobiObj.DatumKonce.split('T')[0],
-              "nazev_udalosti": "Konec sněmovny",
-              "dulezita": [
-              "true"
-              ]
-            };
-
-            snemovniObdobiObj.CasovaOsa = [beginningOfTheSnemovniObdobiObj, ...snemovniObdobiObj.CasovaOsa, endOfTheSnemovniObdobiObj];
-            */
-
-          }
-
-          if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
-
-            snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie;
-
-          }
-
-          snemovniObdobiObj.UvodniFotografie = false;
-
-          if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
-
-            snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
-
-          }
-
-        }
-
-        commit("addSnemovniObdobi", snemovniObdobiObj);
-        commit("updateSnemovniObdobiDetail", snemovniObdobiObj);
-
-
-      } catch (err) {
-        console.warn(err);
-      }
+      console.warn(err);
 
     }
+
 
 
   },
