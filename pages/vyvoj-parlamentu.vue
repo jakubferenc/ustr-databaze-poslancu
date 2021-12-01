@@ -166,19 +166,44 @@
 
 <script>
 
-import CasovaOsaData from '~/data/casova-osa.json';
+const CasovaOsaData = () => import('~/data/casova-osa.json').then(m => m.default || m);
 
 export default {
 
 
-    async fetch ({store, $config}) {
+    async asyncData({params, error, payload, store, $axios, $config}) {
 
-      if (!$config.useFileCachedAPI) {
-        await store.dispatch("getCasovaOsa");
+      if (payload) {
+        return {
+          soubor: payload
+        }
+      } else {
+
+        if (!$config.useFileCachedAPI) {
+
+          // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
+          await store.dispatch("getCasovaOsa");
+
+          return {
+            casova_osa: this.$store.state.casova_osa
+          }
+
+        } else {
+
+          const CasovaOsaRes = await CasovaOsaData();
+
+          return {
+            casova_osa: CasovaOsaRes
+          }
+
+        }
+
+
+
       }
 
-
     },
+
     methods: {
 
       openPopUpDetail: function(item, e) {
@@ -192,16 +217,7 @@ export default {
 
     },
     computed: {
-      casova_osa() {
 
-        if (this.$config.useFileCachedAPI) {
-          return CasovaOsaData;
-        } else {
-           return this.$store.state.casova_osa;
-        }
-
-
-      },
       htmlClassComputed() {
         return this.htmlClass.join(' ');
       }

@@ -56,7 +56,7 @@ import IconFileTypeImage from "~/assets/images/icon-file-image.svg?inline";
 import IconFileTypeVideo from "~/assets/images/icon-file-video.svg?inline";
 import IconFileTypeDocument from "~/assets/images/icon-file-document.svg?inline";
 
-import MediaData from '~/data/media.json';
+const MediaData = () => import('~/data/media.json').then(m => m.default || m);
 
 
 export default {
@@ -85,7 +85,9 @@ export default {
 
         } else {
 
-          const filteredItem = MediaData.filter(soubor => soubor.id == params.id)[0];
+          const MediaRes = await MediaData();
+
+          const filteredItem = MediaRes.filter(soubor => soubor.id == params.id)[0];
 
           return {
             soubor: filteredItem

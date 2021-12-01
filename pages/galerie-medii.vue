@@ -14,33 +14,39 @@
 <script>
 const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
-import MediaData from '~/data/media.json';
+const MediaData = () => import('~/data/media.json').then(m => m.default || m);
 
 export default {
 
     components: { GalerieMediiSeznam },
 
 
-    async fetch ({store, $config}) {
+    async asyncData({params, error, payload, store, $config}) {
 
-      if (!$config.useFileCachedAPI) {
-        await store.dispatch("getMedia");
-      }
+      try {
 
-    },
-    computed: {
-      soubory() {
+        if (!$config.useFileCachedAPI) {
+          await store.dispatch("getMedia");
 
-        let media;
+          return {
+            soubory: [...this.$store.state.media_soubory],
+          }
 
-        if (this.$config.useFileCachedAPI) {
-          media = MediaData;
         } else {
-          media = [...this.$store.state.media_soubory];
+
+          const MediaRes = await MediaData();
+
+          return {
+            soubory: MediaRes,
+          }
+
         }
 
-        return media;
-      },
+
+      } catch (err) {
+        console.warn(err);
+      }
+
     },
 
     data() {

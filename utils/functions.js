@@ -182,7 +182,6 @@ export const getAdresyProMapuForPoslanec = (poslanec) => {
 
     });
 
-    console.info("adresyMandaty", adresyMandaty);
 
 
 
@@ -205,7 +204,7 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
 
       datum_udalosti: poslanec.DatumNarozeni.split("T")[0],
       dulezita: true,
-      nazev_udalosti: `Datum narození ${poslanec.DatumNarozeniZobrazene}`,
+      nazev_udalosti: `Datum narození<br> ${poslanec.DatumNarozeniZobrazene}`,
 
     }];
 
@@ -215,17 +214,24 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
 
     const casovePolozkyMandatyCalculated = poslanec.Mandaty.reduce((acc, mandat, index) => {
 
-      const datum_zacatek = mandat.DatumZacatkuZobrazene.split(".")[2] || '';
-      const datum_konec = mandat.DatumKonceZobrazene.split(".")[2] || '';
+      const datum_zacatek = mandat.DatumZacatku.split("T")[0] || '';
+      const datum_konec = mandat.DatumKonce.split("T")[0] || '';
 
-      console.log("ssr mandaty!!!!!", mandat);
-      console.log("from mamndaty", datum_konec);
+      const nazevUdalostiContent = (mandat) => {
+
+        const mandatParliament = mandat.Parlament || 'Neuvedeno';
+
+        const result = `${mandatParliament}<br>${mandat.DatumZacatkuZobrazene} — ${mandat.DatumKonceZobrazene}`;
+
+        return result;
+
+      };
 
       acc.push({
 
-        datum_udalosti: `${datum_zacatek} ${datum_konec}`,
+        datum_udalosti: `${datum_zacatek}`,
         dulezita: true,
-        nazev_udalosti: `(${mandat.Parlament || 'Neuvedeno'})`,
+        nazev_udalosti: nazevUdalostiContent(mandat),
         typUdalosti: 'mandat'
 
       });
@@ -240,7 +246,6 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
 
   }
 
-
   casovaOsaPolozky = casovaOsaPolozky.sort((a, b) => (a.datum_udalosti > b.datum_udalosti) ? 1 : (a.datum_udalosti < b.datum_udalosti ) ? -1 : 0);
 
   if (poslanec.DatumUmrti) {
@@ -249,7 +254,7 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
 
       datum_udalosti: poslanec.DatumUmrti.split("T")[0],
       dulezita: true,
-      nazev_udalosti: `Datum úmrtí ${poslanec.DatumUmrtiZobrazene}`,
+      nazev_udalosti: `Datum úmrtí <br>${poslanec.DatumUmrtiZobrazene}`,
 
     }];
 

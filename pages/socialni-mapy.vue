@@ -100,6 +100,9 @@
 </style>
 
 <script>
+
+const RodinyData = () => import('~/data/rodiny.json').then(m => m.default || m);
+
 export default {
 
 
@@ -107,11 +110,23 @@ export default {
 
       try {
 
-        await store.dispatch("getRodinySocialniMapy");
+        if (!$config.useFileCachedAPI) {
+          await store.dispatch("getRodinySocialniMapy");
 
-        return {
-          rodiny: store.state.rodiny_socialni_mapy
+          return {
+            rodiny: this.$store.state.rodiny_socialni_mapy,
+          }
+
+        } else {
+
+          const rodinyRes = await RodinyData();
+
+          return {
+            rodiny: rodinyRes,
+          }
+
         }
+
 
       } catch (err) {
         console.warn(err);
@@ -122,7 +137,6 @@ export default {
 
     data() {
       return {
-        rodiny: [],
         title: `Vybrané rodinné sociální mapy`,
         htmlClass: ['alt-bg']
       }

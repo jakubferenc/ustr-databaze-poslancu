@@ -42,10 +42,9 @@ const ParlamentySeznam = () => import('~/components/ParlamentySeznam.vue');
 const SlovnikSlider = () => import('~/components/SlovnikSlider.vue');
 const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
-import SlovnikovaHeslaData from '~/data/slovnik.json';
-import MediaData from '~/data/media.json';
-
-import ParlamentyData from '~/data/parlamenty.json';
+const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.default || m);
+const MediaData = () => import('~/data/media.json').then(m => m.default || m);
+const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
 
 
 export default {
@@ -85,13 +84,14 @@ export default {
           stranka: 1
         });
 
+        const souboryRes  = await MediaData();
 
 
         return {
           poslanci: store.state.poslanci_homepage,
-          parlamenty: ParlamentyData,
-          slovnikova_hesla: SlovnikovaHeslaData,
-          soubory: MediaData.slice(0, limit),
+          parlamenty: await ParlamentyData(),
+          slovnikova_hesla: await SlovnikovaHeslaData(),
+          soubory: souboryRes.slice(0, limit),
         }
 
 

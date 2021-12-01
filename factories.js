@@ -1,6 +1,9 @@
 import axios from "axios";
-import { normalizeSouborAttrs } from './utils/functions';
-
+import {
+  normalizeSouborAttrs,
+  getAdresyProMapuForPoslanec,
+  getCasovaOsaDataForPoslanec,
+} from './utils/functions';
 
 const createFilterSettingsFactory = (nabozenske_vyznani, narodnosti, parlamenty, vysoka_skola) => {
 
@@ -664,9 +667,38 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
 
 };
 
+const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 
+  // :TODO: get cached poslanec if already in the store
+  // :TODO: cache via http cache?
+
+  try {
+
+    let poslanec = {
+      CasovaOsa: [],
+      AdresyProMapu: [],
+    };
+
+    const poslanecRes = await axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
+
+    poslanec = poslanecRes.data;
+
+    // prepare data for casova osa
+    poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
+
+    poslanec.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+
+    return poslanec;
+
+
+  } catch (err) {
+    console.warn(err);
+  };
+
+};
 
 export default {
+  getPoslanecDetailFactory: getPoslanecDetailFactory,
   getAllSnemovniObdobiWordpressFactory: getAllSnemovniObdobiWordpressFactory,
   getSnemovniObdobiDetailFactory: getSnemovniObdobiDetailFactory,
   getParlamentyFactory: getParlamentyFactory,

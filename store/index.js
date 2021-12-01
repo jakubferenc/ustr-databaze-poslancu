@@ -7,11 +7,6 @@ import projectConfig from '../project.config';
 import { stripHTMLTags } from '../utils/functions';
 
 import {
-  normalizeUstrApiMediaObjectForWordpress,
-  normalizeMediaAttrs,
-  getAdresaDruhHumanReadableName,
-  getAdresyProMapuForPoslanec,
-  getCasovaOsaDataForPoslanec,
   getFilterDataFromPoslanciAll,
   normalizeSouborAttrs,
 } from '../utils/functions';
@@ -151,7 +146,6 @@ export const actions = {
 
       const rodiny = await apiFactory.getRodinySocialniMapyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
 
-      console.log("from store", rodiny);
 
       commit("updateRodinySocialniMapy", rodiny);
 
@@ -367,25 +361,10 @@ export const actions = {
     // :TODO: get cached poslanec if already in the store
     // :TODO: cache via http cache?
 
-    try {
+    const poslanec = await apiFactory.getPoslanecDetailFactory(projectConfig.databazePoslancuURL, poslanecId);
 
-      let poslanec = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${poslanecId}`);
+    commit("updatePoslanecDetail", poslanec);
 
-      poslanec = poslanec.data;
-
-
-      // prepare data for casova osa
-      poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
-
-      poslanec.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
-
-
-      commit("updatePoslanecDetail", poslanec);
-
-
-    } catch (err) {
-      console.warn(err);
-    };
 
   },
 

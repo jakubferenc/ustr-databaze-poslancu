@@ -57,6 +57,16 @@ app.get('/api/stranky/', async (req,res) => {
 
 });
 
+app.get('/api/poslanec/:poslanecId', async (req,res) => {
+
+  const params = req.params;
+
+  const poslanec = await apiFactory.getPoslanecDetailFactory(config.databazePoslancuURL, params.poslanecId);
+
+  res.send(poslanec);
+
+});
+
 app.get('/api/osoby/', async (req,res) => {
 
 
@@ -102,12 +112,12 @@ app.get('/api/slovnik/', async (req,res) => {
 
 });
 
-app.get('/api/rodiny/', async (req,res) => {
+app.get('/api/socialni-mapy/', async (req,res) => {
 
 
   const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
-  const pathToWrite = path.join(__dirname, '..', 'data/rodiny.json');
-  writeFileSync(pathToWrite, JSON.stringify(rodinyRes));
+  // const pathToWrite = path.join(__dirname, '..', 'data/rodiny.json');
+  // writeFileSync(pathToWrite, JSON.stringify(rodinyRes));
 
   res.send(rodinyRes);
 

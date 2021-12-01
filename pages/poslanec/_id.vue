@@ -190,9 +190,11 @@
 .gallery-widget
 
   background: #eee
+  border-radius: 100%
+  overflow: hidden;
 
-  +from($widescreen)
-    height: 380px
+  height: 0 // to get aspect ration 1:1
+  padding-top: 100% // to get aspect ration 1:1
 
 
 

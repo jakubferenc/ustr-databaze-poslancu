@@ -10,7 +10,7 @@
 
         .casova-osa-item(v-for="udaj, index in Data" :key="index" :class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true'}")
           .casova-osa-circle(:class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true'}") {{ udaj.datum_udalosti.split('-')[0] }}
-          .casova-osa-item-text {{udaj.nazev_udalosti}}
+          .casova-osa-item-text(v-html="udaj.nazev_udalosti")
 
 
     .slovnik-slider-nav(role="navigation" v-if="showNavigation")

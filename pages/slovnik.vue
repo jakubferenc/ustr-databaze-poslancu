@@ -31,8 +31,7 @@
 
 const SlovnikoveHeslo = () => import('~/components/SlovnikoveHeslo.vue');
 
-
-import SlovnikovaHeslaData from '~/data/slovnik.json';
+const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.default || m);
 
 export default {
 
@@ -45,21 +44,22 @@ export default {
 
         await store.dispatch("getSlovnikovaHesla");
 
+        return {
+          slovnikova_hesla: this.$store.state.slovnikova_hesla,
+        }
+
+      } else {
+
+        const slovnikovaHeslaRes = await SlovnikovaHeslaData();
+
+        return {
+          slovnikova_hesla: slovnikovaHeslaRes,
+        }
+
       }
 
     },
 
-    computed: {
-      slovnikova_hesla() {
-
-        if (this.$config.useFileCachedAPI) {
-          return SlovnikovaHeslaData;
-        } else {
-          return this.$store.state.slovnikova_hesla;
-        }
-
-      },
-    },
     data() {
       return {
         title: `Slovník pojmů`,
