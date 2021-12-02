@@ -1,6 +1,6 @@
 <template lang="pug">
 
-    .section-content-max-width.section-padding-h-margin-v.section-stranka(v-if="slovnikove_heslo !== undefined")
+    .section-content-max-width.section-padding-h-margin-v.section-stranka(v-if="slovnikove_heslo")
 
       h1.typography-main-title {{slovnikove_heslo.title.rendered}}
 
@@ -53,11 +53,7 @@ export default {
         // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
         await store.dispatch("getSlovnikovaHesla");
 
-
-
         const slovnikove_heslo = (store.state.slovnikova_hesla) ? store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0] : undefined;
-
-
 
         return {
           slovnikove_heslo,
@@ -81,6 +77,8 @@ export default {
     },
 
     mounted() {
+
+      console.log("slovnik from mounted", this.slovnikove_heslo);
 
     },
 

@@ -6,6 +6,8 @@ const dev = process.env.NODE_ENV !== 'production';
 
 const config = {dev, ...projectConfig};
 
+// data
+
 export default {
   target: 'static', // default is 'server'
   ssr: true,
@@ -55,6 +57,22 @@ export default {
       const strankyRes =  await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
 
       const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(config.wordpressAPIURLWebsite);
+
+      // snemovni obdobi
+
+      const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiWordpressFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+
+      const snemovniObdobiWordpressArrResDatabaseIds = snemovniObdobiWordpressArrRes.map(item => item.databaze_id);
+
+      const snemovniObdobiObjsRes = await Promise.all(snemovniObdobiWordpressArrResDatabaseIds.map(async (snemovniObdobiId) => {
+
+        const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, snemovniObdobiId);
+
+        return snemovniObdobiObj;
+
+
+      }));
+
 
       //const osobyRes = await y.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
 
@@ -109,7 +127,18 @@ export default {
 
       });
 
-      routes = [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes, ...slovnikRoutes];
+      const snemovniObdobiRoutes = snemovniObdobiObjsRes.map(item => {
+
+        return {
+
+          route: `/snemovni-obdobi/${item.Id}`, // :TODO: careful about the "Id" vs "id"
+          payload: item // thanks to the payload, we are caching results for the subpage here
+
+        };
+
+      });
+
+      routes = [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes, ...slovnikRoutes, ...snemovniObdobiRoutes];
 
       return routes;
 
