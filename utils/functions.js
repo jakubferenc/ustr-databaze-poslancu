@@ -205,6 +205,7 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
       datum_udalosti: poslanec.DatumNarozeni.split("T")[0],
       dulezita: true,
       nazev_udalosti: `Datum narození<br> ${poslanec.DatumNarozeniZobrazene}`,
+      typUdalosti: ['datumNarozeni'],
 
     }];
 
@@ -232,7 +233,7 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
         datum_udalosti: `${datum_zacatek}`,
         dulezita: true,
         nazev_udalosti: nazevUdalostiContent(mandat),
-        typUdalosti: 'mandat'
+        typUdalosti: ['mandat']
 
       });
 
@@ -255,6 +256,7 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
       datum_udalosti: poslanec.DatumUmrti.split("T")[0],
       dulezita: true,
       nazev_udalosti: `Datum úmrtí <br>${poslanec.DatumUmrtiZobrazene}`,
+      typUdalosti: ['datumUmrti']
 
     }];
 

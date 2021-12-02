@@ -4,7 +4,7 @@
 
     svg.svg-layer
 
-    .person-social-network-title.section-title.smaller-bottom-margin(v-if="MaNadpis") sociální mapa pro: {{Poslanec.CeleJmeno}}
+    .person-social-network-title.section-title.smaller-bottom-margin(v-if="MaNadpis") sociální mapa pro: {{Poslanec.Jmeno}} {{Poslanec.Prijmeni}}
 
     .person-category-section.primarny-vztahy-rodice-section(data-section-title="Rodiče" v-if="Poslanec.OsobniVztahyPrimarni.map(item => item.Druh === 'otec' || item.Druh === 'matka' ).length > 0")
 
@@ -32,7 +32,7 @@
               span(v-if="Poslanec.Pohlavi === 2") poslankyně
 
           .content
-            .name <strong>{{Poslanec.CeleJmeno}}</strong>
+            .name <strong>{{Poslanec.Jmeno}} {{Poslanec.Prijmeni}}</strong>
             .birth → <span>{{Poslanec.DatumNarozeniZobrazene}}</span>
             .death(v-if="Poslanec.DatumUmrtiZobrazene") ← <span>{{Poslanec.DatumUmrtiZobrazene}}</span>
 

@@ -316,17 +316,31 @@ input[type="checkbox"]
 
 
 .person-social-network-item.person-social-network-item-poslanec
-  margin-right
 
 /****************************************************/
 /* :Social network card: */
-.person-social-network-item.person-social-network-item-poslanec
+
+.map-person-thumb-head-icon
+  display: flex
+  justify-content: center
+  align-items: center
+
+  svg
+    width: 50%
+    height: auto
+
+
+.is-map-card
   position: relative
   z-index: 9
 
   background-color: #fefefe
+  box-sizing: content-box
 
-.person-social-network-item
+  .content-container
+    .content
+      max-width: 100%
+
   width: 375px
   border-radius: 14px
   padding: 20px
@@ -338,14 +352,8 @@ input[type="checkbox"]
   justify-content: space-between
   align-items: center
 
-  &.is-map-card
-    margin-right: 0
-    height: 153px
-    box-sizing: content-box
 
-    .content-container
-      .content
-        max-width: 100%
+
 
   .is-poslanec
     font-size: 12px
@@ -418,3 +426,12 @@ page-enter-active,
 .page-enter,
 .page-leave-to
   opacity: 0
+
+
+.is-map-card
+
+  .header
+    @extend %typography-body-text
+
+  .content
+    @extend %typography-alt-heading

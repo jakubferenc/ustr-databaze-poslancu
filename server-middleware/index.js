@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from "axios";
-import {writeFileSync} from "fs";
+import {writeFileSync, readFileSync} from "fs";
 import path from 'path';
 
 import config from '../project.config';
@@ -64,6 +64,21 @@ app.get('/api/poslanec/:poslanecId', async (req,res) => {
   const poslanec = await apiFactory.getPoslanecDetailFactory(config.databazePoslancuURL, params.poslanecId);
 
   res.send(poslanec);
+
+});
+
+
+app.get('/api/osoby-s-fotkou/', async (req,res) => {
+
+  const pathToReadOsoby = path.join(__dirname, '..', 'data/osoby.json');
+
+  const data = readFileSync(pathToReadOsoby, {encoding:'utf8', flag:'r'});
+
+  const dataJson = JSON.parse(data);
+
+  const itemsWithFiles = dataJson.filter(item => item.Soubory.length && item.Soubory.length > 0).map(item => item.Id);
+
+  res.send(itemsWithFiles);
 
 });
 

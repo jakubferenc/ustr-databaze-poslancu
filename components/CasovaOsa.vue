@@ -8,8 +8,8 @@
 
       .casova-osa-items
 
-        .casova-osa-item(v-for="udaj, index in Data" :key="index" :class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true'}")
-          .casova-osa-circle(:class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true'}") {{ udaj.datum_udalosti.split('-')[0] }}
+        .casova-osa-item(v-for="(udaj, index) in Data" :key="index" :class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true'}")
+          .casova-osa-circle(:class="{small: udaj.dulezita.toString() != 'true', large: udaj.dulezita.toString() === 'true', 'date-birth': udaj.typUdalosti && udaj.typUdalosti.includes('datumNarozeni'), 'date-mandat': udaj.typUdalosti && udaj.typUdalosti.includes('mandat'), 'date-death': udaj.typUdalosti && udaj.typUdalosti.includes('datumUmrti')}") {{ udaj.datum_udalosti.split('-')[0] }}
           .casova-osa-item-text(v-html="udaj.nazev_udalosti")
 
 
@@ -24,7 +24,6 @@
 
 
 <style lang="sass">
-
 
   .casova-osa-component
     display: flex // it will primarily center the navigation buttons
@@ -114,6 +113,11 @@
       color: #fff
       margin: 0 10px 0 10px
 
+      &.date-mandat
+        background-color: #F8F6F1
+        color: #000
+
+
       &.small
 
         @extend %typography-timeline-small-text
@@ -145,6 +149,8 @@ export default {
   components: {SlovnikSliderImageArrowLeft,  SlovnikSliderImageArrowRight },
 
   mounted() {
+
+    console.log(this.Data);
 
     this.$casovaOsaContainer = this.$el.querySelector('.casova-osa-items-container');
     this.$casovaOsaItemsElement = this.$el.querySelector(`.casova-osa-items`);

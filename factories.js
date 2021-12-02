@@ -469,7 +469,8 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
           "nazev_udalosti": "Začátek parlamentního tělesa",
           "dulezita": [
           "true"
-          ]
+          ],
+          "typUdalosti": ['datumZacatekParlamentu'],
         };
 
         const endOfParlamentObj = {
@@ -477,7 +478,8 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
           "nazev_udalosti": "Konec parlamentního tělesa",
           "dulezita": [
           "true"
-          ]
+          ],
+          "typUdalosti": [datumKonecParlamentu],
         };
 
         parlament.CasovaOsa = [beginningOfParlamentObj, ...parlament.CasovaOsa, endOfParlamentObj];
@@ -675,8 +677,16 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
   try {
 
     let poslanec = {
-      CasovaOsa: [],
-      AdresyProMapu: [],
+      CasovaOsa: Array,
+      AdresyProMapu: Array,
+      "URLVodoznak": String,
+      "URLNahled": String,
+      "OsobaId": Number,
+      "SnemovniObdobiId": null,
+      "SnemovnaId": null,
+      "Zdroj": String,
+      "Poznamka": String,
+      "Mime": null
     };
 
     const poslanecRes = await axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);

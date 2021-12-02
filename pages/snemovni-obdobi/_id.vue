@@ -76,25 +76,39 @@
 
       .mapbox()
 
-          <l-map ref="mapbox" :options="{scrollWheelZoom: false}" :zoom=13 :center="[55.9464418,8.1277591]">
+          l-map(ref="mapbox" :options="{scrollWheelZoom: false}" :zoom=13 :center="[55.9464418,8.1277591]")
             l-tile-layer(
               id='',
               accessToken='pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
               attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
               url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
             )
-            <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true}">
+            v-marker-cluster(ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true}")
               l-marker(v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng")
-                <l-icon :icon-anchor="[0,0]" :icon-size="[40, 40]" class-name="map-person-thumb-head-icon">
-                  <NuxtLink :to="`/poslanec/${item.Id}/`">
-                    <div class="is-hidden headline">test content</div>
-                    span(v-if="item.Soubory.length > 0")
-                      img(:src="item.Soubory[0].URLNahled" class="map-person-thumb-head-icon-image")
-                  </NuxtLink>
-                </l-icon>
-            </v-marker-cluster>
+                l-popup()
 
-          </l-map>
+                  NuxtLink(:to="`/poslanec/${item.Id}/`").is-map-card.person-poslanec-card
+
+                    .content-container
+
+                      .header
+                        .full-name {{item.Jmeno}} {{item.Prijmeni}}
+
+                      .content
+                        // show only if the addresses are not birth nor death
+                        .desc(v-if="item.Druh != 5 && item.Druh != 1")
+                          p {{item.Parlament}}
+                          p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
+                          p {{item.DruhTyp}}
+                        .name {{item.Nazev}}
+
+                    .image-container
+                      img(src="/images/poslanec-dummy-thumb.png" class="map-person-thumb-head-icon-image")
+
+                l-icon(:icon-anchor="[0,0]" :icon-size="[40, 40]" class-name="map-person-thumb-head-icon")
+
+                  img(v-if="item.ProfilovaFotka" :src="ProfilovaFotka" class="map-person-thumb-head-icon-image")
+                  IconPerson.dummy-icon(v-else)
 
 
     .parlament-detail-about.section-padding-h-margin-v
@@ -152,12 +166,32 @@
         .button-toggle(title="Začátek sněmovního období" :class="{active: buttonToggleTypeActive === 'start'}" @click="toggleDate('start', $event)") {{snemovniObdobi.DatumZacatkuZobrazene}}
         .button-toggle(title="Konec sněmovního období" :class="{active: buttonToggleTypeActive === 'end'}" @click="toggleDate('end', $event)") {{snemovniObdobi.DatumKonceZobrazene}}
 
-
-
-
 </template>
 
 <style lang="sass">
+
+
+.is-map-card.person-poslanec-card
+
+  width: 380px
+  height: 153px
+  background-color: #fff
+
+  .image-container
+
+    img
+      +desktop
+        width: 110px
+
+  .content-container
+
+    .header
+      font-size: clamp(1rem, 0.9375vw, 2rem);
+
+
+    .content
+
+
 
 .section-title
 
@@ -305,7 +339,9 @@
   const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
   const TabNavigace = () => import('~/components/TabNavigace.vue');
 
-  import SnemovniObdobiData from '~/data/snemovni-obdobi.json';
+  const SnemovniObdobiData = () => import('~/data/snemovni-obdobi.json').then(m => m.default || m);
+
+  import IconPerson from "~/assets/images/icon-person.svg?inline";
 
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
@@ -323,7 +359,7 @@
 
   export default {
 
-      components: { PoslanciSeznam, CasovaOsa, GalerieMediiSeznam, TabNavigace, ParlamentNahledObecnyImage },
+      components: { PoslanciSeznam, CasovaOsa, GalerieMediiSeznam, TabNavigace, IconPerson, ParlamentNahledObecnyImage },
 
       async asyncData({params, error, payload, store, $config}) {
 
@@ -347,8 +383,9 @@
 
           } else {
 
-            const filteredSnemovniObdobiDetailItem = SnemovniObdobiData.filter(item => item.Id == params.id)[0];
+            const snemovniObdobiRes = await SnemovniObdobiData();
 
+            const filteredSnemovniObdobiDetailItem = snemovniObdobiRes.filter(item => item.Id == params.id)[0];
 
             return {
               snemovniObdobi: filteredSnemovniObdobiDetailItem
@@ -390,7 +427,6 @@
 
       mounted() {
 
-        console.log("from mounted", this.snemovniObdobi.SnemovniObdobiStatistikaZacatek);
 
         // will center the map based on the position of all the markers on the map
         this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);
@@ -709,9 +745,9 @@
               LatLng: [poslanec.Adresy[0].GeoX, poslanec.Adresy[0].GeoY],
               Nazev: poslanec.Adresy[0].Nazev,
               Druh: poslanec.Adresy[0].Druh,
-              CeleJmenoReadable: poslanec.Jmeno + ' ' + poslanec.Prijmeni,
-              Soubory: poslanec.Soubory || null,
-              PopupHTML: `${poslanec.Jmeno} ${poslanec.Prijmeni}`,
+              Jmeno: poslanec.Jmeno,
+              Prijmeni: poslanec.Prijmeni,
+              ProfilovaFotka: poslanec.Soubory && poslanec.Soubory.length && poslanec.Soubory[0].URLNahled || false,
 
             }
 

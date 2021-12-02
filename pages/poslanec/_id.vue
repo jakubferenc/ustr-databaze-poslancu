@@ -21,7 +21,7 @@
 
 
               .gallery-widget-container
-                .gallery-widget
+                .profile-photo.gallery-widget
                   img(v-if="profileImage" :src="profileImage")
 
 
@@ -104,7 +104,7 @@
 
       .mapbox()
 
-          <l-map ref="mapbox" :options="{scrollWheelZoom: false}" :zoom=13 :center="[55.9464418,8.1277591]">
+          <l-map ref="mapbox" :options="{scrollWheelZoom: false}" :zoom="8" :center="[55.9464418,8.1277591]">
             l-tile-layer(
               id='',
               accessToken='pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
@@ -120,7 +120,6 @@
 
                       .header
                         .category {{item.DruhNazev}}
-
 
                       .content
                         // show only if the addresses are not birth nor death
@@ -153,11 +152,11 @@
         <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
 
 
-    .parlament-detail-galerie-medii.section-padding.alt-bg-02(v-if="poslanec.Soubory.length > 0")
+    //- .parlament-detail-galerie-medii.section-padding.alt-bg-02(v-if="poslanec.Soubory.length > 0")
 
-      h2.section-title Galerie médií
+    //-   h2.section-title Galerie médií
 
-      GalerieMediiSeznam(:Soubory="poslanec.Soubory" :MaButtonMore="false" :MaFilter="false")
+    //-   GalerieMediiSeznam(:Soubory="poslanec.Soubory" :MaButtonMore="false" :MaFilter="false")
 
 
 
@@ -165,24 +164,30 @@
 
 <style lang="sass">
 
+
+.leaflet-container a.leaflet-popup-close-button
+  right: 35px
+  top: 5px
+
+
+.leaflet-container a
+  color: #000
+
 .section-title
 
   @extend %typography-section-title
 
-.person-social-network-item
-
-  .header
-    @extend %typography-body-text
-
-  .content
-    @extend %typography-alt-heading
-
+.person-poslanec-card
+  text-decoration: none
 
 .profese
   .profese-date-range
     font-size: 80%
 
 .gallery-widget-container
+
+  width: 70%
+
   +from($widescreen)
     padding-right: $margin-until-desktop
 
@@ -196,7 +201,15 @@
   height: 0 // to get aspect ration 1:1
   padding-top: 100% // to get aspect ration 1:1
 
-
+.profile-photo
+  position: relative
+  img
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    object-fit: cover
 
 .metadata-section
   margin-bottom: $margin-until-desktop
@@ -317,15 +330,13 @@
 
         profileImage() {
 
-          // const hasProfileImage = this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
+          const hasProfileImage = this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
 
-          // if (hasProfileImage) {
-          //   return hasProfileImage[0].URLNahled;
-          // } else {
-          //   return false;
-          // }
-
-          return ``;
+          if (hasProfileImage) {
+            return this.poslanec.Soubory[0].URLNahled;
+          } else {
+            return false;
+          }
 
         },
 
