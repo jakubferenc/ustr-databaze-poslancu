@@ -5,7 +5,7 @@ import path from 'path';
 
 import config from '../project.config';
 import apiFactory from '../factories';
-import { normalizeSouborAttrs } from '../utils/functions';
+import { normalizeSouborAttrs, getCasovaOsaDataForPoslanec, getAdresyProMapuForPoslanec } from '../utils/functions';
 
 const app = express();
 app.use(express.urlencoded({extended: true}));
@@ -57,18 +57,55 @@ app.get('/api/stranky/', async (req,res) => {
 
 });
 
-app.get('/api/poslanec/:poslanecId', async (req,res) => {
+app.get('/api/poslanec/:poslanecId/', async (req,res) => {
 
   const params = req.params;
 
   const poslanec = await apiFactory.getPoslanecDetailFactory(config.databazePoslancuURL, params.poslanecId);
 
+  res.send(poslanec);//
+  res.send("hello");
+
+});
+
+app.get('/data/poslanec/:poslanecId/', async (req, res) => {
+
+
+  const readPoslanci = path.join(__dirname, '..', 'data/osoby.json');
+
+  const data = readFileSync(readPoslanci, {encoding:'utf8', flag:'r'});
+
+  const dataJson = JSON.parse(data);
+
+  const items = dataJson.filter(item => item.Id == req.params.poslanecId);
+
+  let poslanec = items[0];
+
+  // prepare data for casova osa
+  poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
+
+  poslanec.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+
+
   res.send(poslanec);
 
 });
 
+app.get('/data/parlamenty/', async (req,res) => {
 
-app.get('/api/osoby-s-fotkou/', async (req,res) => {
+  const readParlamenty = path.join(__dirname, '..', 'data/parlamenty.json');
+
+  const data = readFileSync(readParlamenty, {encoding:'utf8', flag:'r'});
+
+  const dataJson = JSON.parse(data);
+
+  const items = dataJson;
+
+  res.send(items);
+
+});
+
+app.get('/data/osoby-s-fotkou/', async (req,res) => {
 
   const pathToReadOsoby = path.join(__dirname, '..', 'data/osoby.json');
 
@@ -116,7 +153,7 @@ app.get('/api/media/', async (req,res) => {
 
 });
 
-app.get('/api/slovnik/', async (req,res) => {
+app.get('/get/slovnik/', async (req,res) => {
 
 
   const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(config.wordpressAPIURLWebsite);

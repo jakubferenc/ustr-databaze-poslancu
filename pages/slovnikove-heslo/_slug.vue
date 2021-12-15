@@ -2,7 +2,7 @@
 
     .section-content-max-width.section-padding-h-margin-v.section-stranka(v-if="slovnikove_heslo")
 
-      h1.typography-main-title {{slovnikove_heslo.title.rendered}}
+      h1.typography-main-title {{slovnikove_heslo.title}}
 
       .excerpt-container.typography-row-with-image(:class="excerptKontejnerStyly")
 
@@ -10,7 +10,7 @@
           img(:src="slovnikove_heslo.featured_image.image.full_url")
 
         .row-in-text.real-content-container.real-content-text
-          .typography-item-detail-text(v-html="slovnikove_heslo.content.rendered")
+          .typography-item-detail-text(v-html="slovnikove_heslo.content")
 
     .section-content-max-width.section-padding-h-margin-v.section-stranka(v-else)
 
@@ -39,10 +39,13 @@
 </style>
 <script>
 
+const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.default || m);
+
+
 export default {
 
     // :NOTE: {params, error, payload, store} is a deconstructed "context" object
-    async asyncData({params, error, payload, store}) {
+    async asyncData({$config, params, error, payload, store}) {
 
       if (payload) {
         return {
@@ -50,15 +53,32 @@ export default {
         }
       } else {
 
-        // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
-        await store.dispatch("getSlovnikovaHesla");
+        if (!$config.useFileCachedAPI) {
 
-        const slovnikove_heslo = (store.state.slovnikova_hesla) ? store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0] : undefined;
+          await store.dispatch("getSlovnikovaHesla");
 
-        return {
-          slovnikove_heslo,
-          slug: params.slug,
+          const slovnikove_heslo = store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0];
+
+          return {
+            slovnikove_heslo,
+            slug: params.slug,
+          }
+
+        } else {
+
+          const snemovniObdobiRes = await SlovnikovaHeslaData();
+
+          const slovnikove_heslo = snemovniObdobiRes.filter(item => item.slug === params.slug)[0];
+
+          return {
+            slovnikove_heslo,
+            slug: params.slug,
+          }
+
+
         }
+
+
 
       }
 
@@ -78,18 +98,16 @@ export default {
 
     mounted() {
 
-      console.log("slovnik from mounted", this.slovnikove_heslo);
 
     },
 
     data() {
       return {
-        pageTitle: (this.slovnikove_heslo && this.slovnikove_heslo.slug) ? this.slovnikove_heslo.slug : 'Nenalezeno'
       }
     },
     head () {
       return {
-        title: `${this.pageTitle} — ${this.$config.globalTitle}`,
+        title: `${this.slovnikove_heslo.title || 'Nenalezeno'} — ${this.$config.globalTitle}`,
         htmlAttrs: {
           class: 'subpage-slovnik'
         }

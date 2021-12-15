@@ -3,6 +3,7 @@ import {
   normalizeSouborAttrs,
   getAdresyProMapuForPoslanec,
   getCasovaOsaDataForPoslanec,
+  stripHTMLTags
 } from './utils/functions';
 
 const createFilterSettingsFactory = (nabozenske_vyznani, narodnosti, parlamenty, vysoka_skola) => {
@@ -403,11 +404,11 @@ const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
     .map(({ id, slug, title, date, excerpt, content, _embedded }) => ({
       id,
       slug,
-      title,
+      title: title.rendered,
       date,
-      excerpt,
-      content,
-      featured_image: (_embedded && _embedded['wp:featuredmedia']) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
+      excerpt: stripHTMLTags(excerpt.rendered),
+      content: content.rendered,
+      featured_image: (_embedded && _embedded['wp:featuredmedia'] && _embedded['wp:featuredmedia'][0]) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
     }));
 
    return slovnikova_hesla;
@@ -669,16 +670,21 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
 
 };
 
-const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
+const preparePoslanecDetail = async (poslanec) => {
 
   // :TODO: get cached poslanec if already in the store
   // :TODO: cache via http cache?
 
   try {
 
-    let poslanec = {
+    let poslanecObj = {
       CasovaOsa: Array,
       AdresyProMapu: Array,
+      "Id": Number,
+      "Jmeno": String,
+      "Prijmeni": String,
+      "CeleJmeno": String,
+      "Tituly": Array,
       "URLVodoznak": String,
       "URLNahled": String,
       "OsobaId": Number,
@@ -689,16 +695,14 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
       "Mime": null
     };
 
-    const poslanecRes = await axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
-
-    poslanec = poslanecRes.data;
+    const poslanecData = poslanec;
 
     // prepare data for casova osa
-    poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
+    poslanecData.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
 
-    poslanec.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+    poslanecData.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
 
-    return poslanec;
+    return poslanecData;
 
 
   } catch (err) {
@@ -707,7 +711,27 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 
 };
 
+const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
+
+  // :TODO: get cached poslanec if already in the store
+  // :TODO: cache via http cache?
+
+  try {
+
+    const poslanecRes = await axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
+
+    const poslanec = poslanecRes.data;
+
+    return preparePoslanecDetail(poslanec);
+
+  } catch (err) {
+    console.warn(err);
+  };
+
+};
+
 export default {
+  preparePoslanecDetail: preparePoslanecDetail,
   getPoslanecDetailFactory: getPoslanecDetailFactory,
   getAllSnemovniObdobiWordpressFactory: getAllSnemovniObdobiWordpressFactory,
   getSnemovniObdobiDetailFactory: getSnemovniObdobiDetailFactory,

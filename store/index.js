@@ -188,8 +188,6 @@ export const actions = {
 
   async getSlovnikovaHesla({ state, commit }) {
 
-    if (state.slovnikova_hesla.length) return;
-
     try {
 
       const slovnikova_hesla = await apiFactory.getSlovnikovaHeslaFactory(projectConfig.wordpressAPIURLWebsite);

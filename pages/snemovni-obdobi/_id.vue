@@ -84,7 +84,7 @@
               url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
             )
             v-marker-cluster(ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true}")
-              l-marker(v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng")
+              l-marker(v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng" @mouseover.native="popUpShow(this)")
                 l-popup()
 
                   NuxtLink(:to="`/poslanec/${item.Id}/`").is-map-card.person-poslanec-card

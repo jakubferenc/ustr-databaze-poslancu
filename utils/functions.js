@@ -215,8 +215,8 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
 
     const casovePolozkyMandatyCalculated = poslanec.Mandaty.reduce((acc, mandat, index) => {
 
-      const datum_zacatek = mandat.DatumZacatku.split("T")[0] || '';
-      const datum_konec = mandat.DatumKonce.split("T")[0] || '';
+      const datum_zacatek = mandat.DatumZacatku && mandat.DatumZacatku != null && mandat.DatumZacatku.split("T")[0] || '';
+      const datum_konec = mandat.DatumKonce && mandat.DatumKonce != null && mandat.DatumKonce.split("T")[0] || '';
 
       const nazevUdalostiContent = (mandat) => {
 
@@ -247,7 +247,7 @@ export const getCasovaOsaDataForPoslanec = (poslanec) => {
 
   }
 
-  casovaOsaPolozky = casovaOsaPolozky.sort((a, b) => (a.datum_udalosti > b.datum_udalosti) ? 1 : (a.datum_udalosti < b.datum_udalosti ) ? -1 : 0);
+  // casovaOsaPolozky = casovaOsaPolozky.sort((a, b) => (a.datum_udalosti > b.datum_udalosti) ? 1 : (a.datum_udalosti < b.datum_udalosti ) ? -1 : 0);
 
   if (poslanec.DatumUmrti) {
 

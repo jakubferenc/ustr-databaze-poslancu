@@ -9,10 +9,10 @@
         SlovnikoveHeslo(
           v-for="item in slovnikova_hesla"
           :key="item.id"
-          :Title="item.title.rendered"
+          :Title="item.title"
           :Slug="item.slug"
-          :Excerpt="item.excerpt.rendered"
-          :Description="item.content.rendered"
+          :Excerpt="item.excerpt"
+          :Description="item.content"
           class="is-one-third column"
         )
 

@@ -260,7 +260,7 @@
 
       components: { CasovaOsa, MandatRadek, SocialniMapa, GalerieMediiSeznam, MapaIkonaNarozeni,  MapaIkonaUmrti, ParlamentNahledObecnyImage },
 
-      async asyncData({params, error, payload, store, $axios}) {
+      async asyncData({$config, params, error, payload, store, $axios}) {
 
         if (payload) {
           return {
@@ -270,7 +270,7 @@
 
           //:TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
 
-          // if (!$config.useFileCachedAPI) {
+          if (!$config.useFileCachedAPI) {
 
             await store.dispatch("getPoslanecDetail", {poslanecId: params.id});
 
@@ -278,13 +278,16 @@
               poslanec: store.state.poslanec
             }
 
-          // } else {
+          } else {
 
-          //   return {
-          //     poslanec: PoslanciData.filter(item => item.Id == params.id)
-          //   }
+            const poslanecData = await $axios.get(`/data/poslanec/${params.id}/`)
 
-          // }
+
+            return {
+              poslanec: poslanecData.data,
+            }
+
+          }
 
 
         }
@@ -330,7 +333,7 @@
 
         profileImage() {
 
-          const hasProfileImage = this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
+          const hasProfileImage = this.poslanec.Soubory && this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
 
           if (hasProfileImage) {
             return this.poslanec.Soubory[0].URLNahled;

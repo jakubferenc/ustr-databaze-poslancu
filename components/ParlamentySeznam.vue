@@ -18,7 +18,7 @@
 
       .buttons-more
 
-        NuxtLink(class="typo-form-button button-large" :to="`${ButtonMoreLink}`") Zobrazit všechny pojmy
+        NuxtLink(class="typo-form-button button-large" :to="`${ButtonMoreLink}`") Zobrazit všechny parlamenty
 
 </template>
 
