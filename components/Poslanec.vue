@@ -2,6 +2,7 @@
 
   NuxtLink(class="poslanec-thumb" :to="`/poslanec/${Id}/`")
     .poslanec-image
+      img(onerror="" :src="nahledovaFotografie" :alt="`Fotka osoby ${Jmeno} ${Prijmeni}`")
 
     .poslanec-metadata
       .poslanec-title {{ Jmeno }} {{ Prijmeni }}
@@ -21,6 +22,15 @@
 </template>
 
 <style lang="sass" scoped>
+
+  .poslanec-image
+    overflow: hidden
+    font-size: 12px
+    display: flex
+    justify-content: center
+    align-items: center
+    position: relative
+
 
 
   .poslanec-thumb
@@ -48,11 +58,20 @@
 
 <script>
 export default {
-   props: ['Id', 'Jmeno', 'Prijmeni', 'ZivotniData', 'DatumNarozeniZobrazene', 'DatumUmrtiZobrazene', 'Mandaty', 'ZobrazitMandaty', 'VekBehemSnemovny'],
+   props: ['Id', 'Jmeno', 'Prijmeni', 'ZivotniData', 'DatumNarozeniZobrazene', 'DatumUmrtiZobrazene', 'Mandaty', 'ZobrazitMandaty', 'VekBehemSnemovny', 'Soubory'],
    computed: {
      pocetMandatu() {
        return this.Mandaty.length;
-     }
+     },
+     nahledovaFotografie() {
+
+       if (this.Soubory && this.Soubory.length) {
+
+         return this.Soubory[0].URLNahled;
+
+       }
+
+     },
    }
 }
 </script>

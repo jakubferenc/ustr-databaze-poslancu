@@ -78,7 +78,7 @@
 
 
 
-              .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey")
+              .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey" :data-filter-id="filtrSekceKey")
 
                 //// sekce
                 ////////////////////////////////////////////////////////////////////////////////
@@ -121,6 +121,7 @@
                 :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
                 :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
                 :Mandaty="poslanec.Mandaty"
+                :Soubory="poslanec.Soubory"
                 :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
                 class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
                 )
@@ -154,6 +155,15 @@
 </template>
 
 <style lang="sass" scoped>
+
+  .filter-list-item-checkbox
+
+    width: 20px
+
+  [data-filter-id="parlamentni_telesa"]
+    .seznam-filter-sidebar-content-section-content
+      height: 300px
+      overflow: scroll
 
   .pagination-bar
     display: flex
@@ -288,7 +298,8 @@ export default {
 
       let currentPoslanci = this.PoslanciVstupniPolozky;
 
-      if (this.MaFiltr && !this.MaFiltrPresAPI) {
+      if (this.MaFiltr) {
+
 
         if (!this.radit.hasBeenSelected) {
 
@@ -297,7 +308,7 @@ export default {
 
         }
 
-        if ( this.filtrovat.hasBeenSelected ) {
+        if ( this.filtrovat.hasBeenSelected && this.MaFiltrPresAPI == false) {
 
           // filter has been set, let us filter poslance
 
@@ -411,7 +422,6 @@ export default {
 
     normalizeFilterOptionsBeforeSendingToAPI() {
 
-
       const allFilters = {...this.filtrNastaveni};
 
       let onlyActivelySelectedFilters = {};
@@ -421,7 +431,7 @@ export default {
         const keyName = itemKeyName;
         const item = allFilters[keyName];
 
-        const activeValues = item.values.filter(valueObj => valueObj.selected === true).map(valueObj => {
+        let activeValues = item.values.filter(valueObj => valueObj.selected === true).map(valueObj => {
 
           if (valueObj.default === true) {
             return null; // if default value is selected return empty value for the object key, so we can later remove the URL parameter from the router query
@@ -431,13 +441,17 @@ export default {
 
         });
 
+        console.log("keyname active values", keyName, activeValues);
+
+
         if (activeValues.length > 1) {
           // we have multiple options selected in the filter for the given parameter
-          // let's make it serialized
+          // let's make it serialized via a string separator
 
-            activeValues.join(this.$config.router.multipleValuesSeparator);
+            activeValues = [[...activeValues].join(this.$config.router.multipleValuesSeparator)];
 
         }
+
 
         // if the field is not empty, i.e. something is selected for given attribute/parameter, add the parameter key to the array we will send further
         if (activeValues.length > 0) {
@@ -446,6 +460,8 @@ export default {
 
 
       });
+
+      console.log("onlyActivelySelectedFilters", onlyActivelySelectedFilters);
 
       this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
 
@@ -673,6 +689,7 @@ export default {
 
   data() {
     return {
+      normalizedFilterActiveItems: {},
       filtrovat: {
         hasBeenSelected: false
       },

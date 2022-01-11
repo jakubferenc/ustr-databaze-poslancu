@@ -400,33 +400,23 @@ export const actions = {
   },
 
 
-  async getPoslanciFilteredViaAPI({ state, commit }, filterSettings) {
-
-    console.log(filterSettings);
-
-    try {
-
-      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Poslanec=true&Limit=20`);
-      poslanci = poslanci.data;
-
-      const filterData = getFilterDataFromPoslanciAll(poslanci);
-
-      commit("updatePoslanci", poslanci);
-      commit("updateFilterData", filterData);
-
-
-    } catch (err) {
-      console.warn(err);
-    }
-
-  },
-
 
   async getPoslanciAll({ state, commit, dispatch }, filtrNastaveniObj) {
 
+    let filtrNastaveniObjPrepared = {...filtrNastaveniObj};
+
+    if (filtrNastaveniObjPrepared.dalsi) {
+
+      if (filtrNastaveniObjPrepared.dalsi == 'ma-fotku') {
+        filtrNastaveniObjPrepared.Fotografie = true;
+      }
+
+    }
+
+
     try {
 
-      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Poslanec=true&Limit=${filtrNastaveniObj.limit}&stranka=${filtrNastaveniObj.stranka}`);
+      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Poslanec=true&Snemovna=${filtrNastaveniObjPrepared.parlamentni_telesa || null}&Limit=${filtrNastaveniObjPrepared.limit || null}&Stranka=${filtrNastaveniObjPrepared.stranka || null}&Pohlavi=${filtrNastaveniObjPrepared.pohlavi || null}&Fotografie=${filtrNastaveniObjPrepared.Fotografie || null}`);
       poslanci = poslanci.data;
 
       const filterData = getFilterDataFromPoslanciAll(poslanci);

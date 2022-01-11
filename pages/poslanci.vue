@@ -33,10 +33,44 @@
 import apiModule from '../factories';
 
 const PoslanciSeznam = () => import('~/components/PoslanciSeznam.vue');
+const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
 
 export default {
 
     components: { PoslanciSeznam },
+
+    async asyncData({params, error, payload, store, $config}) {
+
+      try {
+
+        if (!$config.useFileCachedAPI) {
+          await store.dispatch("getParlamenty");
+
+          return {
+            parlamenty: this.$store.state.parlamenty,
+          }
+
+        } else {
+
+          const parlamentyRes = await ParlamentyData();
+
+          return {
+            parlamenty: parlamentyRes,
+          }
+
+        }
+
+
+      } catch (err) {
+        console.warn(err);
+      }
+
+    },
+
+    created() {
+
+
+    },
 
 
     async fetch() {
@@ -56,9 +90,10 @@ export default {
 
     methods: {
 
+
       async getPoslanciFilteredAPI(currentQuery, $store) {
 
-        console.log("calling API! mock with these parameters: ", currentQuery);
+        console.log("calling API with these parameters: ", currentQuery);
 
         await $store.dispatch("getPoslanciAll", this.currentQuery);
 
@@ -90,16 +125,23 @@ export default {
 
        refreshSelectedFiltersHandler($event) {
 
+        const newLimit = parseInt(this.currentQuery.limit) || this.defaultQuery.limit;
         const activeFilterItems = $event;
 
+        console.log("params when filter changed activeFilterItems", activeFilterItems);
+
         const queryObj = {
-          ...this.defaultQuery,
           ...this.$route.query,
-          ...activeFilterItems
+          ...activeFilterItems,
+          ...{ limit: [newLimit]},
         };
+
+        console.log("params when filter changed queryObj", queryObj);
+
 
         const filteredQueryParams = this.cleanUpQueryParams(queryObj);
         this.currentQuery = filteredQueryParams;
+
 
         this.$router.push({
           path: '/poslanci/',
@@ -114,9 +156,7 @@ export default {
 
       async loadItems(newStranka) {
 
-
         const newLimit = parseInt(this.currentQuery.limit) || this.defaultQuery.limit;
-
 
         const queryObj = {
           ...this.$route.query,
@@ -158,6 +198,21 @@ export default {
 
     computed: {
 
+      parlamentySimple() {
+
+        return this.parlamenty.map(item => {
+
+          return {
+
+            Id: item.Id,
+            Nazev: item.Nazev,
+
+          };
+
+        });
+
+      },
+
       poslanci() {
 
 
@@ -168,8 +223,11 @@ export default {
 
        nastaveniFiltrace() {
 
-        const {nabozenske_vyznani, narodnosti, parlamenty, maji_vysokou_skolu} = this.$store.state.filter_data;
-        return apiModule.createFilterSettingsFactory(nabozenske_vyznani, narodnosti, parlamenty, maji_vysokou_skolu);
+        const {nabozenske_vyznani, narodnosti, maji_vysokou_skolu} = this.$store.state.filter_data;
+
+        const parlamenty = this.parlamentySimple;
+
+        return apiModule.createFilterSettingsForAPIFactory(nabozenske_vyznani, narodnosti, parlamenty, maji_vysokou_skolu);
 
 
        },
@@ -180,8 +238,10 @@ export default {
       return {
         currentQuery: {},
         defaultQuery: {
-          limit: 40,
-          stranka: 1
+          limit: [40],
+          stranka: [1],
+          parlamentni_telesa: ['vse-parlamenty'],
+          pohlavi: [null]
         },
         title: `Poslanci`,
       }
