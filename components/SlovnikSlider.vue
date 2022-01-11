@@ -10,10 +10,10 @@
       .slovnik-slider-item(v-for="item in SlovnikovaHesla")
         SlovnikoveHeslo(
           :key="item.id"
-          :Title="item.title.rendered"
+          :Title="item.title"
           :Slug="item.slug"
           InSlider="true"
-          :Description="item.content.rendered"
+          :Description="item.content"
           class=""
         )
 

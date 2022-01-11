@@ -84,7 +84,8 @@ app.get('/data/poslanec/:poslanecId/', async (req, res) => {
   // prepare data for casova osa
   poslanec.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
 
-  poslanec.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+  //poslanec.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+  poslanec.AdresyProMapu = poslanec.Adresy;
 
 
   res.send(poslanec);

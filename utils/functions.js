@@ -432,3 +432,33 @@ export const normalizeSouborAttrs = (file) => {
   return newFile;
 
 };
+
+
+export const poslanciFilterAPIMapper = () => {
+
+
+  return {
+
+    limit: 'Limit',
+    stranka: 'Stranka',
+    'ma-foto': 'Fotografie',
+    pohlavi: 'Pohlavi',
+    narodnost: 'Narodnost',
+    nabozenske_vyznani: 'Vyznani',
+    dalsi: {
+      'ma-socialni-vazby': 'OsobbniVztahyPrimarni'
+    },
+    snemovni_obdobi: 'SnemovniObdobi',
+    snemovna: 'Snemovna',
+    volebni_strana: 'VolebniStrana',
+    poslanecky_klub: 'PoslaneckyKlub',
+    politicka_strana: 'PolitickaStrana',
+    kurie: 'Kurie',
+    kooptace: 'Kooptace',
+    poslanec: 'Poslanec',
+    pozice: 'Pozice'
+
+  };
+
+
+}

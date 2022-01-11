@@ -148,7 +148,8 @@
               .buttons-more
                 NuxtLink(v-if="MaButtonMore && ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
 
-                a(v-if="MaButtonMore && MaPaginaci" href="").typo-form-button.button-large Načíst další poslance
+                a(v-if="MaButtonMore && MaButtonMorePrevious" @click="loadPreviousItems()").typo-form-button.button-large Načíst předchozí poslance
+                a(v-if="MaButtonMore" @click="loadMoreItems()").typo-form-button.button-large Načíst další poslance
 
 </template>
 
@@ -269,7 +270,7 @@ export default {
   components: { Poslanec },
 
 
-  props: ["PoslanciVstupniPolozky", "KesovatPoslanceInterne", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
+  props: ["MaButtonMorePrevious", "MaFiltrPresAPI", "PoslanciVstupniPolozky", "KesovatPoslanceInterne", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
 
   computed: {
 
@@ -287,7 +288,7 @@ export default {
 
       let currentPoslanci = this.PoslanciVstupniPolozky;
 
-      if (this.MaFiltr) {
+      if (this.MaFiltr && !this.MaFiltrPresAPI) {
 
         if (!this.radit.hasBeenSelected) {
 
@@ -405,7 +406,59 @@ export default {
     }
   },
 
+
   methods: {
+
+    normalizeFilterOptionsBeforeSendingToAPI() {
+
+
+      const allFilters = {...this.filtrNastaveni};
+
+      let onlyActivelySelectedFilters = {};
+
+      Object.keys(allFilters).forEach((itemKeyName) => {
+
+        const keyName = itemKeyName;
+        const item = allFilters[keyName];
+
+        const activeValues = item.values.filter(valueObj => valueObj.selected === true).map(valueObj => {
+
+          if (valueObj.default === true) {
+            return null; // if default value is selected return empty value for the object key, so we can later remove the URL parameter from the router query
+          } else {
+            return valueObj.id;
+          }
+
+        });
+
+        if (activeValues.length > 1) {
+          // we have multiple options selected in the filter for the given parameter
+          // let's make it serialized
+
+            activeValues.join(this.$config.router.multipleValuesSeparator);
+
+        }
+
+        // if the field is not empty, i.e. something is selected for given attribute/parameter, add the parameter key to the array we will send further
+        if (activeValues.length > 0) {
+           onlyActivelySelectedFilters[keyName] = activeValues;
+        }
+
+
+      });
+
+      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
+
+
+    },
+
+    loadPreviousItems() {
+      this.$emit('loadPreviousItems');
+    },
+
+    loadMoreItems() {
+      this.$emit('loadMoreItems');
+    },
 
     toggleSidebar() {
 
@@ -502,12 +555,10 @@ export default {
 
       }
 
-
-
       this.filtrNastaveniAktualniPolozky = {[filtrSekceKey]: tempResult};
 
 
-      //this.$store.dispatch("setPoslanciFiltrovani", this.poslanci);
+      this.normalizeFilterOptionsBeforeSendingToAPI();
 
     },
 

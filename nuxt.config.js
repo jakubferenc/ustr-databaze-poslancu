@@ -1,4 +1,3 @@
-import axios from "axios";
 import apiFactory from './factories';
 import projectConfig from './project.config';
 

@@ -14,6 +14,9 @@ export default {
   globalTitle: 'Databáze poslanců.cz',
   baseURL: 'https://www.databazeposlancu.cz',
   useFileCachedAPI: true,
+  router: {
+    multipleValuesSeparator: '|',
+  },
   responsive: {
     breakpoints: {
       mobile,

@@ -29,7 +29,7 @@
     @extend %typography-main-title
     margin-bottom: 0
     padding-top: 0
-    line-height: 0.75
+    line-height: 1
     text-decoration: none
 
   .description

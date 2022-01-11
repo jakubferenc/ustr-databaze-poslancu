@@ -700,7 +700,9 @@ const preparePoslanecDetail = async (poslanec) => {
     // prepare data for casova osa
     poslanecData.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
 
-    poslanecData.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+    //poslanecData.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
+    poslanecData.AdresyProMapu = poslanec.Adresy;
+
 
     return poslanecData;
 
