@@ -24,7 +24,6 @@
 <script>
 
 const ParlamentRadek = () => import('~/components/ParlamentRadek.vue');
-
 const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
 
 export default {

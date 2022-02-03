@@ -180,14 +180,14 @@ export default {
 
       async loadPreviousItemsHandler($event) {
 
-        const newStranka = parseInt(this.currentQuery.stranka) - 1 > 0 ? parseInt(this.currentQuery.stranka) - 1: 1;
+        const newStranka = this.currentURLParameters.stranka - 1 > 0 ? this.currentURLParameters.stranka - 1: 1;
         this.loadItems(newStranka);
 
       },
 
       async loadMoreItemsHandler($event) {
 
-        const newStranka = parseInt(this.currentQuery.stranka) + 1;
+        const newStranka = this.currentURLParameters.stranka + 1;
         this.loadItems(newStranka);
 
 
@@ -198,7 +198,17 @@ export default {
 
     computed: {
 
-      parlamentySimple() {
+      currentURLParameters() {
+
+        const stranka = parseInt(this.currentQuery.stranka) || 1;
+
+        return {
+          stranka,
+        }
+
+      },
+
+      parlamentySimplified() {
 
         return this.parlamenty.map(item => {
 
@@ -225,7 +235,7 @@ export default {
 
         const {nabozenske_vyznani, narodnosti, maji_vysokou_skolu} = this.$store.state.filter_data;
 
-        const parlamenty = this.parlamentySimple;
+        const parlamenty = this.parlamentySimplified;
 
         return apiModule.createFilterSettingsForAPIFactory(nabozenske_vyznani, narodnosti, parlamenty, maji_vysokou_skolu);
 

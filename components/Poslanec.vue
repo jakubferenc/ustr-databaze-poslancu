@@ -2,7 +2,7 @@
 
   NuxtLink(class="poslanec-thumb" :to="`/poslanec/${Id}/`")
     .poslanec-image
-      img(onerror="" :src="nahledovaFotografie" :alt="`Fotka osoby ${Jmeno} ${Prijmeni}`")
+      img(v-if="nahledovaFotografie" :src="nahledovaFotografie" :alt="`Fotka osoby ${Jmeno} ${Prijmeni}`")
 
     .poslanec-metadata
       .poslanec-title {{ Jmeno }} {{ Prijmeni }}

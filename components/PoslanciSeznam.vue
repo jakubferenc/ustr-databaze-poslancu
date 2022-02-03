@@ -74,8 +74,6 @@
             .seznam-filter-sidebar-content
 
               .seznam-filter-sidebar-content-header
-                p.typography-filter-heading Zobrazuje se {{pocetPoslancuFiltrovanych}} z {{pocetPoslancu}} <br>poslanců
-
 
 
               .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey" :data-filter-id="filtrSekceKey")
@@ -222,6 +220,7 @@
     width: $custom-select-width
     position: relative
     font-size: 12px
+    z-index: 3
 
 
     &, &:focus, &:active
@@ -280,7 +279,19 @@ export default {
   components: { Poslanec },
 
 
-  props: ["MaButtonMorePrevious", "MaFiltrPresAPI", "PoslanciVstupniPolozky", "KesovatPoslanceInterne", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
+  props: [
+    "MaButtonMorePrevious",
+    "MaFiltrPresAPI",
+    "PoslanciVstupniPolozky",
+    "KesovatPoslanceInterne",
+    "PoslanciStatistiky",
+    "MaFiltr",
+    "MaButtonMore",
+    "ButtonMoreLink",
+    "MaPaginaci",
+    "MaStatistiky",
+    "NastaveniFiltrace"
+  ],
 
   computed: {
 
@@ -441,8 +452,6 @@ export default {
 
         });
 
-        console.log("keyname active values", keyName, activeValues);
-
 
         if (activeValues.length > 1) {
           // we have multiple options selected in the filter for the given parameter
@@ -519,6 +528,7 @@ export default {
         this.filtrovat.hasBeenSelected = true;
       }
 
+      let tempResultCurrentAll = {...this.filterNastaveni}
       const tempResult = this.filtrNastaveni[filtrSekceKey];
 
 
@@ -557,7 +567,7 @@ export default {
 
         } else {
 
-          tempResult.values[thisObjIndex].selected = (tempResult.values[thisObjIndex].selected) ? false : true;
+          tempResult.values[thisObjIndex].selected = !tempResult.values[thisObjIndex].selected; // shorthand for change the boolean value to the other one
 
         }
 
