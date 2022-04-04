@@ -3,13 +3,15 @@
     .top-bar
       <Logo />
       <MainMenu />
-      <SearchNav />
+      //- <SearchNav />
 
     <Slider v-if="true" />
 
 </template>
 
 <style lang="sass">
+
+$margin-body: 50px
 
 .main-header
   position: sticky
@@ -21,13 +23,28 @@
     height: 80px
     display: flex
     justify-content: space-between
-    padding: 0 50px
+    padding: 0 $margin-body
     align-items: center
-
+    display: flex
+    justify-content: center
     a
       color: #000
       font-size: 15px
       font-family: Courier, monospace
+
+  .logo
+    position: absolute
+    left: $margin-body
+
+
+  .main-menu
+    width: 55%
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+
+
 
 html.has-slider .main-header
   position: relative
