@@ -16,7 +16,7 @@
         :MaPaginaci="true"
         :MaFiltr="true"
         :MaStatistiky="false"
-        :MaButtonMore="true"
+        :MaButtonMore="false"
         :ButtonMoreLink="false"
         :PaginaceNastaveni="paginaceNastaveni"
         :MaButtonMorePrevious="this.currentQuery.stranka > 1"

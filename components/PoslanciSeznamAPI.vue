@@ -78,7 +78,7 @@
 
 
 
-              .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey")
+              .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey" :class="{hidden: isDefaultParlamentSelected && filtrSekceKey == 'SnemovniObdobi'}")
 
                 //// sekce
                 ////////////////////////////////////////////////////////////////////////////////
@@ -154,6 +154,9 @@
 </template>
 
 <style lang="sass" scoped>
+
+  .hidden
+    display: none
 
   .seznam-filter-sidebar-content-section-content
     max-height: 300px
@@ -299,6 +302,16 @@ export default {
   ],
 
   computed: {
+
+    isDefaultParlamentSelected() {
+
+
+      return this.NastaveniFiltrace['Snemovny'].values[0].selected;
+
+
+    },
+
+
 
     filtrNastaveni() {
 
