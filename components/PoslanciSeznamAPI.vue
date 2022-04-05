@@ -123,6 +123,7 @@
                 :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
                 :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
                 :Mandaty="poslanec.Mandaty"
+                :Soubory="poslanec.Soubory"
                 class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
                 )
 
