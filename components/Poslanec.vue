@@ -1,7 +1,10 @@
 <template lang="pug">
 
-  NuxtLink(class="poslanec-thumb" :to="`/poslanec/${Id}/`")
+  NuxtLink.poslanec-thumb(:to="`/poslanec/${Id}/`")
     .poslanec-image
+
+      img(v-if="profilovaFotka" :src="profilovaFotka" :alt="`Profilová fotografie ${Jmeno} ${Prijmeni}`")
+
 
     .poslanec-metadata
       .poslanec-title {{ Jmeno }} {{ Prijmeni }}
@@ -23,36 +26,68 @@
 <style lang="sass" scoped>
 
 
-  .poslanec-thumb
+.poslanec-thumb
+  text-align: center
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+  margin-bottom: 50px
+  text-decoration: none
+
+  .poslanec-image
+    width: 155px
+    height: 155px
+    border-radius: 155px
+    background-color: lightgray
+    overflow: hidden
     text-align: center
     display: flex
     align-items: center
     justify-content: center
-    flex-direction: column
-    margin-bottom: 50px
-    text-decoration: none
 
-    .poslanec-image
-      width: 155px
-      height: 155px
-      border-radius: 155px
-      background-color: lightgray
+    img
+      width: 100%
+      height: 100%
+      object-fit: cover
 
-    .poslanec-metadata
-      margin-top: 20px
 
-    .poslanec-title
-      @extend %typography-poslanec-thumb-title
+  .poslanec-metadata
+    margin-top: 20px
 
+  .poslanec-title
+    @extend %typography-poslanec-thumb-title
 </style>
 
 <script>
 export default {
-   props: ['Id', 'Jmeno', 'Prijmeni', 'ZivotniData', 'DatumNarozeniZobrazene', 'DatumUmrtiZobrazene', 'Mandaty', 'ZobrazitMandaty', 'VekBehemSnemovny'],
-   computed: {
-     pocetMandatu() {
-       return this.Mandaty.length;
-     }
-   }
-}
+  props: [
+    'Id',
+    'Jmeno',
+    'Prijmeni',
+    'ZivotniData',
+    'DatumNarozeniZobrazene',
+    'DatumUmrtiZobrazene',
+    'Mandaty',
+    'ZobrazitMandaty',
+    'VekBehemSnemovny',
+    'Soubory',
+  ],
+  computed: {
+
+    profilovaFotka() {
+
+      if (this.Soubory && this.Soubory.length && this.Soubory.length > 0) {
+
+        return this.Soubory[0].URLNahled;
+
+      }
+
+    },
+
+    pocetMandatu() {
+      return this.Mandaty.length;
+    },
+  },
+};
 </script>
