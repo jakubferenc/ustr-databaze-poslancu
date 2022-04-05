@@ -183,7 +183,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     },
     Fotografie: {
       id: sectionId++,
-      title: 'Vzdělání',
+      title: 'Fotografie',
       type: 'radio',
       order: 'inline',
       property: 'UniverzitniVzdelani',
