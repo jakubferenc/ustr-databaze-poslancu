@@ -105,7 +105,6 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     const maFotkuMapped = [
         {id: 'vse-fotografie', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
         {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
-        {id: false, text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', },
     ];
 
 
