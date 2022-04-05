@@ -65,7 +65,7 @@
             span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
               span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
               span.options
-                span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text)") {{polozka.text}}
+                span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text, polozka.apiId)") {{polozka.text}}
 
 
         .seznam-content-container()
@@ -82,7 +82,9 @@
 
                 //// sekce
                 ////////////////////////////////////////////////////////////////////////////////
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading {{filtrNastaveni[filtrSekceKey].title}}
+                .seznam-filter-sidebar-content-section-title.typography-filter-heading
+                  span {{filtrNastaveni[filtrSekceKey].title}}
+                  span(v-if="filtrNastaveni[filtrSekceKey].hasCounter") &nbsp;({{filtrNastaveni[filtrSekceKey].values.length}})
                 .seznam-filter-sidebar-content-section-content.typography-filter-text
 
                   ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
@@ -121,9 +123,11 @@
                 :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
                 :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
                 :Mandaty="poslanec.Mandaty"
-                :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
                 class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
                 )
+
+            //                 :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
+
 
             .component-footer(v-if="MaButtonMore || MaPaginaci")
 
@@ -131,18 +135,14 @@
                 .to-the-top
                   a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
                 .pagination-list
-                  a.pagination-list-prev.pagination-item(href="#") &lt;
-                  .pagination-list-number
-                    a.pagination-list-number.pagination-item(href="#") 1
-                    a.pagination-list-number.pagination-item(href="#") 2
-                    a.pagination-list-number.pagination-item(href="#") 3
-                    a.pagination-list-number.pagination-item(href="#") 4
-                    a.pagination-list-number.pagination-item(href="#") 5
-                  .pagination-list-last-number
-                    .pagination-item.bullets ...
-                    a(href="#").pagination-item 40
+                  a.pagination-list-prev.pagination-item(href="#") &lt; &lt; &nbsp;
+                  .pagination-list-number(v-for="(pageNumber, index) in Array(PaginaceNastaveni.PocetStranek) ")
+                    a.pagination-list-number.pagination-item(:class="{active: PaginaceNastaveni.Stranka == index+1}" @click="doPagination(index+1)") {{index+1}}
+                  //- .pagination-list-last-number
+                  //-   .pagination-item.bullets ...
+                  //-   a(href="#").pagination-item 40
 
-                  a.pagination-list-next.pagination-item(href="#") &gt;
+                  a.pagination-list-next.pagination-item(href="#") &nbsp;  &gt;  &gt;
 
 
               .buttons-more
@@ -163,8 +163,7 @@
     padding-left: 5px
 
   .pagination-bar
-    display: flex
-    justify-content: space-between
+
     margin-bottom: 3em
 
     .pagination-item
@@ -173,6 +172,12 @@
       text-align: center
       display: inline-block
       border: 1px solid transparent
+      cursor: pointer
+
+      &:not(.bullets).active
+        border-color: #000
+        background-color: #000
+        color: #fff
 
       &:not(.bullets):hover
         border-color: #000
@@ -180,7 +185,10 @@
 
     .pagination-list
       display: flex
-      justify-content: space-between
+      justify-content: flex-start
+      flex-wrap: wrap
+      margin-top: 1em
+
 
 
 
@@ -279,7 +287,6 @@ export default {
 
   props: [
     "MaButtonMorePrevious",
-    "MaFiltrPresAPI",
     "PoslanciVstupniPolozky",
     "PoslanciStatistiky",
     "MaFiltr",
@@ -288,6 +295,7 @@ export default {
     "MaPaginaci",
     "MaStatistiky",
     "NastaveniFiltrace",
+    "PaginaceNastaveni"
   ],
 
   computed: {
@@ -365,6 +373,12 @@ export default {
 
     },
 
+    doPagination(index) {
+
+      this.$emit('doPagination', index);
+
+    },
+
     loadPreviousItems() {
       this.$emit('loadPreviousItems');
     },
@@ -385,7 +399,7 @@ export default {
 
     },
 
-    selectOrderOption(selectedOptionId, selectedOptionText) {
+    selectOrderOption(selectedOptionId, selectedOptionText, apiId) {
 
       if (!this.radit.hasBeenSelected) {
         this.radit.hasBeenSelected = true
@@ -395,6 +409,8 @@ export default {
       this.radit.selectedOptionText = selectedOptionText;
       this.$el.querySelectorAll(`.option.selected`).forEach(item => item.classList.remove('selected'));
       this.$el.querySelector(`[data-option-id="${selectedOptionId}"]`).classList.add('selected');
+
+      this.$emit('selectOrderOption', apiId);
 
     },
 
@@ -467,85 +483,8 @@ export default {
 
     },
 
-    getRazeniPoslanciSeznam(selectedOptionId, poslanci) {
 
 
-      let filteredPoslanci = [...poslanci];
-
-
-      // Sorting
-
-      if (selectedOptionId === 'radit-datum-narozeni') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene) ? 1 : -1);
-
-      }
-
-      if (selectedOptionId === 'radit-datum-narozeni-sestupne') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene) ? 1 : -1);
-
-      }
-
-      if (selectedOptionId === 'radit-prijmeni') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => {
-          const nameA = a.Prijmeni.toLowerCase();
-          const nameB = b.Prijmeni.toLowerCase();
-
-          return (nameA > nameB) ? 1 : -1;
-
-        });
-
-      }
-
-      if (selectedOptionId === 'radit-prijmeni-sestupne') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => {
-          const nameA = a.Prijmeni.toLowerCase();
-          const nameB = b.Prijmeni.toLowerCase();
-
-          return (nameA < nameB) ? 1 : -1;
-
-        });
-
-      }
-
-      if (selectedOptionId === 'radit-pocet-mandatu') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Mandaty.length > b.Mandaty.length) ? 1 : -1);
-
-      }
-
-      if (selectedOptionId === 'radit-pocet-mandatu-sestupne') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Mandaty.length < b.Mandaty.length) ? 1 : -1);
-
-      }
-
-      if (selectedOptionId === 'radit-id') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Id > b.Id) ? 1 : -1);
-
-      }
-
-      return filteredPoslanci;
-
-
-    },
-
-  },
-
-  created() {
-    // :TODO: #5 Check if this is necessary and will be implemented
-    if (this.radit.selectedOptionId !== undefined) {
-      // we have a default order value set
-      let getFilterInDefaults = this.RaditDle.filter(item => item.id === this.radit.selectedOptionId);
-      if (getFilterInDefaults.length) {
-        const {selectedOptionId, selectedOptionText} = getFilterInDefaults;
-        this.$emit('selectOption', {selectedOptionId, selectedOptionText});
-      }
-    }
   },
 
   mounted() {
@@ -582,13 +521,19 @@ export default {
         selectedOptionText: undefined,
         hasBeenSelected: false,
         RaditDle: [
-          { id: 'radit-id', text: 'Základní řazení' },
-          { id: 'radit-prijmeni', text: 'Podle příjmení (od A)' },
-          { id: 'radit-prijmeni-sestupne', text: 'Podle příjmení (od Z)' },
-          { id: 'radit-pocet-mandatu', text: 'Nejméně mandátů' },
-          { id: 'radit-pocet-mandatu-sestupne', text: 'Nejvíce mandátů' },
-          { id: 'radit-datum-narozeni', text: 'Od nejmladších' },
-          { id: 'radit-datum-narozeni-sestupne', text: 'Od nejstarších' },
+          { id: 'radit-id', text: 'Základní řazení', apiId: 0, },
+          { id: 'radit-prijmeni', text: 'Podle příjmení (od A)', apiId: 1 },
+          { id: 'radit-prijmeni-sestupne', text: 'Podle příjmení (od Z)', apiId: 2 },
+          { id: 'radit-pocet-mandatu', text: 'Nejméně mandátů', apiId: 3 },
+          { id: 'radit-pocet-mandatu-sestupne', text: 'Nejvíce mandátů', apiId: 4 },
+          { id: 'radit-datum-narozeni', text: 'Datum narození', apiId: 9 },
+          { id: 'radit-datum-narozeni-sestupne', text: 'Datum narození(Sestupně)', apiId: 10 },
+          { id: 'radit-datum-umrti', text: 'Datum úmrtí', apiId: 11 },
+          { id: 'radit-datum-umrti-sestupne', text: 'Datum úmrtí (Sestupně)', apiId: 12 },
+          { id: 'radit-datum-narozeni-mandat', text: 'Věk na začátku mandátu', apiId: 5 },
+          { id: 'radit-datum-narozeni-mandat-sestupne', text: 'Věk na začátku mandátu (Sestupně)', apiId: 6 },
+          { id: 'radit-datum-narozeni-konec-mandatu', text: 'Věk na konci mandátu', apiId: 7 },
+          { id: 'radit-datum-narozeni-konec-mandatu-sestupne', text: 'Věk na konci mandátu (Sestupně)', apiId: 8 },
         ],
         ZakladniPolozka: { id: 'radit-default', text: 'řadit dle' },
       },

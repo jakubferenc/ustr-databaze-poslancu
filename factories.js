@@ -118,6 +118,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       type: 'radio',
       order: 'inline',
       property: 'Pohlavi',
+      hasCounter: false,
       values: pohlaviMapped,
     },
     Snemovny: {
@@ -127,6 +128,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       multiple: true,
       reset: true,
       order: 'block',
+      hasCounter: true,
       values: parlamentyMapped
     },
     SnemovniObdobi: {
@@ -136,6 +138,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       multiple: true,
       reset: true,
       order: 'block',
+      hasCounter: true,
       values: snemovniObdobiMapped
     },
     Narodnosti: {
@@ -146,6 +149,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       reset: true,
       order: 'block',
       property: 'Narodnosti',
+      hasCounter: true,
       values: narodnostiMapped
     },
     Vyznani: {
@@ -156,6 +160,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       reset: true,
       order: 'block',
       property: 'NabozenstviNarozeni',
+      hasCounter: true,
       values: vyznaniMapped
     },
     UniverzitniVzdelani: {
@@ -164,6 +169,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       type: 'radio',
       order: 'inline',
       property: 'UniverzitniVzdelani',
+      hasCounter: true,
       values: vysokaSkolaMapped,
     },
     SocialniVazby: {
@@ -172,6 +178,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       type: 'radio',
       order: 'inline',
       property: 'UniverzitniVzdelani',
+      hasCounter: true,
       values: SocialniVazbyMapped,
     },
     Fotografie: {
@@ -180,6 +187,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       type: 'radio',
       order: 'inline',
       property: 'UniverzitniVzdelani',
+      hasCounter: true,
       values: maFotkuMapped,
     },
 

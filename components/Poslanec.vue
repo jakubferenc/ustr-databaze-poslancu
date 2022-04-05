@@ -14,7 +14,7 @@
       .mandaty(v-if="ZobrazitMandaty")
         span {{ pocetMandatu }}&nbsp;
         span(v-show="pocetMandatu > 4") mandátů
-        span(v-show="pocetMandatu > 1 && pocetMandatu < 5") mandáty
+        span(v-show="pocetMandatu > 1 && pocetMandatu < 5") mandáty
         span(v-show="pocetMandatu === 1") mandát
       .content {{ VekBehemSnemovny }}
 

@@ -13,13 +13,15 @@
         :PoslanciVstupniPolozky="poslanci"
         :NastaveniFiltrace="nastaveniFiltrace"
         :PoslanciStatistiky="poslanciStatistiky"
-        :MaPaginaci="false"
+        :MaPaginaci="true"
         :MaFiltr="true"
         :MaStatistiky="false"
         :MaButtonMore="true"
         :ButtonMoreLink="false"
-        :MaFiltrPresAPI="true"
+        :PaginaceNastaveni="paginaceNastaveni"
         :MaButtonMorePrevious="this.currentQuery.stranka > 1"
+        v-on:doPagination="doPaginationHandler($event)"
+        v-on:selectOrderOption="selectOrderOptionHandler($event)"
 
         v-on:loadPreviousItems="loadPreviousItemsHandler($event)"
         v-on:loadMoreItems="loadMoreItemsHandler($event)"
@@ -53,7 +55,7 @@ export default {
 
       this.currentQuery = {
         ...this.defaultQuery,
-        ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
+        // ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
       };
 
       // make API requests to get parlaments that will be fixed in the filter
@@ -183,8 +185,6 @@ export default {
 
         const activeFilterItems = $event;
 
-        console.log("Poslanci, event: refreshSelectedFiltersHandler, data: ", activeFilterItems);
-
         this.currentQuery = {
           ...this.defaultQuery,
           // ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
@@ -224,6 +224,32 @@ export default {
 
       },
 
+
+      async doPaginationHandler($event) {
+
+        this.currentQuery = {
+          ...this.currentQuery,
+          ...{ Stranka: [$event]},
+
+        };
+
+        // // call API
+
+        await this.prepareRequestFilteredViaAPI(this.currentQuery, this.$store);
+
+      },
+
+      async selectOrderOptionHandler($event) {
+
+        this.currentQuery = {
+          ...this.currentQuery,
+          ...{ Razeni: [$event]},
+        };
+
+        await this.prepareRequestFilteredViaAPI(this.currentQuery, this.$store);
+
+      },
+
       async loadPreviousItemsHandler($event) {
 
         const newStranka = parseInt(this.currentQuery.stranka) - 1 > 0 ? parseInt(this.currentQuery.stranka) - 1: 1;
@@ -248,6 +274,22 @@ export default {
 
 
     computed: {
+
+      paginaceNastaveni() {
+
+        const Celkem = this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu;
+        const Limit = this.currentQuery.Limit[0] || this.defaultQuery.Limit[0];
+        const Stranka = this.currentQuery.Stranka[0] || this.defaultQuery.Stranka[0];
+        const PocetStranek = Math.ceil(Celkem / Limit);
+
+        return {
+          Celkem,
+          Limit,
+          Stranka,
+          PocetStranek,
+        }
+
+      },
 
       poslanci() {
 
@@ -285,7 +327,7 @@ export default {
         currentQuery: {},
         defaultQuery: {
           Poslanec: [true],
-          Limit: [100],
+          Limit: [300],
           Stranka: [1]
         },
         title: `Poslanci`,
