@@ -120,7 +120,17 @@ app.get('/data/osoby-s-fotkou/', async (req,res) => {
 
 });
 
-app.get('/api/osoby/', async (req,res) => {
+app.get('/api/osoby/', async(req, res) => {
+
+  const osobyRes = await axios.get(`${config.databazePoslancuURL}/Api/osoby/?Limit=10&`);
+  const osobyData = osobyRes.data;
+
+  res.send(osobyData);
+
+
+});
+
+app.get('/api/osoby-vsechny/', async (req,res) => {
 
 
   const osobyRes = await axios.get(`${config.databazePoslancuURL}/Api/osoby/vsechny-osoby`);

@@ -15,7 +15,7 @@ export default {
   baseURL: 'https://www.databazeposlancu.cz',
   useFileCachedAPI: true,
   router: {
-    multipleValuesSeparator: '|',
+    multipleValuesSeparator: ';',
   },
   responsive: {
     breakpoints: {

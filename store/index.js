@@ -14,13 +14,11 @@ import {
 export const state = () => ({
   slovnikova_hesla: [],
   parlamenty: [],
+  parlamentyDatabaze: [],
   poslanec: {},
   poslanci: [],
   poslanci_filtrovani: [],
-  filter_data: {
-    filterData: {},
-    filterSettings: {},
-  },
+  filter_data: {},
   poslanci_filter_data: {},
   poslanci_homepage: [],
   poslanci_statistiky: {},
@@ -76,6 +74,10 @@ export const mutations = {
   },
   updateParlamenty: (state, parlamenty) => {
     state.parlamenty = parlamenty;
+  },
+
+  updateParlamentyDatabaze: (state, parlamenty) => {
+    state.parlamentyDatabaze = parlamenty;
   },
 
   updatePoslanciStatistiky: (state, poslanci_statistiky) => {
@@ -286,6 +288,16 @@ export const actions = {
 
   },
 
+  async getParlamentyDatabaze({ state, commit }) {
+
+    if (state.parlamentyDatabaze.length) return;
+
+    const parlamenty = await apiFactory.getParlamentyDatabazeFactory(projectConfig.databazePoslancuURL);
+
+    commit("updateParlamentyDatabaze", parlamenty);
+
+  },
+
   async getParlamenty({ state, commit }) {
 
     if (state.parlamenty.length) return;
@@ -301,7 +313,8 @@ export const actions = {
     if (state.poslanci.length) return;
     try {
 
-      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanci = poslanciRequest.Poslanci;
 
       if (filterCallback !== null) {
         poslanci = poslanci.filter(filterCallback);
@@ -400,36 +413,16 @@ export const actions = {
   },
 
 
-  async getPoslanciFilteredViaAPI({ state, commit }, filterSettings) {
-
-    console.log(filterSettings);
+  async getPoslanciAll({ state, commit, dispatch }, filtrNastaveniParamsString) {
 
     try {
 
-      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Poslanec=true&Limit=20`);
-      poslanci = poslanci.data;
+      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/?${filtrNastaveniParamsString}`);
+      poslanciRequest = poslanciRequest.data;
 
-      const filterData = getFilterDataFromPoslanciAll(poslanci);
+      const poslanci = poslanciRequest.Poslanci;
+      const filterData = poslanciRequest.Filtry;
 
-      commit("updatePoslanci", poslanci);
-      commit("updateFilterData", filterData);
-
-
-    } catch (err) {
-      console.warn(err);
-    }
-
-  },
-
-
-  async getPoslanciAll({ state, commit, dispatch }, filtrNastaveniObj) {
-
-    try {
-
-      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Poslanec=true&Limit=${filtrNastaveniObj.limit}&stranka=${filtrNastaveniObj.stranka}`);
-      poslanci = poslanci.data;
-
-      const filterData = getFilterDataFromPoslanciAll(poslanci);
 
       commit("updatePoslanci", poslanci);
       commit("updateFilterData", filterData);

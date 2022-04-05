@@ -1,37 +1,18 @@
 <template lang="pug">
 
-
 </template>
 
 <script>
-import apiModule from '../factories';
-
-
 export default {
 
     async asyncData ({store}) {
 
       await store.dispatch("getParlamentyDatabaze");
 
-      const default_filter_data = {
-        parlamenty: store.state.parlamentyDatabaze,
-
-      };
-
-
-      const apiFilterSettings = apiModule.createFilterSettingsForApiUseFactory(default_filter_data.parlamenty, {});
-
-      console.log("apiFilterSettings", apiFilterSettings);
-
-
-    },
-
-    created() {
-
-
     },
 
     mounted() {
+
 
     },
 
@@ -52,7 +33,7 @@ export default {
 
     data() {
       return {
-        title: `Test`,
+        title: `Hlavní stránka`,
         hasSlider: false,
       }
     },
@@ -61,7 +42,7 @@ export default {
       return {
         title: `${this.title} — ${this.$config.globalTitle}`,
         htmlAttrs: {
-          class: 'alt-bg'
+          class: 'index has-slider'
         }
       }
     }
