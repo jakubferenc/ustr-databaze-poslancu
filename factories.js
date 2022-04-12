@@ -122,8 +122,12 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     const pocetMandatuMapped = [filterData.PocetMandatu[0], filterData.PocetMandatu[filterData.PocetMandatu.length-1]];
 
 
+    let vekyNaZacatkuMandatuMapped = [...filterData.VekNaZacatkuMandatu].filter(vek => vek > 0);
+    vekyNaZacatkuMandatuMapped = [vekyNaZacatkuMandatuMapped[0], vekyNaZacatkuMandatuMapped[vekyNaZacatkuMandatuMapped.length-1]] ///
+  ////////
+
     let vekyNaKonciMandatuMapped = [...filterData.VekNaKonciMandatu].filter(vek => vek > 0);
-    vekyNaKonciMandatuMapped = [vekyNaKonciMandatuMapped[0], vekyNaKonciMandatuMapped[vekyNaKonciMandatuMapped.length-1]]///
+    vekyNaKonciMandatuMapped = [vekyNaKonciMandatuMapped[0], vekyNaKonciMandatuMapped[vekyNaKonciMandatuMapped.length-1]] ///
   ////////////////////////////////////////////////////////////
   let finalResult = {
 
@@ -212,6 +216,15 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       hasCounter: false,
       values: pocetMandatuMapped,
     },
+    VekNaZacatkuMandatu: {
+      id: sectionId++,
+      title: 'Věk na začátku mandátu',
+      type: 'range',
+      order: 'inline',
+      hasCounter: false,
+      queryStructure: ['VekNaZacatkuMandatuMin', 'VekNaZacatkuMandatuMax'], // order matterrs, first lower bound, next higher bound
+      values: vekyNaZacatkuMandatuMapped,
+    },
     VekNaKonciMandatu: {
       id: sectionId++,
       title: 'Věk na konci mandátu',
@@ -220,7 +233,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       hasCounter: false,
       queryStructure: ['VekNaKonciMandatuMin', 'VekNaKonciMandatuMax'], // order matterrs, first lower bound, next higher bound
       values: vekyNaKonciMandatuMapped,
-    }
+    },
 
     // vek: {
     //   id: 5,

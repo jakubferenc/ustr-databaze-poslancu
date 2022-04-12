@@ -4,8 +4,8 @@
 
     input(type="hidden" id="" name="" :value="`[${leftValue}, ${rightValue}]`")
 
-    input(@input="setLeftValue" @change="mouseUpHandler"  type="range" id="input-left" :min="MinValue" :max="MaxValue" :value="MinValue")
-    input(@input="setRightValue" @change="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
+    input(@input="setLeftValue()" @mouseup="mouseUpHandler"  type="range" id="input-left" :min="MinValue" :max="MaxValue" :value="leftValue")
+    input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="rightValue")
 
     .slider
       .track
@@ -123,17 +123,39 @@
       "MaxValue",
       "QueryStructure"
     ],
+    watch: {
+      MinValue: function(newVal, oldVal) { // watch it
 
+        this.leftValue = this.MinValue;
+
+        this.setLeftValue();
+
+        this.setRightValue();
+      },
+      MaxValue: function(newVal, oldVal) { // watch it
+
+        this.rightValue = this.MaxValue;
+
+        this.setLeftValue();
+
+        this.setRightValue();
+      }
+    },
     data() {
 
       return {
 
-        min: 0, // via props and data api
-        max: 100, // via props and data api
         $thisEl: null,
-        leftValue: this.MinValue,
-        rightValue: this.MaxValue,
+        leftValue: null,
+        rightValue: null,
       }
+
+    },
+    created() {
+
+      this.leftValue = this.MinValue;
+      this.rightValue = this.MaxValue;
+
 
     },
     methods: {
@@ -149,12 +171,14 @@
 
       },
 
-      setLeftValue(e) {
+      setLeftValue() {
 
-        const [min, max] = [parseInt(e.target.min), parseInt(e.target.max)];
-        this.leftValue = e.target.value = Math.min(parseInt(e.target.value), parseInt(this.$inputRight.value) - 1);
+        console.log("volam set left value");
 
-        const percent = ((e.target.value - min) / (max - min)) * 100;
+        const [min, max] = [parseInt(this.$inputLeft.min), parseInt(this.$inputLeft.max)];
+        this.leftValue = Math.min(parseInt(this.$inputLeft.value), parseInt(this.$inputRight.value) - 1);
+
+        const percent = ((this.leftValue - min) / (max - min)) * 100;
         this.$thumbLeft.style.left = percent + "%";
         this.$range.style.left = percent + "%";
 
@@ -162,13 +186,13 @@
       },
 
 
-    setRightValue(e) {
+    setRightValue() {
 
 
-      const [min, max] = [parseInt(e.target.min), parseInt(e.target.max)];
-      this.rightValue = e.target.value = Math.max(parseInt(e.target.value), parseInt(this.$inputLeft.value) + 1);
+      const [min, max] = [parseInt(this.$inputRight.min), parseInt(this.$inputRight.max)];
+      this.rightValue = Math.max(parseInt(this.$inputRight.value), parseInt(this.$inputLeft.value) + 1);
 
-      const percent = ((e.target.value - min) / (max - min)) * 100;
+      const percent = ((this.rightValue  - min) / (max - min)) * 100;
       this.$thumbRight.style.right = 100 - percent + "%";
       this.$range.style.right = 100 - percent + "%";
 
