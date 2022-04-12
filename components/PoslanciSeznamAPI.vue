@@ -1,7 +1,7 @@
 <template lang="pug">
 
 
-  #scroll-top.poslanci-seznam.seznam-with-filter()
+  #scroll-top.poslanci-seznam.seznam-with-filter(v-on="$listeners")
 
     .filter-seznam
 
@@ -85,7 +85,8 @@
                 .seznam-filter-sidebar-content-section-title.typography-filter-heading
                   span {{filtrNastaveni[filtrSekceKey].title}}
                   span(v-if="filtrNastaveni[filtrSekceKey].hasCounter") &nbsp;({{filtrNastaveni[filtrSekceKey].values.length}})
-                .seznam-filter-sidebar-content-section-content.typography-filter-text
+
+                .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'radio' || filtrNastaveni[filtrSekceKey].type == 'checkbox'")
 
                   ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
                     li.filter-list-item(v-for="(filtrPolozka, valueIndex) in filtrNastaveni[filtrSekceKey].values" :key="valueIndex")
@@ -105,6 +106,11 @@
                         .filter-list-item-value {{filtrPolozka.text}}
 
                 ////////////////////////////////////////////////////////////////////////////////
+
+                .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'range'")
+
+
+                  <MultiRangeSlider v-on:multi-range-change="onRangeChange($event)" :QueryStructure="filtrNastaveni[filtrSekceKey].queryStructure" :Name="`${filtrSekceKey}`" :Id="`${filtrSekceKey}`" :MinValue="filtrNastaveni[filtrSekceKey].values[0]" :MaxValue="filtrNastaveni[filtrSekceKey].values[1]" />
 
 
 
@@ -282,11 +288,12 @@
 <script>
 
 const Poslanec = () => import('~/components/Poslanec.vue');
+const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
 
 
 export default {
 
-  components: { Poslanec },
+  components: { Poslanec, MultiRangeSlider },
 
 
   props: [
@@ -344,7 +351,40 @@ export default {
 
   methods: {
 
-    normalizeFilterOptionsBeforeSendingToAPI() {
+    onRangeChange($event) {
+
+
+      // Process this range
+
+      let currentRangeQuery = $event.value;
+
+      /// Normalize this range request Query by containing the value with an array like all other filter values
+
+      Object.keys(currentRangeQuery).forEach(key => {
+
+        currentRangeQuery[key] = [currentRangeQuery[key]]
+
+      });
+
+
+      // Process all other filters
+
+      let onlyActivelySelectedFilters = this.normalizeFilterOptions();
+
+      onlyActivelySelectedFilters = {
+
+        ...onlyActivelySelectedFilters,
+        ...currentRangeQuery,
+
+      };
+
+      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
+
+
+    },
+
+
+    normalizeFilterOptions() {
 
 
       const allFilters = {...this.filtrNastaveni};
@@ -381,6 +421,16 @@ export default {
 
 
       });
+
+      return onlyActivelySelectedFilters;
+
+
+    },
+
+
+    normalizeFilterOptionsBeforeSendingToAPI() {
+
+      const onlyActivelySelectedFilters = this.normalizeFilterOptions();
 
       this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
 

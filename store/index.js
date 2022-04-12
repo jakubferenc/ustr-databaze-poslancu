@@ -417,7 +417,7 @@ export const actions = {
 
     try {
 
-      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/?${filtrNastaveniParamsString}`);
+      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${filtrNastaveniParamsString}`);
       poslanciRequest = poslanciRequest.data;
 
       const poslanci = poslanciRequest.Poslanci;

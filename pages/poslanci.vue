@@ -73,7 +73,12 @@ export default {
         ...this.$store.state.filter_data,
       };
 
+
+      console.log("this.currentFilterData", this.currentFilterData);
+
+
       this.defaultFilterSettings = this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, this.currentQuery);
+
 
     },
 
@@ -83,6 +88,8 @@ export default {
       async prepareRequestFilteredViaAPI(currentQuery, $store) {
 
         this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
+
+        console.log("string Request sent to API", this.currentQueryStringified);
 
         await this.$store.dispatch("getParlamentyDatabaze");
 
@@ -147,14 +154,17 @@ export default {
 
         let finalQueryString = '';
 
-        Object.keys(query).forEach((key) => {
+        Object.keys(query).forEach((key, index) => {
+
+          let thisPrefix = (index == 0) ? '' : '&';
 
           const thisItem = query[key];
+
 
           if (thisItem.length == 1) {
 
             // it's a single value param
-            finalQueryString = finalQueryString + `&${key}=${thisItem[0]}`;
+            finalQueryString = finalQueryString + `${thisPrefix}${key}=${thisItem[0]}`;
 
           }
 
@@ -163,9 +173,11 @@ export default {
             // it's a multiple value param
             // we need to iterate over it and add for each value the same Key=value string because of how API is designed
             // for example: to get multiple names, you need "Name=Jakub&Name=Josef&name=Anežka"
-            thisItem.forEach((subItem) => {
+            thisItem.forEach((subItem, subIndex) => {
 
-              finalQueryString = finalQueryString + `&${key}=${subItem}`;
+              let thisPrefix = (index == 0 && subIndex == 0) ? '' : '&';
+
+              finalQueryString = finalQueryString + `${thisPrefix}${key}=${subItem}`;
 
             });
 
@@ -190,9 +202,7 @@ export default {
           // ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
           ...this.cleanUpNullQueryParamsFromFilter(activeFilterItems),
         };
-
         // // call API
-
         await this.prepareRequestFilteredViaAPI(this.currentQuery, this.$store);
 
       },

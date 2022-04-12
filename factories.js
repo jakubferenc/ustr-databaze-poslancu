@@ -6,6 +6,17 @@ import {
   stripHTMLTags
 } from './utils/functions';
 
+/**
+ *
+ * A method that transforms filter settings/data from API into a JS object used fot setting up the filter sidebar
+ * which is automatically set up with this javascript object.
+ * Not all filterData need be used with the filter sidebar, it depends on what is returned here.
+ *
+ * @param {*} filterData // Fiter data that are returned from API after each API call
+ * @param {*} activeData
+ * @returns
+ */
+
 const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) => {
 
   let sectionId = 0;
@@ -23,7 +34,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
   });
 
   pohlaviMapped = [
-    {id: 0, text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+    {id: 0, text: 'Vše', default: true, reset: true, selected: true},
     ...pohlaviMapped
   ];
 
@@ -71,7 +82,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
     });
     narodnostiMapped = [
-      {id: 'vse-narodnosti', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+      {id: 'vse-narodnosti', text: 'Vše', default: true, reset: true, selected: true},
       ...narodnostiMapped
     ];
 
@@ -87,7 +98,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
     });
     vyznaniMapped = [
-      {id: 'vse-vyznani', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+      {id: 'vse-vyznani', text: 'Vše', default: true, reset: true, selected: true},
       ...vyznaniMapped
     ];
 
@@ -103,12 +114,17 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     ];
 
     const maFotkuMapped = [
-        {id: 'vse-fotografie', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+        {id: 'vse-fotografie', text: 'Vše', default: true, reset: true, selected: true},
         {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
     ];
 
 
-  ////////////////////////////////////////////////////////////////////////
+    const pocetMandatuMapped = [filterData.PocetMandatu[0], filterData.PocetMandatu[filterData.PocetMandatu.length-1]];
+
+
+    let vekyNaKonciMandatuMapped = [...filterData.VekNaKonciMandatu].filter(vek => vek > 0);
+    vekyNaKonciMandatuMapped = [vekyNaKonciMandatuMapped[0], vekyNaKonciMandatuMapped[vekyNaKonciMandatuMapped.length-1]]///
+  ////////////////////////////////////////////////////////////
   let finalResult = {
 
     Pohlavi: {
@@ -176,7 +192,6 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       title: 'Sociální vazby',
       type: 'radio',
       order: 'inline',
-      property: 'UniverzitniVzdelani',
       hasCounter: true,
       values: SocialniVazbyMapped,
     },
@@ -185,10 +200,27 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       title: 'Fotografie',
       type: 'radio',
       order: 'inline',
-      property: 'UniverzitniVzdelani',
       hasCounter: true,
       values: maFotkuMapped,
     },
+    MinimalniPocetMandatu: {
+      id: sectionId++,
+      title: 'Počet mandátů',
+      type: 'range',
+      order: 'inline',
+      property: 'PocetMandatu',
+      hasCounter: false,
+      values: pocetMandatuMapped,
+    },
+    VekNaKonciMandatu: {
+      id: sectionId++,
+      title: 'Věk na konci mandátu',
+      type: 'range',
+      order: 'inline',
+      hasCounter: false,
+      queryStructure: ['VekNaKonciMandatuMin', 'VekNaKonciMandatuMax'], // order matterrs, first lower bound, next higher bound
+      values: vekyNaKonciMandatuMapped,
+    }
 
     // vek: {
     //   id: 5,
