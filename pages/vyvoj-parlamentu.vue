@@ -33,6 +33,7 @@
 
 <style lang="sass" scoped>
 
+  @use "sass:math"
 
   .timeline-vertical
     position: relative
@@ -61,7 +62,7 @@
 
   .timeline-item-box
     display: flex
-    justify-content: flex-start;
+    justify-content: flex-start
 
     +from($fullhd)
       justify-content: center
@@ -102,7 +103,7 @@
 
       .timeline-item-image
         width: 100%
-        background-color: lightgray;
+        background-color: lightgray
 
         max-width: 300px
 
@@ -110,7 +111,7 @@
           max-width: 500px
 
       .timeline-item-image-description
-        margin-top: $margin-until-desktop / 4
+        margin-top: math.div($margin-until-desktop, 4)
         line-height: 1.4
 
 
@@ -142,10 +143,10 @@
 
       &.small
 
-        width: $large-circle-height / 2
-        height: $large-circle-height / 2
+        width: math.div($large-circle-height, 2)
+        height: math.div($large-circle-height, 2)
         font-size: 18px
-        margin-left: -1 * ($large-circle-height / 4)
+        margin-left: -1 * math.div($large-circle-height, 4)
 
         +from($fullhd)
           margin-left: 0

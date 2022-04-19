@@ -27,6 +27,9 @@
 
 <style lang="sass" scoped>
 
+  @use "sass:math"
+
+
 
   .file-link
     text-decoration: none
@@ -82,7 +85,7 @@
             font-size: 14px
 
         .file-type
-          margin-left: $margin-until-desktop / 4
+          margin-left: math.div($margin-until-desktop, 4)
 
 
 </style>

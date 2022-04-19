@@ -15,6 +15,9 @@
 
 <style lang="sass">
 
+@use "sass:math"
+
+
 
 .parlament-snemovni-obdobi-list
   display: flex
@@ -71,7 +74,7 @@
 .mandat-radek
 
   text-align: center
-  margin-top: $margin-until-desktop/1.25
+  margin-top: math.div($margin-until-desktop, 1.25)
   &:nth-child(1)
     margin-top: 0
 

@@ -164,6 +164,9 @@
 
 <style lang="sass">
 
+@use "sass:math"
+
+
 
 .leaflet-container a.leaflet-popup-close-button
   right: 35px

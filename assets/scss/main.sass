@@ -1,5 +1,7 @@
 @charset "utf-8"
 
+@use "sass:math"
+
 // bulma
 // Import only what you need from Bulma
 @import "bulma/all"
@@ -115,7 +117,7 @@ input[type="checkbox"]
 
 .component-footer
 
-  margin-top: $margin-from-desktop / 2
+  margin-top: math.div($margin-from-desktop, 2)
 
   .buttons-more
     display: flex
@@ -350,7 +352,7 @@ input[type="checkbox"]
   padding: 20px
   background-color: #EBEBEB
   text-decoration: none
-  margin-right: $margin-until-desktop/2
+  margin-right: math.div($margin-until-desktop, 2)
 
   display: flex
   justify-content: space-between

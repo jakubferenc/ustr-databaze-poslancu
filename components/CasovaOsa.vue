@@ -25,6 +25,9 @@
 
 <style lang="sass">
 
+  @use "sass:math"
+
+
   .casova-osa-component
     display: flex // it will primarily center the navigation buttons
     align-items: center
@@ -62,7 +65,7 @@
     position: relative
     margin-top: $margin-until-desktop
     width: 100%
-    padding-bottom: $margin-until-desktop / 2
+    padding-bottom: math.div($margin-until-desktop, 2)
 
   .casova-osa-line
     border-bottom: 5px dotted #000
@@ -96,11 +99,11 @@
       max-width: 160px
 
       &.small
-        padding-left: $margin-until-desktop / 2
-        padding-right: $margin-until-desktop / 2
+        padding-left: math.div($margin-until-desktop, 2)
+        padding-right: math.div($margin-until-desktop, 2)
 
     .casova-osa-item-text
-      margin-top: $margin-until-desktop / 4
+      margin-top: math.div($margin-until-desktop, 4)
       text-align: center
 
     .casova-osa-circle
@@ -125,7 +128,7 @@
         width: 80px
         height: 80px
 
-        margin-top: $large-circle-height / 4
+        margin-top: math.div($large-circle-height, 4)
 
       &.large
 

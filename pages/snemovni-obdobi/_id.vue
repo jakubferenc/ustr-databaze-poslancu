@@ -170,166 +170,168 @@
 
 <style lang="sass">
 
-
-.is-map-card.person-poslanec-card
-
-  width: 380px
-  height: 153px
-  background-color: #fff
-
-  .image-container
-
-    img
-      +desktop
-        width: 110px
-
-  .content-container
-
-    .header
-      font-size: clamp(1rem, 0.9375vw, 2rem)
+  @use "sass:math"
 
 
-    .content
+  .is-map-card.person-poslanec-card
 
-
-
-.section-title
-
-  @extend %typography-section-title
-
-
-.button-toggler-component
-  display: flex
-  justify-content: space-between
-  overflow: hidden
-
-  @extend %typography-alt-heading
-
-  &.normal
+    width: 380px
+    height: 153px
     background-color: #fff
-    border: 1px solid #000
-    border-radius: 10px
 
-  .button-toggle
+    .image-container
+
+      img
+        +desktop
+          width: 110px
+
+    .content-container
+
+      .header
+        font-size: clamp(1rem, 0.9375vw, 2rem)
+
+
+      .content
+
+
+
+  .section-title
+
+    @extend %typography-section-title
+
+
+  .button-toggler-component
     display: flex
-    align-items: center
-    justify-content: center
-    height: 35px
-    flex: 1
-    cursor: pointer
+    justify-content: space-between
+    overflow: hidden
 
-    &.active
-      background-color: #000
-      color: #fff
+    @extend %typography-alt-heading
 
-.parlament-detail-navigation
-  @extend %typography-alt-heading
+    &.normal
+      background-color: #fff
+      border: 1px solid #000
+      border-radius: 10px
 
-  position: fixed
-  bottom: $margin-until-desktop
-  left: $margin-until-desktop
-  width: 300px
-
-  .parlament-detail-navigation-title
-    margin-bottom: 15px
-
-
-.parlament-meta-tab-navigation
-  margin: $margin-until-desktop / 2 0
-
-  +until($desktop)
-
-  +from($desktop)
-    margin: $margin-until-desktop * 2 0
-
-  +from($tablet)
-
-  +from($desktop)
-
-  +from($fullhd)
-
-
-
-.component-snemovna-schema
-  svg
-    width: 886px
-    height: 450px
-
-.parlament-detail-title
-
-  text-align: center
-
-  .typography-main-title
-    line-height: 1
-
-  .counter-poslanci
-    margin-top: 10px
-
-
-.parlament-detail-header
-
-  padding: $margin-until-desktop
-  display: flex
-  justify-content: space-between
-
-  .parlament-detail-header-stats
-
-    display: flex
-    flex-direction: column
-    width: 360px
-
-    &.stats-left
-      align-items: flex-start
-
-.chart-row
-  margin-bottom: 40px
-
-.chart-widget
-  display: flex
-  align-items: center
-  justify-content: center
-
-  .chart-text
-    @extend %typography-filter-heading
-
-  &.text-left
-    flex-direction: row-reverse
-
-    .chart-text
-      margin-right: 20px
-      text-align: right
-
-  &.text-right
-
-    .chart-text
-      margin-left: 20px
-
-  .chart-graphics
-
-    &.text-data
-
-      width: 126px
-      height: 126px
-      background-color: #EDECE7
-      display: inline-block
-      border-radius: 100%
+    .button-toggle
       display: flex
       align-items: center
       justify-content: center
+      height: 35px
+      flex: 1
+      cursor: pointer
+
+      &.active
+        background-color: #000
+        color: #fff
+
+  .parlament-detail-navigation
+    @extend %typography-alt-heading
+
+    position: fixed
+    bottom: $margin-until-desktop
+    left: $margin-until-desktop
+    width: 300px
+
+    .parlament-detail-navigation-title
+      margin-bottom: 15px
+
+
+  .parlament-meta-tab-navigation
+    margin: math.div($margin-until-desktop, 2) 0
+
+    +until($desktop)
+
+    +from($desktop)
+      margin: $margin-until-desktop * 2 0
+
+    +from($tablet)
+
+    +from($desktop)
+
+    +from($fullhd)
+
+
+
+  .component-snemovna-schema
+    svg
+      width: 886px
+      height: 450px
+
+  .parlament-detail-title
+
+    text-align: center
+
+    .typography-main-title
+      line-height: 1
+
+    .counter-poslanci
+      margin-top: 10px
+
+
+  .parlament-detail-header
+
+    padding: $margin-until-desktop
+    display: flex
+    justify-content: space-between
+
+    .parlament-detail-header-stats
+
+      display: flex
       flex-direction: column
+      width: 360px
 
-      .text-data-main
-        @extend %typography-grafy-data-text
+      &.stats-left
+        align-items: flex-start
 
-      .text-data-sub
-        margin-top: 3px
+  .chart-row
+    margin-bottom: 40px
 
-    &.pie
-      width: 126px
-      height: 126px
-      background-color: #EDECE7
-      display: inline-block
-      border-radius: 100%
+  .chart-widget
+    display: flex
+    align-items: center
+    justify-content: center
+
+    .chart-text
+      @extend %typography-filter-heading
+
+    &.text-left
+      flex-direction: row-reverse
+
+      .chart-text
+        margin-right: 20px
+        text-align: right
+
+    &.text-right
+
+      .chart-text
+        margin-left: 20px
+
+    .chart-graphics
+
+      &.text-data
+
+        width: 126px
+        height: 126px
+        background-color: #EDECE7
+        display: inline-block
+        border-radius: 100%
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-direction: column
+
+        .text-data-main
+          @extend %typography-grafy-data-text
+
+        .text-data-sub
+          margin-top: 3px
+
+      &.pie
+        width: 126px
+        height: 126px
+        background-color: #EDECE7
+        display: inline-block
+        border-radius: 100%
 </style>
 
 <script>

@@ -17,11 +17,13 @@
 </template>
 
 <style lang="sass">
+@use "sass:math"
+
 
 .anchor
   min-height: 1px
 
-  margin-top: $margin-until-desktop/1.25
+  margin-top: math.div($margin-until-desktop, 1.25)
 
   &:nth-child(1)
     margin-top: 0

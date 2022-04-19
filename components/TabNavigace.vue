@@ -155,6 +155,9 @@
 
 <style lang="sass">
 
+  @use "sass:math"
+
+
 
   .metadata-section-content
     @extend %typography-item-detail-text
@@ -170,13 +173,13 @@
       justify-content: flex-start
 
       .chart-widget
-        margin-bottom: $margin-until-desktop / 2
+        margin-bottom: math.div($margin-until-desktop, 2)
 
         +until($desktop)
 
         +from($desktop)
-          margin-left: $margin-from-desktop/4
-          margin-right: $margin-from-desktop/4
+          margin-left: math.div($margin-from-desktop, 4)
+          margin-right: math.div($margin-from-desktop, 4)
 
         +from($tablet)
 
