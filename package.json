@@ -14,6 +14,13 @@
         "generate": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js generate",
         "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js start"
     },
+    "browserslist": [
+      "last 3 versions",
+      "> 3%"
+    ],
+    "engines": {
+      "node": ">= 16.0.0"
+    },
     "dependencies": {
         "@nuxtjs/axios": "^5.13.1",
         "@nuxtjs/i18n": "^7.2.1",
