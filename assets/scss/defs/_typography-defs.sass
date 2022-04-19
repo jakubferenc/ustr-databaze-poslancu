@@ -1,4 +1,6 @@
 
+@use "sass:math"
+
 
 %alt-bg
   background-color: #F4F4F4
@@ -90,7 +92,7 @@
   +until($desktop)
 
   +from($desktop)
-    margin-bottom: $margin-from-desktop/1.5
+    margin-bottom: math.div($margin-from-desktop, 1.5)
     font-size: 45px
 
   +from($tablet)
@@ -101,7 +103,7 @@
 
   &.smaller-bottom-margin
     +from($desktop)
-      margin-bottom: $margin-from-desktop/4
+      margin-bottom: math.div($margin-from-desktop, 4)
 
 %typography-section-title-smaller-line-height
   @extend %typography-section-title
@@ -197,8 +199,8 @@
 
   @extend %section-padding
 
-  padding-top: $margin-until-desktop/1.5
-  padding-bottom: $margin-until-desktop/1.5
+  padding-top: math.div($margin-until-desktop, 1.5)
+  padding-bottom: math.div($margin-until-desktop, 1.5)
 
   +from($desktop)
     padding-top: $margin-until-desktop

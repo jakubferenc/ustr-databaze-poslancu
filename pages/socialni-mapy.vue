@@ -75,7 +75,7 @@
 
   .rodina-thumb-count-people
 
-    text-transform: uppercase;
+    text-transform: uppercase
     margin-bottom: 2rem
 
 

@@ -43,7 +43,6 @@
     .image-container
       img
         width: 100%
-    .image-item-detail-content
 
   .source
     margin-top: 1em

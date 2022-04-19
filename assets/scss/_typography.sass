@@ -1,3 +1,4 @@
+@use "sass:math"
 
 
 .alt-bg
@@ -141,8 +142,8 @@
 
   @extend .section-padding
 
-  padding-top: $margin-until-desktop/1.5
-  padding-bottom: $margin-until-desktop/1.5
+  padding-top: math.div($margin-until-desktop, 1.5)
+  padding-bottom: math.div($margin-until-desktop, 1.5)
 
   +from($desktop)
     padding-top: $margin-until-desktop

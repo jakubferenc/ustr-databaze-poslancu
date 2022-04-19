@@ -3,7 +3,7 @@ import axios from "axios";
 import {writeFileSync, readFileSync} from "fs";
 import path from 'path';
 
-import config from '../project.config';
+import projectConfig from '../project.config';
 import apiFactory from '../factories';
 import { normalizeSouborAttrs, getCasovaOsaDataForPoslanec, getAdresyProMapuForPoslanec } from '../utils/functions';
 
@@ -16,7 +16,7 @@ app.use(express.json());
 app.get('/api/snemovni-obdobi/', async (req, res) => {
 
 
-  const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiWordpressFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+  const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiWordpressFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
   // const pathToWrite = path.join(__dirname, '..', 'data/snemovni-obdobi.json');
   // writeFileSync(pathToWrite, JSON.stringify(snemovniObdobiWordpressArrRes));
 
@@ -24,7 +24,7 @@ app.get('/api/snemovni-obdobi/', async (req, res) => {
 
   const snemovniObdobiObjs = await Promise.all(snemovniObdobiWordpressArrResDatabaseIds.map(async (snemovniObdobiId) => {
 
-    const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, snemovniObdobiId);
+    const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, snemovniObdobiId);
 
     return snemovniObdobiObj;
 
@@ -38,18 +38,46 @@ app.get('/api/snemovni-obdobi/', async (req, res) => {
 
 });
 
+app.get('/api/test/', async (req,res) => {
 
+  // const strankyRes = await apiFactory.getAllStrankyFactory(projectConfig.wordpressAPIURLWebsite);
+
+  try {
+
+    const filtrNastaveniParamsString = '?Poslanec=True&Limit=100&Stranka=1&VekNaZacatkuMandatuMin=0&VekNaZacatkuMandatuMax=20';
+
+    let poslanciRequest = await axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${filtrNastaveniParamsString}`);
+    poslanciRequest = poslanciRequest.data;
+
+    const poslanci = poslanciRequest.Poslanci;
+    const filterData = poslanciRequest.Filtry;
+
+    const idsOnly = poslanci.map(item => item.Id);
+
+    res.send(idsOnly);
+
+
+  } catch (err) {
+    console.warn(err);
+  }
+
+  // const mediaRes =  await apiFactory.getAllMediaFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, 100);
+  // const pathToWriteMedia = path.join(__dirname, '..', 'data/media.json');
+  // writeFileSync(pathToWriteMedia, JSON.stringify(mediaRes));
+
+
+});
 
 
 app.get('/api/stranky/', async (req,res) => {
 
-  // const strankyRes = await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
+  // const strankyRes = await apiFactory.getAllStrankyFactory(projectConfig.wordpressAPIURLWebsite);
 
-  const strankyRes = await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
+  const strankyRes = await apiFactory.getAllStrankyFactory(projectConfig.wordpressAPIURLWebsite);
   const pathToWriteStranky = path.join(__dirname, '..', 'data/stranky.json');
   writeFileSync(pathToWriteStranky, JSON.stringify(strankyRes));
 
-  // const mediaRes =  await apiFactory.getAllMediaFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, 100);
+  // const mediaRes =  await apiFactory.getAllMediaFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, 100);
   // const pathToWriteMedia = path.join(__dirname, '..', 'data/media.json');
   // writeFileSync(pathToWriteMedia, JSON.stringify(mediaRes));
 
@@ -61,7 +89,7 @@ app.get('/api/poslanec/:poslanecId/', async (req,res) => {
 
   const params = req.params;
 
-  const poslanec = await apiFactory.getPoslanecDetailFactory(config.databazePoslancuURL, params.poslanecId);
+  const poslanec = await apiFactory.getPoslanecDetailFactory(projectConfig.databazePoslancuURL, params.poslanecId);
 
   res.send(poslanec);//
   res.send("hello");
@@ -122,7 +150,7 @@ app.get('/data/osoby-s-fotkou/', async (req,res) => {
 
 app.get('/api/osoby/', async(req, res) => {
 
-  const osobyRes = await axios.get(`${config.databazePoslancuURL}/Api/osoby/?Limit=10&`);
+  const osobyRes = await axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/?Limit=10&`);
   const osobyData = osobyRes.data;
 
   res.send(osobyData);
@@ -133,7 +161,7 @@ app.get('/api/osoby/', async(req, res) => {
 app.get('/api/osoby-vsechny/', async (req,res) => {
 
 
-  const osobyRes = await axios.get(`${config.databazePoslancuURL}/Api/osoby/vsechny-osoby`);
+  const osobyRes = await axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/vsechny-osoby`);
   const osobyData = osobyRes.data;
   const pathToWriteOsoby = path.join(__dirname, '..', 'data/osoby.json');
   writeFileSync(pathToWriteOsoby, JSON.stringify(osobyData));
@@ -145,7 +173,7 @@ app.get('/api/osoby-vsechny/', async (req,res) => {
 app.get('/api/parlamenty/', async (req,res) => {
 
 
-  const parlamentyRes =  await apiFactory.getParlamentyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+  const parlamentyRes =  await apiFactory.getParlamentyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
   const pathToWrite = path.join(__dirname, '..', 'data/parlamenty.json');
   writeFileSync(pathToWrite, JSON.stringify(parlamentyRes));
 
@@ -156,7 +184,7 @@ app.get('/api/parlamenty/', async (req,res) => {
 app.get('/api/media/', async (req,res) => {
 
 
-  const mediaRes =  await apiFactory.getAllMediaFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, 100);
+  const mediaRes =  await apiFactory.getAllMediaFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, 100);
   const pathToWriteMedia = path.join(__dirname, '..', 'data/media.json');
   writeFileSync(pathToWriteMedia, JSON.stringify(mediaRes));
 
@@ -167,7 +195,7 @@ app.get('/api/media/', async (req,res) => {
 app.get('/get/slovnik/', async (req,res) => {
 
 
-  const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(config.wordpressAPIURLWebsite);
+  const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(projectConfig.wordpressAPIURLWebsite);
   const pathToWriteSlovnik = path.join(__dirname, '..', 'data/slovnik.json');
   writeFileSync(pathToWriteSlovnik, JSON.stringify(slovnikRes));
 
@@ -178,7 +206,7 @@ app.get('/get/slovnik/', async (req,res) => {
 app.get('/api/socialni-mapy/', async (req,res) => {
 
 
-  const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+  const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
   // const pathToWrite = path.join(__dirname, '..', 'data/rodiny.json');
   // writeFileSync(pathToWrite, JSON.stringify(rodinyRes));
 
@@ -189,7 +217,7 @@ app.get('/api/socialni-mapy/', async (req,res) => {
 app.get('/api/casova-osa/', async (req,res) => {
 
 
-  const casovaOsaRes = await apiFactory.getCasovaOsaFactory(config.wordpressAPIURLWebsite);
+  const casovaOsaRes = await apiFactory.getCasovaOsaFactory(projectConfig.wordpressAPIURLWebsite);
   const pathToWrite = path.join(__dirname, '..', 'data/casova-osa.json');
   writeFileSync(pathToWrite, JSON.stringify(casovaOsaRes));
 

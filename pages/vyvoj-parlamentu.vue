@@ -60,7 +60,7 @@
     cursor: pointer
 
   .timeline-item-box
-    display: flex;
+    display: flex
     justify-content: flex-start;
 
     +from($fullhd)

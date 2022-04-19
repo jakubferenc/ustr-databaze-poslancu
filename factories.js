@@ -188,7 +188,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       type: 'radio',
       order: 'inline',
       property: 'UniverzitniVzdelani',
-      hasCounter: true,
+      hasCounter: false,
       values: vysokaSkolaMapped,
     },
     SocialniVazby: {
@@ -196,7 +196,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       title: 'Sociální vazby',
       type: 'radio',
       order: 'inline',
-      hasCounter: true,
+      hasCounter: false,
       values: SocialniVazbyMapped,
     },
     Fotografie: {
@@ -204,7 +204,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       title: 'Fotografie',
       type: 'radio',
       order: 'inline',
-      hasCounter: true,
+      hasCounter: false,
       values: maFotkuMapped,
     },
     MinimalniPocetMandatu: {

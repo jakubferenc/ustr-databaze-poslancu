@@ -189,11 +189,6 @@
     pointer-events: none
     opacity: .5
 
-  .filter-list-item-value
-    text-transform: lowercase
-
-    &:first-letter
-      text-transform: uppercase
 
   .filter-seznam-bar
     display: flex

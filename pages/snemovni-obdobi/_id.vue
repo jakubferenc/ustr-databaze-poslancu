@@ -186,7 +186,7 @@
   .content-container
 
     .header
-      font-size: clamp(1rem, 0.9375vw, 2rem);
+      font-size: clamp(1rem, 0.9375vw, 2rem)
 
 
     .content

@@ -187,7 +187,7 @@ export default {
     //     // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
     //   },
     // }],
-    ['nuxt-i18n', {
+    ['@nuxtjs/i18n', {
       locales: [
         {code: 'cs', iso: 'cs-CZ', file: 'cs-CZ.js', dir: 'ltr'}
       ],
