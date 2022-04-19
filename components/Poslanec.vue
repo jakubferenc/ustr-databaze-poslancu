@@ -3,7 +3,7 @@
   NuxtLink.poslanec-thumb(:to="`/poslanec/${Id}/`")
     .poslanec-image
 
-      img(v-if="profilovaFotka" :src="profilovaFotka" :alt="`Profilová fotografie ${Jmeno} ${Prijmeni}`")
+      img(v-if="profilovaFotka" :src="profilovaFotka" )
 
 
     .poslanec-metadata
