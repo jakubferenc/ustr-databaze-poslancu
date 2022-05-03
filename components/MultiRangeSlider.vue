@@ -2,10 +2,11 @@
 
   .multi-range-slider(ref="range")
 
-    input(type="hidden" id="" name="" :value="`[${leftValue}, ${rightValue}]`")
+    input(type="hidden" id="" name="" :value="`[${MinValue}, ${MaxValue}]`")
 
-    input(@input="setLeftValue()" @mouseup="mouseUpHandler"  type="range" id="input-left" :min="MinValue" :max="MaxValue" :value="leftValue")
-    input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="rightValue")
+    input(@input="setLeftValue()" @mouseup="mouseUpHandler"  type="range" id="input-left" :min="MinValue" :max="MaxValue - 1" :value="MinValue")
+    //- input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
+    input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue + 1" :max="MaxValue" :value="MaxValue")
 
     .slider
       .track
@@ -126,19 +127,25 @@
     watch: {
       MinValue: function(newVal, oldVal) { // watch it
 
+        console.log("changed min value", this.QueryStructure[0], newVal, oldVal);
+
         this.leftValue = this.MinValue;
 
-        this.setLeftValue();
-
-        this.setRightValue();
+        const percent = 0;
+        this.$thumbLeft.style.left = percent + "%";
+        this.$range.style.left = percent + "%";
       },
       MaxValue: function(newVal, oldVal) { // watch it
 
+        console.log("changed max value", this.QueryStructure[1], newVal, oldVal);
+
         this.rightValue = this.MaxValue;
 
-        this.setLeftValue();
+        const percent = 0;
+        this.$thumbRight.style.right = percent + "%";
+        this.$range.style.right = percent + "%";
 
-        this.setRightValue();
+
       }
     },
     data() {
@@ -187,6 +194,8 @@
 
 
     setRightValue() {
+
+       console.log("volam set right value");
 
 
       const [min, max] = [parseInt(this.$inputRight.min), parseInt(this.$inputRight.max)];

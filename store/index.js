@@ -313,7 +313,9 @@ export const actions = {
     if (state.poslanci.length) return;
     try {
 
-      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`);
+      poslanciRequest = poslanciRequest.data;
+
       let poslanci = poslanciRequest.Poslanci;
 
       if (filterCallback !== null) {

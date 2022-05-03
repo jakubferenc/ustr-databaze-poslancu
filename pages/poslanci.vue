@@ -45,6 +45,43 @@ const normalizeURLParamsToValueInArrayFormat = (routeURLParams) => {
 
 };
 
+const normalizeQueryParamsVariableTypes = (queryParams) => {
+
+  // transform string boolean to real boolean
+  // transform string numbers to real numbers
+
+  let queryParamsNormalized = {...queryParams};
+
+  Object.keys(queryParamsNormalized).forEach((key) => {
+
+    if (Array.isArray(queryParams[key])) {
+
+      queryParamsNormalized[key] = [...queryParamsNormalized[key]].map((item) => {
+
+
+        if (item === 'true' || item === true) {
+          return true;
+        } else if (item === 'false' || item === false) {
+
+          return false;
+
+        } else if (!Number.isNaN(Number(item))) {
+
+          return parseInt(item);
+
+        }
+
+
+      });
+
+    }
+
+  });
+
+  return queryParamsNormalized;
+
+}
+
 export default {
 
     components: { PoslanciSeznamAPI },
@@ -53,43 +90,30 @@ export default {
 
       // data variable accessible for api calls and other work here
 
-      this.currentQuery = {
-        ...this.defaultQuery,
-        // ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
-      };
+      const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
+
+      this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
 
       // make API requests to get parlaments that will be fixed in the filter
       // also, get API request for poslanci and related filter settings
 
-      await this.$store.dispatch("getParlamentyDatabaze");
-
-      this.currentQueryStringified = `?${this.stringifyQueryForAPI(this.currentQuery)}`;
-      await this.$store.dispatch("getPoslanciAll", this.currentQueryStringified);
 
       // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
 
-
-      this.defaultFilterData = this.currentFilterData = {
-        ...this.$store.state.filter_data,
-      };
-
-
-      console.log("this.currentFilterData", this.currentFilterData);
-
-
-      this.defaultFilterSettings = this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, this.currentQuery);
-
+      await this.prepareRequestFilteredViaAPI(this.currentQuery);
 
     },
 
 
     methods: {
 
-      async prepareRequestFilteredViaAPI(currentQuery, $store) {
+      async prepareRequestFilteredViaAPI(currentQuery) {
+
 
         this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
         console.log("string Request sent to API", this.currentQueryStringified);
+
 
         await this.$store.dispatch("getParlamentyDatabaze");
 
@@ -99,14 +123,17 @@ export default {
         // But for Parlamenty/Snemovny which must stay fixed
 
 
+        // console.log("this.$store.state.filter_data", this.$store.state.filter_data);
+
         this.currentFilterData = {
           ...this.$store.state.filter_data,
           Pohlavi: this.defaultFilterData.Pohlavi.map(item => item),
           Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
         };
 
+        const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
 
-        this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, this.currentQuery);
+        this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
 
 
         this.$router.push({
@@ -202,8 +229,10 @@ export default {
           // ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
           ...this.cleanUpNullQueryParamsFromFilter(activeFilterItems),
         };
+
+
         // // call API
-        await this.prepareRequestFilteredViaAPI(this.currentQuery, this.$store);
+        await this.prepareRequestFilteredViaAPI(this.currentQuery);
 
       },
 
@@ -245,7 +274,7 @@ export default {
 
         // // call API
 
-        await this.prepareRequestFilteredViaAPI(this.currentQuery, this.$store);
+        await this.prepareRequestFilteredViaAPI(this.currentQuery);
 
       },
 
@@ -256,7 +285,7 @@ export default {
           ...{ Razeni: [$event]},
         };
 
-        await this.prepareRequestFilteredViaAPI(this.currentQuery, this.$store);
+        await this.prepareRequestFilteredViaAPI(this.currentQuery);
 
       },
 
@@ -274,11 +303,6 @@ export default {
 
 
       }
-
-    },
-
-    created() {
-
 
     },
 
@@ -332,13 +356,15 @@ export default {
         currentQueryStringified: '',
         currentFilterSettings: {},
         defaultFilterSettings: {},
-        defaultFilterData: {},
+        defaultFilterData: {
+          Pohlavi: [1, 2]
+        },
         currentFilterData: {},
         currentQuery: {},
         defaultQuery: {
-          Poslanec: [true],
+          Poslanec: ['true'],
           Limit: [300],
-          Stranka: [1]
+          Stranka: [1],
         },
         title: `Poslanci`,
       }

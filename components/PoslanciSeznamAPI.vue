@@ -97,7 +97,7 @@
                             :type="filtrNastaveni[filtrSekceKey].type"
                             :id="`${filtrSekceKey}-${filtrPolozka.id}`"
                             :disabled="filtrPolozka.disabled"
-                            :checked="filtrPolozka.selected ? 'checked' : ''"
+                            :checked="filtrPolozka.selected  ? 'checked' : ''"
                             :data-checked="filtrPolozka.selected"
                             :class="{selected: filtrPolozka.selected}"
                             :name="filtrNastaveni[filtrSekceKey].type ==='radio' ? filtrSekceKey : false"
@@ -361,7 +361,6 @@ export default {
 
       });
 
-
       // Process all other filters
 
       let onlyActivelySelectedFilters = this.normalizeFilterOptions();
@@ -372,6 +371,7 @@ export default {
         ...currentRangeQuery,
 
       };
+
 
       this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
 
@@ -547,6 +547,8 @@ export default {
   },
 
   mounted() {
+
+    console.log("nastaveni filtrace", this.NastaveniFiltrace);
 
     this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
 

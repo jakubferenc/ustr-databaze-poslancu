@@ -10,7 +10,7 @@ export default {
   wordpressAPIURLWebsite: 'https://ustr-databaze-poslancu.jakubferenc.cz/wp-json',
   wordpressURLWebsite: 'https://ustr-databaze-poslancu.jakubferenc.cz/',
   netlifyURL: 'https://ustr-databaze-poslancu.netlify.app',
-  databazePoslancuURL: 'https://parliament.ustrcr.cz',
+  databazePoslancuURL: 'https://parliament.mua.cas.cz',
   globalTitle: 'Databáze poslanců.cz',
   baseURL: 'https://www.databazeposlancu.cz',
   useFileCachedAPI: true,

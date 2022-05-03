@@ -27,7 +27,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
       id: itemPohlaviID,
       text: (itemPohlaviID == 1) ? 'Muž' : 'Žena',
-      selected: false,
+      selected: false, // Pohlavi = ["0"] || Pohlavi = ["1"] || Pohlavi = ["2"]
 
     };
 
@@ -114,12 +114,17 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     ];
 
     const maFotkuMapped = [
-        {id: 'vse-fotografie', text: 'Vše', default: true, reset: true, selected: true},
+        {id: false, text: 'Vše', default: true, reset: true, selected: true},
         {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
     ];
 
+    /* finding the lowest and highest integer number from an array
+       can be done to select first and last number, as API returns the numbers sorted from lowest to highest
+    */
+
 
     const pocetMandatuMapped = [filterData.PocetMandatu[0], filterData.PocetMandatu[filterData.PocetMandatu.length-1]];
+
 
 
     let vekyNaZacatkuMandatuMapped = [...filterData.VekNaZacatkuMandatu].filter(vek => vek > 0);
@@ -207,13 +212,14 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       hasCounter: false,
       values: maFotkuMapped,
     },
-    MinimalniPocetMandatu: {
+    PocetMandatu: {
       id: sectionId++,
       title: 'Počet mandátů',
       type: 'range',
       order: 'inline',
       property: 'PocetMandatu',
       hasCounter: false,
+      queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu'], // order matterrs, first lower bound, next higher bound
       values: pocetMandatuMapped,
     },
     VekNaZacatkuMandatu: {
@@ -274,38 +280,47 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
   };
   ////////////////////////////////////////////////////////////////////////
 
-  // make active items in the filter based ont he current query
+  // make active items in the filter based on the current query
 
   Object.keys(finalResult).forEach((key) => {
 
+    if ( finalResult[key].type !== 'range' ) {
 
-    if (activeData && activeData[key]) {
+      // we don't want to pick selected item from range, beucase there are no selected items, but just two numbers
 
-      // let's check the specific selected values, it's not the default reset one
+      if (activeData && activeData[key]) {
 
-      finalResult[key].values.map((valueItem) => {
-
-        valueItem.selected = activeData[key].includes(valueItem.id);
-
-        return valueItem;
-
-      }) ;
+        // let's check the specific selected values, it's not the default reset one
 
 
-    } else {
 
-      // the key is not in the selected keys/filter items, so let's make the default item active/selected
-      finalResult[key].values.map(valueItem => {
+          finalResult[key].values.map((valueItem) => {
 
-        if (valueItem.default) {
 
-          valueItem.selected = true;
+            valueItem.selected = activeData[key].includes(valueItem.id);
 
-        }
+            return valueItem;
 
-        return valueItem;
+          }) ;
 
-      });
+
+      } else {
+
+        // the key is not in the selected keys/filter items, so let's make the default item active/selected
+        finalResult[key].values.map(valueItem => {
+
+          if (valueItem.default) {
+
+            valueItem.selected = true;
+
+          }
+
+          return valueItem;
+
+        });
+
+      }
+
 
     }
 
