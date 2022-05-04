@@ -226,10 +226,6 @@
   .metadata-section-title
     margin-bottom: 1em
 
-  &.metadata-section-education
-
-
-
 .main-title-container
   margin: 0 auto
   width: 75%
@@ -275,6 +271,8 @@
 
           if (!$config.useFileCachedAPI) {
 
+            console.log("from non cache api call");
+
             await store.dispatch("getPoslanecDetail", {poslanecId: params.id});
 
             return {
@@ -316,6 +314,8 @@
       },
 
       mounted() {
+
+        console.log("from poslanec", this.poslanec);
 
 
         this.$nextTick(() => {
@@ -494,7 +494,7 @@
 
       head () {
         return {
-          title: `DOPLNIT — ${this.$config.globalTitle}`, // :TODO:
+          title: `${this.poslanec.Jmeno} ${this.poslanec.Prijmeni} — ${this.$config.globalTitle}`, // :TODO:
           link: [{
             rel:'stylesheet',
             href:'//unpkg.com/leaflet/dist/leaflet.css'

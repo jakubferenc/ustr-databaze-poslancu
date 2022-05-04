@@ -191,8 +191,6 @@
         font-size: clamp(1rem, 0.9375vw, 2rem)
 
 
-      .content
-
 
 
   .section-title

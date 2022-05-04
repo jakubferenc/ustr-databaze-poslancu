@@ -25,33 +25,33 @@
 
 const ParlamentRadek = () => import('~/components/ParlamentRadek.vue');
 
-const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
+// const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
 
 export default {
 
     components: { ParlamentRadek },
 
 
-    async asyncData({params, error, payload, store, $config}) {
+    async fetch() {
 
       try {
 
-        if (!$config.useFileCachedAPI) {
-          await store.dispatch("getParlamenty");
+        // if (this.$config.useFileCachedAPI) {
 
-          return {
-            parlamenty: this.$store.state.parlamenty,
-          }
 
-        } else {
+          await this.$store.dispatch("getParlamenty");
 
-          const parlamentyRes = await ParlamentyData();
 
-          return {
-            parlamenty: parlamentyRes,
-          }
+          this.parlamenty = this.$store.state.parlamenty;
 
-        }
+
+        // } else {
+
+        //   const parlamentyRes = await ParlamentyData();
+
+        //   this.parlamenty = parlamentyRes;
+
+        // }
 
 
       } catch (err) {
@@ -70,6 +70,7 @@ export default {
     data() {
       return {
         title: `Představení parlamentních těles`,
+        parlamenty: [],
       }
     },
 

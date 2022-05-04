@@ -4,7 +4,7 @@ import {
   getAdresyProMapuForPoslanec,
   getCasovaOsaDataForPoslanec,
   stripHTMLTags
-} from './utils/functions';
+} from './utils/functions.js';
 
 /**
  *
@@ -72,8 +72,6 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
   let narodnostiMapped = [...filterData.Narodnosti].map(item => {
 
-      const itemId = (item === 'neuvedeno') ? 'narodnost-neuvedeno' : item;
-
       return {
               id: item.Id,
               text: item.Nazev,
@@ -87,8 +85,6 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     ];
 
     let vyznaniMapped = [...filterData.Vyznani].map(item => {
-
-      const itemId = (item === 'neuvedeno') ? 'vyznani-neuvedeno' : item;
 
       return {
               id: item.Id,
@@ -134,7 +130,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     let vekyNaKonciMandatuMapped = [...filterData.VekNaKonciMandatu].filter(vek => vek > 0);
     vekyNaKonciMandatuMapped = [vekyNaKonciMandatuMapped[0], vekyNaKonciMandatuMapped[vekyNaKonciMandatuMapped.length-1]] ///
   ////////////////////////////////////////////////////////////
-  let finalResult = {
+  const finalResult = {
 
     Pohlavi: {
       id: sectionId++,
@@ -748,23 +744,20 @@ const getAllStrankyFactory = async (wordpressAPIURLWebsite) => {
 
   const strankyResource =  await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
 
-  let strankyRes = strankyResource.data;
+  const strankyRes = strankyResource.data;
 
-  strankyRes = strankyRes
-    .filter(page => page.status === "publish")
-    .map(({ id, date, slug, title, content, excerpt, _embedded }) => ({
-      id: id,
-      date: date,
-      slug: slug,
-      title: title.rendered,
-      content: content.rendered,
-      excerpt: excerpt.rendered,
-      featured_image: (Array.isArray(_embedded['wp:featuredmedia'])) ? _embedded['wp:featuredmedia'][0].media_details : false,
-      author: _embedded.author /* will return an array of authors and their meta data */
-    }));
-
-
-  return strankyRes;
+  return strankyRes
+  .filter(page => page.status === "publish")
+  .map(({ id, date, slug, title, content, excerpt, _embedded }) => ({
+    id,
+    date,
+    slug,
+    title: title.rendered,
+    content: content.rendered,
+    excerpt: excerpt.rendered,
+    featured_image: (Array.isArray(_embedded['wp:featuredmedia'])) ? _embedded['wp:featuredmedia'][0].media_details : false,
+    author: _embedded.author /* will return an array of authors and their meta data */
+  }));
 
 };
 
@@ -785,7 +778,7 @@ const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, l
 
   for (let page = 1; page <=totalPages; page++) {
 
-    let posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
+    const posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
     media_soubory = [...media_soubory, ...posts.data];
 
   }
@@ -824,7 +817,7 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
 
   rodiny = rodiny.map(item => {
 
-    if (item.galerie && item.galerie.length) {
+    if (item.galerie?.length) {
 
       item.galerie = item.galerie.map(file => {
 
@@ -840,11 +833,11 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
   // normalize gallery files if there's a gallery
 
 
-  rodiny = await Promise.all(rodiny.map(async (rodina) => {
+  return await Promise.all(rodiny.map(async (rodina) => {
 
     rodina.osoby = await Promise.all(rodina.osoby_ids.map(async (osoba_id) => {
 
-      let osoba = await axios.get(`${databazePoslancuURL}/Api/osoby/${osoba_id}`);
+      const osoba = await axios.get(`${databazePoslancuURL}/Api/osoby/${osoba_id}`);
 
       return osoba.data;
 
@@ -853,8 +846,6 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
     return rodina;
 
   }));
-
-  return rodiny;
 
 };
 
@@ -881,7 +872,7 @@ const getCasovaOsaFactory = async (wordpressAPIURLWebsite) => {
 
     for (let page = 1; page <=totalPages; page++) {
 
-      let posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
+      const posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
       casova_osa = [...casova_osa, ...posts.data];
 
     }
@@ -931,7 +922,7 @@ const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
 
     slovnikova_hesla = slovnikova_hesla.data;
 
-    slovnikova_hesla = slovnikova_hesla
+    return slovnikova_hesla
     .filter(el => el.status === "publish")
     .map(({ id, slug, title, date, excerpt, content, _embedded }) => ({
       id,
@@ -942,8 +933,6 @@ const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
       content: content.rendered,
       featured_image: (_embedded && _embedded['wp:featuredmedia'] && _embedded['wp:featuredmedia'][0]) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
     }));
-
-   return slovnikova_hesla;
 
   } catch (err) {
 
@@ -957,11 +946,8 @@ const getParlamentyDatabazeFactory = async (databazePoslancuURL) => {
   try {
 
 
-    let parlamenty = await axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
-    parlamenty = parlamenty.data;
-
-
-    return parlamenty;
+    const parlamenty = await axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
+    return parlamenty.data;
 
 
 } catch (err) {
@@ -977,16 +963,20 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
   try {
 
 
-    let parlamenty = getParlamentyDatabazeFactory(databazePoslancuURL);
+    const parlamenty = await getParlamentyDatabazeFactory(databazePoslancuURL);
+
+
 
     let parlamentyWPData = await axios.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
     parlamentyWPData = parlamentyWPData.data;
 
-    parlamenty = await Promise.all(parlamenty.map(async (parlament) => {
+    return await Promise.all(parlamenty.map(async (parlament) => {
+
 
       const getSnemovniObdobi = await axios.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
 
       parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
+
 
       // get wordpress content referenced via Id
       let thisWPParlamentObj = parlamentyWPData.filter((item) => item.databaze_id == parlament.Id);
@@ -1010,7 +1000,7 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
 
       parlament.Barva = thisWPParlamentObj.barva;
 
-      if (thisWPParlamentObj.acf && thisWPParlamentObj.acf.casova_osa) {
+      if (thisWPParlamentObj.acf?.casova_osa) {
         parlament.CasovaOsa = thisWPParlamentObj.acf.casova_osa;
 
         // sort by date
@@ -1031,7 +1021,7 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
           "dulezita": [
           "true"
           ],
-          "typUdalosti": [datumKonecParlamentu],
+          "typUdalosti": ['datumKonecParlamentu'],
         };
 
         parlament.CasovaOsa = [beginningOfParlamentObj, ...parlament.CasovaOsa, endOfParlamentObj];
@@ -1039,7 +1029,7 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
 
       }
 
-      if (thisWPParlamentObj.acf && thisWPParlamentObj.acf.galerie) {
+      if (thisWPParlamentObj.acf?.galerie) {
 
         parlament.Galerie = thisWPParlamentObj.acf.galerie.map(item => {
 
@@ -1052,8 +1042,6 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
       return parlament;
 
     }));
-
-    return parlamenty;
 
 
   } catch (err) {
@@ -1081,7 +1069,7 @@ const getAllSnemovniObdobiWordpressFactory = async(wordpressAPIURLWebsite, datab
 
   for (let page = 1; page <=totalPages; page++) {
 
-    let posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
+    const posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
     snemovni_obdobi = [...snemovni_obdobi, ...posts.data];
 
   }
@@ -1142,7 +1130,7 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
   snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
 
   // get wordpress content referenced via Id
-  let thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
+  const thisWPSnemovniObdobiObj = snemovniObdobiObjWpData.filter((item) => parseInt(item.databaze_id) == snemovniObdobiId);
 
 
   if (thisWPSnemovniObdobiObj.length && thisWPSnemovniObdobiObj.length === 1) {
@@ -1154,7 +1142,7 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
     snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
     snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
 
-    if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.casova_osa) {
+    if (snemovniObdobiObjWpData.acf?.casova_osa) {
       snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;
 
       // sort by date
@@ -1194,7 +1182,7 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
     }
 
     // Normalize wordpress ACF gallery
-    if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.galerie) {
+    if (snemovniObdobiObjWpData.acf?.galerie) {
 
 
       snemovniObdobiObj.Galerie = snemovniObdobiObjWpData.acf.galerie.map(item => {
@@ -1207,7 +1195,7 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
 
     snemovniObdobiObj.UvodniFotografie = false;
 
-    if (snemovniObdobiObjWpData.acf && snemovniObdobiObjWpData.acf.uvodni_fotografie) {
+    if (snemovniObdobiObjWpData.acf?.uvodni_fotografie) {
 
       snemovniObdobiObj.UvodniFotografie = snemovniObdobiObjWpData.acf.uvodni_fotografie.sizes.medium_large;
 
@@ -1228,7 +1216,7 @@ const preparePoslanecDetail = async (poslanec) => {
 
   try {
 
-    let poslanecObj = {
+    const poslanecObj = {
       CasovaOsa: Array,
       AdresyProMapu: Array,
       "Id": Number,

@@ -8,11 +8,13 @@
     "author": "Jakub A. Ferenc <hello@jakubferenc.cz> (https://jakubferenc.cz)",
     "type": "module",
     "scripts": {
-        "dev": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js",
+        "dev": "node --max-old-space-size=8192 node_modules/nuxt/bin/nuxt.js",
         "build": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js build --modern",
         "analyze": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js build --analyze",
         "generate": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js generate",
-        "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js start"
+        "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js start",
+        "downloadData": "node --max-old-space-size=4096 ./scripts/index.js"
+
     },
     "browserslist": [
       "last 3 versions",

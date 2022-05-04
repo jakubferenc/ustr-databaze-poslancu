@@ -19,9 +19,6 @@
 
 <style lang="sass" scoped>
 
-
-  .slider-item[data-slider-item="first"]
-
   html:not(.has-slider) .slider
     display: none
 

@@ -77,8 +77,6 @@ export const getOpenGraphMeta = (meta) => {
 
 export const normalizeUstrApiMediaObjectForWordpress = (soubor) => {
 
-  // http://parliament.ustrcr.cz/Api/Help/Api/GET-soubory_Limit_Stranka_Mime
-
   soubor.url = soubor.URLNahled;
   soubor.title = soubor.Poznamka;
   soubor.mime_type = soubor.Mime;

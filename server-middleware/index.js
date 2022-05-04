@@ -1,6 +1,8 @@
 import express from 'express';
 import axios from "axios";
 import {writeFileSync, readFileSync} from "fs";
+import { dirname } from 'path';
+
 import path from 'path';
 
 import projectConfig from '../project.config';
@@ -173,8 +175,90 @@ app.get('/api/osoby-vsechny/', async (req,res) => {
 app.get('/api/parlamenty/', async (req,res) => {
 
 
-  const parlamentyRes =  await apiFactory.getParlamentyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
-  const pathToWrite = path.join(__dirname, '..', 'data/parlamenty.json');
+
+  const parlamenty = await apiFactory.getParlamentyDatabazeFactory(projectConfig.databazePoslancuURL);
+
+  let parlamentyWPData = await axios.get( `${projectConfig.wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
+  parlamentyWPData = parlamentyWPData.data;
+
+  const parlamentyRes = await Promise.all(parlamenty.map(async (parlament) => {
+
+    const getSnemovniObdobi = await axios.get(`${projectConfig.databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
+    parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
+
+
+
+    // get wordpress content referenced via Id
+    let thisWPParlamentObj = parlamentyWPData.filter((item) => item.databaze_id == parlament.Id);
+
+
+
+    // checking potential errors
+    if (!thisWPParlamentObj.length) {
+      throw new Error(`There is not Wordpress Parlament object matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
+      return;
+    }
+
+    if (thisWPParlamentObj.length > 1) {
+      throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
+      return;
+    }
+
+
+    thisWPParlamentObj = thisWPParlamentObj[0];
+    parlament.Popis = thisWPParlamentObj.content.rendered;
+    parlament.WPNazev = thisWPParlamentObj.title.rendered;
+    parlament.StrucnyPopis = thisWPParlamentObj.excerpt.rendered;
+
+    parlament.Barva = thisWPParlamentObj.barva;
+
+    if (thisWPParlamentObj.acf?.casova_osa) {
+      parlament.CasovaOsa = thisWPParlamentObj.acf.casova_osa;
+
+      // sort by date
+      parlament.CasovaOsa.sort();
+
+      const beginningOfParlamentObj = {
+        "datum_udalosti": parlament.SnemovniObdobi[0].DatumZacatku.split('T')[0],
+        "nazev_udalosti": "Začátek parlamentního tělesa",
+        "dulezita": [
+        "true"
+        ],
+        "typUdalosti": ['datumZacatekParlamentu'],
+      };
+
+      const endOfParlamentObj = {
+        "datum_udalosti": parlament.SnemovniObdobi[parlament.SnemovniObdobi.length-1].DatumKonce.split('T')[0],
+        "nazev_udalosti": "Konec parlamentního tělesa",
+        "dulezita": [
+        "true"
+        ],
+        "typUdalosti": ['datumKonecParlamentu'],
+      };
+
+      parlament.CasovaOsa = [beginningOfParlamentObj, ...parlament.CasovaOsa, endOfParlamentObj];
+
+
+    }
+
+    if (thisWPParlamentObj.acf?.galerie) {
+
+      parlament.Galerie = thisWPParlamentObj.acf.galerie.map(item => {
+
+        return normalizeSouborAttrs(item);
+
+      });
+
+    }
+
+
+    return parlament;
+
+  }));
+
+
+  const pathToWrite = path.resolve(__dirname, '..', 'data/parlamenty.json');
+
   writeFileSync(pathToWrite, JSON.stringify(parlamentyRes));
 
   res.send(parlamentyRes);

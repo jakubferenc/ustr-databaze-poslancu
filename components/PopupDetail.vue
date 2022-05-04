@@ -63,10 +63,6 @@
   .timeline-item-image-description
     line-height: 1.2
 
-  .popup-content
-
-    .gallery-container,
-    .text-container
 
 
   .popup-timeline-detail

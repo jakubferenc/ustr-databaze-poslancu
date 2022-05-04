@@ -27,10 +27,6 @@
   .section-title
     @extend %typography-section-title
 
-  .snemovny-seznam
-
-
-
 </style>
 
 <script>

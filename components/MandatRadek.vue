@@ -94,7 +94,6 @@
   .mandat-radek-content
     display: flex
 
-  .mandat-radek-text
 
   .mandat-radek-image
 

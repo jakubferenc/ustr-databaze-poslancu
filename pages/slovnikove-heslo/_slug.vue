@@ -24,7 +24,6 @@
 
 <style lang="sass">
 
-  .real-content-text
 
   .section-stranka
     .typography-main-title
