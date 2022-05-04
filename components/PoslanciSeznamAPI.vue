@@ -548,25 +548,27 @@ export default {
 
   mounted() {
 
-    console.log("nastaveni filtrace", this.NastaveniFiltrace);
+    this.$nextTick(() => {
 
-    this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
+      this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
 
-    if (this.MaPaginaci) {
+      if (this.MaPaginaci) {
 
-      const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
-      $scrollIntoViewBtn.addEventListener('click', (e) => {
+        const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
+        $scrollIntoViewBtn.addEventListener('click', (e) => {
 
-        e.preventDefault();
+          e.preventDefault();
 
-        const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
-        $target.scrollIntoView();
+          const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
+          $target.scrollIntoView();
 
 
-      });
+        });
 
-    }
+      }
 
+
+    });
 
 
   },
