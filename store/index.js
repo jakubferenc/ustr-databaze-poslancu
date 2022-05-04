@@ -304,7 +304,6 @@ export const actions = {
 
     const parlamenty = await apiFactory.getParlamentyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
 
-    console.log("from store parlamenty", parlamenty);
 
     commit("updateParlamenty", parlamenty);
 

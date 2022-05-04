@@ -73,7 +73,7 @@ export default {
       }));
 
 
-      //const osobyRes = await y.get(`${databazePoslancuURL}/Api/osoby/vsechny/`);
+      //const osobyRes = await y.get(`${databazePoslancuURL}/Api/osoby/?Poslanec=true`);
 
       // const osobyRoutes = osobyRes.data.map(item => {
 

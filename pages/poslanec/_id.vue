@@ -269,7 +269,7 @@
 
           //:TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
 
-          if (!$config.useFileCachedAPI) {
+          // if (!$config.useFileCachedAPI) {
 
             console.log("from non cache api call");
 
@@ -279,17 +279,16 @@
               poslanec: store.state.poslanec
             }
 
-          } else {
+          // } else {
 
-            const poslanecData = await $axios.get(`/data/poslanec/${params.id}/`)
+          //   const poslanecData = await $axios.get(`/data/poslanec/${params.id}/`)
 
 
-            return {
-              poslanec: poslanecData.data,
-            }
+          //   return {
+          //     poslanec: poslanecData.data,
+          //   }
 
-          }
-
+          // }
 
         }
 
