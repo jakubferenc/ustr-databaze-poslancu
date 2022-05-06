@@ -1,23 +1,24 @@
 <template lang="pug">
-  .slider
-    .slider-item(data-slider-item="first")
-      .slider-text.typography-hero-title.slider-text-light(v-html="stranka_homepage_obsah.content")
-      .slider-footer
-        .slider-footer-description
-          span.slider-footer-descriotion-image
-            <SliderFooterLogo01Image />
-          span.slider-footer-description-text Thunovský palác, popisek se nastaví ve Wordpressu
-      nuxt-picture.slider-image(
-        format="webp"
-        quality="50"
-        loading="lazy"
-        src="/images/slider-homepage.jpg"
-        sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:100vw"
-      )
+.slider
+  .slider-item(data-slider-item="first")
+    .slider-text.typography-hero-title.slider-text-light(v-html="stranka_homepage_obsah.content")
+    .slider-footer
+      .slider-footer-description
+        span.slider-footer-descriotion-image
+          <SliderFooterLogo01Image />
+        span.slider-footer-description-text Thunovský palác, popisek se nastaví ve Wordpressu
+    nuxt-picture.slider-image(
+      format="webp"
+      quality="50"
+      loading="lazy"
+      src="/images/slider-homepage.jpg"
+      sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:100vw"
+    )
 </template>
 
 
 <style lang="sass" scoped>
+
 
   html:not(.has-slider) .slider
     display: none
@@ -26,6 +27,7 @@
     position: relative
     z-index: -1
     color: #fff
+    margin-left: 0
 
     .slider-item
       position: relative

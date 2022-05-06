@@ -1,33 +1,32 @@
 <template lang="pug">
 
-  .section
+.section
 
-    h1.typography-main-title {{ title }}
+  h1.typography-main-title {{ title }}
 
-    .section-padding-h-margin-v
+  .section-padding-h-margin-v
 
-      PoslanciSeznamAPI(
+    PoslanciSeznamAPI(
 
-        v-if="poslanci && nastaveniFiltrace"
+      v-if="poslanci && nastaveniFiltrace"
 
-        :PoslanciVstupniPolozky="poslanci"
-        :NastaveniFiltrace="nastaveniFiltrace"
-        :PoslanciStatistiky="poslanciStatistiky"
-        :MaPaginaci="true"
-        :MaFiltr="true"
-        :MaStatistiky="false"
-        :MaButtonMore="false"
-        :ButtonMoreLink="false"
-        :PaginaceNastaveni="paginaceNastaveni"
-        :MaButtonMorePrevious="this.currentQuery.stranka > 1"
-        v-on:doPagination="doPaginationHandler($event)"
-        v-on:selectOrderOption="selectOrderOptionHandler($event)"
+      :PoslanciVstupniPolozky="poslanci"
+      :NastaveniFiltrace="nastaveniFiltrace"
+      :PoslanciStatistiky="poslanciStatistiky"
+      :MaPaginaci="true"
+      :MaFiltr="true"
+      :MaStatistiky="false"
+      :MaButtonMore="false"
+      :ButtonMoreLink="false"
+      :PaginaceNastaveni="paginaceNastaveni"
+      :MaButtonMorePrevious="this.currentQuery.stranka > 1"
+      v-on:doPagination="doPaginationHandler($event)"
+      v-on:selectOrderOption="selectOrderOptionHandler($event)"
 
-        v-on:loadPreviousItems="loadPreviousItemsHandler($event)"
-        v-on:loadMoreItems="loadMoreItemsHandler($event)"
-        v-on:refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
-      )
-
+      v-on:loadPreviousItems="loadPreviousItemsHandler($event)"
+      v-on:loadMoreItems="loadMoreItemsHandler($event)"
+      v-on:refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
+    )
 
 </template>
 
@@ -128,13 +127,15 @@ export default {
         this.currentFilterData = {
           ...this.$store.state.filter_data,
           Pohlavi: this.defaultFilterData.Pohlavi.map(item => item),
+          PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map(item => item),
           Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
         };
 
         const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
 
-        this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
+        console.log("this.currentFilterData", this.currentFilterData);
 
+        this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
 
         this.$router.push({
           path: '/poslanci/',
@@ -357,6 +358,7 @@ export default {
         currentFilterSettings: {},
         defaultFilterSettings: {},
         defaultFilterData: {
+          PoslaneckySlib: [true, false],
           Pohlavi: [1, 2]
         },
         currentFilterData: {},

@@ -1,166 +1,197 @@
 <template lang="pug">
 
 
-  #scroll-top.poslanci-seznam.seznam-with-filter(v-on="$listeners")
+#scroll-top.poslanci-seznam.seznam-with-filter(v-on="$listeners")
 
-    .filter-seznam
+  .filter-seznam
 
-        .filter-seznam-filter-statistics(v-if="MaStatistiky")
+      .filter-seznam-filter-statistics(v-if="MaStatistiky")
 
-          .filter-seznam-filter-statistics-content.columns.is-multiline
+        .filter-seznam-filter-statistics-content.columns.is-multiline
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Poměr pohlaví poslanců
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.percentageMale}} <small>%</small>
-                span.diagram-graphics-desc muži
+            .diagram-desc Poměr pohlaví poslanců
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.percentageMale}} <small>%</small>
+              span.diagram-graphics-desc muži
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Vzdělání
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.percentageHasUniversityDegree}} <small>%</small>
-                span.diagram-graphics-desc má titul
+            .diagram-desc Vzdělání
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.percentageHasUniversityDegree}} <small>%</small>
+              span.diagram-graphics-desc má titul
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Znovuzvolení (2+ mandátů)
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.percentageHasMoreThanOneMandate}} <small>%</small>
-                span.diagram-graphics-desc
+            .diagram-desc Znovuzvolení (2+ mandátů)
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.percentageHasMoreThanOneMandate}} <small>%</small>
+              span.diagram-graphics-desc
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Nejvyšší věk
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.oldestAge}}
-                span.diagram-graphics-desc let
+            .diagram-desc Nejvyšší věk
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.oldestAge}}
+              span.diagram-graphics-desc let
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Nejnižší věk
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.lowestAge}}
-                span.diagram-graphics-desc let
+            .diagram-desc Nejnižší věk
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.lowestAge}}
+              span.diagram-graphics-desc let
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Průměrný věk
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.averageAge}}
-                span.diagram-graphics-desc let
-
-
-        .filter-seznam-bar(v-if="MaFiltr")
-
-          .filter-seznam-bar-left
-            span.button.button-filter(:class="sidebarButtonToggleStyles" @click="toggleSidebar()")
-              span(v-if="isSidebarOpen") Zavřít filtr
-              span(v-else) Otevřít filtr
+            .diagram-desc Průměrný věk
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.averageAge}}
+              span.diagram-graphics-desc let
 
 
-          .filter-seznam.bar-right
+      .filter-seznam-bar(v-if="MaFiltr")
 
-            span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
-              span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
-              span.options
-                span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text, polozka.apiId)") {{polozka.text}}
-
-
-        .seznam-content-container()
-
-          .seznam-filter-sidebar(v-if="MaFiltr && isSidebarOpen")
-            .seznam-filter-sidebar-content
-
-              .seznam-filter-sidebar-content-header
-                p.typography-filter-heading Zobrazuje se {{pocetPoslancuFiltrovanych}} z {{PoslanciStatistiky.pocetPoslancu}} <br>poslanců
+        .filter-seznam-bar-left
+          span.button.button-filter(:class="sidebarButtonToggleStyles" @click="toggleSidebar()")
+            span(v-if="isSidebarOpen") Zavřít filtr
+            span(v-else) Otevřít filtr
 
 
+        .filter-seznam.bar-right
 
-              .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey" :class="{hidden: isDefaultParlamentSelected && filtrSekceKey == 'SnemovniObdobi'}")
-
-                //// sekce
-                ////////////////////////////////////////////////////////////////////////////////
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading
-                  span {{filtrNastaveni[filtrSekceKey].title}}
-                  span(v-if="filtrNastaveni[filtrSekceKey].hasCounter") &nbsp;({{filtrNastaveni[filtrSekceKey].values.length}})
-
-                .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'radio' || filtrNastaveni[filtrSekceKey].type == 'checkbox'")
-
-                  ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
-                    li.filter-list-item(v-for="(filtrPolozka, valueIndex) in filtrNastaveni[filtrSekceKey].values" :key="valueIndex")
-                      label(:for="`${filtrSekceKey}-${filtrPolozka.id}`" :class="{disabled: filtrPolozka.disabled}")
-                        .filter-list-item-checkbox
-                          input(
-                            @click="selectFilterOption(filtrSekceKey, valueIndex, filtrNastaveni[filtrSekceKey].multiple, filtrNastaveni[filtrSekceKey].reset, $event)"
-                            :type="filtrNastaveni[filtrSekceKey].type"
-                            :id="`${filtrSekceKey}-${filtrPolozka.id}`"
-                            :disabled="filtrPolozka.disabled"
-                            :checked="filtrPolozka.selected  ? 'checked' : ''"
-                            :data-checked="filtrPolozka.selected"
-                            :class="{selected: filtrPolozka.selected}"
-                            :name="filtrNastaveni[filtrSekceKey].type ==='radio' ? filtrSekceKey : false"
-                            :value="filtrPolozka.id"
-                          )
-                        .filter-list-item-value {{filtrPolozka.text}}
-
-                ////////////////////////////////////////////////////////////////////////////////
-
-                .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'range'")
+          span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
+            span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
+            span.options
+              span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text, polozka.apiId)") {{polozka.text}}
 
 
-                  <MultiRangeSlider v-on:multi-range-change="onRangeChange($event)" :QueryStructure="filtrNastaveni[filtrSekceKey].queryStructure" :Name="`${filtrSekceKey}`" :Id="`${filtrSekceKey}`" :MinValue="filtrNastaveni[filtrSekceKey].values[0]" :MaxValue="filtrNastaveni[filtrSekceKey].values[1]" />
+      .seznam-content-container(v-if="MaFiltr")
+
+        .seznam-filter-sidebar(v-show="isSidebarOpen")
+          .seznam-filter-sidebar-content
+
+            .seznam-filter-sidebar-content-header
+              p.typography-filter-heading Zobrazuje se {{pocetPoslancuFiltrovanych}} z {{PoslanciStatistiky.pocetPoslancu}} <br>poslanců
 
 
 
+            .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey" :class="{hidden: isDefaultParlamentSelected && filtrSekceKey == 'SnemovniObdobi'}")
 
-          .seznam-filter-list
+              //// sekce
+              ////////////////////////////////////////////////////////////////////////////////
+              .seznam-filter-sidebar-content-section-title.typography-filter-heading
+                span {{filtrNastaveni[filtrSekceKey].title}}
+                span(v-if="filtrNastaveni[filtrSekceKey].hasCounter") &nbsp;({{filtrNastaveni[filtrSekceKey].values.length}})
+                span.info-icon(v-if="filtrNastaveni[filtrSekceKey].info") i
+                  span.info-text ({{filtrNastaveni[filtrSekceKey].info}})
 
-            .columns.is-multiline.is-mobile()
+              .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'radio' || filtrNastaveni[filtrSekceKey].type == 'checkbox'")
 
-              Poslanec(
-                v-for="(poslanec, index) in poslanci"
-                :key="index"
-                :Id="poslanec.Id"
-                :Jmeno="poslanec.Jmeno"
-                :Prijmeni="poslanec.Prijmeni"
-                :ZivotniData="poslanec.ZivotniData"
-                :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
-                :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
-                :Mandaty="poslanec.Mandaty"
-                :Soubory="poslanec.Soubory"
-                class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
-                )
+                ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
+                  li.filter-list-item(v-for="(filtrPolozka, valueIndex) in filtrNastaveni[filtrSekceKey].values" :key="valueIndex")
+                    label(:for="`${filtrSekceKey}-${filtrPolozka.id}`" :class="{disabled: filtrPolozka.disabled}")
+                      .filter-list-item-checkbox
+                        input(
+                          @click="selectFilterOption(filtrSekceKey, valueIndex, filtrNastaveni[filtrSekceKey].multiple, filtrNastaveni[filtrSekceKey].reset, $event)"
+                          :type="filtrNastaveni[filtrSekceKey].type"
+                          :id="`${filtrSekceKey}-${filtrPolozka.id}`"
+                          :disabled="filtrPolozka.disabled"
+                          :checked="filtrPolozka.selected  ? 'checked' : ''"
+                          :data-checked="filtrPolozka.selected"
+                          :class="{selected: filtrPolozka.selected}"
+                          :name="filtrNastaveni[filtrSekceKey].type ==='radio' ? filtrSekceKey : false"
+                          :value="filtrPolozka.id"
+                        )
+                      .filter-list-item-value {{filtrPolozka.text}}
 
-            //                 :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
+              ////////////////////////////////////////////////////////////////////////////////
 
-
-            .component-footer(v-if="MaButtonMore || MaPaginaci")
-
-              .pagination-bar(v-if="MaPaginaci")
-                .to-the-top
-                  a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
-                .pagination-list
-                  a.pagination-list-prev.pagination-item(href="#") &lt; &lt; &nbsp;
-                  .pagination-list-number(v-for="(pageNumber, index) in Array(PaginaceNastaveni.PocetStranek) ")
-                    a.pagination-list-number.pagination-item(:class="{active: PaginaceNastaveni.Stranka == index+1}" @click="doPagination(index+1)") {{index+1}}
-                  //- .pagination-list-last-number
-                  //-   .pagination-item.bullets ...
-                  //-   a(href="#").pagination-item 40
-
-                  a.pagination-list-next.pagination-item(href="#") &nbsp;  &gt;  &gt;
+              .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'range'")
 
 
-              .buttons-more
-                NuxtLink(v-if="MaButtonMore && ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
+                <MultiRangeSlider v-on:multi-range-change="onRangeChange($event)" :QueryStructure="filtrNastaveni[filtrSekceKey].queryStructure" :Name="`${filtrSekceKey}`" :Id="`${filtrSekceKey}`" :CurrentMinValue="filtrNastaveni[filtrSekceKey].values[0]" :CurrentMaxValue="filtrNastaveni[filtrSekceKey].values[1]"  :MinValue="filtrNastaveni[filtrSekceKey].values[2]" :MaxValue="filtrNastaveni[filtrSekceKey].values[3]" />
 
-                a(v-if="MaButtonMore && MaButtonMorePrevious" @click="loadPreviousItems()").typo-form-button.button-large Načíst předchozí poslance
-                a(v-if="MaButtonMore" @click="loadMoreItems()").typo-form-button.button-large Načíst další poslance
+
+
+
+        .seznam-filter-list
+
+          .columns.is-multiline.is-mobile()
+
+            Poslanec(
+              v-for="(poslanec, index) in poslanci"
+              :key="index"
+              :Id="poslanec.Id"
+              :Jmeno="poslanec.Jmeno"
+              :Prijmeni="poslanec.Prijmeni"
+              :ZivotniData="poslanec.ZivotniData"
+              :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
+              :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
+              :Mandaty="poslanec.Mandaty"
+              :Soubory="poslanec.Soubory"
+              class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
+              )
+
+          //                 :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
+
+
+          .component-footer(v-if="MaButtonMore || MaPaginaci")
+
+            .pagination-bar(v-if="MaPaginaci")
+              .to-the-top
+                a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
+              .pagination-list
+                a.pagination-list-prev.pagination-item(href="#") &lt; &lt; &nbsp;
+                .pagination-list-number(v-for="(pageNumber, index) in Array(PaginaceNastaveni.PocetStranek) ")
+                  a.pagination-list-number.pagination-item(:class="{active: PaginaceNastaveni.Stranka == index+1}" @click="doPagination(index+1)") {{index+1}}
+                //- .pagination-list-last-number
+                //-   .pagination-item.bullets ...
+                //-   a(href="#").pagination-item 40
+
+                a.pagination-list-next.pagination-item(href="#") &nbsp;  &gt;  &gt;
+
+
+            .buttons-more
+              NuxtLink(v-if="MaButtonMore && ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
+
+              a(v-if="MaButtonMore && MaButtonMorePrevious" @click="loadPreviousItems()").typo-form-button.button-large Načíst předchozí poslance
+              a(v-if="MaButtonMore" @click="loadMoreItems()").typo-form-button.button-large Načíst další poslance
 
 </template>
 
 <style lang="sass" scoped>
+
+  .info-icon
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    content: "i"
+    width: 20px
+    height: 20px
+    background-color: black
+    color: #fff
+    position: relative
+    margin-left: 1em
+    top: 4px
+
+    &:hover
+      .info-text
+        display: block
+
+    .info-text
+      background-color: #fff
+      color: #000
+      min-width: 250px
+      border-radius: 5px
+      display: none
+      position: absolute
+      top: 1em
+      left: 1em
+      padding: 1em 2em
+      z-index: 9
 
   .hidden
     display: none

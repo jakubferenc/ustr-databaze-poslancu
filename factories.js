@@ -21,6 +21,151 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
   let sectionId = 0;
 
+  const finalResult = {
+    PoslaneckySlib: {
+      id: sectionId++,
+      title: 'Poslanecky Slib',
+      type: 'radio',
+      order: 'inline',
+      property: 'PoslaneckySlib',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      values: undefined,
+    },
+    Pohlavi: {
+      id: sectionId++,
+      title: 'Pohlaví',
+      type: 'radio',
+      order: 'inline',
+      property: 'Pohlavi',
+      hasCounter: false,
+      values: undefined,
+    },
+    Snemovny: {
+      id: sectionId++,
+      title: 'Parlamentní tělesa',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: true,
+      values: undefined
+    },
+    SnemovniObdobi: {
+      id: sectionId++,
+      title: 'Sněmovní období',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: true,
+      values: undefined
+    },
+    Narodnosti: {
+      id: sectionId++,
+      title: 'Národnosti',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      property: 'Narodnosti',
+      hasCounter: true,
+      values: undefined
+    },
+    Vyznani: {
+      id: sectionId++,
+      title: 'Náboženské vyznání',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      property: 'NabozenstviNarozeni',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: true,
+      values: undefined
+    },
+    UniverzitniVzdelani: {
+      id: sectionId++,
+      title: 'Vzdělání',
+      type: 'radio',
+      order: 'inline',
+      property: 'UniverzitniVzdelani',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      values: undefined,
+    },
+    SocialniVazby: {
+      id: sectionId++,
+      title: 'Sociální vazby',
+      type: 'radio',
+      order: 'inline',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      values: undefined,
+    },
+    Fotografie: {
+      id: sectionId++,
+      title: 'Fotografie',
+      type: 'radio',
+      order: 'inline',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      values: undefined,
+    },
+    PocetMandatu: {
+      id: sectionId++,
+      title: 'Počet mandátů',
+      type: 'range',
+      order: 'inline',
+      property: 'PocetMandatu',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
+      values: undefined,
+    },
+    VekNaZacatkuMandatu: {
+      id: sectionId++,
+      title: 'Věk na začátku mandátu',
+      type: 'range',
+      order: 'inline',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      queryStructure: ['VekNaZacatkuMandatuMin', 'VekNaZacatkuMandatuMax'], // order matterrs, first lower bound, next higher bound
+      values: undefined,
+    },
+    VekNaKonciMandatu: {
+      id: sectionId++,
+      title: 'Věk na konci mandátu',
+      type: 'range',
+      order: 'inline',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      queryStructure: ['VekNaKonciMandatuMin', 'VekNaKonciMandatuMax'], // order matterrs, first lower bound, next higher bound
+      values: undefined,
+    },
+
+
+  };
+
+  let poslaneckySlibMapped = [...filterData.PoslaneckySlib].map(poslaneckySlibId => {
+
+    return {
+
+      id: poslaneckySlibId,
+      text: (poslaneckySlibId === true) ? 'Ano' : 'Ne',
+      selected: false,
+    };
+
+  });
+
+  poslaneckySlibMapped = [
+    {id: 0, text: 'Vše', default: true, reset: true, selected: true},
+    ...poslaneckySlibMapped,
+  ];
+
   let pohlaviMapped = [...filterData.Pohlavi].map(itemPohlaviID => {
 
     return {
@@ -119,162 +264,48 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     */
 
 
-    const pocetMandatuMapped = [filterData.PocetMandatu[0], filterData.PocetMandatu[filterData.PocetMandatu.length-1]];
+    const pocetMandatuMapped = [
+      filterData.PocetMandatu[0],
+      filterData.PocetMandatu[filterData.PocetMandatu.length-1],
+      filterData.AbsolutniMinimalniPocetMandatu,
+      filterData.AbsolutniMaximalniPocetMandatu,
+    ];
 
 
+    const vekyNaZacatkuMandatuMapped = [
+      filterData.VekNaZacatkuMandatu[0],
+      filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length-1],
+      filterData.AbsolutniMinimalniVekNaZacatkuMandatu,
+      filterData.AbsolutniMaximalniVekNaZacatkuMandatu,
 
-    let vekyNaZacatkuMandatuMapped = [...filterData.VekNaZacatkuMandatu].filter(vek => vek > 0);
-    vekyNaZacatkuMandatuMapped = [vekyNaZacatkuMandatuMapped[0], vekyNaZacatkuMandatuMapped[vekyNaZacatkuMandatuMapped.length-1]] ///
+    ] ///
   ////////
 
-    let vekyNaKonciMandatuMapped = [...filterData.VekNaKonciMandatu].filter(vek => vek > 0);
-    vekyNaKonciMandatuMapped = [vekyNaKonciMandatuMapped[0], vekyNaKonciMandatuMapped[vekyNaKonciMandatuMapped.length-1]] ///
-  ////////////////////////////////////////////////////////////
-  const finalResult = {
+    const vekyNaKonciMandatuMapped = [
+      filterData.VekNaKonciMandatu[0],
+      filterData.VekNaKonciMandatu[filterData.VekNaKonciMandatu.length-1],
+      filterData.AbsolutniMinimalniVekNaKonciMandatu,
+      filterData.AbsolutniMaximalniVekNaKonciMandatu,
 
-    Pohlavi: {
-      id: sectionId++,
-      title: 'Pohlaví',
-      type: 'radio',
-      order: 'inline',
-      property: 'Pohlavi',
-      hasCounter: false,
-      values: pohlaviMapped,
-    },
-    Snemovny: {
-      id: sectionId++,
-      title: 'Parlamentní tělesa',
-      type: 'checkbox',
-      multiple: true,
-      reset: true,
-      order: 'block',
-      hasCounter: true,
-      values: parlamentyMapped
-    },
-    SnemovniObdobi: {
-      id: sectionId++,
-      title: 'Sněmovní období',
-      type: 'checkbox',
-      multiple: true,
-      reset: true,
-      order: 'block',
-      hasCounter: true,
-      values: snemovniObdobiMapped
-    },
-    Narodnosti: {
-      id: sectionId++,
-      title: 'Národnosti',
-      type: 'checkbox',
-      multiple: true,
-      reset: true,
-      order: 'block',
-      property: 'Narodnosti',
-      hasCounter: true,
-      values: narodnostiMapped
-    },
-    Vyznani: {
-      id: sectionId++,
-      title: 'Náboženské vyznání',
-      type: 'checkbox',
-      multiple: true,
-      reset: true,
-      order: 'block',
-      property: 'NabozenstviNarozeni',
-      hasCounter: true,
-      values: vyznaniMapped
-    },
-    UniverzitniVzdelani: {
-      id: sectionId++,
-      title: 'Vzdělání',
-      type: 'radio',
-      order: 'inline',
-      property: 'UniverzitniVzdelani',
-      hasCounter: false,
-      values: vysokaSkolaMapped,
-    },
-    SocialniVazby: {
-      id: sectionId++,
-      title: 'Sociální vazby',
-      type: 'radio',
-      order: 'inline',
-      hasCounter: false,
-      values: SocialniVazbyMapped,
-    },
-    Fotografie: {
-      id: sectionId++,
-      title: 'Fotografie',
-      type: 'radio',
-      order: 'inline',
-      hasCounter: false,
-      values: maFotkuMapped,
-    },
-    PocetMandatu: {
-      id: sectionId++,
-      title: 'Počet mandátů',
-      type: 'range',
-      order: 'inline',
-      property: 'PocetMandatu',
-      hasCounter: false,
-      queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu'], // order matterrs, first lower bound, next higher bound
-      values: pocetMandatuMapped,
-    },
-    VekNaZacatkuMandatu: {
-      id: sectionId++,
-      title: 'Věk na začátku mandátu',
-      type: 'range',
-      order: 'inline',
-      hasCounter: false,
-      queryStructure: ['VekNaZacatkuMandatuMin', 'VekNaZacatkuMandatuMax'], // order matterrs, first lower bound, next higher bound
-      values: vekyNaZacatkuMandatuMapped,
-    },
-    VekNaKonciMandatu: {
-      id: sectionId++,
-      title: 'Věk na konci mandátu',
-      type: 'range',
-      order: 'inline',
-      hasCounter: false,
-      queryStructure: ['VekNaKonciMandatuMin', 'VekNaKonciMandatuMax'], // order matterrs, first lower bound, next higher bound
-      values: vekyNaKonciMandatuMapped,
-    },
+    ]; ///
+   ////////////////////////////////////////////////////////////////////////
 
-    // vek: {
-    //   id: 5,
-    //   title: 'Věk (testuji, neni v dobe snemovniho obdobi)',
-    //   type: 'radio',
-    //   multiple: false,
-    //   reset: true,
-    //   order: 'block',
-    //   property: 'Vek',
-    //   values: [
-    //     {id: 'vse-vek', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-    //     {id: 'vek-30', text: '30+', default: false, selected: false, validate: (property) => property >= 30 },
-    //     {id: 'vek-40', text: '40+', default: false, selected: false, validate: (property) => property >= 40 },
-    //     {id: 'vek-50', text: '50+', default: false, selected: false, validate: (property) => property >= 50 },
-    //     {id: 'vek-60', text: '60+', default: false, selected: false, validate: (property) => property >= 60 },
-    //     {id: 'vek-70', text: '70+', default: false, selected: false, validate: (property) => property >= 70 },
-    //     {id: 'vek-75', text: '75+', default: false, selected: false, validate: (property) => property >= 75 },
-    //     {id: 'vek-80', text: '80+', default: false, selected: false, validate: (property) => property >= 80 },
-    //   ]
-    // },
-    // mandaty: {
-    //   id: 5,
-    //   title: 'Mandáty',
-    //   type: 'radio',
-    //   multiple: false,
-    //   reset: true,
-    //   order: 'block',
-    //   property: 'Mandaty',
-    //   values: [
-    //     {id: 'vse-mandaty', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-    //     {id: 'ma-jeden-mandat', text: 'Má aspoň 1 mandát', default: false, selected: false, validate: (property) => property.length > 0 },
-    //     {id: 'ma-pet-mandat', text: 'Má aspoň 5 mandátů', default: false, selected: false, validate: (property) => property.length > 4 },
-    //     {id: 'ma-deset-mandat', text: 'Má aspoň 10 mandátů', default: false, selected: false, validate: (property) => property.length > 9 },
-    //     {id: 'ma-dvanactplus-mandat', text: 'Má 12+ mandátů', default: false, selected: false, validate: (property) => property.length > 11 },
-    //   ]
-    // },
+  finalResult.PoslaneckySlib.values = poslaneckySlibMapped;
+  finalResult.Pohlavi.values = pohlaviMapped;
+  finalResult.Snemovny.values = parlamentyMapped;
+  finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
+  finalResult.Narodnosti.values = narodnostiMapped;
+  finalResult.Vyznani.values = vyznaniMapped;
+  finalResult.UniverzitniVzdelani.values = vysokaSkolaMapped;
+  finalResult.SocialniVazby.values = SocialniVazbyMapped;
+  finalResult.Fotografie.values = maFotkuMapped;
+  finalResult.PocetMandatu.values = pocetMandatuMapped;
+  finalResult.VekNaZacatkuMandatu.values = vekyNaZacatkuMandatuMapped;
+  finalResult.VekNaKonciMandatu.values = vekyNaKonciMandatuMapped;
 
-  };
   ////////////////////////////////////////////////////////////////////////
+
+
 
   // make active items in the filter based on the current query
 
@@ -284,7 +315,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
       // we don't want to pick selected item from range, beucase there are no selected items, but just two numbers
 
-      if (activeData && activeData[key]) {
+      if (activeData?.[key]) {
 
         // let's check the specific selected values, it's not the default reset one
 
@@ -931,7 +962,7 @@ const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
       date,
       excerpt: stripHTMLTags(excerpt.rendered),
       content: content.rendered,
-      featured_image: (_embedded && _embedded['wp:featuredmedia'] && _embedded['wp:featuredmedia'][0]) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
+      featured_image: (_embedded?.['wp:featuredmedia']?.[0]) ? normalizeSouborAttrs(_embedded['wp:featuredmedia'][0]) : null,
     }));
 
   } catch (err) {
@@ -1215,24 +1246,6 @@ const preparePoslanecDetail = async (poslanec) => {
   // :TODO: cache via http cache?
 
   try {
-
-    const poslanecObj = {
-      CasovaOsa: Array,
-      AdresyProMapu: Array,
-      "Id": Number,
-      "Jmeno": String,
-      "Prijmeni": String,
-      "CeleJmeno": String,
-      "Tituly": Array,
-      "URLVodoznak": String,
-      "URLNahled": String,
-      "OsobaId": Number,
-      "SnemovniObdobiId": null,
-      "SnemovnaId": null,
-      "Zdroj": String,
-      "Poznamka": String,
-      "Mime": null
-    };
 
     const poslanecData = poslanec;
 

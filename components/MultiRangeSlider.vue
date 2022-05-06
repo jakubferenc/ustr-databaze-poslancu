@@ -1,22 +1,22 @@
 <template lang="pug">
 
-  .multi-range-slider(ref="range")
+.multi-range-slider(ref="range")
 
-    input(type="hidden" id="" name="" :value="`[${MinValue}, ${MaxValue}]`")
+  input(type="hidden" id="" name="" :value="`[${MinValue}, ${MaxValue}]`")
 
-    input(@input="setLeftValue()" @mouseup="mouseUpHandler"  type="range" id="input-left" :min="MinValue" :max="MaxValue - 1" :value="MinValue")
-    //- input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
-    input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue + 1" :max="MaxValue" :value="MaxValue")
+  input(@input="setLeftValue()" @mouseup="mouseUpHandler"  type="range" id="input-left" :min="MinValue" :max="MaxValue - 1" :value="CurrentMinValue")
+  //- input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
+  input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue + 1" :max="MaxValue" :value="CurrentMaxValue")
 
-    .slider
-      .track
-      .range
-      .thumb.left
-      .thumb.right()
+  .slider
+    .track
+    .range
+    .thumb.left {{leftValue}}
+    .thumb.right() {{rightValue}}
 
-      .text-left {{leftValue}}
+    .text-left {{MinValue}}
 
-      .text-right {{rightValue}}
+    .text-right {{MaxValue}}
 
 </template>
 
@@ -78,6 +78,11 @@
       height: 30px
       background-color: $color-primary-blue
       border-radius: 50%
+      color: #fff
+      font-size: 12px
+      display: flex
+      justify-content: center
+      align-items: center
 
     .thumb.left
       left: 0
@@ -120,6 +125,8 @@
     props: [
       "Id",
       "Name",
+      "CurrentMinValue",
+      "CurrentMaxValue",
       "MinValue",
       "MaxValue",
       "QueryStructure"
@@ -223,6 +230,8 @@
 
       this.$range = this.$thisEl.querySelector(".range");
 
+      this.setLeftValue();
+      this.setRightValue();
 
 
     },
