@@ -65,7 +65,7 @@
           span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
             span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
             span.options
-              span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text, polozka.apiId)") {{polozka.text}}
+              span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="onSelectOrderOption(polozka.id, polozka.text, polozka.apiId)") {{polozka.text}}
 
 
       .seznam-content-container(v-if="MaFiltr")
@@ -80,7 +80,7 @@
 
             .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey" :class="{hidden: isDefaultParlamentSelected && filtrSekceKey == 'SnemovniObdobi'}")
 
-              //// sekce
+              //// BEGIN sekce
               ////////////////////////////////////////////////////////////////////////////////
               .seznam-filter-sidebar-content-section-title.typography-filter-heading
                 span {{filtrNastaveni[filtrSekceKey].title}}
@@ -95,7 +95,7 @@
                     label(:for="`${filtrSekceKey}-${filtrPolozka.id}`" :class="{disabled: filtrPolozka.disabled}")
                       .filter-list-item-checkbox
                         input(
-                          @click="selectFilterOption(filtrSekceKey, valueIndex, filtrNastaveni[filtrSekceKey].multiple, filtrNastaveni[filtrSekceKey].reset, $event)"
+                          @click="onSelectFilterOption(filtrSekceKey, valueIndex, filtrNastaveni[filtrSekceKey].multiple, filtrNastaveni[filtrSekceKey].reset, $event)"
                           :type="filtrNastaveni[filtrSekceKey].type"
                           :id="`${filtrSekceKey}-${filtrPolozka.id}`"
                           :disabled="filtrPolozka.disabled"
@@ -107,13 +107,25 @@
                         )
                       .filter-list-item-value {{filtrPolozka.text}}
 
-              ////////////////////////////////////////////////////////////////////////////////
+
 
               .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'range'")
 
 
-                <MultiRangeSlider v-on:multi-range-change="onRangeChange($event)" :QueryStructure="filtrNastaveni[filtrSekceKey].queryStructure" :Name="`${filtrSekceKey}`" :Id="`${filtrSekceKey}`" :CurrentMinValue="filtrNastaveni[filtrSekceKey].values[0]" :CurrentMaxValue="filtrNastaveni[filtrSekceKey].values[1]"  :MinValue="filtrNastaveni[filtrSekceKey].values[2]" :MaxValue="filtrNastaveni[filtrSekceKey].values[3]" />
+                MultiRangeSlider(
+                  v-on:multi-range-change="onRangeChange($event)"
+                  :QueryStructure="filtrNastaveni[filtrSekceKey].queryStructure"
+                  :Name="`${filtrSekceKey}`"
+                  :Id="`${filtrSekceKey}`"
+                  :CurrentMinValue="filtrNastaveni[filtrSekceKey].values[0]"
+                  :CurrentMaxValue="filtrNastaveni[filtrSekceKey].values[1]"
+                  :MinValue="filtrNastaveni[filtrSekceKey].values[2]"
+                  :MaxValue="filtrNastaveni[filtrSekceKey].values[3]"
+                )
 
+
+              //// END sekce
+              ////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -350,7 +362,7 @@ export default {
     filtrNastaveni() {
 
 
-      return this.NastaveniFiltrace;
+      return {...this.NastaveniFiltrace };
 
     },
 
@@ -377,72 +389,48 @@ export default {
 
   methods: {
 
-    onRangeChange($event) {
 
-
-      // Process this range
-
-      let currentRangeQuery = $event.value;
-
-      /// Normalize this range request Query by containing the value with an array like all other filter values
-
-      Object.keys(currentRangeQuery).forEach(key => {
-
-        currentRangeQuery[key] = [currentRangeQuery[key]]
-
-      });
-
-      // Process all other filters
-
-      let onlyActivelySelectedFilters = this.normalizeFilterOptions();
-
-      onlyActivelySelectedFilters = {
-
-        ...onlyActivelySelectedFilters,
-        ...currentRangeQuery,
-
-      };
-
-
-      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
-
-
-    },
-
-
-    normalizeFilterOptions() {
+    getOnlyActiveFilterSectionsWithSelectedValues() {
 
 
       const allFilters = {...this.filtrNastaveni};
 
-      let onlyActivelySelectedFilters = {};
+      const onlyActivelySelectedFilters = {};
 
       Object.keys(allFilters).forEach((itemKeyName) => {
 
         const keyName = itemKeyName;
         const item = allFilters[keyName];
 
-        const activeValues = item.values.filter(valueObj => valueObj.selected === true).map(valueObj => {
+        // check active values for radio or checkboxes
+        if ( item.type === 'radio' || item.type === 'checkbox') {
 
-          if (valueObj.default === true) {
-            return null; // if default value is selected return empty value for the object key, so we can later remove the URL parameter from the router query
-          } else {
-            return valueObj.id;
+            const activeValues = item.values
+            .filter(valueObj => valueObj.selected === true)
+            .map(valueObj => {
+
+              // if we selected a default option, we won't send the particular section of a filter
+              // so that the particular section will not influence the API filtering of the data
+              return valueObj.default === true ? null : valueObj.id;
+
+            })
+            .filter(item => item !== null);
+
+          // if (activeValues.length > 1) {
+          //   // we have multiple options selected in the filter for the given parameter
+          //   // let's make it serialized
+
+          //     activeValues.join(this.$config.router.multipleValuesSeparator);
+
+          // }
+
+          // if the field is not empty, i.e. something is selected for given attribute/parameter, and it's not a default value
+          // add the parameter key to the array we will send further
+          if (activeValues.length > 0) {
+            onlyActivelySelectedFilters[keyName] = activeValues;
           }
 
-        });
 
-        // if (activeValues.length > 1) {
-        //   // we have multiple options selected in the filter for the given parameter
-        //   // let's make it serialized
-
-        //     activeValues.join(this.$config.router.multipleValuesSeparator);
-
-        // }
-
-        // if the field is not empty, i.e. something is selected for given attribute/parameter, add the parameter key to the array we will send further
-        if (activeValues.length > 0) {
-           onlyActivelySelectedFilters[keyName] = activeValues;
         }
 
 
@@ -454,14 +442,6 @@ export default {
     },
 
 
-    normalizeFilterOptionsBeforeSendingToAPI() {
-
-      const onlyActivelySelectedFilters = this.normalizeFilterOptions();
-
-      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
-
-
-    },
 
     doPagination(index) {
 
@@ -489,7 +469,7 @@ export default {
 
     },
 
-    selectOrderOption(selectedOptionId, selectedOptionText, apiId) {
+    onSelectOrderOption(selectedOptionId, selectedOptionText, apiId) {
 
       if (!this.radit.hasBeenSelected) {
         this.radit.hasBeenSelected = true
@@ -505,17 +485,10 @@ export default {
     },
 
 
-    selectFilterOption(filtrSekceKey, thisObjIndex, multiple, sectionHasReset, $event) {
+    onSelectFilterOption(filtrSekceKey, thisObjIndex, multiple, sectionHasReset, $event) {
 
 
-      // just an indicator if the filter has been used at least once
-      // :TODO: may not be needed
-      if (!this.filtrovat.hasBeenSelected) {
-        this.filtrovat.hasBeenSelected = true;
-      }
-
-      const tempResult = this.filtrNastaveni[filtrSekceKey];
-
+      const tempResult = this.filtrNastaveni[filtrSekceKey] ; // by reference
 
       if (multiple) {
 
@@ -527,7 +500,7 @@ export default {
 
             if (isItemReset) {
 
-              item.selected = (index === thisObjIndex) ? true : false;
+              item.selected = index === thisObjIndex;
 
             } else {
 
@@ -566,13 +539,58 @@ export default {
 
       }
 
-      this.filtrNastaveniAktualniPolozky = {[filtrSekceKey]: tempResult};
+      this.sendOnlyActivelySelectedFiltersForApiRequest()
 
-
-      this.normalizeFilterOptionsBeforeSendingToAPI();
 
     },
 
+    sendOnlyActivelySelectedFiltersForApiRequest() {
+
+      // just an indicator if the filter has been used at least once
+      // :TODO: may not be needed
+      if (!this.filtrovat.hasBeenSelected) {
+        this.filtrovat.hasBeenSelected = true;
+      }
+
+      const onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
+
+      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
+
+
+    },
+
+
+    onRangeChange($event) {
+
+
+      // Process this range
+      const currentRangeQuery = $event.value;
+
+      // /// Normalize this range request Query by containing the value with an array, like all other filter values
+      // Object.keys(currentRangeQuery).forEach(key => {
+
+      //   currentRangeQuery[key] = [currentRangeQuery[key]]
+
+      // });
+
+      this.sendOnlyActivelySelectedFiltersForApiRequest();
+
+      // Process all other filters
+
+      // let onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
+
+      // onlyActivelySelectedFilters = {
+
+      //   ...onlyActivelySelectedFilters,
+      //   ...currentRangeQuery,
+
+      // };
+
+
+      // this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
+
+
+    },
 
 
   },
@@ -632,7 +650,6 @@ export default {
         ZakladniPolozka: { id: 'radit-default', text: 'řadit dle' },
       },
       PoslanciFiltrovani: [],
-      filtrNastaveniAktualniPolozky: {},
       isSidebarOpen: true, // can set a default value
     };
   },

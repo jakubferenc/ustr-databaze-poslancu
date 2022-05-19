@@ -1,5 +1,16 @@
 import { fixTypos } from 'typopo';
 
+export const customLogger = (...args) => {
+
+  return false;
+
+  if (process.env.NODE_ENV === 'production') return;
+
+  console.log(...args);
+
+
+};
+
 export const truncate = (str, max, suffix) => str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))}${suffix}`;
 
 

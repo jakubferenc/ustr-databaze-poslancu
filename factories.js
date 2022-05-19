@@ -21,7 +21,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
   let sectionId = 0;
 
-  const finalResult = {
+  let finalResult = {
     PoslaneckySlib: {
       id: sectionId++,
       title: 'Poslanecky Slib',
@@ -120,7 +120,6 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       title: 'Počet mandátů',
       type: 'range',
       order: 'inline',
-      property: 'PocetMandatu',
       info: "Nějaké informace k vysvětlení",
       hasCounter: false,
       queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
@@ -265,27 +264,27 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
 
     const pocetMandatuMapped = [
-      filterData.PocetMandatu[0],
-      filterData.PocetMandatu[filterData.PocetMandatu.length-1],
-      filterData.AbsolutniMinimalniPocetMandatu,
-      filterData.AbsolutniMaximalniPocetMandatu,
+      filterData.PocetMandatu[0], // current min
+      filterData.PocetMandatu[filterData.PocetMandatu.length-1], // current max
+      filterData.AbsolutniMinimalniPocetMandatu, // default min
+      filterData.AbsolutniMaximalniPocetMandatu, // default max
     ];
 
 
     const vekyNaZacatkuMandatuMapped = [
-      filterData.VekNaZacatkuMandatu[0],
-      filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length-1],
-      filterData.AbsolutniMinimalniVekNaZacatkuMandatu,
-      filterData.AbsolutniMaximalniVekNaZacatkuMandatu,
+      filterData.VekNaZacatkuMandatu[0], // current min
+      filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length-1], // current max
+      filterData.AbsolutniMinimalniVekNaZacatkuMandatu, // default min
+      filterData.AbsolutniMaximalniVekNaZacatkuMandatu, // default max
 
     ] ///
   ////////
 
     const vekyNaKonciMandatuMapped = [
-      filterData.VekNaKonciMandatu[0],
-      filterData.VekNaKonciMandatu[filterData.VekNaKonciMandatu.length-1],
-      filterData.AbsolutniMinimalniVekNaKonciMandatu,
-      filterData.AbsolutniMaximalniVekNaKonciMandatu,
+      filterData.VekNaKonciMandatu[0], // current min
+      filterData.VekNaKonciMandatu[filterData.VekNaKonciMandatu.length-1], // current max
+      filterData.AbsolutniMinimalniVekNaKonciMandatu, // default min
+      filterData.AbsolutniMaximalniVekNaKonciMandatu, // default max
 
     ]; ///
    ////////////////////////////////////////////////////////////////////////
@@ -299,12 +298,12 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
   finalResult.UniverzitniVzdelani.values = vysokaSkolaMapped;
   finalResult.SocialniVazby.values = SocialniVazbyMapped;
   finalResult.Fotografie.values = maFotkuMapped;
+
   finalResult.PocetMandatu.values = pocetMandatuMapped;
   finalResult.VekNaZacatkuMandatu.values = vekyNaZacatkuMandatuMapped;
   finalResult.VekNaKonciMandatu.values = vekyNaKonciMandatuMapped;
 
   ////////////////////////////////////////////////////////////////////////
-
 
 
   // make active items in the filter based on the current query
@@ -315,7 +314,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
       // we don't want to pick selected item from range, beucase there are no selected items, but just two numbers
 
-      if (activeData?.[key]) {
+      if (activeData[key]) {
 
         // let's check the specific selected values, it's not the default reset one
 
@@ -353,7 +352,6 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
 
   });
-
 
 
   return finalResult;

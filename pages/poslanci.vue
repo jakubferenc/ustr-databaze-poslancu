@@ -35,6 +35,8 @@
 
 import apiModule from '../factories';
 
+import {customLogger} from '~/utils/functions'
+
 const PoslanciSeznamAPI = () => import('~/components/PoslanciSeznamAPI.vue');
 
 const normalizeURLParamsToValueInArrayFormat = (routeURLParams) => {
@@ -87,8 +89,6 @@ export default {
 
     async fetch() {
 
-      // data variable accessible for api calls and other work here
-
       const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
 
       this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
@@ -111,7 +111,7 @@ export default {
 
         this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
-        console.log("string Request sent to API", this.currentQueryStringified);
+        customLogger("string Request sent to API", this.currentQueryStringified);
 
 
         await this.$store.dispatch("getParlamentyDatabaze");
@@ -121,21 +121,20 @@ export default {
         // Defines which params are reacting to the current filter settings
         // But for Parlamenty/Snemovny which must stay fixed
 
-
-        // console.log("this.$store.state.filter_data", this.$store.state.filter_data);
-
         this.currentFilterData = {
-          ...this.$store.state.filter_data,
-          Pohlavi: this.defaultFilterData.Pohlavi.map(item => item),
-          PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map(item => item),
+          ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
+          Pohlavi: this.defaultFilterData.Pohlavi.map(item => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
+          PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map(item => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
           Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
         };
 
         const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
 
-        console.log("this.currentFilterData", this.currentFilterData);
+        customLogger("this.currentFilterData", this.currentFilterData);
 
         this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
+
+        customLogger("this.currentFilterSettings", this.currentFilterSettings);
 
         this.$router.push({
           path: '/poslanci/',
@@ -145,37 +144,6 @@ export default {
 
       },
 
-      cleanUpNullQueryParamsFromFilter(queryObj = {} /* :Object */) /* :Object */ {
-
-
-        let filteredQueryParams = {};
-
-
-        Object.keys(queryObj).forEach((key) => {
-
-          if (Array.isArray(queryObj[key])) {
-
-
-              const paramSingleValue = queryObj[key][0];
-
-              // only add attributes that have a selected value
-              if (paramSingleValue != undefined && paramSingleValue != null) {
-
-                filteredQueryParams[key] = queryObj[key];
-
-              }
-
-
-          } else {
-
-            throw new Error('Filter params must be enclosed in an array!');
-          }
-
-        });
-
-        return filteredQueryParams;
-
-      },
 
       stringifyQueryForAPI(query = {}) {
 
@@ -225,10 +193,14 @@ export default {
 
         const activeFilterItems = $event;
 
+        customLogger("from refreshSelectedFiltersHandler", activeFilterItems);
+
+        console.log("from refreshSelectedFiltersHandler", activeFilterItems);
+
         this.currentQuery = {
           ...this.defaultQuery,
           // ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
-          ...this.cleanUpNullQueryParamsFromFilter(activeFilterItems),
+          ...activeFilterItems,
         };
 
 
@@ -243,16 +215,11 @@ export default {
 
         const newLimit = parseInt(this.currentQuery.limit) || this.defaultQuery.limit;
 
-
-        const queryObj = {
+        this.currentQuery = {
           ...this.$route.query,
           ...{ stranka: [newStranka]},
           ...{ limit: [newLimit]},
         };
-
-
-        const filteredQueryParams = this.cleanUpNullQueryParamsFromFilter(queryObj);
-        this.currentQuery = filteredQueryParams;
 
         this.$router.push({
           path: '/poslanci/',
