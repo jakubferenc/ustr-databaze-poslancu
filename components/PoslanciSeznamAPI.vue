@@ -328,6 +328,8 @@
 const Poslanec = () => import('~/components/Poslanec.vue');
 const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
 
+import {customLogger} from '~/utils/functions'
+
 
 export default {
 
@@ -433,6 +435,18 @@ export default {
 
         }
 
+        if (item.type === 'range') {
+
+          if (item.values[0] !== item.values[2]) {
+            onlyActivelySelectedFilters[item.queryStructure[0]] = item.values[0];
+          }
+
+          if (item.values[1] !== item.values[3]) {
+            onlyActivelySelectedFilters[item.queryStructure[1]] = item.values[1];
+          }
+
+        }
+
 
       });
 
@@ -487,6 +501,10 @@ export default {
 
     onSelectFilterOption(filtrSekceKey, thisObjIndex, multiple, sectionHasReset, $event) {
 
+      if (!this.filtrovat.hasBeenSelected) {
+        this.filtrovat.hasBeenSelected = true;
+      }
+
 
       const tempResult = this.filtrNastaveni[filtrSekceKey] ; // by reference
 
@@ -539,19 +557,6 @@ export default {
 
       }
 
-      this.sendOnlyActivelySelectedFiltersForApiRequest()
-
-
-    },
-
-    sendOnlyActivelySelectedFiltersForApiRequest() {
-
-      // just an indicator if the filter has been used at least once
-      // :TODO: may not be needed
-      if (!this.filtrovat.hasBeenSelected) {
-        this.filtrovat.hasBeenSelected = true;
-      }
-
       const onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
 
       this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
@@ -563,32 +568,36 @@ export default {
     onRangeChange($event) {
 
 
+
+
       // Process this range
-      const currentRangeQuery = $event.value;
+      const currentRangeQuery = {};
 
       // /// Normalize this range request Query by containing the value with an array, like all other filter values
-      // Object.keys(currentRangeQuery).forEach(key => {
+      Object.keys($event.values).forEach(key => {
 
-      //   currentRangeQuery[key] = [currentRangeQuery[key]]
+        currentRangeQuery[key] = [$event.values[key]]
 
-      // });
-
-      this.sendOnlyActivelySelectedFiltersForApiRequest();
-
-      // Process all other filters
-
-      // let onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
-
-      // onlyActivelySelectedFilters = {
-
-      //   ...onlyActivelySelectedFilters,
-      //   ...currentRangeQuery,
-
-      // };
+      });
 
 
-      // this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
 
+      // check all other range sliders if the absolute max or min is different from current min or max values
+      // if so, add them to the query, because we want it to have it in the URL string
+
+      let onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
+
+      onlyActivelySelectedFilters = {
+
+        ...onlyActivelySelectedFilters,
+        ...currentRangeQuery,
+
+      };
+
+      console.log("onlyActivelySelectedFilters from range", onlyActivelySelectedFilters);
+
+
+      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
 
     },
 

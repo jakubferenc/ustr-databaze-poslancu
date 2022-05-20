@@ -314,8 +314,9 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
       // we don't want to pick selected item from range, beucase there are no selected items, but just two numbers
 
-      if (activeData[key]) {
+      if (activeData[key]) { // if the key is in the active data
 
+        
         // let's check the specific selected values, it's not the default reset one
 
 

@@ -2,21 +2,25 @@
 
 .multi-range-slider(ref="range")
 
-  input(type="hidden" id="" name="" :value="`[${MinValue}, ${MaxValue}]`")
+  input(type="hidden" :value=" `${leftValue}, ${rightValue}` ")
 
-  input(@input="setLeftValue()" @mouseup="mouseUpHandler"  type="range" id="input-left" :min="MinValue" :max="MaxValue - 1" :value="CurrentMinValue")
-  //- input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
-  input(@input="setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue + 1" :max="MaxValue" :value="CurrentMaxValue")
+  //- we cannot set min and max to the values acc to current left or right input, because these sliders would shrink
+  //- and by shrinking would not fit the custom slider thumbs
+  //- therefore we need to set for both sliders the same min and max based on the current data sent to this component
+
+  input(@input="_setLeftValue()" @mouseup="mouseUpHandler"  type="range" ref="inputLeftEl" :min="MinValue" :max="MaxValue" :value="leftValue")
+  //- input(@input="_setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
+  input(@input="_setRightValue()" @mouseup="mouseUpHandler"  type="range" ref="inputRightEl" :min="MinValue" :max="MaxValue" :value="rightValue")
 
   .slider
     .track
-    .range
-    .thumb.left {{leftValue}}
-    .thumb.right() {{rightValue}}
+    .range(ref="customRange")
+    .thumb.left(ref="thumbLeft") {{leftValue}}
+    .thumb.right(ref="thumbRight") {{rightValue}}
 
-    .text-left {{MinValue}}
+    .text-left(ref="textLeft") {{MinValue}}
 
-    .text-right {{MaxValue}}
+    .text-right(ref="textRight") {{MaxValue}}
 
 </template>
 
@@ -25,12 +29,14 @@
 
 
   .multi-range-slider
-    height: 60px
+    min-height: 60px
     position: relative
     justify-content: center
     align-items: center
     display: flex
     margin-top: -15px
+    overflow: hidden
+
 
 
   .slider
@@ -83,6 +89,7 @@
       display: flex
       justify-content: center
       align-items: center
+      cursor: pointer
 
     .thumb.left
       left: 0
@@ -94,24 +101,41 @@
 
   input[type="range"]
     position: absolute
+    cursor: pointer
     pointer-events: none
-    -webkit-appearance: none
     z-index: 2
     height: 10px
     width: 100%
     opacity: 0
 
+    -webkit-appearance: none
+
+
   input[type="range"]::-webkit-slider-thumb
     pointer-events: all
     width: 30px
     height: 30px
-    border-radius: 0
     border: 0 none
     background-color: red
     cursor: pointer
 
     -webkit-appearance: none
 
+  input[type="range"]::-moz-range-thumb
+    pointer-events: all
+    width: 30px
+    height: 30px
+    border: 0 none
+    background-color: red
+    cursor: pointer
+
+  input[type="range"]::-ms-thumb
+    pointer-events: all
+    width: 30px
+    height: 30px
+    border: 0 none
+    background-color: red
+    cursor: pointer
 
 
 </style>
@@ -136,22 +160,17 @@
 
         console.log("changed min value", this.QueryStructure[0], newVal, oldVal);
 
-        this.leftValue = this.MinValue;
+        this._setLeftValue();
+        this._setRightValue();
 
-        const percent = 0;
-        this.$thumbLeft.style.left = percent + "%";
-        this.$range.style.left = percent + "%";
+
       },
       MaxValue: function(newVal, oldVal) { // watch it
 
         console.log("changed max value", this.QueryStructure[1], newVal, oldVal);
 
-        this.rightValue = this.MaxValue;
-
-        const percent = 0;
-        this.$thumbRight.style.right = percent + "%";
-        this.$range.style.right = percent + "%";
-
+        this._setLeftValue();
+        this._setRightValue();
 
       }
     },
@@ -167,9 +186,8 @@
     },
     created() {
 
-      this.leftValue = this.MinValue;
-      this.rightValue = this.MaxValue;
-
+      this.leftValue = this.CurrentMinValue;
+      this.rightValue = this.CurrentMaxValue;
 
     },
     methods: {
@@ -178,21 +196,28 @@
 
         this.$emit('multi-range-change', {
           name: this.Name,
-          value: {
+          values: {
             [this.QueryStructure[0]]: this.leftValue,
             [this.QueryStructure[1]]: this.rightValue,
-        }});
+          },
+
+        });
 
       },
 
-      setLeftValue() {
+      _setLeftValue() {
 
-        console.log("volam set left value");
+        // this is internal for making the custom slider button work
+
+
 
         const [min, max] = [parseInt(this.$inputLeft.min), parseInt(this.$inputLeft.max)];
         this.leftValue = Math.min(parseInt(this.$inputLeft.value), parseInt(this.$inputRight.value) - 1);
 
-        const percent = ((this.leftValue - min) / (max - min)) * 100;
+        this.$refs.inputLeftEl.value = this.leftValue;
+
+        const percent = (  (this.leftValue - min) / (max - min) ) * 100;
+
         this.$thumbLeft.style.left = percent + "%";
         this.$range.style.left = percent + "%";
 
@@ -200,17 +225,24 @@
       },
 
 
-    setRightValue() {
+    _setRightValue() {
 
-       console.log("volam set right value");
+      // this is internal for making the custom slider button work
+
+
 
 
       const [min, max] = [parseInt(this.$inputRight.min), parseInt(this.$inputRight.max)];
       this.rightValue = Math.max(parseInt(this.$inputRight.value), parseInt(this.$inputLeft.value) + 1);
 
-      const percent = ((this.rightValue  - min) / (max - min)) * 100;
-      this.$thumbRight.style.right = 100 - percent + "%";
-      this.$range.style.right = 100 - percent + "%";
+      this.$refs.inputRightEl.value = this.rightValue;
+
+      const percent = (  (this.rightValue - min) / (max - min) ) * 100;
+
+
+      this.$thumbRight.style.right = `${100 - percent}%`;
+      this.$range.style.right = `${100 - percent}%`;
+
 
 
     }
@@ -222,16 +254,16 @@
       this.$thisEl = this.$refs.range;
 
 
-      this.$inputLeft = this.$thisEl.querySelector('#input-left');
-      this.$inputRight = this.$thisEl.querySelector('#input-right');
+      this.$inputLeft = this.$refs.inputLeftEl;
+      this.$inputRight = this.$refs.inputRightEl;
 
-      this.$thumbLeft = this.$thisEl.querySelector('.thumb.left');
-      this.$thumbRight = this.$thisEl.querySelector('.thumb.right');
+      this.$thumbLeft = this.$refs.thumbLeft;
+      this.$thumbRight = this.$refs.thumbRight;
 
-      this.$range = this.$thisEl.querySelector(".range");
+      this.$range = this.$refs.customRange;
 
-      this.setLeftValue();
-      this.setRightValue();
+      this._setLeftValue();
+      this._setRightValue();
 
 
     },

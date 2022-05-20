@@ -2,7 +2,6 @@ import { fixTypos } from 'typopo';
 
 export const customLogger = (...args) => {
 
-  return false;
 
   if (process.env.NODE_ENV === 'production') return;
 

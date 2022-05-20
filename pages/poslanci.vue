@@ -132,6 +132,8 @@ export default {
 
         customLogger("this.currentFilterData", this.currentFilterData);
 
+        customLogger("this.currentQueryNormalized", currentQueryNormalized);
+
         this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
 
         customLogger("this.currentFilterSettings", this.currentFilterSettings);
@@ -152,12 +154,12 @@ export default {
 
         Object.keys(query).forEach((key, index) => {
 
-          let thisPrefix = (index == 0) ? '' : '&';
+          const thisPrefix = (index === 0) ? '' : '&';
 
           const thisItem = query[key];
 
 
-          if (thisItem.length == 1) {
+          if (thisItem.length === 1) {
 
             // it's a single value param
             finalQueryString = finalQueryString + `${thisPrefix}${key}=${thisItem[0]}`;
@@ -171,7 +173,7 @@ export default {
             // for example: to get multiple names, you need "Name=Jakub&Name=Josef&name=Anežka"
             thisItem.forEach((subItem, subIndex) => {
 
-              let thisPrefix = (index == 0 && subIndex == 0) ? '' : '&';
+              const thisPrefix = (index == 0 && subIndex == 0) ? '' : '&';
 
               finalQueryString = finalQueryString + `${thisPrefix}${key}=${subItem}`;
 
@@ -195,11 +197,8 @@ export default {
 
         customLogger("from refreshSelectedFiltersHandler", activeFilterItems);
 
-        console.log("from refreshSelectedFiltersHandler", activeFilterItems);
-
         this.currentQuery = {
           ...this.defaultQuery,
-          // ...normalizeURLParamsToValueInArrayFormat(this.$route.query), // take URL params at the request time and add them to the request for API
           ...activeFilterItems,
         };
 
