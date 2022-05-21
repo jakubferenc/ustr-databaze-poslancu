@@ -316,7 +316,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
       if (activeData[key]) { // if the key is in the active data
 
-        
+
         // let's check the specific selected values, it's not the default reset one
 
 
@@ -1239,30 +1239,6 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
 
 };
 
-const preparePoslanecDetail = async (poslanec) => {
-
-  // :TODO: get cached poslanec if already in the store
-  // :TODO: cache via http cache?
-
-  try {
-
-    const poslanecData = poslanec;
-
-    // prepare data for casova osa
-    poslanecData.CasovaOsa = getCasovaOsaDataForPoslanec(poslanec);
-
-    //poslanecData.AdresyProMapu = getAdresyProMapuForPoslanec(poslanec);
-    poslanecData.AdresyProMapu = poslanec.Adresy;
-
-
-    return poslanecData;
-
-
-  } catch (err) {
-    console.warn(err);
-  };
-
-};
 
 const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 
@@ -1273,9 +1249,16 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 
     const poslanecRes = await axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
 
-    const poslanec = poslanecRes.data;
+    const poslanecData = poslanecRes.data;
 
-    return preparePoslanecDetail(poslanec);
+    console.log("poslanec data from factory", poslanecData);
+
+    // prepare data for casova osa
+    poslanecData.CasovaOsa = getCasovaOsaDataForPoslanec(poslanecData);
+
+    poslanecData.AdresyProMapu = getAdresyProMapuForPoslanec(poslanecData);
+
+    return poslanecData;
 
   } catch (err) {
     console.warn(err);
@@ -1284,7 +1267,7 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 };
 
 export default {
-  preparePoslanecDetail,
+
   getPoslanecDetailFactory,
   getAllSnemovniObdobiWordpressFactory,
   getSnemovniObdobiDetailFactory,

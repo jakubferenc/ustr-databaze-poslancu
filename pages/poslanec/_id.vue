@@ -104,47 +104,49 @@
 
       .mapbox()
 
-          <l-map ref="mapbox" :options="{scrollWheelZoom: false}" :zoom="8" :center="[55.9464418,8.1277591]">
-            l-tile-layer(
-              id='',
-              accessToken='pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
-              attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
-              url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
-            )
-            <v-marker-cluster ref="clusterRef" :options="{showCoverageOnHover: true, zoomToBoundsOnClick: true}">
-              <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
-                <l-popup>
-                  .is-map-card.person-social-network-item.person-social-network-item-poslanec
+          //- <l-map ref="mapbox" :options="{scrollWheelZoom: true}" :zoom="8" :center="[55.9464418,8.1277591]">
+          //-   l-tile-layer(
+          //-     id='',
+          //-     accessToken='pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
+          //-     attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
+          //-     url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
+          //-   )
+          //-   <v-marker-cluster :options="{showCoverageOnHover: true, zoomToBoundsOnClick: true}">
+          //-     <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
+          //-       <l-popup>
+          //-         .is-map-card
 
-                    .content-container
+          //-           .content-container
 
-                      .header
-                        .category {{item.DruhNazev}}
+          //-             .header
+          //-               .category {{item.DruhNazev}}
 
-                      .content
-                        // show only if the addresses are not birth nor death
-                        .desc(v-if="item.Druh != 5 && item.Druh != 1")
-                          p {{item.Parlament}}
-                          p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
-                          p {{item.DruhTyp}}
-                        .name {{item.Nazev}}
+          //-             .content
+          //-               //- show only if the addresses are not birth nor death
+          //-               .desc()
+          //-                 p {{item.Parlament}}
+          //-                 p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
+          //-                 p {{item.DruhTyp}}
+          //-               .name {{item.Nazev}}
 
-                </l-popup>
-                <l-icon :icon-anchor="[0,0]" :icon-size="[35, 35]" class-name="map-address-icon">
+          //-       </l-popup>
 
-                  div(v-if="item.Druh != 5 && item.Druh != 1")
-                    span {{index}}
+          //-       <l-icon :icon-anchor="[0,0]" :icon-size="[35, 35]" class-name="map-address-icon">
 
-
-                  <MapaIkonaNarozeni v-if="item.Druh == 1" />
-                  <MapaIkonaUmrti v-if="item.Druh == 5" />
+          //-         div(v-if="item.Druh != 5 && item.Druh != 1")
+          //-           span {{index}}
 
 
-                </l-icon>
-              </l-marker>
-            </v-marker-cluster>
+          //-         <MapaIkonaNarozeni v-if="item.Druh == 1" />
+          //-         <MapaIkonaUmrti v-if="item.Druh == 5" />
 
-          </l-map>
+
+          //-       </l-icon>
+
+          //-     </l-marker>
+          //-   </v-marker-cluster>
+
+          //- </l-map>
 
     .section-padding-h-margin-v.typography-has-no-h-padding
 
@@ -267,28 +269,11 @@
           }
         } else {
 
-          //:TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
+          await store.dispatch("getPoslanecDetail", {poslanecId: params.id});
 
-          // if (!$config.useFileCachedAPI) {
-
-            console.log("from non cache api call");
-
-            await store.dispatch("getPoslanecDetail", {poslanecId: params.id});
-
-            return {
-              poslanec: store.state.poslanec
-            }
-
-          // } else {
-
-          //   const poslanecData = await $axios.get(`/data/poslanec/${params.id}/`)
-
-
-          //   return {
-          //     poslanec: poslanecData.data,
-          //   }
-
-          // }
+          return {
+            poslanec: store.state.poslanec
+          }
 
         }
 
@@ -317,10 +302,10 @@
         console.log("from poslanec", this.poslanec);
 
 
-        this.$nextTick(() => {
+        // this.$nextTick(() => {
 
-          this.$refs.mapbox.mapObject.fitBounds(this.geojsonBoundsOnly);
-        });
+        //   this.$refs.mapbox.mapObject.fitBounds(this.geojsonBoundsOnly);
+        // });
 
 
       },

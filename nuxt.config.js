@@ -19,7 +19,7 @@ export default {
     "~/server-middleware/index.js",
   ],
   router: {
-    trailingSlash: true,
+    trailingSlash: undefined,
   },
   publicRuntimeConfig: config,
   env: {
