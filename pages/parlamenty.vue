@@ -25,7 +25,7 @@
 
 const ParlamentRadek = () => import('~/components/ParlamentRadek.vue');
 
-// const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
+const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
 
 export default {
 
@@ -36,7 +36,7 @@ export default {
 
       try {
 
-        // if (this.$config.useFileCachedAPI) {
+        if (!this.$config.useFileCachedAPI) {
 
 
           await this.$store.dispatch("getParlamenty");
@@ -45,13 +45,13 @@ export default {
           this.parlamenty = this.$store.state.parlamenty;
 
 
-        // } else {
+        } else {
 
-        //   const parlamentyRes = await ParlamentyData();
+          const parlamentyRes = await ParlamentyData();
 
-        //   this.parlamenty = parlamentyRes;
+          this.parlamenty = parlamentyRes;
 
-        // }
+        }
 
 
       } catch (err) {

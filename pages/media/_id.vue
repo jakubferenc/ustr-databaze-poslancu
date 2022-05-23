@@ -65,9 +65,11 @@ export default {
     async asyncData({params, error, payload, store, $axios, $config}) {
 
       if (payload) {
+
         return {
           soubor: payload
         }
+
       } else {
 
         if (!$config.useFileCachedAPI) {

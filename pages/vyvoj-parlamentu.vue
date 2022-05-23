@@ -186,7 +186,7 @@ export default {
           await store.dispatch("getCasovaOsa");
 
           return {
-            casova_osa: this.$store.state.casova_osa
+            casova_osa: store.state.casova_osa
           }
 
         } else {
