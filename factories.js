@@ -1251,7 +1251,6 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 
     const poslanecData = poslanecRes.data;
 
-    console.log("poslanec data from factory", poslanecData);
 
     // prepare data for casova osa
     poslanecData.CasovaOsa = getCasovaOsaDataForPoslanec(poslanecData);

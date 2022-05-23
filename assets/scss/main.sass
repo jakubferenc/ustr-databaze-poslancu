@@ -277,11 +277,18 @@ input[type="checkbox"]
   justify-content: space-between
   flex-direction: row
 
+.map-card__dates
+  margin: 1em 0
+  max-height: 350px
+  overflow-y: auto
+
+.map-card__date-item
+  margin-bottom: .5em
 
 
 .map-address-icon
-    width: 35px
-    height: 35px
+    width: 50px
+    height: 50px
     background-color: black
     border-radius: 100%
     display: flex
@@ -289,10 +296,10 @@ input[type="checkbox"]
     justify-content: center
     color: #fff
     text-align: center
-    line-height: 35px
 
     svg
-      vertical-align: middle
+      width: auto
+      height: 60%
 
 
 .map-person-thumb-head-icon
@@ -308,8 +315,9 @@ input[type="checkbox"]
     position: absolute
     object-fit: cover
 
+.leaflet-popup-tip-container
 
-
+  display: none
 /****************************************************/
 /* :Social network card: */
 
@@ -323,23 +331,75 @@ input[type="checkbox"]
     height: auto
 
 
+
 .is-map-card
   position: relative
-  z-index: 9
+  z-index: 1
 
   background-color: #fff
+  border: 1px solid #000
   box-sizing: content-box
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
-  width: 375px
+  min-width: 244px
+  min-height: 125px
   border-radius: 14px
   padding: 20px
+  flex-direction: column
 
   text-decoration: none
   // margin-right: math.div($margin-until-desktop, 2)
 
   display: flex
   justify-content: space-between
-  align-items: center
+  align-items: space-between
+
+
+  .map-card__title
+
+    @extend %typography-card-title
+
+  .map-card__content
+
+    .map-card__content__address
+
+      @extend %typography-metadata-section-title
+
+    .map-card__content__address__meta
+
+      margin-top: 1em
+
+
+  &::before
+    content: ""
+
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 16px 0 16px 27.7px
+    border-color: transparent transparent transparent #000
+
+
+    position: absolute
+    bottom: 66px
+    right: -28px
+    z-index: 1
+
+
+  &::after
+    content: ""
+
+    width: 0
+    height: 0
+    border-style: solid
+    border-width: 15px 0 15px 26.0px
+    border-color: transparent transparent transparent #fff
+
+
+    position: absolute
+    bottom: 67px
+    right: -26px
+    z-index: 2
+
 
 
   .content-container

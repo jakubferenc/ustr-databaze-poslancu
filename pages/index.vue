@@ -42,9 +42,6 @@ const ParlamentySeznam = () => import('~/components/ParlamentySeznam.vue');
 const SlovnikSlider = () => import('~/components/SlovnikSlider.vue');
 const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
-const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.default || m);
-const MediaData = () => import('~/data/media.json').then(m => m.default || m);
-const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
 
 
 export default {

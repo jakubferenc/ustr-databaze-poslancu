@@ -95,7 +95,7 @@
 
     .header
       @extend %typography-body-text
-      @extend %typography-karta-nadpis
+      @extend %typography-card-title
 
     .content
       @extend %typography-alt-heading

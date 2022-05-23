@@ -144,49 +144,119 @@ export const getAdresyProMapuForPoslanec = (poslanec) => {
 
 
   let adresyPolozky = [];
-  let adresyMandaty = [];
 
   if (poslanec.Adresy) {
-    adresyPolozky = [...adresyPolozky, ...poslanec.Adresy.map((adresa) => {
+    adresyPolozky = [...poslanec.Adresy].map((adresa) => {
 
       adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
 
       return adresa;
 
-    })];
+    });
   }
+
+  // check if adresa from the mandat is in the poslanec.Adresy
+  // if so, add date and other metadata to the same address (don't create a new one)
 
   if (poslanec.Mandaty && poslanec.Mandaty.length > 0) {
 
 
-    poslanec.Mandaty.forEach((mandat, index) => {
+    [...poslanec.Mandaty].forEach((mandat) => {
 
-      if (mandat.AdresyVykonMandatu) {
-        adresyMandaty = [...adresyMandaty, ...mandat.AdresyVykonMandatu
-          .filter(adresa => adresa.Druh != 1 && adresa.Druh != 5)
-          .map((adresa) => {
-          adresa._mandatId = mandat.Id;
-          adresa.Parlament = mandat.Parlament;
-          adresa.DatumZacatkuZobrazene = mandat.DatumZacatkuZobrazene;
-          adresa.DatumKonceZobrazene = mandat.DatumKonceZobrazene;
-          adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
-          adresa.DruhTyp = 'AdresaVykonMandatu';
-          return adresa;
-        })];
+      if (mandat.AdresyVykonMandatu.length) {
+
+        mandat.AdresyVykonMandatu.forEach((thisItemAddress) => {
+
+          const existingItemIndex = adresyPolozky.findIndex(itemExisting => itemExisting.GeoX === thisItemAddress.GeoX && itemExisting.GeoY === thisItemAddress.GeoY);
+
+          const thisZaznamPrepare = {
+
+            DatumZacatkuZobrazene: mandat.DatumZacatkuZobrazene,
+            DatumKonceZobrazene: mandat.DatumKonceZobrazene,
+            Parlament: mandat.Parlament,
+            Id: thisItemAddress.Id,
+            _mandatId: mandat.Id,
+
+          };
+
+          if (existingItemIndex > -1 && [2, 3].includes(thisItemAddress.Druh) ) {
+
+            // the address of the type and geo address already exists, let's
+
+            if (adresyPolozky[existingItemIndex].Zaznamy === undefined) {
+
+              adresyPolozky[existingItemIndex].Zaznamy = [];
+              adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
+
+
+            } else {
+
+              const existingItemIndexZaznam = adresyPolozky[existingItemIndex].Zaznamy.findIndex(itemExisting => itemExisting.DatumZacatkuZobrazene === thisZaznamPrepare.DatumZacatkuZobrazene && itemExisting.DatumZacatkuZobrazene === thisZaznamPrepare.DatumZacatkuZobrazene);
+
+              if (existingItemIndexZaznam === -1) {
+
+                adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
+
+              }
+
+            }
+
+
+          }
+
+
+        });
+
+
       }
-      if (mandat.AdresyZvoleni) {
-        adresyMandaty = [...adresyMandaty, ...mandat.AdresyZvoleni
-          .filter(adresa => adresa.Druh != 1 && adresa.Druh != 5)
-          .map((adresa) => {
-          adresa._mandatId = mandat.Id;
-          adresa.Parlament = mandat.Parlament;
-          adresa.DatumZacatkuZobrazene = mandat.DatumZacatkuZobrazene;
-          adresa.DatumKonceZobrazene = mandat.DatumKonceZobrazene;
-          adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
-          adresa.DruhTyp = 'AdresaZvoleni';
-          return adresa;
-        })];
-      }
+
+      // if (mandat.AdresyZvoleni.length) {
+
+      //   [...mandat.AdresyVykonMandatu].forEach((thisItemAddress) => {
+
+      //     const existingItemIndex = adresyPolozky.findIndex(itemExisting => itemExisting.GeoX === thisItemAddress.GeoX && itemExisting.GeoY === thisItemAddress.GeoY);
+
+      //     const thisZaznamPrepare = {
+
+      //       DatumZacatkuZobrazene: mandat.DatumZacatkuZobrazene,
+      //       DatumKonceZobrazene: mandat.DatumKonceZobrazene,
+      //       Parlament: mandat.Parlament,
+      //       Id: thisItemAddress.Id,
+      //       _mandatId: mandat.id,
+
+      //     };
+
+      //     if (existingItemIndex > -1 && [2, 3].includes(thisItemAddress.Druh) ) {
+
+      //       // the address of the type and geo address already exists, let's
+
+      //       if (!adresyPolozky[existingItemIndex].Zaznamy) {
+
+      //         adresyPolozky[existingItemIndex].Zaznamy = [];
+      //         adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
+
+      //       } else {
+
+      //         const existingItemIndexZaznam = adresyPolozky.Zaznamy.findIndex(itemExisting => itemExisting.DatumZacatkuZobrazene === thisItemAddress.DatumZacatkuZobrazene && itemExisting.DatumZacatkuZobrazene === thisItemAddress.DatumZacatkuZobrazene);
+
+      //         if (existingItemIndexZaznam === -1) {
+
+      //           adresyPolozky[existingItemIndexZaznam].Zaznamy.push(thisZaznamPrepare);
+
+      //         }
+
+      //       }
+
+
+      //     }
+
+
+
+      //   });
+
+
+      // }
+
 
     });
 
@@ -195,7 +265,9 @@ export const getAdresyProMapuForPoslanec = (poslanec) => {
 
   }
 
-  return [...adresyPolozky, ...adresyMandaty];
+
+
+  return adresyPolozky;
 
 
 };
