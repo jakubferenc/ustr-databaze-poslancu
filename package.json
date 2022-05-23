@@ -14,25 +14,25 @@
         "generate": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js generate",
         "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js start",
         "downloadData": "node --max-old-space-size=4096 ./scripts/index.js"
-
     },
     "browserslist": [
-      "last 3 versions",
-      "> 3%"
+        "last 3 versions",
+        "> 3%"
     ],
     "engines": {
-      "node": ">= 16.0.0"
+        "node": ">= 16.0.0"
     },
     "dependencies": {
         "@nuxtjs/axios": "^5.13.1",
         "@nuxtjs/i18n": "^7.2.1",
         "@nuxtjs/proxy": "^2.1.0",
+        "axios-retry": "^3.2.5",
         "express": "^4.17.1",
+        "leaflet": "^1.8",
+        "leaflet.markercluster": "^1.5.3",
         "nuxt": "^2.2.0",
         "qs": "^6.10.2",
-        "typopo": "^2.5.2",
-        "leaflet": "^1.8",
-        "leaflet.markercluster": "^1.5.3"
+        "typopo": "^2.5.2"
     },
     "devDependencies": {
         "@babel/core": "^7.14.3",

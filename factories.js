@@ -1,10 +1,28 @@
 import axios from "axios";
+import axiosRetry from "axios-retry";
+
 import {
   normalizeSouborAttrs,
   getAdresyProMapuForPoslanec,
   getCasovaOsaDataForPoslanec,
   stripHTMLTags
 } from './utils/functions.js';
+
+
+const axiosInstance = axios.create({
+  // Keep the timeout low in development so it at least somehow responsive
+  timeout: process.dev ? 10000 : 45000,
+});
+
+// We need retrying on timeout, because wordpress api quite often hangs
+axiosRetry(axiosInstance, {
+  retries: 50,
+  retryDelay: () => 5000,
+  shouldResetTimeout: true,
+  retryCondition: (error) => {
+    return !error.response;
+  },
+});
 
 /**
  *
@@ -16,6 +34,9 @@ import {
  * @param {*} activeData
  * @returns
  */
+
+
+
 
 const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) => {
 
@@ -772,7 +793,7 @@ const createFilterSettingsFactory = (nabozenske_vyznani, narodnosti, parlamenty,
 
 const getAllStrankyFactory = async (wordpressAPIURLWebsite) => {
 
-  const strankyResource =  await axios.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
+  const strankyResource =  await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/pages?_embed`);
 
   const strankyRes = strankyResource.data;
 
@@ -803,12 +824,12 @@ const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, l
     }
   };
 
-  const { headers } = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}`, wpFetchHeaders);
+  const { headers } = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}`, wpFetchHeaders);
   const totalPages = headers['x-wp-totalpages'];
 
   for (let page = 1; page <=totalPages; page++) {
 
-    const posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
+    const posts = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
     media_soubory = [...media_soubory, ...posts.data];
 
   }
@@ -824,7 +845,7 @@ const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, l
 
 const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL) => {
 
-  let rodiny = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
+  let rodiny = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/rodina?_embed`)
   .then(res => res.data);
 
   rodiny = rodiny
@@ -867,7 +888,7 @@ const getRodinySocialniMapyFactory = async (wordpressAPIURLWebsite, databazePosl
 
     rodina.osoby = await Promise.all(rodina.osoby_ids.map(async (osoba_id) => {
 
-      const osoba = await axios.get(`${databazePoslancuURL}/Api/osoby/${osoba_id}`);
+      const osoba = await axiosInstance.get(`${databazePoslancuURL}/Api/osoby/${osoba_id}`);
 
       return osoba.data;
 
@@ -897,12 +918,12 @@ const getCasovaOsaFactory = async (wordpressAPIURLWebsite) => {
 
     const limit = 100;
 
-    const { headers } = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?per_page=${limit}`, wpFetchHeaders);
+    const { headers } = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?per_page=${limit}`, wpFetchHeaders);
     const totalPages = headers['x-wp-totalpages'];
 
     for (let page = 1; page <=totalPages; page++) {
 
-      const posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
+      const posts = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/casova_osa?_embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
       casova_osa = [...casova_osa, ...posts.data];
 
     }
@@ -948,7 +969,7 @@ const getSlovnikovaHeslaFactory = async (wordpressAPIURLWebsite) => {
 
   try {
 
-    let slovnikova_hesla = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100&_embed`);
+    let slovnikova_hesla = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/slovnik?per_page=100&_embed`);
 
     slovnikova_hesla = slovnikova_hesla.data;
 
@@ -976,7 +997,7 @@ const getParlamentyDatabazeFactory = async (databazePoslancuURL) => {
   try {
 
 
-    const parlamenty = await axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
+    const parlamenty = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
     return parlamenty.data;
 
 
@@ -997,13 +1018,13 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
 
 
 
-    let parlamentyWPData = await axios.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
+    let parlamentyWPData = await axiosInstance.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
     parlamentyWPData = parlamentyWPData.data;
 
     return await Promise.all(parlamenty.map(async (parlament) => {
 
 
-      const getSnemovniObdobi = await axios.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
+      const getSnemovniObdobi = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
 
       parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
 
@@ -1094,19 +1115,19 @@ const getAllSnemovniObdobiWordpressFactory = async(wordpressAPIURLWebsite, datab
     }
   };
 
-  const { headers } = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=${limit}`, wpFetchHeaders);
+  const { headers } = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=${limit}`, wpFetchHeaders);
   const totalPages = headers['x-wp-totalpages'];
 
   for (let page = 1; page <=totalPages; page++) {
 
-    const posts = await axios.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
+    const posts = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?embed&per_page=${limit}&page=${page}`, wpFetchHeaders);
     snemovni_obdobi = [...snemovni_obdobi, ...posts.data];
 
   }
 
   return snemovni_obdobi;
 
-  // let parlamenty = await axios.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
+  // let parlamenty = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovny/seznam`);
   // parlamenty = parlamenty.data;
 
   // let snemovni_obdobi_ids = [];
@@ -1115,7 +1136,7 @@ const getAllSnemovniObdobiWordpressFactory = async(wordpressAPIURLWebsite, datab
 
   // await Promise.all(parlamenty.map(async (parlament) => {
 
-  //   const getSnemovniObdobi = await axios.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
+  //   const getSnemovniObdobi = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
 
   //   getSnemovniObdobi.data.SnemovniObdobi.every(item => {
 
@@ -1139,7 +1160,7 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
 
   let snemovniObdobiObj = undefined;
 
-  snemovniObdobiObj = await axios.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
+  snemovniObdobiObj = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovni-obdobi/${snemovniObdobiId}`);
   snemovniObdobiObj = snemovniObdobiObj.data;
 
   snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
@@ -1156,7 +1177,7 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
   snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku);
 
 
-  let snemovniObdobiObjWpData = await axios.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
+  let snemovniObdobiObjWpData = await axiosInstance.get( `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`);
   snemovniObdobiObjWpData = snemovniObdobiObjWpData.data;
 
   // get wordpress content referenced via Id
@@ -1247,7 +1268,7 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 
   try {
 
-    const poslanecRes = await axios.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
+    const poslanecRes = await axiosInstance.get(`${databazePoslancuURL}/Api/osoby/${poslanecId}`);
 
     const poslanecData = poslanecRes.data;
 
