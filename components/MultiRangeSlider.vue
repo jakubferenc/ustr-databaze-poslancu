@@ -8,9 +8,9 @@
   //- and by shrinking would not fit the custom slider thumbs
   //- therefore we need to set for both sliders the same min and max based on the current data sent to this component
 
-  input(@input="_setLeftValue()" @mouseup="mouseUpHandler"  type="range" ref="inputLeftEl" :min="MinValue" :max="MaxValue" :value="leftValue")
+  input(@input="setLeftValueHandler()" @mouseup="mouseUpHandler"  type="range" ref="inputLeftEl" :min="MinValue" :max="MaxValue" :value="leftValue")
   //- input(@input="_setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
-  input(@input="_setRightValue()" @mouseup="mouseUpHandler"  type="range" ref="inputRightEl" :min="MinValue" :max="MaxValue" :value="rightValue")
+  input(@input="setRightValueHandler()" @mouseup="mouseUpHandler"  type="range" ref="inputRightEl" :min="MinValue" :max="MaxValue" :value="rightValue")
 
   .slider
     .track
@@ -158,19 +158,12 @@
     watch: {
       MinValue: function(newVal, oldVal) { // watch it
 
-        console.log("changed min value", this.QueryStructure[0], newVal, oldVal);
-
-        this._setLeftValue();
-        this._setRightValue();
-
+        this.regenerateSlider();
 
       },
       MaxValue: function(newVal, oldVal) { // watch it
 
-        console.log("changed max value", this.QueryStructure[1], newVal, oldVal);
-
-        this._setLeftValue();
-        this._setRightValue();
+        this.regenerateSlider();
 
       }
     },
@@ -181,6 +174,9 @@
         $thisEl: null,
         leftValue: null,
         rightValue: null,
+
+        leftHasBeenTouched: false,
+        rightHasBeenTouched: false,
       }
 
     },
@@ -205,16 +201,44 @@
 
       },
 
-      _setLeftValue() {
-
-        // this is internal for making the custom slider button work
+      regenerateSlider() {
 
 
 
-        const [min, max] = [parseInt(this.$inputLeft.min), parseInt(this.$inputLeft.max)];
-        this.leftValue = Math.min(parseInt(this.$inputLeft.value), parseInt(this.$inputRight.value) - 1);
 
-        this.$refs.inputLeftEl.value = this.leftValue;
+        // if (this.leftHasBeenTouched) {
+
+        //   if (this.MinValue > this.leftValue) {
+        //     this.leftValue = this.MinValue;
+        //   }
+
+        // } else {
+        //   this.leftValue = this.CurrentMinValue;
+        // }
+
+        this.leftValue = this.CurrentMinValue;
+
+        if (this.rightHasBeenTouched) {
+
+          if (this.MaxValue < this.rightValue) {
+            this.rightValue = this.MaxValue;
+          }
+
+        } else {
+          this.rightValue = this.CurrentMaxValue;
+        }
+
+        // this.rightValue = this.CurrentMaxValue;
+
+
+        this._regenerateLeftCustomElementsPositions(this.MinValue, this.MaxValue);
+        this._regenerateRightCustomElementsPositions(this.MinValue, this.MaxValue);
+
+
+
+      },
+
+      _regenerateLeftCustomElementsPositions(min, max) {
 
         const percent = (  (this.leftValue - min) / (max - min) ) * 100;
 
@@ -224,24 +248,70 @@
 
       },
 
-
-    _setRightValue() {
-
-      // this is internal for making the custom slider button work
-
-
-
-
-      const [min, max] = [parseInt(this.$inputRight.min), parseInt(this.$inputRight.max)];
-      this.rightValue = Math.max(parseInt(this.$inputRight.value), parseInt(this.$inputLeft.value) + 1);
-
-      this.$refs.inputRightEl.value = this.rightValue;
+      _regenerateRightCustomElementsPositions(min, max) {
 
       const percent = (  (this.rightValue - min) / (max - min) ) * 100;
 
 
       this.$thumbRight.style.right = `${100 - percent}%`;
       this.$range.style.right = `${100 - percent}%`;
+
+
+      },
+
+      _setLeftValue() {
+
+        // this is internal for making the custom slider button work
+
+        console.log("called set left value()", this.QueryStructure[1]);
+
+        const [min, max] = [parseInt(this.$inputLeft.min), parseInt(this.$inputLeft.max)];
+
+        this.$refs.inputLeftEl.value = this.leftValue = Math.min(parseInt(this.$inputLeft.value), parseInt(this.$inputRight.value) - 1);
+
+        this._regenerateLeftCustomElementsPositions(min, max);
+
+      },
+
+    setLeftValueHandler() {
+
+      this._setLeftValue();
+
+      if (!this.leftHasBeenTouched) {
+        this.leftHasBeenTouched = true;
+      }
+
+
+    },
+
+
+    setRightValueHandler() {
+
+
+      this._setRightValue();
+
+
+      if (!this.rightHasBeenTouched) {
+        this.rightHasBeenTouched = true;
+      }
+
+    },
+
+
+    _setRightValue() {
+
+      // this is internal for making the custom slider button work
+
+       console.log("called set right value()", this.QueryStructure[1]);
+
+
+
+      const [min, max] = [parseInt(this.$inputRight.min), parseInt(this.$inputRight.max)];
+
+      this.$refs.inputRightEl.value = this.rightValue = Math.max(parseInt(this.$inputRight.value), parseInt(this.$inputLeft.value) + 1);
+
+      this._regenerateRightCustomElementsPositions(min, max);
+
 
 
 

@@ -1,6 +1,8 @@
 import axios from "axios";
 import axiosRetry from "axios-retry";
 
+// import https from 'https';
+
 import {
   normalizeSouborAttrs,
   getAdresyProMapuForPoslanec,
@@ -12,6 +14,8 @@ import {
 const axiosInstance = axios.create({
   // Keep the timeout low in development so it at least somehow responsive
   timeout: process.dev ? 10000 : 45000,
+  // httpsAgent = new https.Agent({ keepAlive: true });
+
 });
 
 // We need retrying on timeout, because wordpress api quite often hangs

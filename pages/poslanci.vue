@@ -111,8 +111,6 @@ export default {
 
         this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
-        customLogger("string Request sent to API", this.currentQueryStringified);
-
 
         await this.$store.dispatch("getParlamentyDatabaze");
 
@@ -130,13 +128,9 @@ export default {
 
         const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
 
-        customLogger("this.currentFilterData", this.currentFilterData);
-
-        customLogger("this.currentQueryNormalized", currentQueryNormalized);
 
         this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
 
-        customLogger("this.currentFilterSettings", this.currentFilterSettings);
 
         this.$router.push({
           path: '/poslanci/',

@@ -31,6 +31,7 @@
         "leaflet": "^1.8",
         "leaflet.markercluster": "^1.5.3",
         "nuxt": "^2.2.0",
+        "nuxt-speedkit": "^2.0.13",
         "qs": "^6.10.2",
         "typopo": "^2.5.2"
     },
