@@ -263,8 +263,6 @@
 
         // this is internal for making the custom slider button work
 
-        console.log("called set left value()", this.QueryStructure[1]);
-
         const [min, max] = [parseInt(this.$inputLeft.min), parseInt(this.$inputLeft.max)];
 
         this.$refs.inputLeftEl.value = this.leftValue = Math.min(parseInt(this.$inputLeft.value), parseInt(this.$inputRight.value) - 1);
@@ -301,11 +299,6 @@
     _setRightValue() {
 
       // this is internal for making the custom slider button work
-
-       console.log("called set right value()", this.QueryStructure[1]);
-
-
-
       const [min, max] = [parseInt(this.$inputRight.min), parseInt(this.$inputRight.max)];
 
       this.$refs.inputRightEl.value = this.rightValue = Math.max(parseInt(this.$inputRight.value), parseInt(this.$inputLeft.value) + 1);
