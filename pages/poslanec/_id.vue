@@ -86,11 +86,11 @@
                       div {{pocetMandatu}}
 
 
-    .parlament-detail-events.section-padding-h-margin-v
+    //- .parlament-detail-events.section-padding-h-margin-v
 
-      h2.section-title Důležité události poslance
+    //-   h2.section-title Důležité události poslance
 
-      CasovaOsa(:Data="poslanec.CasovaOsa" v-if="poslanec.CasovaOsa")
+    //-   CasovaOsa(:Data="poslanec.CasovaOsa" v-if="poslanec.CasovaOsa")
 
     .section-mandaty.section-padding-h-margin-v.typography-has-no-h-padding
 
@@ -108,44 +108,10 @@
       </client-only>
 
 
-          //- <l-map ref="mapbox" :options="{scrollWheelZoom: true}" :zoom="8" :center="[55.9464418,8.1277591]">
-          //-   l-tile-layer(
-          //-     id='',
-          //-     accessToken='pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
-          //-     attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
-          //-     url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
-          //-   )
-          //-   <v-marker-cluster :options="{showCoverageOnHover: true, zoomToBoundsOnClick: true}">
-          //-     <l-marker v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng">
-          //-       <l-popup>
-          //-         .is-map-card
-
-          //-           .content-container
-
-          //-             .header
-          //-               .category {{item.DruhNazev}}
-
-          //-             .content
-          //-               //- show only if the addresses are not birth nor death
-          //-               .desc()
-          //-                 p {{item.Parlament}}
-          //-                 p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
-          //-                 p {{item.DruhTyp}}
-          //-               .name {{item.Nazev}}
-
-          //-       </l-popup>
+    //- .section-padding-h-margin-v.typography-has-no-h-padding
 
 
-
-          //-     </l-marker>
-          //-   </v-marker-cluster>
-
-          //- </l-map>
-
-    .section-padding-h-margin-v.typography-has-no-h-padding
-
-
-        <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
+    //-     <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
 
 
     //- .parlament-detail-galerie-medii.section-padding.alt-bg-02(v-if="poslanec.Soubory.length > 0")
@@ -178,9 +144,8 @@
     width: 300px
     align-items: center
     justify-content: center
-    height: 200px
     z-index: 2
-    margin-bottom: -200px
+    margin-bottom: -100px
     margin-left: auto
     margin-right: auto
 
@@ -301,16 +266,6 @@
         }
 
       },
-
-
-          //-         div(v-if="item.Druh != 5 && item.Druh != 1")
-          //-           span {{index}}
-
-
-          //-         <MapaIkonaNarozeni v-if="item.Druh == 1" />
-          //-         <MapaIkonaUmrti v-if="item.Druh == 5" />
-
-
 
       data() {
         return {
@@ -493,6 +448,8 @@
       },
 
       mounted() {
+
+        console.log("this.poslanec", this.poslanec);
 
         this.$nextTick(() => {
 
