@@ -29,7 +29,7 @@
 
 
   .multi-range-slider
-    min-height: 60px
+    min-height: 65px
     position: relative
     justify-content: center
     align-items: center
@@ -190,12 +190,19 @@
 
       mouseUpHandler() {
 
+        let valuesToSend = {};
+
+        if ( (this.leftValue !== this.CurrentMinValue) && this.leftValue !== this.MinValue && this.leftHasBeenTouched) {
+          valuesToSend[this.QueryStructure[0]] = this.leftValue;
+        }
+
+        if ( (this.leftValue !== this.CurrentMaxValue) && this.rightValue !== this.MaxValue && this.rightHasBeenTouched ) {
+          valuesToSend[this.QueryStructure[1]] = this.rightValue;
+        }
+
         this.$emit('multi-range-change', {
           name: this.Name,
-          values: {
-            [this.QueryStructure[0]]: this.leftValue,
-            [this.QueryStructure[1]]: this.rightValue,
-          },
+          values: valuesToSend,
 
         });
 
@@ -204,19 +211,17 @@
       regenerateSlider() {
 
 
+        if (this.leftHasBeenTouched) {
+
+          if (this.MinValue > this.leftValue) {
+            this.leftValue = this.MinValue;
+          }
+
+        } else {
+          this.leftValue = this.CurrentMinValue;
+        }
 
 
-        // if (this.leftHasBeenTouched) {
-
-        //   if (this.MinValue > this.leftValue) {
-        //     this.leftValue = this.MinValue;
-        //   }
-
-        // } else {
-        //   this.leftValue = this.CurrentMinValue;
-        // }
-
-        this.leftValue = this.CurrentMinValue;
 
         if (this.rightHasBeenTouched) {
 
