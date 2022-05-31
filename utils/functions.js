@@ -10,6 +10,13 @@ export const customLogger = (...args) => {
 
 };
 
+export const normalizeURLParamsToValueInArrayFormat = (routeURLParams) => {
+
+  // immutable, modern way to iterate object and make the value inside an array v => [v]
+  return Object.fromEntries(Object.entries(routeURLParams).map(([k, v]) => [k, [v] ]));
+
+};
+
 export const truncate = (str, max, suffix) => str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))}${suffix}`;
 
 
