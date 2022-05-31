@@ -289,7 +289,7 @@
                         <div class="map-card__date-item">
 
 
-                          <span>${zaznam.DatumZacatkuZobrazene}</span> &mdash; <span>${zaznam.DatumZacatkuZobrazene}</span> <br>
+                          <span>${zaznam.DatumZacatkuZobrazene}</span> &mdash; <span>${zaznam.DatumKonceZobrazene}</span> <br>
                           <span class="parlament">${zaznam.Parlament}</span>
 
                         </div>
