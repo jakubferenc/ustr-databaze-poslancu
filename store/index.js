@@ -314,7 +314,7 @@ export const actions = {
     if (state.poslanci.length) return;
     try {
 
-      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`);
+      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Limit=${limit}&Stranka=${stranka}&Fotografie=1`);
       poslanciRequest = poslanciRequest.data;
 
       let poslanci = poslanciRequest.Poslanci;
