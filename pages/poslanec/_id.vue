@@ -139,7 +139,7 @@
   .section-map-title-container
 
     position: relative
-
+    background-color: rgba(255, 255, 255,.4)
     display: flex
     width: 300px
     align-items: center
