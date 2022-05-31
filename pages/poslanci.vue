@@ -35,16 +35,10 @@
 
 import apiModule from '../factories';
 
-import {customLogger} from '~/utils/functions'
+import {customLogger, normalizeURLParamsToValueInArrayFormat} from '~/utils/functions'
 
 const PoslanciSeznamAPI = () => import('~/components/PoslanciSeznamAPI.vue');
 
-const normalizeURLParamsToValueInArrayFormat = (routeURLParams) => {
-
-  // immutable, modern way to iterate object and make the value inside an array v => [v]
-  return Object.fromEntries(Object.entries(routeURLParams).map(([k, v]) => [k, [v] ]));
-
-};
 
 const normalizeQueryParamsVariableTypes = (queryParams) => {
 
@@ -110,6 +104,8 @@ export default {
 
 
         this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
+
+        console.log("currentQueryStringified", this.currentQueryStringified);
 
 
         await this.$store.dispatch("getParlamentyDatabaze");
@@ -195,6 +191,8 @@ export default {
           ...this.defaultQuery,
           ...activeFilterItems,
         };
+
+        console.log("this.currentQuery", this.currentQuery);
 
 
         // // call API

@@ -328,7 +328,7 @@
 const Poslanec = () => import('~/components/Poslanec.vue');
 const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
 
-import {customLogger} from '~/utils/functions'
+import {customLogger, normalizeURLParamsToValueInArrayFormat} from '~/utils/functions'
 
 
 export default {
@@ -438,11 +438,11 @@ export default {
         if (item.type === 'range') {
 
           if (item.values[0] !== item.values[2]) {
-            onlyActivelySelectedFilters[item.queryStructure[0]] = item.values[0];
+            onlyActivelySelectedFilters[item.queryStructure[0]] = [item.values[0]];
           }
 
           if (item.values[1] !== item.values[3]) {
-            onlyActivelySelectedFilters[item.queryStructure[1]] = item.values[1];
+            onlyActivelySelectedFilters[item.queryStructure[1]] = [item.values[1]];
           }
 
         }
@@ -568,17 +568,14 @@ export default {
     onRangeChange($event) {
 
 
+      console.log("on range change event payload", $event);
 
 
       // Process this range
-      const currentRangeQuery = {};
 
-      // /// Normalize this range request Query by containing the value with an array, like all other filter values
-      Object.keys($event.values).forEach(key => {
 
-        currentRangeQuery[key] = [$event.values[key]]
-
-      });
+      /// Normalize this range request Query by containing the value with an array, like all other filter values
+      const currentRangeQuery = normalizeURLParamsToValueInArrayFormat($event.values);
 
 
 
