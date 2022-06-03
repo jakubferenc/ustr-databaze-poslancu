@@ -108,10 +108,12 @@
       </client-only>
 
 
-    //- .section-padding-h-margin-v.typography-has-no-h-padding
+    .section-padding-h-margin-v.typography-has-no-h-padding
 
+      h2.section-title Sociální mapa poslance
 
-    //-     <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
+      #socialni-mapy-container
+      //- <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
 
 
     //- .parlament-detail-galerie-medii.section-padding.alt-bg-02(v-if="poslanec.Soubory.length > 0")
@@ -127,6 +129,18 @@
 <style lang="sass">
 
 @use "sass:math"
+
+@import "~/vendor/org-chart.css"
+
+.orgchart
+  width: 100%
+  height: 600px
+  display: block
+  overflow: auto
+
+.orgchart .node
+  min-width: 200px
+  padding: 0 1em
 
 .section-mandaty
 
@@ -224,6 +238,11 @@
 
 <script>
 
+
+  import {addRecursivelyPerson} from '~/utils/functions';
+
+  import OrgChart from '~/vendor/org-chart';
+
   const CasovaOsa = () => import('~/components/CasovaOsa.vue');
   const MandatRadek = () => import('~/components/MandatRadek.vue');
   const SocialniMapa = () => import('~/components/SocialniMapa.vue');
@@ -243,7 +262,6 @@
   import MapaIkonaNarozeni from "~/assets/images/mapa-icon-birth.svg?inline";
   import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
-
 
   export default {
 
@@ -429,12 +447,11 @@
           },
           mapMarkers: [],
           mapBoundingBox: [],
-          defaultZoom: 8,
+          defaultZoom: 8
         }
       },
 
       methods: {
-
 
 
         toggleFullNameWithTitles(e) {
@@ -449,7 +466,7 @@
 
       mounted() {
 
-        console.log("this.poslanec", this.poslanec);
+        console.log("this.socialniMapaData", this.socialniMapaData);
 
         this.$nextTick(() => {
 
@@ -582,7 +599,23 @@
           }, 100);
 
 
+          setTimeout(async () => {
 
+
+            const dataNew = this.socialniMapaData;
+
+            console.log(dataNew);
+
+            const orgChartInstance = new OrgChart({
+              'chartContainer': '#socialni-mapy-container',
+              'data' : dataNew,
+              'depth': 7,
+              'nodeContent': 'title',
+              'toggleSiblingsResp': true,
+              // 'direction': 'l2r',
+            });
+
+          }, 0);
 
         });
 
@@ -590,6 +623,71 @@
       },
 
       computed: {
+
+        socialniMapaData() {
+
+          let result = [];
+
+          const {Id, Jmeno, Prijmeni, DatumNarozeniZobrazene, DatumUmrtiZobrazene, SouvisejiciPoslanci} = this.poslanec;
+
+          if (SouvisejiciPoslanci && SouvisejiciPoslanci.length > 0) {
+
+            const createThisPoslanecRootObject = {
+              Id,
+              PrimarniOsobaId: 0,
+              Jmeno,
+              Prijmeni,
+              ZivotniData: `${DatumNarozeniZobrazene} ${DatumUmrtiZobrazene}`,
+              name: `${Jmeno} ${Prijmeni}`,
+              title: 'Poslanec'
+            };
+
+            const resultItems = [...SouvisejiciPoslanci]
+            .map((person) => {
+
+
+              return {
+                Id: person.Id,
+                PrimarniOsobaId: person.VztahovaCesta[0].PrimarniOsobaId,
+                Jmeno: person.Jmeno.split("|")[0].trim(),
+                ZivotniData: person.VztahovaCesta[0].SouvisejícíOsobaZivotniData,
+                DruhVztahu: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+                JePoslanec: person.VztahovaCesta[0].JeSouvisejiciOsobaPoslanec,
+                Uroven: person.VztahovaCesta[0].Uroven,
+                name:  person.Jmeno.split("|")[0].trim(),
+                title: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+              }
+
+            });
+
+            let preparedItems = [createThisPoslanecRootObject, ...resultItems];
+
+            result = [...preparedItems].reduce((prev, current) => {
+
+              return addRecursivelyPerson(prev, current, preparedItems);
+
+            }, preparedItems);
+
+
+            // filter out from the first level of the array those items that do not have a direct link to the poslanec via PrimarniOsobaId
+
+            const resultOnlyChildrenWithTheirChildren = result.filter(person => person.PrimarniOsobaId === this.poslanec.Id);
+
+            result = {
+              ...createThisPoslanecRootObject,
+              children: resultOnlyChildrenWithTheirChildren,
+            }
+
+            return result;
+
+
+          } else {
+
+            return false;
+          }
+
+
+        },
 
         mandatyChronologicky() {
 
@@ -770,7 +868,7 @@
             {
               rel:'stylesheet',
               href:'//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css'
-            }
+            },
           ],
           htmlAttrs: {
             class: 'subpage-poslanci'

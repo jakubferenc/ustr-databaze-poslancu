@@ -1,5 +1,38 @@
 import { fixTypos } from 'typopo';
 
+
+export const addRecursivelyPerson = (dimensionalArrayOfPersons, searchedPersonObj, topLevelDimensionalArrayOfPersons) => {
+
+  const thisIndexFound = dimensionalArrayOfPersons.findIndex(item => item.Id === searchedPersonObj.PrimarniOsobaId);
+
+  if (thisIndexFound > -1) {
+    // we have a parent for the child item
+
+    const parentObj = dimensionalArrayOfPersons[thisIndexFound];
+    if (!parentObj.children) parentObj.children = [];
+
+    parentObj.children = [...parentObj.children, searchedPersonObj];
+
+  } else {
+
+    // we don't have a parent, do recursive until the there aren't any objects with children, then add to the root
+
+    [...dimensionalArrayOfPersons].forEach((possibleParent) => {
+
+      if (possibleParent.children && possibleParent.children?.length > 0) {
+
+        addRecursivelyPerson(possibleParent.children, searchedPersonObj, topLevelDimensionalArrayOfPersons);
+
+      }
+
+    });
+
+  }
+
+  return dimensionalArrayOfPersons;
+
+};
+
 export const customLogger = (...args) => {
 
 
@@ -193,20 +226,22 @@ export const getAdresyProMapuForPoslanec = (poslanec) => {
             if (adresyPolozky[existingItemIndex].Zaznamy === undefined) {
 
               adresyPolozky[existingItemIndex].Zaznamy = [];
-              adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
-
-
-            } else {
-
-              const existingItemIndexZaznam = adresyPolozky[existingItemIndex].Zaznamy.findIndex(itemExisting => itemExisting.DatumZacatkuZobrazene === thisZaznamPrepare.DatumZacatkuZobrazene && itemExisting.DatumZacatkuZobrazene === thisZaznamPrepare.DatumZacatkuZobrazene);
-
-              if (existingItemIndexZaznam === -1) {
-
-                adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
-
-              }
 
             }
+
+            adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
+
+            // } else {
+
+            //   const existingItemIndexZaznam = adresyPolozky[existingItemIndex].Zaznamy.findIndex(itemExisting => itemExisting.DatumZacatkuZobrazene === thisZaznamPrepare.DatumZacatkuZobrazene);
+
+            //   if (existingItemIndexZaznam === -1) {
+
+            //     adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
+
+            //   }
+
+            // }
 
 
           }
@@ -240,19 +275,22 @@ export const getAdresyProMapuForPoslanec = (poslanec) => {
       //       if (!adresyPolozky[existingItemIndex].Zaznamy) {
 
       //         adresyPolozky[existingItemIndex].Zaznamy = [];
-      //         adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
-
-      //       } else {
-
-      //         const existingItemIndexZaznam = adresyPolozky.Zaznamy.findIndex(itemExisting => itemExisting.DatumZacatkuZobrazene === thisItemAddress.DatumZacatkuZobrazene && itemExisting.DatumZacatkuZobrazene === thisItemAddress.DatumZacatkuZobrazene);
-
-      //         if (existingItemIndexZaznam === -1) {
-
-      //           adresyPolozky[existingItemIndexZaznam].Zaznamy.push(thisZaznamPrepare);
-
-      //         }
 
       //       }
+
+      //       adresyPolozky[existingItemIndex].Zaznamy.push(thisZaznamPrepare);
+
+      //       // } else {
+
+      //       //   const existingItemIndexZaznam = adresyPolozky.Zaznamy.findIndex(itemExisting => itemExisting.DatumZacatkuZobrazene === thisItemAddress.DatumZacatkuZobrazene && itemExisting.DatumZacatkuZobrazene === thisItemAddress.DatumZacatkuZobrazene);
+
+      //       //   if (existingItemIndexZaznam === -1) {
+
+      //       //     adresyPolozky[existingItemIndexZaznam].Zaznamy.push(thisZaznamPrepare);
+
+      //       //   }
+
+      //       // }
 
 
       //     }
