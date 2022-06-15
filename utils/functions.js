@@ -1,5 +1,10 @@
 import { fixTypos } from 'typopo';
 
+export const dateISOStringToCZFormat = (dateString, removeStartZero = true) => {
+  const res = dateString.split("T")[0].split("-").reverse().join(". ");
+
+  return removeStartZero ? (res[0] === "0" ? res.slice(1) : res) : res;
+};
 
 export const addRecursivelyPerson = (dimensionalArrayOfPersons, searchedPersonObj, topLevelDimensionalArrayOfPersons) => {
 
@@ -180,7 +185,7 @@ export const getAdresaDruhHumanReadableName = (adresaDruhNumber) => {
 };
 
 
-export const getAdresyProMapuForPoslanec = (poslanec) => {
+export const getAdresyProMapuForPoslanecFromMandaty = (poslanec) => {
 
 
   let adresyPolozky = [];
@@ -313,6 +318,24 @@ export const getAdresyProMapuForPoslanec = (poslanec) => {
 
 
   return adresyPolozky;
+
+
+};
+
+export const getAdresyProMapuForPoslanec = (poslanec) => {
+
+  if (poslanec.Adresy) {
+
+    return [...poslanec.Adresy].map((adresa) => {
+
+      adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
+
+      return adresa;
+
+    });
+  }
+
+  return [];
 
 
 };

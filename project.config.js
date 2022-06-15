@@ -20,6 +20,11 @@ export default {
   router: {
     multipleValuesSeparator: ';',
   },
+  poslanec: {
+    socialniVazby: {
+      showPritelType: false,
+    }
+  },
   responsive: {
     breakpoints: {
       mobile,

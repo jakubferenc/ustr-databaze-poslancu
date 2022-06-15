@@ -108,7 +108,7 @@
       </client-only>
 
 
-    .section-padding-h-margin-v.typography-has-no-h-padding
+    .section-padding-h-margin-v.typography-has-no-h-padding(v-if="socialniMapaData")
 
       h2.section-title Sociální mapa poslance
 
@@ -239,7 +239,7 @@
 <script>
 
 
-  import {addRecursivelyPerson} from '~/utils/functions';
+  import {addRecursivelyPerson, dateISOStringToCZFormat} from '~/utils/functions';
 
   import OrgChart from '~/vendor/org-chart';
 
@@ -289,88 +289,51 @@
         return {
           showFullNameWithTitles: false,
           mapSettings: {
+
             popup: {
+
               html: (item) => {
 
                 let snemovniObdobiString = '';
 
-                if ([2,3].includes(item.Druh)) {
+                console.log("item", item);
 
-                  if (item.Zaznamy?.length) {
-
-
-                    item.Zaznamy.forEach((zaznam) => {
+                if (item.Zacatek || item.Konec) {
 
 
-                      snemovniObdobiString += `
+                  snemovniObdobiString += `<div class="map-card__date-item">`;
 
-                        <div class="map-card__date-item">
+                  snemovniObdobiString += (item.Zacatek) ? `<span>od ${dateISOStringToCZFormat(item.Zacatek)}</span>` : '<span>od ???</span>';
+                  snemovniObdobiString += (item.Konec) ? `&nbsp; &mdash; do <span>${dateISOStringToCZFormat(item.Konec)}</span> <br>` : '&nbsp;<span>do ???</span>';
+                  snemovniObdobiString += `</div>`;
 
-
-                          <span>${zaznam.DatumZacatkuZobrazene}</span> &mdash; <span>${zaznam.DatumKonceZobrazene}</span> <br>
-                          <span class="parlament">${zaznam.Parlament}</span>
-
-                        </div>
-
-                      `;
+                };
 
 
-                    });
+                return `
 
-                  }
+                  <div class="is-map-card">
+
+                    <div class="map-card__title">${item.DruhNazev}</div>
+
+                    <div class="map-card__dates">
+                      ${snemovniObdobiString}
+                    </div>
+
+                    <div class="map-card__content">
 
 
-                  return `
-
-                    <div class="is-map-card">
-
-                      <div class="map-card__title">${item.DruhNazev}</div>
-
-                      <div class="map-card__dates">
-                        ${snemovniObdobiString}
+                      <div class="map-card__content__address">${item.Nazev}</div>
+                      <div class="map-card__content__address__meta">
+                        GPS lokace: ${item.GeoX} ${item.GeoY}
                       </div>
 
-                      <div class="map-card__content">
-
-
-                        <div class="map-card__content__address">${item.Nazev}</div>
-                        <div class="map-card__content__address__meta">
-                          GPS lokace: ${item.GeoX} ${item.GeoY}
-                        </div>
-
-
-                      </div>
 
                     </div>
 
-                  `;
+                  </div>
 
-
-
-                } else {
-
-                  return `
-
-                    <div class="is-map-card">
-
-                      <div class="map-card__title">${item.DruhNazev}</div>
-
-                      <div class="map-card__content">
-
-
-                        <div class="map-card__content__address">${item.Nazev}</div>
-                        <div class="map-card__content__address__meta">
-                          GPS lokace: ${item.GeoX} ${item.GeoY}
-                        </div>
-
-
-                      </div>
-
-                    </div>
-
-                  `;
-
-                }
+                `;
 
 
               }
@@ -432,7 +395,25 @@
 
                   if (![1, 5].includes(item.Druh)) {
 
-                    content = index + 1;
+                    content = `
+
+<svg xmlns="http://www.w3.org/2000/svg" width="17.41" height="23.03" viewBox="0 0 17.41 23.03">
+  <g id="Group_1366" data-name="Group 1366" transform="translate(-616.172 -3375)">
+    <g id="Path_412" data-name="Path 412" transform="translate(616.172 3375)" fill="none">
+      <path d="M8.705,0c4.808,0,8.705,3.594,8.705,8.028,0,2.642-1.384,7.464-3.673,11.17-1.3,2.107-3.09,3.832-5.033,3.832C3.9,23.03,0,12.461,0,8.028S3.9,0,8.705,0Z" stroke="none"/>
+      <path d="M 8.705078125 1.000003814697266 C 4.456478118896484 1.000003814697266 0.9999980926513672 4.152645111083984 0.9999980926513672 8.027773857116699 C 0.9999980926513672 10.20492458343506 2.028958320617676 13.87292385101318 3.446638107299805 16.74944305419922 C 5.100567817687988 20.10534477233887 7.01719856262207 22.03004455566406 8.705078125 22.03004455566406 C 10.04963874816895 22.03004455566406 11.57351875305176 20.80685424804688 12.88672828674316 18.67291450500488 C 15.09222793579102 15.10040473937988 16.41015815734863 10.45498371124268 16.41015815734863 8.027773857116699 C 16.41015815734863 4.152645111083984 12.95367813110352 1.000003814697266 8.705078125 1.000003814697266 M 8.705078125 3.814697265625e-06 C 13.51275825500488 3.814697265625e-06 17.41015815734863 3.594154357910156 17.41015815734863 8.027773857116699 C 17.41015815734863 10.67021465301514 16.02573776245117 15.49191474914551 13.73763847351074 19.19822311401367 C 12.44110870361328 21.30507469177246 10.64737796783447 23.03004455566406 8.705078125 23.03004455566406 C 3.897397994995117 23.03004455566406 -1.9073486328125e-06 12.46139430999756 -1.9073486328125e-06 8.027773857116699 C -1.9073486328125e-06 3.594154357910156 3.897397994995117 3.814697265625e-06 8.705078125 3.814697265625e-06 Z" stroke="none" fill="#fff"/>
+    </g>
+    <g id="Ellipse_505" data-name="Ellipse 505" transform="translate(621.034 3378.828)" fill="none" stroke="#fff" stroke-width="1">
+      <circle cx="3.843" cy="3.843" r="3.843" stroke="none"/>
+      <circle cx="3.843" cy="3.843" r="3.343" fill="none"/>
+    </g>
+  </g>
+</svg>
+
+
+
+
+                    `;
 
                   }
 
@@ -466,7 +447,6 @@
 
       mounted() {
 
-        console.log("this.socialniMapaData", this.socialniMapaData);
 
         this.$nextTick(() => {
 
@@ -601,19 +581,20 @@
 
           setTimeout(async () => {
 
+            if (this.socialniMapaData) {
 
-            const dataNew = this.socialniMapaData;
+              const dataNew = this.socialniMapaData;
 
-            console.log(dataNew);
+              const orgChartInstance = new OrgChart({
+                'chartContainer': '#socialni-mapy-container',
+                'data' : dataNew,
+                'depth': 7,
+                'nodeContent': 'title',
+                'toggleSiblingsResp': false,
+                // 'direction': 'l2r',
+              });
 
-            const orgChartInstance = new OrgChart({
-              'chartContainer': '#socialni-mapy-container',
-              'data' : dataNew,
-              'depth': 7,
-              'nodeContent': 'title',
-              'toggleSiblingsResp': true,
-              // 'direction': 'l2r',
-            });
+            }
 
           }, 0);
 
@@ -628,7 +609,7 @@
 
           let result = [];
 
-          const {Id, Jmeno, Prijmeni, DatumNarozeniZobrazene, DatumUmrtiZobrazene, SouvisejiciPoslanci} = this.poslanec;
+          const {Id, Jmeno, Prijmeni, DatumNarozeniZobrazene, DatumUmrtiZobrazene, OsobniVztahyPrimarni, OsobniVztahySekundarni, SouvisejiciPoslanci} = this.poslanec;
 
           if (SouvisejiciPoslanci && SouvisejiciPoslanci.length > 0) {
 
@@ -640,29 +621,58 @@
               ZivotniData: `${DatumNarozeniZobrazene} ${DatumUmrtiZobrazene}`,
               name: `${Jmeno} ${Prijmeni}`,
               title: 'Poslanec'
+
             };
 
-            const resultItems = [...SouvisejiciPoslanci]
+            console.log("OsobniVztahySekundarni", OsobniVztahySekundarni);
+
+            const resultItems = [...SouvisejiciPoslanci, ]
             .map((person) => {
 
 
               return {
                 Id: person.Id,
                 PrimarniOsobaId: person.VztahovaCesta[0].PrimarniOsobaId,
-                Jmeno: person.Jmeno.split("|")[0].trim(),
+                Jmeno: person.Jmeno.split("|")[0].trim() || person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
                 ZivotniData: person.VztahovaCesta[0].SouvisejícíOsobaZivotniData,
                 DruhVztahu: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
                 JePoslanec: person.VztahovaCesta[0].JeSouvisejiciOsobaPoslanec,
                 Uroven: person.VztahovaCesta[0].Uroven,
-                name:  person.Jmeno.split("|")[0].trim(),
+                name:  person.Jmeno.split("|")[0].trim() || person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
                 title: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
               }
 
             });
 
-            let preparedItems = [createThisPoslanecRootObject, ...resultItems];
+            const sekundarniVztahyMapped = [...rOsobniVztahyPrimarni, ...OsobniVztahySekundarni].map(person => {
 
-            result = [...preparedItems].reduce((prev, current) => {
+              return {
+                Id: person.Id,
+                PrimarniOsobaId: person.PrimarniOsobaId,
+                Jmeno: person.PrimarniOsobaJmeno.split("|")[0].trim(),
+                ZivotniData: null,
+                DruhVztahu: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+                JePoslanec: person.JeSouvisejiciOsobaPoslanec,
+                Uroven: person.Uroven,
+                name:  person.PrimarniOsobaJmeno.split("|")[0].trim(),
+                title: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+              }
+
+            });
+
+            let preparedItems = [createThisPoslanecRootObject, ...sekundarniVztahyMapped, ...resultItems];
+
+            if (!this.$config.poslanec.socialniVazby.showPritelType) {
+
+              preparedItems = [...preparedItems].filter(item => item.DruhVztahu !== 'přítel'); // filter out type "přítel"
+
+            }
+
+
+
+
+            result = [...preparedItems]
+            .reduce((prev, current) => {
 
               return addRecursivelyPerson(prev, current, preparedItems);
 
@@ -672,6 +682,7 @@
             // filter out from the first level of the array those items that do not have a direct link to the poslanec via PrimarniOsobaId
 
             const resultOnlyChildrenWithTheirChildren = result.filter(person => person.PrimarniOsobaId === this.poslanec.Id);
+
 
             result = {
               ...createThisPoslanecRootObject,
@@ -732,8 +743,8 @@
               DruhTyp: adresa.DruhTyp,
               Druh: adresa.Druh,
               Parlament: adresa.Parlament,
-              DatumZacatkuZobrazene: adresa.DatumZacatkuZobrazene,
-              DatumKonceZobrazene: adresa.DatumKonceZobrazene,
+              DatumZacatkuZobrazene: adresa?.Zacatek,
+              DatumKonceZobrazene: adresa?.Konec,
               DruhNazev: adresa.DruhNazev,
 
               PopupHTML: ``,
