@@ -390,8 +390,10 @@
 
                             <div class="map-card__content__address">${item.Nazev}</div>
                             <div class="map-card__content__address__meta">GPS lokace: ${item.GeoX} ${item.GeoY}</div>
-
+                            <div class="map-card__footer">Zobrazit detail poslance →</div>
                           </div>
+
+
 
                         </div>
 

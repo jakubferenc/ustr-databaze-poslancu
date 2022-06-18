@@ -257,6 +257,11 @@ input[type="checkbox"]
     +from($widescreen)
      height: calc(100vh - 80px)
 
+.leaflet-container .leaflet-marker-pane img
+
+  max-width: none
+  max-height: none
+
 .leaflet-popup
   .leaflet-popup-close-button
     z-index: 9
@@ -302,24 +307,56 @@ input[type="checkbox"]
     color: #fff
     text-align: center
 
-    svg
-      width: auto
-      height: 60%
+    .map-person-thumb-head-icon-image,
+    .map-person-thumb-head-icon-image[style]
+      position: absolute
+
+    &.map-person-thumb-head-icon
 
       path
         stroke: #fff
         stroke-width: 5px
         fill: none
 
+    svg
+      width: auto
+      height: 60%
+
+
 
 .map-person-thumb-head-icon
   overflow: hidden
+  position: relative
+  width: 50px
+  height: 50px
 
-  .map-person-thumb-head-icon-image
-    width: 100%
-    height: 100%
-    position: absolute
-    object-fit: cover
+
+.map-person-thumb-head-icon-image,
+.map-person-thumb-head-icon-image[style]
+
+  border-radius: 100%
+  overflow: hidden
+  background: #000
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 100%
+  height: 100%
+  object-fit: cover
+  max-width: 100%
+  max-height: 100%
+
+  svg
+    height: 60%
+    fill: none
+
+    path
+      stroke: white
+      stroke-width: 4px
+
+  +desktop
+    width: 130px
+    height: 130px
 
 .leaflet-popup-tip-container
 
@@ -443,7 +480,7 @@ input[type="checkbox"]
 .is-map-card.person-poslanec-card
 
   width: 380px
-  height: 153px
+  min-height: 153px
   background-color: #fff
   border: none
   text-decoration: none
@@ -460,32 +497,15 @@ input[type="checkbox"]
     font-size: 90%
     margin-top: 1em
 
+  .map-card__footer
+    margin-top: 1em
+    text-decoration: underline
+
   .image-container
     flex: none
-
-    .map-person-thumb-head-icon-image
-
-      width: 110px
-      height: 110px
-      border-radius: 100%
-      overflow: hidden
-      background: #000
-      display: flex
-      align-items: center
-      justify-content: center
-
-      svg
-        height: 60%
-        fill: none
-
-        path
-          stroke: white
-          stroke-width: 4px
-
-      +desktop
-        width: 130px
-        height: 130px
-
+    width: 110px
+    +desktop
+      width: 130px
 
   .content-container
 
