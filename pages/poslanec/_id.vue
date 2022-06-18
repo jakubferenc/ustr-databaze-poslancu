@@ -541,7 +541,6 @@
               });
 
 
-
               marker.bindPopup(this.mapSettings.popup.html(item));
 
 

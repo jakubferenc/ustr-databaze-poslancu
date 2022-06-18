@@ -74,42 +74,9 @@
 
       h2.section-title Místo narození poslanců
 
-      .mapbox()
-
-          l-map(ref="mapbox" :options="{scrollWheelZoom: false}" :zoom=13 :center="[55.9464418,8.1277591]")
-            l-tile-layer(
-              id='',
-              accessToken='pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
-              attribution="Mapová data ÚSTR | Podkladová mapa &copy; <a href='//www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='//creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>"
-              url="https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw"
-            )
-            v-marker-cluster(ref="clusterRef" :options="{showCoverageOnHover: false, zoomToBoundsOnClick: true, removeOutsideVisibleBounds: true}")
-              l-marker(v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng" @mouseover.native="popUpShow(this)")
-                l-popup()
-
-                  NuxtLink(:to="`/poslanec/${item.Id}/`").is-map-card.person-poslanec-card
-
-                    .content-container
-
-                      .header
-                        .full-name {{item.Jmeno}} {{item.Prijmeni}}
-
-                      .content
-                        // show only if the addresses are not birth nor death
-                        .desc(v-if="item.Druh != 5 && item.Druh != 1")
-                          p {{item.Parlament}}
-                          p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
-                          p {{item.DruhTyp}}
-                        .name {{item.Nazev}}
-
-                    .image-container
-                      img(src="/images/poslanec-dummy-thumb.png" class="map-person-thumb-head-icon-image")
-
-                l-icon(:icon-anchor="[0,0]" :icon-size="[40, 40]" class-name="map-person-thumb-head-icon")
-
-                  img(v-if="item.ProfilovaFotka" :src="ProfilovaFotka" class="map-person-thumb-head-icon-image")
-                  IconPerson.dummy-icon(v-else)
-
+      <client-only placeholder="Načítám...">
+        .mapbox(ref="mapElement" data-component="mapbox")
+      </client-only>
 
     .parlament-detail-about.section-padding-h-margin-v
 
@@ -343,7 +310,19 @@
 
   import IconPerson from "~/assets/images/icon-person.svg?inline";
 
+  import MapaIkonaNarozeni from "~/assets/images/mapa-icon-birth.svg?inline";
+  import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
   import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+
+  let leafletObj;
+  let leafletObjMarkerCluster;
+
+  if (process.client) {
+
+    leafletObj = () => import("leaflet");
+    leafletObjMarkerCluster = () => import("leaflet.markercluster");
+
+  }
 
  //import DoughnutChart from '~/components/DoughnutChart';
 
@@ -401,9 +380,107 @@
         return {
           buttonToggleTypeActive: 'start',
           ukazatDataProKonecneObdobi: false,
-          mapboxAccessToken: '',
-          zoom: 8,
-          center: [47.313220, -1.319482]
+          mapInstance: null,
+          mapSettings: {
+
+            popup: {
+
+              html: (item) => {
+
+                let snemovniObdobiString = '';
+
+
+                if (item.Zacatek || item.Konec) {
+
+
+                  snemovniObdobiString += `<div class="map-card__date-item">`;
+
+                  snemovniObdobiString += (item.Zacatek) ? `<span>od ${dateISOStringToCZFormat(item.Zacatek)}</span>` : '<span>od ???</span>';
+                  snemovniObdobiString += (item.Konec) ? `&nbsp; &mdash; do <span>${dateISOStringToCZFormat(item.Konec)}</span> <br>` : '&nbsp;<span>do ???</span>';
+                  snemovniObdobiString += `</div>`;
+
+                };
+
+
+                return `
+
+                  <div class="is-map-card">
+
+                    <div class="map-card__title">${item.DruhNazev}</div>
+
+                    <div class="map-card__dates">
+                      ${snemovniObdobiString}
+                    </div>
+
+                    <div class="map-card__content">
+
+
+                      <div class="map-card__content__address">${item.Nazev}</div>
+                      <div class="map-card__content__address__meta">
+                        GPS lokace: ${item.GeoX} ${item.GeoY}
+                      </div>
+
+
+                    </div>
+
+                  </div>
+
+                `;
+
+
+              }
+            },
+            addresses: {
+              cluster: {
+                className: 'map__marker map__marker--cluster',
+                iconSize: 30,
+              },
+              iconLargePerson: {
+                className: 'map__marker map__marker--address',
+                iconSize: 50,
+                popupAnchor: [-200, 95],
+                tooltip: {
+                  direction: 'bottom',
+                  offset: { x: 0, y: 20 },
+                },
+                html: (item, index) => {
+
+                  const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon">`;
+                  const end = `</div>`;
+
+                  let content = '';
+
+                  if (item.ProfilovaFotka) {
+
+
+                    content = `<img class="map-person-thumb-head-icon-image" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
+
+
+                  } else {
+                    content = `
+
+                      <svg xmlns="http://www.w3.org/2000/svg" width="88.772" height="95.926" viewBox="0 0 88.772 95.926">
+                        <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
+                          <g id="Group_1365" data-name="Group 1365">
+                            <path id="Path_409" data-name="Path 409" d="M47.893,47.221c11.768,0,21.341-10.592,21.341-23.611S59.66,0,47.893,0,26.55,10.592,26.55,23.61,36.125,47.221,47.893,47.221Z"/>
+                            <path id="Path_410" data-name="Path 410" d="M72.477,44.123a3,3,0,0,0-3.192,1.355A26.016,26.016,0,0,1,47.962,58.2a26.013,26.013,0,0,1-21.32-12.722,3,3,0,0,0-3.2-1.354C6.868,47.777,2.5,72.8,3.789,93.115a3,3,0,0,0,2.994,2.811h82.36a3,3,0,0,0,2.993-2.811C93.429,72.775,89.057,47.74,72.477,44.123Z"/>
+                          </g>
+                        </g>
+                      </svg>
+
+                    `;
+                  }
+
+                  return `${start} ${content} ${end}`;
+
+
+                }
+              },
+              zIndex: 9,
+            },
+          },
+          mapMarkers: [],
+          mapBoundingBox: [],
         }
       },
 
@@ -427,9 +504,164 @@
 
       mounted() {
 
+        // load map
+        this.$nextTick(() => {
 
-        // will center the map based on the position of all the markers on the map
-        this.$refs.mapbox.mapObject.fitBounds(this.mapBoundsOnly);
+          setTimeout(async() => {
+
+
+            const $mapElement = this.$refs.mapElement;
+
+
+            const {Map, map, Marker, Browser, tileLayer, DomEvent, divIcon, latLng, latLngBounds, Polyline, popup} = await leafletObj();
+
+            const { MarkerClusterGroup, MarkerCluster } = await leafletObjMarkerCluster();
+
+            const mapOptions = {
+              dragging: true, // !Browser.mobile
+              scrollWheelZoom: false,
+              tap: false,
+              zoomSnap: .5,
+              zoom: 8,
+              center: [47.313220, -1.319482]
+              // minZoom: 12,
+              // maxZoom: 18,
+            };
+
+            this.mapInstance = map($mapElement, mapOptions);
+
+            tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.map.accessToken}`, {
+              id: 'mapbox.light',
+              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            }).addTo(this.mapInstance);
+
+
+            this.mapInstance.createPane('addresses');
+
+
+            // // init clusters for places
+            // https://github.com/Leaflet/Leaflet.markercluster
+            const mapMarkersClusterAddresses = new MarkerClusterGroup({
+              // clusterPane: 'addresses-clusters',
+              maxClusterRadius: 25,
+              showCoverageOnHover: false,
+              removeOutsideVisibleBounds: true
+              // iconCreateFunction: (cluster) => divIcon({
+              //   ...this.mapSettings.addresses.cluster,
+              //   html: `${cluster.getAllChildMarkers()[0].getIcon().options.html}<span></span><span></span>`,
+              // }),
+            })
+            .on('clusterclick', (event) => {
+              DomEvent.stopPropagation(event);
+              // this.resetAll();
+            });
+
+            [...this.geojson].forEach((item, index) => {
+
+              console.log("iterate over poslanec for map", item);
+
+
+              const icon = new divIcon({
+                ...this.mapSettings.addresses.iconLargePerson,
+                className: `${this.mapSettings.addresses.iconLargePerson.className}`,
+                html: this.mapSettings.addresses.iconLargePerson.html(item, index),
+              });
+
+              const marker = new Marker([item.GeoX, item.GeoY], {
+                // pane: 'addresses',
+                bubblingMouseEvents: false,
+                riseOnHover: true,
+                icon,
+                zIndexOffset: 2,
+              });
+
+              marker.on('click', (event) => {
+
+                // in dev tools in chrome, you can get error on click, but it's a Chrome bug
+                // viz https://stackoverflow.com/a/50857216/12058461
+
+                // DomEvent.stopPropagation(event);
+
+                // console.log("click on marker", item);
+
+              });
+
+
+              marker.bindPopup(this.mapSettings.popup.html(item));
+
+
+              this.mapMarkers[index] = marker;
+
+              this.mapBoundingBox = [...this.mapBoundingBox, [item.GeoX, item.GeoY]];
+
+              //marker.addTo(this.mapInstance);
+
+              mapMarkersClusterAddresses.addLayer(marker);
+
+
+            });
+
+
+            this.mapInstance.addLayer(mapMarkersClusterAddresses);
+
+
+
+            const fitBoundsOptionsDefault = {
+              animate: false,
+              paddingTopLeft: [80, 60],
+              paddingBottomRight: [60, 60]
+            };
+
+            const realFitBoundsOptions = Object.assign({}, fitBoundsOptionsDefault);
+
+
+            if (this.mapBoundingBox.length > 1) {
+
+              // if we have more than one address, make bounds and find automatically center, given the bounds with fitBounds()
+
+              this.mapInstance.fitBounds(this.mapBoundingBox, realFitBoundsOptions);
+
+
+            } else {
+
+              // if we have just one marker / address, make the center of the map based on this marker's coordinates
+
+              this.mapInstance.setView(this.mapBoundingBox[0], this.defaultZoom);
+
+            }
+
+
+            //   l-marker(v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng" @mouseover.native="popUpShow(this)")
+            //     l-popup()
+
+            //       NuxtLink(:to="`/poslanec/${item.Id}/`").is-map-card.person-poslanec-card
+
+            //         .content-container
+
+            //           .header
+            //             .full-name {{item.Jmeno}} {{item.Prijmeni}}
+
+            //           .content
+            //             // show only if the addresses are not birth nor death
+            //             .desc(v-if="item.Druh != 5 && item.Druh != 1")
+            //               p {{item.Parlament}}
+            //               p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
+            //               p {{item.DruhTyp}}
+            //             .name {{item.Nazev}}
+
+            //         .image-container
+            //           img(src="/images/poslanec-dummy-thumb.png" class="map-person-thumb-head-icon-image")
+
+            //     l-icon(:icon-anchor="[0,0]" :icon-size="[40, 40]" class-name="map-person-thumb-head-icon")
+
+            //       img(v-if="item.ProfilovaFotka" :src="ProfilovaFotka" class="map-person-thumb-head-icon-image")
+            //       IconPerson.dummy-icon(v-else)
+
+
+          }, 100);
+
+
+        });
 
         // const schemaCircles = this.$el.querySelectorAll('.component-snemovna-schema svg circle');
 
@@ -743,11 +975,14 @@
 
               Id: poslanec.Id,
               LatLng: [poslanec.Adresy[0].GeoX, poslanec.Adresy[0].GeoY],
+              GeoX: poslanec.Adresy[0].GeoX,
+              GeoY: poslanec.Adresy[0].GeoY,
               Nazev: poslanec.Adresy[0].Nazev,
               Druh: poslanec.Adresy[0].Druh,
               Jmeno: poslanec.Jmeno,
               Prijmeni: poslanec.Prijmeni,
-              ProfilovaFotka: poslanec.Soubory && poslanec.Soubory.length && poslanec.Soubory[0].URLNahled || false,
+              ProfilovaFotka: poslanec.Soubory && poslanec.Soubory.length && poslanec.Soubory[0].URLNahled || false,
+              Soubory: poslanec.Soubory,
 
             }
 
@@ -806,14 +1041,20 @@
       head () {
         return {
           title: `${this.snemovniObdobi.Nazev} (${this.snemovniObdobi.DatumZacatkuZobrazene} — ${this.snemovniObdobi.DatumKonceZobrazene}) — ${this.$config.globalTitle}`,
-          link: [{
-            rel:'stylesheet',
-            href:'//unpkg.com/leaflet/dist/leaflet.css'
-          },
-          {
-            rel:'stylesheet',
-            href:'//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css'
-          }],
+          link: [
+            {
+              rel:'stylesheet',
+              href:'//unpkg.com/leaflet/dist/leaflet.css'
+            },
+            {
+              rel:'stylesheet',
+              href:'https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css'
+            },
+            {
+              rel:'stylesheet',
+              href:'//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css'
+            },
+          ],
           htmlAttrs: {
             class: 'alt-bg-02 subpage-parlament'
           }
