@@ -4,13 +4,13 @@
 
     .columns.is-multiline
 
-      .footer-section.is-section-goals.column.is-one-quarter-widescreen.is-half-desktop.is-full
-        .footer-section-title Cíl aplikace Databáze poslanců
+      .footer-section.is-section-goals.column.is-one-third-widescreen.is-half-desktop.is-full
+        .footer-section-title Cíl webové aplikace
         .footer-section-content.typography-body-text
-          p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          p Web je jedním z výstupů projektu „Vývoj moderní parlamentní kultury v českých zemích a Československu“, který je financování z prostředků NAKI II, programu Ministerstva kultury ČR. Řešiteli projektu jsou Národní muzeum, Ústav pro studium totalitních režimů a Masarykův ústav a Archiv AV ČR.
 
 
-      .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
+      .footer-section.is-section-app-logos.column.is-one-third-widescreen.is-half-desktop.is-full
         .footer-section-title Na projektu spolupracovali
         .footer-section-content
           nav.nav-logos.typography-body-text
@@ -21,18 +21,18 @@
               img.logo-image(src="~/assets/images/logo-ustr.svg" alt="Logo Ústavu pro studium totalitních režimů")
               span.logo-text.typography-smaller-text Další instituce
 
-      .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
+      .footer-section.is-section-app-logos.column.is-one-third-widescreen.is-half-desktop.is-full
         .footer-section-title Důležité odkazy
         .footer-section-content.typography-body-text
           nav.nav-links
-            a.link(href="#") link
-            a.link(href="#") link
-            a.link(href="#") link
+            a.link(href="https://www.nm.cz/" title="Národní muzeum") Národní muzeum
+            a.link(href="https://www.ustrcr.cz/" title="Ústav pro studium totalitních režimů") Ústav pro studium totalitních režimů
+            a.link(href="https://www.mua.cas.cz/" title="Masarykův ústav a Archiv Akademie věd České republiky") Masarykův ústav a Archiv Akademie věd České republiky
 
-      .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
-        .footer-section-title Zpětná vazba
-        .footer-section-content.typography-body-text
-          a(href="#") Poslat zpětnou vazbu na aplikaci DOPLNIT text, chceme též, aby se ozvali pamětníci. Mohou zde být i kontaktní informace, email, výzva k aktivní spolupráci
+      //- .footer-section.is-section-app-logos.column.is-one-quarter-widescreen.is-half-desktop.is-full
+      //-   .footer-section-title Zpětná vazba
+      //-   .footer-section-content.typography-body-text
+      //-     a(href="#") Poslat zpětnou vazbu na aplikaci DOPLNIT text, chceme též, aby se ozvali pamětníci. Mohou zde být i kontaktní informace, email, výzva k aktivní spolupráci
 
 
     .columns
@@ -108,6 +108,8 @@
 
     a
       color: rgba(0, 0, 0, .5)
+      line-height: 1
+      margin-bottom: 1em
 
   .nav-social-icons
     display: flex

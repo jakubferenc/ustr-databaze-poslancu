@@ -147,8 +147,6 @@
               class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
               )
 
-          //                 :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
-
 
           .component-footer(v-if="MaButtonMore || MaPaginaci")
 

@@ -54,8 +54,21 @@
                   .metadata-section
                     .metadata-section-title.typography-metadata-section-title
                       h3 Vyznání
-                    .metadata-section-content.typography-item-detail-text
-                      div {{nabozenstviNarozeni}}
+
+                      .metadata-section-content.typography-item-detail-text.metadata-content-multiple(v-if="poslanec.Nabozenstvi.length")
+
+                        .profese.item(v-for="(itemNabozenstvi, index) in poslanec.Nabozenstvi" :key="index")
+
+
+                            .profese-title {{itemNabozenstvi.Nazev}}
+                            .profese-date-range
+                              | (
+                              span od roku {{itemNabozenstvi.Zacatek}}
+                              | )
+
+
+                      .metadata-section-content.typography-item-detail-text(v-else) Neuvedeno
+
 
               .columns
                 .column.is-one-third-widescreen
@@ -296,7 +309,6 @@
 
                 let snemovniObdobiString = '';
 
-                console.log("item", item);
 
                 if (item.Zacatek || item.Konec) {
 
@@ -611,7 +623,7 @@
 
           const {Id, Jmeno, Prijmeni, DatumNarozeniZobrazene, DatumUmrtiZobrazene, OsobniVztahyPrimarni, OsobniVztahySekundarni, SouvisejiciPoslanci} = this.poslanec;
 
-          if (SouvisejiciPoslanci && SouvisejiciPoslanci.length > 0) {
+          if (SouvisejiciPoslanci && SouvisejiciPoslanci.length > 0) {
 
             const createThisPoslanecRootObject = {
               Id,
@@ -644,7 +656,7 @@
 
             });
 
-            const sekundarniVztahyMapped = [...rOsobniVztahyPrimarni, ...OsobniVztahySekundarni].map(person => {
+            const sekundarniVztahyMapped = [...OsobniVztahyPrimarni, ...OsobniVztahySekundarni].map(person => {
 
               return {
                 Id: person.Id,
@@ -797,17 +809,7 @@
 
         },
 
-        nabozenstviNarozeni() {
 
-          const nabozenstviNarozeni = this.poslanec?.NabozenstviNarozeni;
-
-          if (nabozenstviNarozeni === null) {
-            return this.$t('error.notDefined'); // :TODO: It would be better to get the string via config, not hard-coded into the code here
-          } else {
-            return nabozenstviNarozeni;
-          }
-
-        },
 
         adresaNarozeni() {
 

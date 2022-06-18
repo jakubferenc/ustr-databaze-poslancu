@@ -1,5 +1,14 @@
 import { fixTypos } from 'typopo';
 
+export function shuffleArray(unshuffledArray) {
+
+  return unshuffledArray
+  .map(value => ({ value, sort: Math.random() }))
+  .sort((a, b) => a.sort - b.sort)
+  .map(({ value }) => value)
+
+};
+
 export const dateISOStringToCZFormat = (dateString, removeStartZero = true) => {
   const res = dateString.split("T")[0].split("-").reverse().join(". ");
 

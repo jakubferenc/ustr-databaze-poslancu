@@ -63,7 +63,7 @@ export default {
         await store.dispatch("getSlovnikovaHesla");
 
         await store.dispatch("getPoslanciHomepage", {
-          limit: 20,
+          limit: 10,
           stranka: 1
         });
 

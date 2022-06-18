@@ -121,6 +121,7 @@
                 :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
                 :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
                 :Mandaty="poslanec.Mandaty"
+                :Soubory="poslanec.Soubory"
                 :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
                 class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
                 )
@@ -145,11 +146,11 @@
                   a.pagination-list-next.pagination-item(href="#") &gt;
 
 
-              .buttons-more
-                NuxtLink(v-if="MaButtonMore && ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
+              .buttons-more(v-if="MaButtonMore")
+                NuxtLink(v-if="ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
 
-                a(v-if="MaButtonMore && MaButtonMorePrevious" @click="loadPreviousItems()").typo-form-button.button-large Načíst předchozí poslance
-                a(v-if="MaButtonMore" @click="loadMoreItems()").typo-form-button.button-large Načíst další poslance
+                a(v-if="MaButtonMorePrevious" @click="loadPreviousItems()").typo-form-button.button-large Načíst předchozí poslance
+                a(v-if="!ButtonMoreLink" @click="loadMoreItems()").typo-form-button.button-large Načíst další poslance
 
 </template>
 
@@ -256,6 +257,7 @@
 </style>
 
 <script>
+
 
 const Poslanec = () => import('~/components/Poslanec.vue');
 
