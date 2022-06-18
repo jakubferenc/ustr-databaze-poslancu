@@ -140,26 +140,6 @@
   @use "sass:math"
 
 
-  .is-map-card.person-poslanec-card
-
-    width: 380px
-    height: 153px
-    background-color: #fff
-
-    .image-container
-
-      img
-        +desktop
-          width: 110px
-
-    .content-container
-
-      .header
-        font-size: clamp(1rem, 0.9375vw, 2rem)
-
-
-
-
   .section-title
 
     @extend %typography-section-title
@@ -350,26 +330,13 @@
 
         } else {
 
-          if (!$config.useFileCachedAPI) {
 
-            await store.dispatch("getSnemovniObdobiDetail", {
-              snemovniObdobiId: params.id
-            });
+          await store.dispatch("getSnemovniObdobiDetail", {
+            snemovniObdobiId: params.id
+          });
 
-            return {
-              snemovniObdobi: this.$store.state.snemovni_obdobi_detail
-            }
-
-          } else {
-
-            const snemovniObdobiRes = await SnemovniObdobiData();
-
-            const filteredSnemovniObdobiDetailItem = snemovniObdobiRes.filter(item => item.Id == params.id)[0];
-
-            return {
-              snemovniObdobi: filteredSnemovniObdobiDetailItem
-            }
-
+          return {
+            snemovniObdobi: store.state.snemovni_obdobi_detail
           }
 
         }
@@ -389,41 +356,52 @@
 
                 let snemovniObdobiString = '';
 
+                const imageContent = (item.ProfilovaFotka && item.ProfilovaFotka !== '') ? `
+                  <img src="${item.ProfilovaFotka}" class="map-person-thumb-head-icon-image" />
+                ` : `<div class="map-person-thumb-head-icon-image">
 
-                if (item.Zacatek || item.Konec) {
+                    <svg xmlns="http://www.w3.org/2000/svg" width="90" height="98" viewBox="0 0 90 98">
+                      <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
+                        <g id="Group_1365" data-name="Group 1365" transform="translate(3.578)">
+                          <path id="Path_409" data-name="Path 409" d="M47.893,47.221c11.768,0,21.341-10.592,21.341-23.611S59.66,0,47.893,0,26.55,10.592,26.55,23.61,36.125,47.221,47.893,47.221Z" transform="translate(-2.965)"/>
+                          <path id="Path_410" data-name="Path 410" d="M73.431,44.123a3.059,3.059,0,0,0-3.236,1.355A26.435,26.435,0,0,1,48.577,58.2,26.432,26.432,0,0,1,26.961,45.478a3.059,3.059,0,0,0-3.244-1.354C6.914,47.777,2.485,72.8,3.792,93.115a3.024,3.024,0,0,0,3.035,2.811h83.5a3.024,3.024,0,0,0,3.034-2.811C94.673,72.775,90.241,47.74,73.431,44.123Z" transform="translate(-3.578 2.074)"/>
+                        </g>
+                      </g>
+                    </svg>
 
 
-                  snemovniObdobiString += `<div class="map-card__date-item">`;
 
-                  snemovniObdobiString += (item.Zacatek) ? `<span>od ${dateISOStringToCZFormat(item.Zacatek)}</span>` : '<span>od ???</span>';
-                  snemovniObdobiString += (item.Konec) ? `&nbsp; &mdash; do <span>${dateISOStringToCZFormat(item.Konec)}</span> <br>` : '&nbsp;<span>do ???</span>';
-                  snemovniObdobiString += `</div>`;
-
-                };
-
+                </div>`;
 
                 return `
 
-                  <div class="is-map-card">
 
-                    <div class="map-card__title">${item.DruhNazev}</div>
+                    <a class="is-map-card person-poslanec-card" href="/poslanec/${item.Id}/">
 
-                    <div class="map-card__dates">
-                      ${snemovniObdobiString}
-                    </div>
+                      <div class="content-container">
 
-                    <div class="map-card__content">
+                        <div class="header">
+                          <div class="full-name">${item.Jmeno} ${item.Prijmeni}</div>
+                        </div>
+
+                        <div class="content">
+                          <div class="desc">
+                            <p>Narození: ${item.DatumNarozeniZobrazene} — Úmrtí: ${item.DatumUmrtiZobrazene}</p>
+
+                            <div class="map-card__content__address">${item.Nazev}</div>
+                            <div class="map-card__content__address__meta">GPS lokace: ${item.GeoX} ${item.GeoY}</div>
+
+                          </div>
+
+                        </div>
 
 
-                      <div class="map-card__content__address">${item.Nazev}</div>
-                      <div class="map-card__content__address__meta">
-                        GPS lokace: ${item.GeoX} ${item.GeoY}
                       </div>
 
+                      <div class="image-container">${imageContent}</div>
 
-                    </div>
+                    </a>
 
-                  </div>
 
                 `;
 
@@ -545,11 +523,9 @@
               // clusterPane: 'addresses-clusters',
               maxClusterRadius: 25,
               showCoverageOnHover: false,
-              removeOutsideVisibleBounds: true
-              // iconCreateFunction: (cluster) => divIcon({
-              //   ...this.mapSettings.addresses.cluster,
-              //   html: `${cluster.getAllChildMarkers()[0].getIcon().options.html}<span></span><span></span>`,
-              // }),
+              removeOutsideVisibleBounds: true,
+              chunkedLoading: true
+
             })
             .on('clusterclick', (event) => {
               DomEvent.stopPropagation(event);
@@ -629,34 +605,6 @@
               this.mapInstance.setView(this.mapBoundingBox[0], this.defaultZoom);
 
             }
-
-
-            //   l-marker(v-for="(item, index) in geojson" :key="index" :lat-lng="item.LatLng" @mouseover.native="popUpShow(this)")
-            //     l-popup()
-
-            //       NuxtLink(:to="`/poslanec/${item.Id}/`").is-map-card.person-poslanec-card
-
-            //         .content-container
-
-            //           .header
-            //             .full-name {{item.Jmeno}} {{item.Prijmeni}}
-
-            //           .content
-            //             // show only if the addresses are not birth nor death
-            //             .desc(v-if="item.Druh != 5 && item.Druh != 1")
-            //               p {{item.Parlament}}
-            //               p {{item.DatumZacatkuZobrazene}} — {{item.DatumKonceZobrazene}}
-            //               p {{item.DruhTyp}}
-            //             .name {{item.Nazev}}
-
-            //         .image-container
-            //           img(src="/images/poslanec-dummy-thumb.png" class="map-person-thumb-head-icon-image")
-
-            //     l-icon(:icon-anchor="[0,0]" :icon-size="[40, 40]" class-name="map-person-thumb-head-icon")
-
-            //       img(v-if="item.ProfilovaFotka" :src="ProfilovaFotka" class="map-person-thumb-head-icon-image")
-            //       IconPerson.dummy-icon(v-else)
-
 
           }, 100);
 
@@ -981,6 +929,8 @@
               Druh: poslanec.Adresy[0].Druh,
               Jmeno: poslanec.Jmeno,
               Prijmeni: poslanec.Prijmeni,
+              DatumNarozeniZobrazene: (poslanec.DatumNarozeniZobrazene !== null) ? poslanec.DatumNarozeniZobrazene : '???',
+              DatumUmrtiZobrazene: (poslanec.DatumUmrtiZobrazene !== null) ?  poslanec.DatumUmrtiZobrazene : '???',
               ProfilovaFotka: poslanec.Soubory && poslanec.Soubory.length && poslanec.Soubory[0].URLNahled || false,
               Soubory: poslanec.Soubory,
 

@@ -7,7 +7,8 @@ import {
   normalizeSouborAttrs,
   getAdresyProMapuForPoslanec,
   getCasovaOsaDataForPoslanec,
-  stripHTMLTags
+  stripHTMLTags,
+  dateISOStringToCZFormat,
 } from './utils/functions.js';
 
 
@@ -1169,6 +1170,20 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
 
   snemovniObdobiObj.Nazev = snemovniObdobiObj.Nazev.split('|')[0];
   snemovniObdobiObj.PocetPoslancu = snemovniObdobiObj.Poslanci.length;
+
+  snemovniObdobiObj.Poslanci = snemovniObdobiObj.Poslanci.map((poslanec) => {
+
+    if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
+      poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(poslanec.DatumNarozeni);
+    }
+
+    if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
+      poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(poslanec.DatumUmrti);
+    }
+
+    return poslanec;
+
+  });
 
   // prepare statistics, make them integer
   snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu = parseInt(snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu);

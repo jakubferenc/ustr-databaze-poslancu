@@ -333,9 +333,6 @@ export const actions = {
       poslanci = poslanci
         .map((poslanec) => {
 
-          console.log(poslanec.DatumNarozeni);
-          console.log(poslanec.DatumUmrti);
-
           if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
             poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(poslanec.DatumNarozeni);
           }
@@ -405,12 +402,12 @@ export const actions = {
       poslanci = poslanci
         .map((poslanec) => {
 
-          if (poslanec.DatumNarozeniZobrazene !== null) {
-            poslanec.DatumNarozeniZobrazene = poslanec.DatumNarozeniZobrazene.split('. ')[2];
+          if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
+            poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(poslanec.DatumNarozeni);
           }
 
-          if (poslanec.DatumUmrtiZobrazene !== null) {
-            poslanec.DatumUmrtiZobrazene = poslanec.DatumUmrtiZobrazene.split('. ')[2];
+          if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
+            poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(poslanec.DatumUmrti);
           }
 
           return poslanec;
