@@ -82,7 +82,12 @@
 
                 //// sekce
                 ////////////////////////////////////////////////////////////////////////////////
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading {{filtrNastaveni[filtrSekceKey].title}}
+                .seznam-filter-sidebar-content-section-title.typography-filter-heading
+                  span {{filtrNastaveni[filtrSekceKey].title}}
+                  span(v-if="filtrNastaveni[filtrSekceKey].hasCounter") &nbsp;({{filtrNastaveni[filtrSekceKey].values.length}})
+                  span.info-icon(v-if="filtrNastaveni[filtrSekceKey].info") i
+                    span.info-text ({{filtrNastaveni[filtrSekceKey].info}})
+
                 .seznam-filter-sidebar-content-section-content.typography-filter-text
 
                   ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
@@ -155,6 +160,35 @@
 </template>
 
 <style lang="sass" scoped>
+
+  .info-icon
+    display: inline-flex
+    justify-content: center
+    align-items: center
+    content: "i"
+    width: 20px
+    height: 20px
+    background-color: black
+    color: #fff
+    position: relative
+    margin-left: 1em
+    top: 4px
+
+    &:hover
+      .info-text
+        display: block
+
+    .info-text
+      background-color: #fff
+      color: #000
+      min-width: 250px
+      border-radius: 5px
+      display: none
+      position: absolute
+      top: 1em
+      left: 1em
+      padding: 1em 2em
+      z-index: 9
 
   .pagination-bar
     display: flex
@@ -267,7 +301,7 @@ export default {
   components: { Poslanec },
 
 
-  props: ["MaButtonMorePrevious", "MaFiltrPresAPI", "PoslanciVstupniPolozky", "KesovatPoslanceInterne", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
+  props: ["MaButtonMorePrevious", "MaFiltrPresAPI", "PoslanciVstupniPolozky", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
 
   computed: {
 
@@ -283,9 +317,9 @@ export default {
 
     poslanci() {
 
-      let currentPoslanci = this.PoslanciVstupniPolozky;
+      let currentPoslanci = [...this.PoslanciVstupniPolozky];
 
-      if (this.MaFiltr && !this.MaFiltrPresAPI) {
+      if (this.MaFiltr) {
 
         if (!this.radit.hasBeenSelected) {
 
@@ -300,9 +334,7 @@ export default {
 
           // here filtering based on the this.filterNastaveni
 
-          let filteredPoslanci = currentPoslanci;
-
-          filteredPoslanci = filteredPoslanci.filter((poslanec) => {
+          currentPoslanci = currentPoslanci.filter((poslanec) => {
 
             let itemSatisfyFilter = [];
 
@@ -315,47 +347,69 @@ export default {
               const itemPropertyToTest = this.filtrNastaveni[polozkaFiltrKey].property;
 
 
-              let tempFilterResults = []; // here will be several boolean variables true or false, we need to get at last one true for the filter item to be true as such and this the item passes the filter
+              let tempFilterResults = []; // here will be several boolean variables true or false, we need to get at least one true for the filter item to be true as such and this the item passes the filter
+
+              if (this.filtrNastaveni[polozkaFiltrKey]?.hasSpecialFilter) {
+
+                // PoslaneckySlib
+                if (polozkaFiltrKey === 'PoslaneckySlib') {
 
 
-              // filter section either has multiple items for only one item, then the itemPropertyToTest is a string
-              // or multiple items for multiple "poslanec" properties, then attribute "property" must be for each filter item as well as "property" for the filter section must be an array
-              if (!Array.isArray(itemPropertyToTest)) {
+                  const hasPoslaneckySlibForThisSnemovniObdobi = [...poslanec.Mandaty].filter(mandat => mandat.SnemovniObdobiId === this.filtrNastaveni[polozkaFiltrKey].snemovniObdobiId)[0].PoslaneckySlib;
 
-                // we are testing one property with multiple values
+                  const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected || (item.selected && item.default));
 
-                const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected || (item.selected && item.default));
+                  thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
 
-                thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
-
-
-                  tempFilterResults.push(itemFiltervalidator.validate(poslanec[itemPropertyToTest]));
-
-                });
-
-                itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)]; // includes at least one "true" anwwer to if it the item satisfies at least one from the multiple filter section
-
-              } else {
-
-
-                itemPropertyToTest.forEach(itemPropertyToTestIndividual => {
-
-                  const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter( item => (item.selected && item.property === itemPropertyToTestIndividual) || (item.selected && item.default) );
-
-                  thisFilterItemSelectedItems.forEach(validator => {
-
-                    tempFilterResults.push(validator.validate(poslanec[itemPropertyToTestIndividual]));
+                    tempFilterResults.push(itemFiltervalidator.validate(hasPoslaneckySlibForThisSnemovniObdobi));
 
                   });
 
-                });
+                }
 
-                itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
 
+              } else {
+
+                // filter section either has multiple items for only one item, then the itemPropertyToTest is a string
+                // or multiple items for multiple "poslanec" properties, then attribute "property" must be for each filter item as well as "property" for the filter section must be an array
+                if (!Array.isArray(itemPropertyToTest)) {
+
+                  // we are testing one property with multiple values
+
+                  const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected || (item.selected && item.default));
+
+                  thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
+
+
+                    tempFilterResults.push(itemFiltervalidator.validate(poslanec[itemPropertyToTest]));
+
+                  });
+
+                } else {
+
+
+                  itemPropertyToTest.forEach(itemPropertyToTestIndividual => {
+
+                    const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter( item => (item.selected && item.property === itemPropertyToTestIndividual) || (item.selected && item.default) );
+
+                    thisFilterItemSelectedItems.forEach(validator => {
+
+                      tempFilterResults.push(validator.validate(poslanec[itemPropertyToTestIndividual]));
+
+                    });
+
+                  });
+
+                }
 
               }
 
+
+               itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
+
+
             });
+
 
             // must be all true
 
@@ -366,10 +420,6 @@ export default {
 
 
           });
-
-
-          currentPoslanci = filteredPoslanci;
-
 
         }
 

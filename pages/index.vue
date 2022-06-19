@@ -12,7 +12,7 @@
 
     .section-padding-h-margin-v
 
-      h2.section-title Seznam poslanců
+      h2.section-title Výběr poslanců
 
       PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/")
 

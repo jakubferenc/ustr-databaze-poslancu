@@ -26,6 +26,7 @@
 <style lang="sass" scoped>
 
 
+
 .poslanec-thumb
   text-align: center
   display: flex
@@ -34,6 +35,11 @@
   flex-direction: column
   margin-bottom: 50px
   text-decoration: none
+
+  .poslanec-title
+    line-height: 1.2
+  .poslanec-years
+    font-size: 12px
 
   .poslanec-image
     width: 155px
