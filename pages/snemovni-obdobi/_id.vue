@@ -284,8 +284,6 @@
   const CasovaOsa = () => import('~/components/CasovaOsa.vue');
   const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
   const TabNavigace = () => import('~/components/TabNavigace.vue');
-  const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
-
 
   const SnemovniObdobiData = () => import('~/data/snemovni-obdobi.json').then(m => m.default || m);
 
@@ -319,7 +317,7 @@
 
   export default {
 
-      components: { MultiRangeSlider, PoslanciSeznam, CasovaOsa, GalerieMediiSeznam, TabNavigace, IconPerson, ParlamentNahledObecnyImage },
+      components: { PoslanciSeznam, CasovaOsa, GalerieMediiSeznam, TabNavigace, IconPerson, ParlamentNahledObecnyImage },
 
       async asyncData({params, error, payload, store, $config}) {
 
@@ -753,6 +751,28 @@
 
           });
 
+          const poslaneckySlibMapped = [
+            {id: 0, text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+            {id: true, text: 'Ano', default: false, selected: false, validate: (property) => {
+
+              const hasPoslaneckySlibForThisSnemovniObdobi = [...property].filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].PoslaneckySlib;
+
+              return hasPoslaneckySlibForThisSnemovniObdobi === true;
+
+
+            }},
+            {id: false, text: 'Ne', default: false, selected: false, validate: (property) => {
+
+              const hasPoslaneckySlibForThisSnemovniObdobi = [...property]
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].PoslaneckySlib;
+
+              return hasPoslaneckySlibForThisSnemovniObdobi === false;
+
+
+            }},
+          ];
+
+
 
           // make unique values
           volebni_strany = [...new Set(volebni_strany)]
@@ -800,7 +820,6 @@
                 const kurieItems = [...property]
                 .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
                 .map(mandat => (mandat.Kurie && mandat.Kurie !== '') ? mandat.Kurie : 'neuvedeno')
-                .reduce((prev, current) => {return [...prev, ...current]}, []);
 
                 return kurieItems.includes(item);
 
@@ -890,14 +909,7 @@
               selected: false,
               validate: (property) => {
 
-                if (property.length === 0 && item === 'neuvedeno') {
-
-                  return true;
-
-
-                } else {
-                  return property.map(nabozenstviItem => nabozenstviItem.Nazev).includes(item);
-                }
+                return property.length === 0 && item === 'neuvedeno' ? true : property.map(nabozenstviItem => nabozenstviItem.Nazev).includes(item);
 
               }
             };
@@ -955,7 +967,7 @@
 
           vysoka_skola = [
             {id: 'vse-skola', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-            {id: 'vysoka_skola', text: 'Pouze vysoká škola', validate:  (property) => property === true}
+            {id: 'vysoka_skola', text: 'Má VŠ', validate:  (property) => property === true}
           ];
 
           if (!maji_vysokou_skolu) {
@@ -965,10 +977,24 @@
           const snemovniObdobiNazevEdited = this.snemovniObdobi.Nazev.trim();
 
 
-          const poslaneckySlibMapped = [
-            {id: 0, text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-            {id: true, text: 'Ano', validate: (property) => property === true},
-            {id: false, text: 'Ne', validate: (property) => property === false},
+
+
+          let poctyMandatu = [...this.poslanci].map(poslanec => poslanec.Mandaty.length);
+          poctyMandatu = [...new Set(poctyMandatu)].sort((a,b) => a-b);
+
+          const pocetMandatuMapped = [
+            {id: 'pocet-mandatu-current-min', default: false, reset: false, selected: false, currentValue: poctyMandatu[0], validate: (property, currentValueMin) => {
+
+              return property.length >= currentValueMin;
+
+            }},
+            {id: 'pocet-mandatu-current-max', default: false, reset: false, selected: false, currentValue: poctyMandatu[poctyMandatu.length-1], validate: (property, currentValueMax) => {
+
+              return property.length <= currentValueMax
+
+            }},
+            poctyMandatu[0],
+            poctyMandatu[poctyMandatu.length-1],
           ];
 
 
@@ -981,8 +1007,7 @@
               property: 'PoslaneckySlib',
               info: "Nějaké informace k vysvětlení",
               hasCounter: false,
-              hasSpecialFilter: true,
-              snemovniObdobiId: this.snemovniObdobi.Id,
+              property: 'Mandaty',
               values: poslaneckySlibMapped,
             },
             parlamentni_telesa: {
@@ -1107,22 +1132,18 @@
                 {id: 'vek-80', text: '80+', default: false, selected: false, validate: (property) => property >= 80 },
               ]
             },
-            mandaty: {
-              id: sectionId++,
-              title: 'Mandáty',
-              type: 'radio',
-              multiple: false,
-              reset: true,
-              order: 'block',
-              property: 'Mandaty',
-              values: [
-                {id: 'vse-mandaty', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-                {id: 'ma-jeden-mandat', text: 'Má aspoň 1 mandát', default: false, selected: false, validate: (property) => property.length > 0 },
-                {id: 'ma-pet-mandat', text: 'Má aspoň 5 mandátů', default: false, selected: false, validate: (property) => property.length > 4 },
-                {id: 'ma-deset-mandat', text: 'Má aspoň 10 mandátů', default: false, selected: false, validate: (property) => property.length > 9 },
-                {id: 'ma-dvanactplus-mandat', text: 'Má 12+ mandátů', default: false, selected: false, validate: (property) => property.length > 11 },
-              ]
-            },
+            // PocetMandatu: {
+            //   id: sectionId++,
+            //   title: 'Počet mandátů',
+            //   type: 'range',
+            //   order: 'inline',
+            //   info: "Nějaké informace k vysvětlení",
+            //   property: 'Mandaty',
+            //   hasCounter: false,
+            //   queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
+            //   values: pocetMandatuMapped,
+            // },
+
             Fotografie: {
               id: sectionId++,
               title: 'Fotografie',
@@ -1138,20 +1159,20 @@
 
               ],
             },
-            dalsi: {
-              id: sectionId++,
-              title: 'Další vlastnosti',
-              type: 'checkbox',
-              multiple: true,
-              reset: true,
-              property: ['OsobniVztahyPrimarni'],
-              order: 'block',
-              values: [
-                {id: 'vse-dalsi', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-                {id: 'ma-galerii', text: 'Má galerii', default: false, selected: false, property: 'Soubory', validate: (property) => property.length > 1 },
-                {id: 'ma-sociálni-vazby', text: 'Má sociální vazby', property: 'OsobniVztahyPrimarni', default: false, selected: false, validate: (property) => property.length > 0 },
-              ],
-            }
+            // dalsi: {
+            //   id: sectionId++,
+            //   title: 'Další vlastnosti',
+            //   type: 'checkbox',
+            //   multiple: true,
+            //   reset: true,
+            //   property: ['OsobniVztahyPrimarni'],
+            //   order: 'block',
+            //   values: [
+            //     {id: 'vse-dalsi', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+            //     {id: 'ma-galerii', text: 'Má galerii', default: false, selected: false, property: 'Soubory', validate: (property) => property.length > 1 },
+            //     {id: 'ma-sociálni-vazby', text: 'Má sociální vazby', property: 'OsobniVztahyPrimarni', default: false, selected: false, validate: (property) => property.length > 0 },
+            //   ],
+            // }
 
           }
 
