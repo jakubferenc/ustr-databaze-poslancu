@@ -689,6 +689,8 @@
 
           let volebni_strany = [];
           let kurie = [];
+          let vybory = [];
+          let kluby = [];
 
           [...this.poslanci].forEach((item) => {
 
@@ -727,6 +729,27 @@
               .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
               .map(mandat => (mandat.Kurie && mandat.Kurie !== '') ? mandat.Kurie : 'neuvedeno')
             ];
+
+            // vybory
+            vybory = [
+            ...vybory,
+            ...item.Mandaty
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+              .map(mandat => (mandat.Vybory && mandat.Vybory.length > 0) ? mandat.Vybory.map(vybor => vybor.Nazev) : ['neuvedeno'])
+              .reduce((prev, current) => {return [...prev, ...current]}, [])
+              .filter(item => item !== null)
+            ];
+
+            // kluby
+            kluby = [
+            ...kluby,
+            ...item.Mandaty
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+              .map(mandat => (mandat.Kluby && mandat.Kluby.length > 0) ? mandat.Kluby : ['neuvedeno'])
+              .reduce((prev, current) => {return [...prev, ...current]}, [])
+              .filter(item => item !== null)
+            ];
+
 
           });
 
@@ -776,7 +799,8 @@
 
                 const kurieItems = [...property]
                 .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
-                .map(mandat => (mandat.Kurie && mandat.Kurie !== '') ? mandat.Kurie : 'neuvedeno');
+                .map(mandat => (mandat.Kurie && mandat.Kurie !== '') ? mandat.Kurie : 'neuvedeno')
+                .reduce((prev, current) => {return [...prev, ...current]}, []);
 
                 return kurieItems.includes(item);
 
@@ -788,6 +812,69 @@
           kurie = [
             {id: 'vse-kurie', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
             ...kurie
+          ];
+
+
+          // make unique values
+          vybory = [...new Set(vybory)]
+          .sort((a,b) => a.toString().localeCompare(b))
+          .map(item => {
+
+            const itemId = (item === 'neuvedeno') ? 'vybor-neuvedeno' : item;
+
+            return {
+              id: itemId,
+              text: item,
+              selected: false,
+              validate: (property) => {
+
+                const vyboryItems = [...property]
+                .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+                .map(mandat => (mandat.Vybory && mandat.Vybory.length > 0) ? mandat.Vybory.map(vybor => vybor.Nazev) : ['neuvedeno'])
+                .reduce((prev, current) => {return [...prev, ...current]}, [])
+                .filter(item => item !== null)
+
+                return vyboryItems.includes(item);
+
+              }
+            };
+          });
+
+          // add default value
+          vybory = [
+            {id: 'vse-vybory', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+            ...vybory
+          ];
+
+          // make unique values
+          kluby = [...new Set(kluby)]
+          .sort((a,b) => a.toString().localeCompare(b))
+          .map(item => {
+
+            const itemId = (item === 'neuvedeno') ? 'kluby-neuvedeno' : item;
+
+            return {
+              id: itemId,
+              text: item,
+              selected: false,
+              validate: (property) => {
+
+                const klubyItems = [...property]
+                .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+                .map(mandat => (mandat.Kluby && mandat.Kluby.length > 0) ? mandat.Kluby : ['neuvedeno'])
+                .reduce((prev, current) => {return [...prev, ...current]}, [])
+                .filter(item => item !== null)
+
+                return klubyItems.includes(item);
+
+              }
+            };
+          });
+
+          // add default value
+          kluby = [
+            {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+            ...kluby
           ];
 
           // make unique values
@@ -921,6 +1008,18 @@
                 {id: '2', text: 'Žena', validate: (property) => property === 2},
               ]
               },
+            MandatyKluby: {
+              id: sectionId++,
+              title: 'Poslanecké kluby',
+              type: 'checkbox',
+              multiple: true,
+              reset: true,
+              order: 'block',
+              property: 'Mandaty',
+              info: "Nějaké informace k vysvětlení",
+              hasCounter: true,
+              values: kluby
+            },
             MandatyVolebniStrana: {
               id: sectionId++,
               title: 'Volební strany',
@@ -944,6 +1043,18 @@
               info: "Nějaké informace k vysvětlení",
               hasCounter: true,
               values: kurie
+            },
+            MandatyVybory: {
+              id: sectionId++,
+              title: 'Výbory',
+              type: 'checkbox',
+              multiple: true,
+              reset: true,
+              order: 'block',
+              property: 'Mandaty',
+              info: "Nějaké informace k vysvětlení",
+              hasCounter: true,
+              values: vybory
             },
             vzdelani: {
               id: sectionId++,
