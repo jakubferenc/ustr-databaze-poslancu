@@ -8,8 +8,8 @@
     span &nbsp;|
     NuxtLink.link-parlamenty(to="/parlamenty/") Parlamenty
     span &nbsp;|
-    NuxtLink.link-socialni-mapy(to="/socialni-mapy/") Sociální mapy
-    span &nbsp;|
+    //- NuxtLink.link-socialni-mapy(to="/socialni-mapy/") Sociální mapy
+    //- span &nbsp;|
     NuxtLink.link-slovnik(to="/slovnik/") Slovník
     span &nbsp;|
     NuxtLink.link-galerie-medii(to="/galerie-medii/") Galerie
