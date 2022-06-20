@@ -690,6 +690,8 @@
           let vybory = [];
           let kluby = [];
 
+          let funkce = [];
+
           [...this.poslanci].forEach((item) => {
 
 
@@ -749,6 +751,16 @@
             ];
 
 
+            // funkce
+            funkce = [
+            ...funkce,
+            ...item.Mandaty
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+              .map(mandat => (mandat.Funkce && mandat.Funkce.length > 0) ? mandat.Funkce : ['neuvedeno'])
+              .reduce((prev, current) => {return [...prev, ...current]}, [])
+              .filter(item => item !== null)
+            ];
+
           });
 
           const poslaneckySlibMapped = [
@@ -772,6 +784,26 @@
             }},
           ];
 
+          const kooptaceMapped = [
+            {id: 0, text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+            {id: true, text: 'Ano', default: false, selected: false, validate: (property) => {
+
+              const hasKooptaceForThisSnemovniObdobi = [...property].filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].Kooptace;
+
+              return hasKooptaceForThisSnemovniObdobi === true;
+
+
+            }},
+            {id: false, text: 'Ne', default: false, selected: false, validate: (property) => {
+
+              const hasKooptaceForThisSnemovniObdobi = [...property]
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].Kooptace;
+
+              return hasKooptaceForThisSnemovniObdobi === false;
+
+
+            }},
+          ];
 
 
 
@@ -895,6 +927,37 @@
           kluby = [
             {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
             ...kluby
+          ];
+
+          // make unique values
+          funkce = [...new Set(funkce)]
+          .sort((a,b) => a.toString().localeCompare(b))
+          .map(item => {
+
+            const itemId = (item === 'neuvedeno') ? 'funkce-neuvedeno' : item;
+
+            return {
+              id: itemId,
+              text: item,
+              selected: false,
+              validate: (property) => {
+
+                const funkceItems = [...property]
+                .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+                .map(mandat => (mandat.Funkce && mandat.Funkce.length > 0) ? mandat.Funkce : ['neuvedeno'])
+                .reduce((prev, current) => {return [...prev, ...current]}, [])
+                .filter(item => item !== null)
+
+                return funkceItems.includes(item);
+
+              }
+            };
+          });
+
+          // add default value
+          funkce = [
+            {id: 'vse-funkce', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+            ...funkce
           ];
 
           // make unique values
@@ -1082,7 +1145,6 @@
               title: 'Poslanecky Slib',
               type: 'radio',
               order: 'inline',
-              property: 'PoslaneckySlib',
               info: "Nějaké informace k vysvětlení",
               hasCounter: false,
               property: 'Mandaty',
@@ -1111,6 +1173,28 @@
                 {id: '2', text: 'Žena', validate: (property) => property === 2},
               ]
               },
+            Kooptace: {
+              id: sectionId++,
+              title: 'Kooptace',
+              type: 'radio',
+              order: 'inline',
+              info: "Nějaké informace k vysvětlení",
+              hasCounter: false,
+              property: 'Mandaty',
+              values: kooptaceMapped,
+            },
+            MandatyFunkce: {
+              id: sectionId++,
+              title: 'Funkce',
+              type: 'checkbox',
+              multiple: true,
+              reset: true,
+              order: 'block',
+              property: 'Mandaty',
+              info: "Nějaké informace k vysvětlení",
+              hasCounter: true,
+              values: funkce
+            },
             MandatyKluby: {
               id: sectionId++,
               title: 'Poslanecké kluby',
