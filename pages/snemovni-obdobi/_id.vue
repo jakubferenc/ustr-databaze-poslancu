@@ -1059,13 +1059,13 @@
           poctyMandatu = [...new Set(poctyMandatu)].sort((a,b) => a-b);
 
           const pocetMandatuMapped = [
-            {id: 'pocet-mandatu-current-min', default: false, reset: false, selected: false, currentValue: poctyMandatu[0], validate: (property, currentValueMin) => {
+            {id: 'pocet-mandatu-current-min', default: false, reset: false, selected: true, currentValue: poctyMandatu[0], validate: (property, currentValueMin) => {
 
 
               return property.length >= currentValueMin;
 
             }},
-            {id: 'pocet-mandatu-current-max', default: false, reset: false, selected: false, currentValue: poctyMandatu[poctyMandatu.length-1], validate: (property, currentValueMax) => {
+            {id: 'pocet-mandatu-current-max', default: false, reset: false, selected: true, currentValue: poctyMandatu[poctyMandatu.length-1], validate: (property, currentValueMax) => {
 
 
               return property.length <= currentValueMax;
@@ -1191,7 +1191,21 @@
               hasCounter: true,
               values: narodnosti
             },
+            Fotografie: {
+              id: sectionId++,
+              title: 'Fotografie',
+              type: 'radio',
+              order: 'inline',
+              info: "Nějaké informace k vysvětlení",
+              property: 'Soubory',
+              hasCounter: false,
+              values: [
+                {id: 'vse', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
+                {id: 'ma-fotku', text: 'Má fotku', default: false, selected: false, property: 'Soubory', validate: (property) => property.length > 0},
+                {id: 'nema-fotku', text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', validate: (property) => !property.length || property.length === 0},
 
+              ],
+            },
             PocetMandatu: {
               id: sectionId++,
               title: 'Počet mandátů',
@@ -1224,21 +1238,6 @@
               hasCounter: false,
               queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
               values: vekNaKonciMandatuMapped,
-            },
-            Fotografie: {
-              id: sectionId++,
-              title: 'Fotografie',
-              type: 'radio',
-              order: 'inline',
-              info: "Nějaké informace k vysvětlení",
-              property: 'Soubory',
-              hasCounter: false,
-              values: [
-                {id: 'vse', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-                {id: 'ma-fotku', text: 'Má fotku', default: false, selected: false, property: 'Soubory', validate: (property) => property.length > 0},
-                {id: 'nema-fotku', text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', validate: (property) => !property.length || property.length === 0},
-
-              ],
             },
             // dalsi: {
             //   id: sectionId++,
