@@ -774,6 +774,7 @@
 
 
 
+
           // make unique values
           volebni_strany = [...new Set(volebni_strany)]
           .sort((a,b) => a.toString().localeCompare(b))
@@ -977,7 +978,82 @@
           const snemovniObdobiNazevEdited = this.snemovniObdobi.Nazev.trim();
 
 
+          let vekNaZacatkuMandatu = [...this.poslanci]
+          .map((poslanec) => {
 
+            return poslanec.Mandaty.filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].VekNaZacatkuMandatu;
+
+
+          })
+          .filter(vek => vek !== null)
+
+
+          vekNaZacatkuMandatu = [...new Set(vekNaZacatkuMandatu)].sort((a,b) => a-b);
+
+          const vekNaZacatkuMandatuMapped = [
+            {id: 'vek-na-zacatku-mandatu-current-min', default: false, reset: false, selected: false, currentValue: vekNaZacatkuMandatu[0], validate: (property, currentValueMin) => {
+
+
+              const vekNaZacatkuMandatuThisMandat = [...property]
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].VekNaZacatkuMandatu;
+
+
+              return vekNaZacatkuMandatuThisMandat >= currentValueMin;
+
+            }},
+
+            {id: 'vek-na-zacatku-mandatu-current-max', default: false, reset: false, selected: false, currentValue: vekNaZacatkuMandatu[vekNaZacatkuMandatu.length-1], validate: (property, currentValueMax) => {
+
+
+              const vekNaZacatkuMandatuThisMandat = [...property]
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].VekNaZacatkuMandatu;
+
+
+              return vekNaZacatkuMandatuThisMandat <= currentValueMax;
+
+            }},
+            vekNaZacatkuMandatu[0],
+            vekNaZacatkuMandatu[vekNaZacatkuMandatu.length-1],
+          ];
+
+
+          let vekNaKonciMandatu = [...this.poslanci]
+          .map((poslanec) => {
+
+            return poslanec.Mandaty.filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].VekNaKonciMandatu;
+
+
+          })
+          .filter(vek => vek !== null)
+
+
+          vekNaKonciMandatu = [...new Set(vekNaKonciMandatu)].sort((a,b) => a-b);
+
+          const vekNaKonciMandatuMapped = [
+            {id: 'vek-na-konci-mandatu-current-min', default: false, reset: false, selected: false, currentValue: vekNaKonciMandatu[0], validate: (property, currentValueMin) => {
+
+
+              const vek = [...property]
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].VekNaKonciMandatu;
+
+
+              return vek >= currentValueMin;
+
+            }},
+
+            {id: 'vek-na-konci-mandatu-current-max', default: false, reset: false, selected: false, currentValue: vekNaKonciMandatu[vekNaKonciMandatu.length-1], validate: (property, currentValueMax) => {
+
+
+              const vek = [...property]
+              .filter(mandat => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)[0].VekNaKonciMandatu;
+
+
+              return vek <= currentValueMax;
+
+            }},
+            vekNaKonciMandatu[0],
+            vekNaKonciMandatu[vekNaZacatkuMandatu.length-1],
+          ];
 
           let poctyMandatu = [...this.poslanci].map(poslanec => poslanec.Mandaty.length);
           poctyMandatu = [...new Set(poctyMandatu)].sort((a,b) => a-b);
@@ -985,12 +1061,14 @@
           const pocetMandatuMapped = [
             {id: 'pocet-mandatu-current-min', default: false, reset: false, selected: false, currentValue: poctyMandatu[0], validate: (property, currentValueMin) => {
 
+
               return property.length >= currentValueMin;
 
             }},
             {id: 'pocet-mandatu-current-max', default: false, reset: false, selected: false, currentValue: poctyMandatu[poctyMandatu.length-1], validate: (property, currentValueMax) => {
 
-              return property.length <= currentValueMax
+
+              return property.length <= currentValueMax;
 
             }},
             poctyMandatu[0],
@@ -1113,37 +1191,40 @@
               hasCounter: true,
               values: narodnosti
             },
-            vek: {
-              id: sectionId++,
-              title: 'Věk (testuji, neni v dobe snemovniho obdobi)',
-              type: 'radio',
-              multiple: false,
-              reset: true,
-              order: 'block',
-              property: 'Vek',
-              values: [
-                {id: 'vse-vek', text: 'Vše', default: true, reset: true, selected: true, validate: (property) => true},
-                {id: 'vek-30', text: '30+', default: false, selected: false, validate: (property) => property >= 30 },
-                {id: 'vek-40', text: '40+', default: false, selected: false, validate: (property) => property >= 40 },
-                {id: 'vek-50', text: '50+', default: false, selected: false, validate: (property) => property >= 50 },
-                {id: 'vek-60', text: '60+', default: false, selected: false, validate: (property) => property >= 60 },
-                {id: 'vek-70', text: '70+', default: false, selected: false, validate: (property) => property >= 70 },
-                {id: 'vek-75', text: '75+', default: false, selected: false, validate: (property) => property >= 75 },
-                {id: 'vek-80', text: '80+', default: false, selected: false, validate: (property) => property >= 80 },
-              ]
-            },
-            // PocetMandatu: {
-            //   id: sectionId++,
-            //   title: 'Počet mandátů',
-            //   type: 'range',
-            //   order: 'inline',
-            //   info: "Nějaké informace k vysvětlení",
-            //   property: 'Mandaty',
-            //   hasCounter: false,
-            //   queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
-            //   values: pocetMandatuMapped,
-            // },
 
+            PocetMandatu: {
+              id: sectionId++,
+              title: 'Počet mandátů',
+              type: 'range',
+              order: 'inline',
+              info: "Nějaké informace k vysvětlení",
+              property: 'Mandaty',
+              hasCounter: false,
+              queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
+              values: pocetMandatuMapped,
+            },
+            VekNaZacatkuMandatu: {
+              id: sectionId++,
+              title: 'Věk na začátku mandátu',
+              type: 'range',
+              order: 'inline',
+              info: "Nějaké informace k vysvětlení",
+              property: 'Mandaty',
+              hasCounter: false,
+              queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
+              values: vekNaZacatkuMandatuMapped,
+            },
+            VekNaKonciMandatu: {
+              id: sectionId++,
+              title: 'Věk na konci mandátu',
+              type: 'range',
+              order: 'inline',
+              info: "Nějaké informace k vysvětlení",
+              property: 'Mandaty',
+              hasCounter: false,
+              queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
+              values: vekNaKonciMandatuMapped,
+            },
             Fotografie: {
               id: sectionId++,
               title: 'Fotografie',

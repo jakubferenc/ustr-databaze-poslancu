@@ -391,13 +391,12 @@ export default {
 
               const itemPropertyToTest = this.filtrNastaveni[polozkaFiltrKey].property;
 
-
-              const tempFilterResults = []; // here will be several boolean variables true or false, we need to get at least one true for the filter item to be true as such and this the item passes the filter
-
-              const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected);
+              let tempFilterResults = []; // here will be several boolean variables true or false, we need to get at least one true for the filter item to be true as such and this the item passes the filter
 
 
               if (this.filtrNastaveni[polozkaFiltrKey].type !== 'range') {
+
+                const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected);
 
                 // filter these properties of checkbox and radio buttons
 
@@ -407,30 +406,38 @@ export default {
                 // we are testing one property with multiple values
                 thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
 
-                  tempFilterResults.push(itemFiltervalidator.validate(poslanec[itemPropertyToTest]));
+                  tempFilterResults = [...tempFilterResults, itemFiltervalidator.validate(poslanec[itemPropertyToTest])];
 
                 });
+
+                itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
 
 
               } else {
 
-                  // range
-                  // here we are testing attributes of the given poslanec against the range element and its setting inside this.filtrNastaveni
-                  // the validator function differs from radio or checkbox elements so that we need the current "min" or "max" value of the given range element
+                // range
+                // here we are testing attributes of the given poslanec against the range element and its setting inside this.filtrNastaveni
+                // the validator function differs from radio or checkbox elements so that we need the current "min" or "max" value of the given range element
 
-                  // console.log("from poslanci from range selected filter items", thisFilterItemSelectedItems);
+                console.log("validation range", polozkaFiltrKey);
 
-                  // thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
+                const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.hasOwnProperty('selected'));
 
-                  //   // console.log("from poslanci, is range validation", itemFiltervalidator, itemFiltervalidator.validate(poslanec[itemPropertyToTest], itemFiltervalidator.currentValue));
+                thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
 
-                  //   tempFilterResults.push(itemFiltervalidator.validate(poslanec[itemPropertyToTest], itemFiltervalidator.currentValue));
+                  tempFilterResults = itemFiltervalidator.selected === false ? [...tempFilterResults, true] : [...tempFilterResults, itemFiltervalidator.validate(poslanec[itemPropertyToTest], itemFiltervalidator.currentValue)];
 
-                  // });
+                });
+
+                // both min and max must be validated as true in order for the given poslanec to be included in the filtered list
+                // threfore, we have to modify the imteSatisfyFilter evaluation for the range element
+                // if one false is included, entire validation for the range element is false
+                itemSatisfyFilter = [...itemSatisfyFilter, !tempFilterResults.includes(false)];
+
 
               }
 
-              itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
+
 
 
             });
@@ -531,7 +538,7 @@ export default {
 
               if (isItemReset) {
 
-                item.selected = (index === thisObjIndex) ? true : false;
+                item.selected = index === thisObjIndex;
 
               } else {
 
@@ -654,7 +661,10 @@ export default {
 
     onRangeChange(filtrSekceKey, $event) {
 
-      console.log("from on range change", filtrSekceKey, $event);
+      if (!this.radit.hasBeenSelected) {
+        this.radit.hasBeenSelected = true
+      }
+
 
       const tempResult = this.filtrNastaveni[filtrSekceKey];
 
