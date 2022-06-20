@@ -6,6 +6,8 @@
     .mapa-container.section(v-if="MaMapu")
 
       h2.section-title Místo narození poslanců
+        span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
+
 
       Mapa(:PoslanciVstupniData="poslanci")
 
