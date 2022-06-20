@@ -86,6 +86,8 @@
         :MaMapu="true"
         :UkladatFiltrovanePoslanceDoStore="true"
         Nadpis="Poslanci"
+        Mod="Vse"
+        :MaRazeni="true"
       )
 
     .parlament-detail-about.section-padding-h-margin-v

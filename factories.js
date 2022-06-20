@@ -384,6 +384,300 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
 };
 
+const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, activeData = {}) => {
+
+  let sectionId = 0;
+
+  let finalResult = {
+    // PoslaneckySlib: {
+    //   id: sectionId++,
+    //   title: 'Poslanecky Slib',
+    //   type: 'radio',
+    //   order: 'inline',
+    //   property: 'PoslaneckySlib',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: false,
+    //   values: undefined,
+    // },
+    Pohlavi: {
+      id: sectionId++,
+      title: 'Pohlaví',
+      type: 'radio',
+      order: 'inline',
+      property: 'Pohlavi',
+      hasCounter: false,
+      values: undefined,
+    },
+    Snemovny: {
+      id: sectionId++,
+      title: 'Parlamentní tělesa',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: true,
+      values: undefined
+    },
+    SnemovniObdobi: {
+      id: sectionId++,
+      title: 'Sněmovní období',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: true,
+      values: undefined
+    },
+    Narodnosti: {
+      id: sectionId++,
+      title: 'Národnosti',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      property: 'Narodnosti',
+      hasCounter: true,
+      values: undefined
+    },
+    Vyznani: {
+      id: sectionId++,
+      title: 'Náboženské vyznání',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      property: 'NabozenstviNarozeni',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: true,
+      values: undefined
+    },
+    // UniverzitniVzdelani: {
+    //   id: sectionId++,
+    //   title: 'Vzdělání',
+    //   type: 'radio',
+    //   order: 'inline',
+    //   property: 'UniverzitniVzdelani',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: false,
+    //   values: undefined,
+    // },
+    // SocialniVazby: {
+    //   id: sectionId++,
+    //   title: 'Sociální vazby',
+    //   type: 'radio',
+    //   order: 'inline',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: false,
+    //   values: undefined,
+    // },
+    Fotografie: {
+      id: sectionId++,
+      title: 'Fotografie',
+      type: 'radio',
+      order: 'inline',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      values: undefined,
+    },
+    // PocetMandatu: {
+    //   id: sectionId++,
+    //   title: 'Počet mandátů',
+    //   type: 'range',
+    //   order: 'inline',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: false,
+    //   queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
+    //   values: undefined,
+    // },
+    // VekNaZacatkuMandatu: {
+    //   id: sectionId++,
+    //   title: 'Věk na začátku mandátu',
+    //   type: 'range',
+    //   order: 'inline',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: false,
+    //   queryStructure: ['VekNaZacatkuMandatuMin', 'VekNaZacatkuMandatuMax'], // order matterrs, first lower bound, next higher bound
+    //   values: undefined,
+    // },
+    // VekNaKonciMandatu: {
+    //   id: sectionId++,
+    //   title: 'Věk na konci mandátu',
+    //   type: 'range',
+    //   order: 'inline',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: false,
+    //   queryStructure: ['VekNaKonciMandatuMin', 'VekNaKonciMandatuMax'], // order matterrs, first lower bound, next higher bound
+    //   values: undefined,
+    // },
+
+
+  };
+
+
+
+  let pohlaviMapped = [...filterData.Pohlavi].map(itemPohlaviID => {
+
+    return {
+
+      id: itemPohlaviID,
+      text: (itemPohlaviID == 1) ? 'Muž' : 'Žena',
+      selected: false, // Pohlavi = ["0"] || Pohlavi = ["1"] || Pohlavi = ["2"]
+
+    };
+
+  });
+
+  pohlaviMapped = [
+    {id: 0, text: 'Vše', default: true, reset: true, selected: true},
+    ...pohlaviMapped
+  ];
+
+
+
+  let parlamentyMapped = [...filterData.Parlamenty].map(item => {
+
+    return {
+            id: item.Id,
+            text: item.Nazev,
+            selected: false,
+          };
+
+  });
+
+  parlamentyMapped = [
+    {id: 'vse-parlamenty', text: 'Vše', default: true, reset: true, selected: true},
+    ...parlamentyMapped
+  ];
+
+  let snemovniObdobiMapped = [...filterData.SnemovniObdobi].map(item => {
+
+    return {
+            id: item.Id,
+            text: item.Nazev,
+            selected: false,
+          };
+
+  });
+
+  snemovniObdobiMapped = [
+    {id: 'vse-snemovni-obdobi', text: 'Vše', default: true, reset: true, selected: true},
+    ...snemovniObdobiMapped
+  ];
+
+  let narodnostiMapped = [...filterData.Narodnosti].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev,
+              selected: false,
+            };
+
+    });
+    narodnostiMapped = [
+      {id: 'vse-narodnosti', text: 'Vše', default: true, reset: true, selected: true},
+      ...narodnostiMapped
+    ];
+
+    let vyznaniMapped = [...filterData.Vyznani].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev,
+              selected: false,
+            };
+
+    });
+    vyznaniMapped = [
+      {id: 'vse-vyznani', text: 'Vše', default: true, reset: true, selected: true},
+      ...vyznaniMapped
+    ];
+
+    const vysokaSkolaMapped = [
+      {id: false, text: 'Vše', default: true, reset: true, selected: true},
+      {id: true, text: 'Má VŠ', disabled: false}
+    ];
+
+
+    const SocialniVazbyMapped = [
+      {id: false, text: 'Vše', default: true, reset: true, selected: true},
+      {id: true, text: 'Má sociální vztahy', disabled: false}
+    ];
+
+    const maFotkuMapped = [
+        {id: false, text: 'Vše', default: true, reset: true, selected: true},
+        {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
+    ];
+
+    /* finding the lowest and highest integer number from an array
+       can be done to select first and last number, as API returns the numbers sorted from lowest to highest
+    */
+
+
+  finalResult.Pohlavi.values = pohlaviMapped;
+  finalResult.Snemovny.values = parlamentyMapped;
+  finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
+  finalResult.Narodnosti.values = narodnostiMapped;
+  finalResult.Vyznani.values = vyznaniMapped;
+  finalResult.Fotografie.values = maFotkuMapped;
+
+  ////////////////////////////////////////////////////////////////////////
+
+
+  // make active items in the filter based on the current query
+
+  Object.keys(finalResult).forEach((key) => {
+
+    if ( finalResult[key].type !== 'range' ) {
+
+      // we don't want to pick selected item from range, beucase there are no selected items, but just two numbers
+
+      if (activeData[key]) { // if the key is in the active data
+
+
+        // let's check the specific selected values, it's not the default reset one
+
+
+
+          finalResult[key].values.map((valueItem) => {
+
+
+            valueItem.selected = activeData[key].includes(valueItem.id);
+
+            return valueItem;
+
+          }) ;
+
+
+      } else {
+
+        // the key is not in the selected keys/filter items, so let's make the default item active/selected
+        finalResult[key].values.map(valueItem => {
+
+          if (valueItem.default) {
+
+            valueItem.selected = true;
+
+          }
+
+          return valueItem;
+
+        });
+
+      }
+
+
+    }
+
+
+  });
+
+
+  return finalResult;
+
+};
 
 
 const getAllStrankyFactory = async (wordpressAPIURLWebsite) => {
@@ -896,7 +1190,7 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 };
 
 export default {
-
+  createFilterSettingsForApiUseParliamentMapsFactory,
   getPoslanecDetailFactory,
   getAllSnemovniObdobiWordpressFactory,
   getSnemovniObdobiDetailFactory,

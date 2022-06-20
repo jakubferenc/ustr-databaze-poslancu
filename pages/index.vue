@@ -10,7 +10,7 @@
 
     p ZDE bude neinteraktivní grafika mapy + sociálních map => odkaz na /poslanci a "reklama na mapové funkce aplikace"
 
-  PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" Nadpis="Výběr poslanců" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/")
+  PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" Nadpis="Výběr poslanců" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/" Mod="Seznam")
 
   ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
 

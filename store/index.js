@@ -116,6 +116,12 @@ and then commits the mutation to update it
 */
 export const actions = {
 
+  async getAllDataForInteractiveParliamentMaps({ state, commit, dispatch }) {
+
+
+
+  },
+
 
   setPopupTimelineDetail ({ state, commit }, popup_timeline_detail) {
     try {

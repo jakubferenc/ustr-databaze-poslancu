@@ -4,16 +4,17 @@
 
 #scroll-top.poslanci-seznam.seznam-with-filter(v-on="$listeners")
 
-  .mapa-container.section(v-if="MaMapu")
+  .mapa-container.section(v-if="MaMapu && Mod === 'Vse' ")
 
     h2.section-title Místo narození poslanců
       span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
+
 
     Mapa(:PoslanciVstupniData="poslanci")
 
   .filter-seznam
 
-      h2.section-title(v-if="Nadpis") {{Nadpis}}
+      h2.section-title(v-if="Nadpis && ['Vse', 'Seznam'].includes(Mod)") {{Nadpis}}
 
       .filter-seznam-filter-statistics(v-if="MaStatistiky")
 
@@ -70,7 +71,7 @@
             span(v-else) Otevřít filtr
 
 
-        .filter-seznam.bar-right
+        .filter-seznam.bar-right(v-if="MaRazeni")
 
           span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
             span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
@@ -140,7 +141,13 @@
 
         .seznam-filter-list
 
-          .component-footer(v-if="MaButtonMore || MaPaginaci")
+          .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
+
+
+            Mapa(:PoslanciVstupniData="poslanci" :Velka="true")
+
+
+          .component-footer(v-if="(MaButtonMore || MaPaginaci) && ['Vse', 'Seznam'].includes(Mod)")
 
             .pagination-bar(v-if="MaPaginaci")
               //- .to-the-top
@@ -156,7 +163,8 @@
                 a.pagination-list-next.pagination-item(@click="doPagination(Array(PaginaceNastaveni.PocetStranek).length)") &nbsp;  &gt;  &gt;
 
 
-          .columns.is-multiline.is-mobile()
+          .columns.is-multiline.is-mobile(v-if="['Vse', 'Seznam'].includes(Mod)")
+
 
             Poslanec(
               v-for="(poslanec, index) in poslanci"
@@ -379,6 +387,8 @@ export default {
     "PaginaceNastaveni",
     "MaMapu",
     "Nadpis",
+    "Mod",
+    "MaRazeni"
   ],
 
   computed: {

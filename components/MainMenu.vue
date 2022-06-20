@@ -4,6 +4,8 @@
     span &nbsp;|
     NuxtLink(to="/vyvoj-parlamentu/") Vývoj parlamentarismu
     span &nbsp;|
+    NuxtLink.link-snemovny-mapy(to="/snemovny-mapy/") Interaktivní mapy
+    span &nbsp;|
     NuxtLink.link-poslanci(to="/poslanci/") Poslanci
     span &nbsp;|
     NuxtLink.link-parlamenty(to="/parlamenty/") Parlamenty

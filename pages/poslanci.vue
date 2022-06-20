@@ -29,6 +29,8 @@
 
       :MaMapu="true"
       Nadpis="Poslanci"
+      Mod="Vse"
+      :MaRazeni="true"
     )
 
 </template>
@@ -108,8 +110,6 @@ export default {
 
         this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
-        console.log("currentQueryStringified", this.currentQueryStringified);
-
 
         await this.$store.dispatch("getParlamentyDatabaze");
 
@@ -188,15 +188,11 @@ export default {
 
         const activeFilterItems = $event;
 
-        customLogger("from refreshSelectedFiltersHandler", activeFilterItems);
 
         this.currentQuery = {
           ...this.defaultQuery,
           ...activeFilterItems,
         };
-
-        console.log("this.currentQuery", this.currentQuery);
-
 
         // // call API
         await this.prepareRequestFilteredViaAPI(this.currentQuery);

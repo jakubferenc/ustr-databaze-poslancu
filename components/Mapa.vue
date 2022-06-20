@@ -2,7 +2,7 @@
 
 
   <client-only placeholder="Načítám...">
-    .mapbox(ref="mapElement" data-component="mapbox" v-if="geojson")
+    .mapbox(ref="mapElement" data-component="mapbox" v-if="geojson" :class="{'is--large': Velka}")
   </client-only>
 
 
@@ -43,6 +43,11 @@ export default {
         type: String,
         required: false,
         default: 'MistoNarozeni'
+      },
+      Velka: {
+        type: Boolean,
+        required: false,
+        default: false,
       }
     },
     methods: {
@@ -314,7 +319,7 @@ export default {
                         <div class="desc">
                           <p>Narození: ${item.DatumNarozeniZobrazene} — Úmrtí: ${item.DatumUmrtiZobrazene}</p>
 
-                          <div class="map-card__content__address">${item.Nazev}</div>
+                          <div class="map-card__content__address">Místo narození: ${item.Nazev}</div>
                           <div class="map-card__content__address__meta">GPS lokace: ${item.GeoX} ${item.GeoY}</div>
                           <div class="map-card__footer">Zobrazit detail poslance →</div>
                         </div>

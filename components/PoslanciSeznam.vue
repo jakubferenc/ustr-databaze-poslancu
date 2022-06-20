@@ -3,7 +3,7 @@
 
   #scroll-top.poslanci-seznam.seznam-with-filter()
 
-    .mapa-container.section(v-if="MaMapu")
+    .mapa-container.section(v-if="MaMapu && Mod === 'Vse' ")
 
       h2.section-title Místo narození poslanců
         span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
@@ -71,7 +71,7 @@
               span(v-else) Otevřít filtr
 
 
-          .filter-seznam.bar-right
+          .filter-seznam.bar-right(v-if="MaRazeni")
 
             span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
               span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
@@ -145,7 +145,12 @@
 
           .seznam-filter-list
 
-            .columns.is-multiline.is-mobile()
+            .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
+
+              Mapa(:PoslanciVstupniData="poslanci" :Velka="true")
+
+
+            .columns.is-multiline.is-mobile(v-if="['Vse', 'Seznam'].includes(Mod)")
 
               Poslanec(
                 v-for="(poslanec, index) in poslanci"
@@ -348,6 +353,8 @@ export default {
     "UkladatFiltrovanePoslanceDoStore",
     "MaMapu",
     "Nadpis",
+    "Mod",
+    "MaRazeni"
   ],
 
   computed: {

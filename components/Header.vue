@@ -38,7 +38,7 @@ $margin-body: 50px
 
 
   .main-menu
-    width: 55%
+    min-width: 60%
     display: flex
     justify-content: space-between
     align-items: center
