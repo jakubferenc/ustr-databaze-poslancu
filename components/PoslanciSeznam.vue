@@ -514,9 +514,6 @@ export default {
     // The filtering as such is done inside the computer property this.poslanci where the whole logic based on this.FilterNastaveni lies
     onSelectFilterOption(filtrSekceKey, thisObjIndex, type, multiple, sectionHasReset, $event) {
 
-
-      // just an indicator if the filter has been used at least once
-      // :TODO: may not be needed
       if (!this.filtrovat.hasBeenSelected) {
         this.filtrovat.hasBeenSelected = true;
       }
@@ -661,10 +658,9 @@ export default {
 
     onRangeChange(filtrSekceKey, $event) {
 
-      if (!this.radit.hasBeenSelected) {
-        this.radit.hasBeenSelected = true
+      if (!this.filtrovat.hasBeenSelected) {
+        this.filtrovat.hasBeenSelected = true;
       }
-
 
       const tempResult = this.filtrNastaveni[filtrSekceKey];
 
