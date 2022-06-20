@@ -1,9 +1,19 @@
 <template lang="pug">
 
 
+
 #scroll-top.poslanci-seznam.seznam-with-filter(v-on="$listeners")
 
+  .mapa-container.section(v-if="MaMapu")
+
+    h2.section-title Místo narození poslanců
+      span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
+
+    Mapa(:PoslanciVstupniData="poslanci")
+
   .filter-seznam
+
+      h2.section-title(v-if="Nadpis") {{Nadpis}}
 
       .filter-seznam-filter-statistics(v-if="MaStatistiky")
 
@@ -128,8 +138,23 @@
               ////////////////////////////////////////////////////////////////////////////////
 
 
-
         .seznam-filter-list
+
+          .component-footer(v-if="MaButtonMore || MaPaginaci")
+
+            .pagination-bar(v-if="MaPaginaci")
+              //- .to-the-top
+              //-   a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
+              .pagination-list
+                a.pagination-list-prev.pagination-item( @click="doPagination(1)") &lt; &lt; &nbsp;
+                .pagination-list-number(v-for="(pageNumber, index) in Array(PaginaceNastaveni.PocetStranek) ")
+                  a.pagination-list-number.pagination-item(:class="{active: PaginaceNastaveni.Stranka == index+1}" @click="doPagination(index+1)") {{index+1}}
+                //- .pagination-list-last-number
+                //-   .pagination-item.bullets ...
+                //-   a( @click="doPagination(index+1)").pagination-item 40
+
+                a.pagination-list-next.pagination-item(@click="doPagination(Array(PaginaceNastaveni.PocetStranek).length)") &nbsp;  &gt;  &gt;
+
 
           .columns.is-multiline.is-mobile()
 
@@ -151,15 +176,18 @@
           .component-footer(v-if="MaButtonMore || MaPaginaci")
 
             .pagination-bar(v-if="MaPaginaci")
-              .to-the-top
-                a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
+              //- .to-the-top
+              //-   a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
               .pagination-list
-                a.pagination-list-prev.pagination-item(href="#") &lt; &lt; &nbsp;
+                a.pagination-list-prev.pagination-item( @click="doPagination(1)") &lt; &lt; &nbsp;
                 .pagination-list-number(v-for="(pageNumber, index) in Array(PaginaceNastaveni.PocetStranek) ")
                   a.pagination-list-number.pagination-item(:class="{active: PaginaceNastaveni.Stranka == index+1}" @click="doPagination(index+1)") {{index+1}}
                 //- .pagination-list-last-number
                 //-   .pagination-item.bullets ...
-                //-   a(href="#").pagination-item 40
+                //-   a( @click="doPagination(index+1)").pagination-item 40
+
+                a.pagination-list-next.pagination-item(@click="doPagination(Array(PaginaceNastaveni.PocetStranek).length)") &nbsp;  &gt;  &gt;
+
 
                 a.pagination-list-next.pagination-item(href="#") &nbsp;  &gt;  &gt;
 
@@ -173,6 +201,9 @@
 </template>
 
 <style lang="sass" scoped>
+
+  .mapa-container
+    margin-bottom: 4em
 
   .info-icon
     display: inline-flex
@@ -324,6 +355,7 @@
 <script>
 
 const Poslanec = () => import('~/components/Poslanec.vue');
+const Mapa = () => import('~/components/Mapa.vue');
 const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
 
 import {customLogger, normalizeURLParamsToValueInArrayFormat} from '~/utils/functions'
@@ -331,7 +363,7 @@ import {customLogger, normalizeURLParamsToValueInArrayFormat} from '~/utils/func
 
 export default {
 
-  components: { Poslanec, MultiRangeSlider },
+  components: { Poslanec, MultiRangeSlider, Mapa },
 
 
   props: [
@@ -344,7 +376,9 @@ export default {
     "MaPaginaci",
     "MaStatistiky",
     "NastaveniFiltrace",
-    "PaginaceNastaveni"
+    "PaginaceNastaveni",
+    "MaMapu",
+    "Nadpis",
   ],
 
   computed: {
@@ -603,22 +637,31 @@ export default {
 
     this.$nextTick(() => {
 
-      this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
+      const timer = setTimeout(() => {
 
-      if (this.MaPaginaci) {
+        this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
 
-        const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
-        $scrollIntoViewBtn.addEventListener('click', (e) => {
+        if (this.MaPaginaci) {
 
-          e.preventDefault();
+          const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
 
-          const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
-          $target.scrollIntoView();
+          if ($scrollIntoViewBtn) {
+            $scrollIntoViewBtn.addEventListener('click', (e) => {
+
+              e.preventDefault();
+
+              const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
+              $target.scrollIntoView();
 
 
-        });
+            });
+          }
 
-      }
+
+        }
+
+
+      }, 500);
 
 
     });

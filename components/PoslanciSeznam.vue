@@ -3,7 +3,16 @@
 
   #scroll-top.poslanci-seznam.seznam-with-filter()
 
-    .filter-seznam
+    .mapa-container.section(v-if="MaMapu")
+
+      h2.section-title Místo narození poslanců
+
+      Mapa(:PoslanciVstupniData="poslanci")
+
+
+    .filter-seznam.section-padding-h-margin-v
+
+        h2.section-title(v-if="Nadpis") {{Nadpis}}
 
         .filter-seznam-filter-statistics(v-if="MaStatistiky")
 
@@ -69,6 +78,7 @@
 
 
         .seznam-content-container()
+
 
           .seznam-filter-sidebar(v-if="MaFiltr && isSidebarOpen")
             .seznam-filter-sidebar-content
@@ -314,14 +324,29 @@
 
 const Poslanec = () => import('~/components/Poslanec.vue');
 const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
+const Mapa = () => import('~/components/Mapa.vue');
+
 
 
 export default {
 
-  components: { Poslanec, MultiRangeSlider },
+  components: { Mapa, Poslanec, MultiRangeSlider },
 
 
-  props: ["MaButtonMorePrevious", "MaFiltrPresAPI", "PoslanciVstupniPolozky", "PoslanciStatistiky", "MaFiltr", "MaButtonMore", "ButtonMoreLink", "MaPaginaci", "MaStatistiky", "NastaveniFiltrace"],
+  props: [
+    "MaButtonMorePrevious",
+    "PoslanciVstupniPolozky",
+    "PoslanciStatistiky",
+    "MaFiltr",
+    "MaButtonMore",
+    "ButtonMoreLink",
+    "MaPaginaci",
+    "MaStatistiky",
+    "NastaveniFiltrace",
+    "UkladatFiltrovanePoslanceDoStore",
+    "MaMapu",
+    "Nadpis",
+  ],
 
   computed: {
 
@@ -464,9 +489,12 @@ export default {
 
       }
 
-      // commit & dispatch
+      if (this.UkladatFiltrovanePoslanceDoStore) {
 
-      this.$store.commit("updatePoslanciFiltrovani", currentPoslanci);
+        // commit & dispatch
+        this.$store.dispatch("setPoslanciFiltrovani", currentPoslanci);
+
+      }
 
       // return
 

@@ -1,30 +1,26 @@
 <template lang="pug">
 
-  .section
+.section
 
-    <Rozcestnik />
+  <Rozcestnik />
 
-    .section-padding.alt-bg
+  .section-padding.alt-bg
 
-      h2.section-title Mapová data poslanců
+    h2.section-title Mapová data poslanců
 
-      p ZDE bude neinteraktivní grafika mapy + sociálních map => odkaz na /poslanci a "reklama na mapové funkce aplikace"
+    p ZDE bude neinteraktivní grafika mapy + sociálních map => odkaz na /poslanci a "reklama na mapové funkce aplikace"
 
-    .section-padding-h-margin-v
+  PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" Nadpis="Výběr poslanců" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/")
 
-      h2.section-title Výběr poslanců
+  ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
 
-      PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/")
+  SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 
-    ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
+  .section-padding.alt-bg
 
-    SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
+    h2.section-title Galerie médií
 
-    .section-padding.alt-bg
-
-      h2.section-title Galerie médií
-
-      GalerieMediiSeznam(v-if="soubory" :Soubory="soubory" :MaButtonMore="true" :MaFilter="false")
+    GalerieMediiSeznam(v-if="soubory" :Soubory="soubory" :MaButtonMore="true" :MaFilter="false")
 
 </template>
 

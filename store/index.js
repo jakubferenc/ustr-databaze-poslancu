@@ -389,15 +389,15 @@ export const actions = {
 
   },
 
-  async getPoslanciSeznam({ state, commit, dispatch }, {limit = 20, stranka = 1, filterCallback = null} ) {
-    if (state.poslanci.length) return;
+  async getPoslanciAll({ state, commit, dispatch }, filtrNastaveniParamsString) {
+
     try {
 
-      let poslanci = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?limit=${limit}&stranka=${stranka}`).then(res => res.data);
+      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${filtrNastaveniParamsString}`);
+      poslanciRequest = poslanciRequest.data;
 
-      if (filterCallback !== null) {
-        poslanci = poslanci.filter(filterCallback);
-      }
+      let poslanci = poslanciRequest.Poslanci;
+      const filterData = poslanciRequest.Filtry;
 
       poslanci = poslanci
         .map((poslanec) => {
@@ -413,25 +413,6 @@ export const actions = {
           return poslanec;
 
         });
-
-      commit("updatePoslanci", poslanci);
-      dispatch("setPoslanciFiltrovani", poslanci);
-
-    } catch (err) {
-      console.warn(err);
-    }
-  },
-
-
-  async getPoslanciAll({ state, commit, dispatch }, filtrNastaveniParamsString) {
-
-    try {
-
-      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${filtrNastaveniParamsString}`);
-      poslanciRequest = poslanciRequest.data;
-
-      const poslanci = poslanciRequest.Poslanci;
-      const filterData = poslanciRequest.Filtry;
 
 
       commit("updatePoslanci", poslanci);
