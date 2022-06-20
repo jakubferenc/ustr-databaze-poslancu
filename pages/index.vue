@@ -6,9 +6,11 @@
 
   .section-padding.alt-bg
 
-    h2.section-title Mapová data poslanců
+    h2.section-title.section-title-no-margin-bottom Interaktivní mapy sněmoven
 
-    p ZDE bude neinteraktivní grafika mapy + sociálních map => odkaz na /poslanci a "reklama na mapové funkce aplikace"
+    p
+      NuxtLink(to="/snemovny-mapy/")
+        img(src="~/assets/images/banner-interaktivni-mapy.png" alt="")
 
   PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" Nadpis="Výběr poslanců" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/" Mod="Seznam")
 
