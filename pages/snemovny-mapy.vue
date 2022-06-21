@@ -342,7 +342,7 @@ export default {
           Limit: [8000],
           Stranka: [1],
         },
-        title: `Interaktivní mapy sněmoven`,
+        title: `Interaktivní mapy stranické příslušnosti`,
       }
     },
 

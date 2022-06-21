@@ -13,7 +13,7 @@
     .map-legend__list
       .item-legend(v-for="stranaObj in partyColorRelations")
         .color(:style="`background-color: ${stranaObj.color}`")
-        .name (id: {{stranaObj.Id}}) {{ stranaObj.Nazev }}
+        .name {{ stranaObj.Nazev }}
 
 
 
