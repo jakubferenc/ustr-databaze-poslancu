@@ -127,7 +127,6 @@ export default {
 
         const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
 
-
         this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
 
 

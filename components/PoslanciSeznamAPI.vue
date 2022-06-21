@@ -10,7 +10,7 @@
       span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
 
 
-    Mapa(:PoslanciVstupniData="poslanci")
+    Mapa(:PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa")
 
   .filter-seznam
 
@@ -144,7 +144,7 @@
           .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
 
 
-            Mapa(:PoslanciVstupniData="poslanci" :Velka="true")
+            Mapa(:PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa" :Velka="true")
 
 
           .component-footer(v-if="(MaButtonMore || MaPaginaci) && ['Vse', 'Seznam'].includes(Mod)")
@@ -209,6 +209,11 @@
 </template>
 
 <style lang="sass" scoped>
+
+  .section-title
+
+    @extend %typography-section-title
+
 
   .mapa-container
     margin-bottom: 4em
@@ -387,6 +392,7 @@ export default {
     "PaginaceNastaveni",
     "MaMapu",
     "Nadpis",
+    "NastaveniMapa",
     "Mod",
     "MaRazeni"
   ],
@@ -610,9 +616,6 @@ export default {
     onRangeChange($event) {
 
 
-      console.log("on range change event payload", $event);
-
-
       // Process this range
 
 
@@ -632,8 +635,6 @@ export default {
         ...currentRangeQuery,
 
       };
-
-      console.log("onlyActivelySelectedFilters from range", onlyActivelySelectedFilters);
 
 
       this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);

@@ -1,9 +1,20 @@
 <template lang="pug">
 
+.map-container-main
 
   <client-only placeholder="Načítám...">
     .mapbox(ref="mapElement" data-component="mapbox" v-if="geojson" :class="{'is--large': Velka}")
+
   </client-only>
+
+
+  .map-legend(v-if="geojson && Object.keys(partyColorRelations).length > 0")
+    .map-legend__title Legenda
+    .map-legend__list
+      .item-legend(v-for="stranaObj in partyColorRelations")
+        .color(:style="`background-color: ${stranaObj.color}`")
+        .name (id: {{stranaObj.Id}}) {{ stranaObj.Nazev }}
+
 
 
 </template>
@@ -11,10 +22,78 @@
 
   @use "sass:math"
 
+
+
+
   .mapbox
     height: 700px
     background: lightgray
 
+
+  .map-legend
+    margin-top: 2em
+    background: white
+    padding: 2em
+
+
+    .map-legend__title
+
+      @extend %typography-item-detail-text
+      margin-bottom: 1em
+      text-align: center
+
+
+    .map-legend__list
+      display: flex
+      flex-wrap: wrap
+      font-size: 14px
+      justify-content: flex-start
+      align-items: flex-start
+      row-gap: 2em
+      column-gap: 2em
+
+    .item-legend
+      width: 30%
+      flex: none
+      display: flex
+
+
+      .color
+        display: inline-block
+        width: 30px
+        height: 30px
+        border-radius: 100%
+        flex: none
+        margin-right: 1em
+
+
+
+  .has--political-indicator
+
+    .map__marker__container.map-address-icon.map-person-thumb-head-icon
+
+      background-color: red
+
+
+  .marker-cluster-small
+    background-color: rgba(191,191,191, 0.6)
+
+  .marker-cluster-small div
+    background-color: rgba(191,191,191, 0.6)
+
+
+  .marker-cluster-medium
+    background-color: rgba(191,191,191, 0.6)
+
+  .marker-cluster-medium div
+    background-color: rgba(191,191,191, 0.6)
+
+
+  .marker-cluster-large
+    background-color: rgba(191,191,191, 0.6)
+
+  .marker-cluster-large div
+    background-color: rgba(191,191,191, 0.6)
 
 
 </style>
@@ -48,9 +127,84 @@ export default {
         type: Boolean,
         required: false,
         default: false,
+      },
+      NastaveniMapa: {
+        type: Object,
+        required: false,
+        default: false,
       }
     },
     methods: {
+
+
+      getColorForGivenPartyAffiliationId(affiliationObj) {
+
+        if (affiliationObj.Id === null) return;
+
+        const komunistickeStrany = [17, 19, 5222];
+        const lidoveckeStrany = [22, 23, 24, 19550, 9885, 15684];
+        const socialniDemokrateStrany = [890, 20889, 21688, 11332, 17577];
+
+
+        const sadaNahodnychBarev = [];
+
+        // 147 = Národní shromáždění ČSR/ČSSR
+        // 157 = Česká národní rada
+        // 151 = Federální shromáždění ČSSR/ČSFR - Sněmovna lidu
+        // 152 = Federální shromáždění ČSSR/ČSFR - Sněmovna národů
+
+        const idSnemovenKdePouzivameKluby = [147, 151, 152, 157];
+
+        const minHSL = 38;
+        const maxHSL = 315;
+
+        let newColor = '';
+
+        try {
+
+          if (this.partyColorRelations[affiliationObj.Id]) {
+
+            return this.partyColorRelations[affiliationObj.Id].color
+
+          }
+
+          if (komunistickeStrany.includes(affiliationObj.Id)) {
+
+            newColor =  `hsla(360, 100%, 29%, 1)`;
+
+          } else if (lidoveckeStrany.includes(affiliationObj.Id)) {
+
+            newColor = `hsla(169, 100%, 5%, 1)`;
+
+          } else if (socialniDemokrateStrany.includes(affiliationObj.Id)) {
+
+            newColor = `orange`;
+
+          } else {
+            const randomNumberWithinHSLRange =  Math.floor(Math.random() * (maxHSL - minHSL + 1)) + minHSL;
+            newColor = `hsl(${randomNumberWithinHSLRange}, 100%, 29%)`;
+          }
+
+          this.partyColorRelations = {
+            ...this.partyColorRelations,
+            [affiliationObj.Id]: {
+              ...affiliationObj,
+              color: newColor,
+            }
+          };
+
+        } catch (e) {
+          console.error(e);
+        }
+
+        console.log("test from color setting up", newColor, this.partyColorRelations);
+
+        return newColor;
+
+
+
+      },
+
 
       async initMap() {
 
@@ -63,6 +217,8 @@ export default {
 
           this.mapInstance.off();
           this.mapInstance.remove();
+
+          this.partyColorRelations = {};
 
           //this.mapInstance.invalidateSize()
 
@@ -99,11 +255,32 @@ export default {
 
         this.geojson.forEach((item, index) => {
 
+          let iconClassNames = [this.mapSettings.addresses.iconLargePerson.className];
+
+          let styleString = '';
+
+          if (this.NastaveniMapa && this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable) {
+
+            iconClassNames = [...iconClassNames, 'has--political-indicator'];
+
+            const strany = Array.from(new Set(item.VolebniStrany));
+            const kluby = Array.from(new Set(item.Kluby));
+
+            iconClassNames = [...iconClassNames, ...strany.map(item => `is--strana-${item.Id}`)];
+            iconClassNames = [...iconClassNames, ...kluby.map(item => `is--klub-${item.Id}`)];
+
+            const stranaColor = this.getColorForGivenPartyAffiliationId(strany[0]);
+
+            styleString = `background-color: ${stranaColor}`;
+
+
+          }
+
 
           const icon = new divIcon({
             ...this.mapSettings.addresses.iconLargePerson,
-            className: `${this.mapSettings.addresses.iconLargePerson.className}`,
-            html: this.mapSettings.addresses.iconLargePerson.html(item, index),
+            className: iconClassNames.join(", "),
+            html: this.mapSettings.addresses.iconLargePerson.html(item, index, styleString),
           });
 
           const marker = new Marker([item.GeoX, item.GeoY], {
@@ -128,7 +305,7 @@ export default {
           });
 
 
-          marker.bindPopup(this.mapSettings.popup.html(item));
+          marker.bindPopup(this.mapSettings.popup.html(item, styleString));
 
 
           this.mapMarkers[index] = marker;
@@ -224,42 +401,45 @@ export default {
 
     computed: {
 
-        geojson() {
 
-          // get items for the map
-          // we want to show on the map items "poslanci" reactively based on the fact if we have already filtered them via PoslanciSeznam component
-          // in such case poslance are already filtered, we have them in the store in the variable "poslanci_filtrovani"
-          // if we have not filtered "poslanci" yet, we get them from the snemovniObdobi.Poslanci item via this.poslanci computed property
+      geojson() {
 
-          const whichPoslanci = this.PoslanciVstupniData;
+        // get items for the map
+        // we want to show on the map items "poslanci" reactively based on the fact if we have already filtered them via PoslanciSeznam component
+        // in such case poslance are already filtered, we have them in the store in the variable "poslanci_filtrovani"
+        // if we have not filtered "poslanci" yet, we get them from the snemovniObdobi.Poslanci item via this.poslanci computed property
 
-
-          return [...whichPoslanci]
-          .filter(poslanec => poslanec.Adresy && poslanec.Adresy.length > 0)
-          .map((poslanec) => {
-
-            return {
-
-              Id: poslanec.Id,
-              LatLng: [poslanec.Adresy[0].GeoX, poslanec.Adresy[0].GeoY],
-              GeoX: poslanec.Adresy[0].GeoX,
-              GeoY: poslanec.Adresy[0].GeoY,
-              Nazev: poslanec.Adresy[0].Nazev,
-              Druh: poslanec.Adresy[0].Druh,
-              Jmeno: poslanec.Jmeno,
-              Prijmeni: poslanec.Prijmeni,
-              DatumNarozeniZobrazene: (poslanec.DatumNarozeniZobrazene !== null) ? poslanec.DatumNarozeniZobrazene : '???',
-              DatumUmrtiZobrazene: (poslanec.DatumUmrtiZobrazene !== null) ?  poslanec.DatumUmrtiZobrazene : '???',
-              ProfilovaFotka: poslanec.Soubory && poslanec.Soubory.length && poslanec.Soubory[0].URLNahled || false,
-              Soubory: poslanec.Soubory,
-
-            }
-
-          });
+        const whichPoslanci = this.PoslanciVstupniData;
 
 
+        return [...whichPoslanci]
+        .filter(poslanec => poslanec.Adresy && poslanec.Adresy.length > 0)
+        .map((poslanec) => {
 
-        },
+          return {
+
+            Id: poslanec.Id,
+            LatLng: [poslanec.Adresy[0].GeoX, poslanec.Adresy[0].GeoY],
+            GeoX: poslanec.Adresy[0].GeoX,
+            GeoY: poslanec.Adresy[0].GeoY,
+            Nazev: poslanec.Adresy[0].Nazev,
+            Druh: poslanec.Adresy[0].Druh,
+            Jmeno: poslanec.Jmeno,
+            Prijmeni: poslanec.Prijmeni,
+            VolebniStrany: poslanec.VolebniStrany,
+            Kluby: poslanec.Kluby,
+            DatumNarozeniZobrazene: (poslanec.DatumNarozeniZobrazene !== null) ? poslanec.DatumNarozeniZobrazene : '???',
+            DatumUmrtiZobrazene: (poslanec.DatumUmrtiZobrazene !== null) ?  poslanec.DatumUmrtiZobrazene : '???',
+            ProfilovaFotka: poslanec.Soubory && poslanec.Soubory.length && poslanec.Soubory[0].URLNahled || false,
+            Soubory: poslanec.Soubory,
+
+          }
+
+        });
+
+
+
+      },
 
 
     },
@@ -278,18 +458,19 @@ export default {
 
     data() {
       return {
+        partyColorRelations: {},
         mapInstance: null,
         mapSettings: {
 
           popup: {
 
-            html: (item) => {
+            html: (item, styleString = '') => {
 
               let snemovniObdobiString = '';
 
               const imageContent = (item.ProfilovaFotka && item.ProfilovaFotka !== '') ? `
                 <img src="${item.ProfilovaFotka}" class="map-person-thumb-head-icon-image" />
-              ` : `<div class="map-person-thumb-head-icon-image">
+              ` : `<div class="map-person-thumb-head-icon-image" style="${styleString}">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="90" height="98" viewBox="0 0 90 98">
                     <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
@@ -354,9 +535,9 @@ export default {
                 direction: 'bottom',
                 offset: { x: 0, y: 20 },
               },
-              html: (item, index) => {
+              html: (item, index, styleString = '') => {
 
-                const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon">`;
+                const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon" style="${styleString}">`;
                 const end = `</div>`;
 
                 let content = '';

@@ -139,7 +139,7 @@
 
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 
 @use "sass:math"
 
@@ -492,8 +492,6 @@
 
             this.mapInstance.createPane('addresses');
 
-            console.log("from mounted poslanec", this.poslanec);
-
 
             // // init clusters for places
             // https://github.com/Leaflet/Leaflet.markercluster
@@ -634,8 +632,6 @@
               title: 'Poslanec'
 
             };
-
-            console.log("OsobniVztahySekundarni", OsobniVztahySekundarni);
 
             const resultItems = [...SouvisejiciPoslanci, ]
             .map((person) => {

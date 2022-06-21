@@ -129,8 +129,6 @@ export default {
 
         this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
-        console.log("currentQueryStringified", this.currentQueryStringified);
-
 
         await this.$store.dispatch("getParlamentyDatabaze");
 
@@ -216,8 +214,7 @@ export default {
           ...activeFilterItems,
         };
 
-        console.log("this.currentQuery", this.currentQuery);
-
+ 
 
         // // call API
         await this.prepareRequestFilteredViaAPI(this.currentQuery);

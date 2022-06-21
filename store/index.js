@@ -405,6 +405,7 @@ export const actions = {
       let poslanci = poslanciRequest.Poslanci;
       const filterData = poslanciRequest.Filtry;
 
+
       poslanci = poslanci
         .map((poslanec) => {
 

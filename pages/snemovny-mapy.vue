@@ -28,8 +28,9 @@
       v-on:refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
 
       Nadpis="Mapa místa narození poslanců"
-
+      :MaRazeni="false"
       :MaMapu="true"
+      :NastaveniMapa="nastaveniMapa"
       Mod="Mapa"
     )
 
@@ -122,7 +123,7 @@ export default {
           ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
           Pohlavi: this.defaultFilterData.Pohlavi.map(item => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
           PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map(item => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
-          Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
+          Parlamenty: this.$store.state.parlamentyDatabaze.filter(parlament => [147, 151, 152, 157].includes(parlament.Id)), // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
         };
 
         const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
@@ -266,6 +267,22 @@ export default {
 
 
     computed: {
+
+      nastaveniMapa() {
+
+
+        return {
+
+          zvyraznitPoslancePodlePolitickePrislusnosti: {
+
+            enable: true,
+            currentSnemovny: null,
+
+          }
+
+        }
+
+      },
 
       paginaceNastaveni() {
 

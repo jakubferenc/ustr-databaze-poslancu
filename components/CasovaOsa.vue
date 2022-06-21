@@ -153,7 +153,6 @@ export default {
 
   mounted() {
 
-    console.log(this.Data);
 
     this.$casovaOsaContainer = this.$el.querySelector('.casova-osa-items-container');
     this.$casovaOsaItemsElement = this.$el.querySelector(`.casova-osa-items`);

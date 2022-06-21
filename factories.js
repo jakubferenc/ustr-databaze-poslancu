@@ -88,6 +88,54 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       hasCounter: true,
       values: undefined
     },
+    VolebniStrany: {
+      id: sectionId++,
+      title: 'Volební strany',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      property: 'VolebniStrany',
+      hasCounter: true,
+      values: undefined
+    },
+    Kluby: {
+      id: sectionId++,
+      title: 'Kluby',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      property: 'Kluby',
+      hasCounter: true,
+      values: undefined
+    },
+    Vybory: {
+      id: sectionId++,
+      title: 'Výbory',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      property: 'Vybory',
+      hasCounter: true,
+      values: undefined
+    },
+    Kurie: {
+      id: sectionId++,
+      title: 'Kurie',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      property: 'Kurie',
+      hasCounter: true,
+      values: undefined
+    },
     Narodnosti: {
       id: sectionId++,
       title: 'Národnosti',
@@ -241,77 +289,78 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
 
   let narodnostiMapped = [...filterData.Narodnosti].map(item => {
 
-      return {
-              id: item.Id,
-              text: item.Nazev,
-              selected: false,
-            };
+    return {
+            id: item.Id,
+            text: item.Nazev,
+            selected: false,
+          };
 
-    });
-    narodnostiMapped = [
-      {id: 'vse-narodnosti', text: 'Vše', default: true, reset: true, selected: true},
-      ...narodnostiMapped
-    ];
+  });
+  narodnostiMapped = [
+    {id: 'vse-narodnosti', text: 'Vše', default: true, reset: true, selected: true},
+    ...narodnostiMapped
+  ];
 
-    let vyznaniMapped = [...filterData.Vyznani].map(item => {
 
-      return {
-              id: item.Id,
-              text: item.Nazev,
-              selected: false,
-            };
+  let vyznaniMapped = [...filterData.Vyznani].map(item => {
 
-    });
-    vyznaniMapped = [
-      {id: 'vse-vyznani', text: 'Vše', default: true, reset: true, selected: true},
-      ...vyznaniMapped
-    ];
+    return {
+            id: item.Id,
+            text: item.Nazev,
+            selected: false,
+          };
 
-    const vysokaSkolaMapped = [
+  });
+  vyznaniMapped = [
+    {id: 'vse-vyznani', text: 'Vše', default: true, reset: true, selected: true},
+    ...vyznaniMapped
+  ];
+
+  const vysokaSkolaMapped = [
+    {id: false, text: 'Vše', default: true, reset: true, selected: true},
+    {id: true, text: 'Má VŠ', disabled: false}
+  ];
+
+
+  const SocialniVazbyMapped = [
+    {id: false, text: 'Vše', default: true, reset: true, selected: true},
+    {id: true, text: 'Má sociální vztahy', disabled: false}
+  ];
+
+  const maFotkuMapped = [
       {id: false, text: 'Vše', default: true, reset: true, selected: true},
-      {id: true, text: 'Má VŠ', disabled: false}
-    ];
+      {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
+  ];
+
+  /* finding the lowest and highest integer number from an array
+      can be done to select first and last number, as API returns the numbers sorted from lowest to highest
+  */
 
 
-    const SocialniVazbyMapped = [
-      {id: false, text: 'Vše', default: true, reset: true, selected: true},
-      {id: true, text: 'Má sociální vztahy', disabled: false}
-    ];
-
-    const maFotkuMapped = [
-        {id: false, text: 'Vše', default: true, reset: true, selected: true},
-        {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
-    ];
-
-    /* finding the lowest and highest integer number from an array
-       can be done to select first and last number, as API returns the numbers sorted from lowest to highest
-    */
+  const pocetMandatuMapped = [
+    filterData.PocetMandatu[0], // current min
+    filterData.PocetMandatu[filterData.PocetMandatu.length-1], // current max
+    filterData.AbsolutniMinimalniPocetMandatu, // default min
+    filterData.AbsolutniMaximalniPocetMandatu, // default max
+  ];
 
 
-    const pocetMandatuMapped = [
-      filterData.PocetMandatu[0], // current min
-      filterData.PocetMandatu[filterData.PocetMandatu.length-1], // current max
-      filterData.AbsolutniMinimalniPocetMandatu, // default min
-      filterData.AbsolutniMaximalniPocetMandatu, // default max
-    ];
+  const vekyNaZacatkuMandatuMapped = [
+    filterData.VekNaZacatkuMandatu[0], // current min
+    filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length-1], // current max
+    filterData.AbsolutniMinimalniVekNaZacatkuMandatu, // default min
+    filterData.AbsolutniMaximalniVekNaZacatkuMandatu, // default max
 
+  ] ///
+////////
 
-    const vekyNaZacatkuMandatuMapped = [
-      filterData.VekNaZacatkuMandatu[0], // current min
-      filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length-1], // current max
-      filterData.AbsolutniMinimalniVekNaZacatkuMandatu, // default min
-      filterData.AbsolutniMaximalniVekNaZacatkuMandatu, // default max
+  const vekyNaKonciMandatuMapped = [
+    filterData.VekNaKonciMandatu[0], // current min
+    filterData.VekNaKonciMandatu[filterData.VekNaKonciMandatu.length-1], // current max
+    filterData.AbsolutniMinimalniVekNaKonciMandatu, // default min
+    filterData.AbsolutniMaximalniVekNaKonciMandatu, // default max
 
-    ] ///
-  ////////
-
-    const vekyNaKonciMandatuMapped = [
-      filterData.VekNaKonciMandatu[0], // current min
-      filterData.VekNaKonciMandatu[filterData.VekNaKonciMandatu.length-1], // current max
-      filterData.AbsolutniMinimalniVekNaKonciMandatu, // default min
-      filterData.AbsolutniMaximalniVekNaKonciMandatu, // default max
-
-    ]; ///
+  ]; ///
    ////////////////////////////////////////////////////////////////////////
 
   finalResult.PoslaneckySlib.values = poslaneckySlibMapped;
@@ -328,8 +377,109 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
   finalResult.VekNaZacatkuMandatu.values = vekyNaZacatkuMandatuMapped;
   finalResult.VekNaKonciMandatu.values = vekyNaKonciMandatuMapped;
 
-  ////////////////////////////////////////////////////////////////////////
+  if (filterData.Kluby && filterData.Kluby !== null) {
 
+
+
+    const klubyMapped = [...filterData.Kluby].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev.split('|')[0].trim(),
+              selected: false,
+            };
+
+    });
+
+    finalResult.Kluby.values = [
+      {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true},
+      ...klubyMapped
+    ];
+
+  } else {
+
+    delete finalResult.Kluby;
+
+  }
+
+
+  if (filterData.VolebniStrany && filterData.VolebniStrany !== null) {
+
+    const stranyMapped = [...filterData.VolebniStrany].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev,
+              selected: false,
+            };
+
+    });
+
+
+    finalResult.VolebniStrany.values = [
+      {id: 'vse-strany', text: 'Vše', default: true, reset: true, selected: true},
+      ...stranyMapped
+    ];
+
+  } else {
+
+    delete finalResult.VolebniStrany;
+
+  }
+
+
+  if (filterData.Vybory && filterData.Vybory !== null) {
+
+
+    let vyboryMapped = [...filterData.Vybory].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev,
+              selected: false,
+            };
+
+    });
+
+
+    finalResult.Vybory.values = [
+      {id: 'vse-vybory', text: 'Vše', default: true, reset: true, selected: true},
+      ...vyboryMapped
+    ];
+
+  } else {
+
+    delete finalResult.Vybory;
+
+  }
+
+  if (filterData.Kurie && filterData.Kurie !== null) {
+
+    let kurieMapped = [...filterData.Kurie].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev,
+              selected: false,
+            };
+
+    });
+
+
+    finalResult.Kurie.values = [
+      {id: 'vse-kurie', text: 'Vše', default: true, reset: true, selected: true},
+      ...kurieMapped
+    ];
+
+
+  } else {
+
+    delete finalResult.Kurie;
+
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////
 
   // make active items in the filter based on the current query
 
@@ -389,16 +539,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   let sectionId = 0;
 
   let finalResult = {
-    // PoslaneckySlib: {
-    //   id: sectionId++,
-    //   title: 'Poslanecky Slib',
-    //   type: 'radio',
-    //   order: 'inline',
-    //   property: 'PoslaneckySlib',
-    //   info: "Nějaké informace k vysvětlení",
-    //   hasCounter: false,
-    //   values: undefined,
-    // },
+
     Pohlavi: {
       id: sectionId++,
       title: 'Pohlaví',
@@ -430,49 +571,30 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       hasCounter: true,
       values: undefined
     },
-    Narodnosti: {
+    VolebniStrany: {
       id: sectionId++,
-      title: 'Národnosti',
+      title: 'Volební strany',
       type: 'checkbox',
       multiple: true,
       reset: true,
       order: 'block',
       info: "Nějaké informace k vysvětlení",
-      property: 'Narodnosti',
+      property: 'VolebniStrany',
       hasCounter: true,
       values: undefined
     },
-    Vyznani: {
+    Kluby: {
       id: sectionId++,
-      title: 'Náboženské vyznání',
+      title: 'Kluby',
       type: 'checkbox',
       multiple: true,
       reset: true,
       order: 'block',
-      property: 'NabozenstviNarozeni',
       info: "Nějaké informace k vysvětlení",
+      property: 'Kluby',
       hasCounter: true,
       values: undefined
     },
-    // UniverzitniVzdelani: {
-    //   id: sectionId++,
-    //   title: 'Vzdělání',
-    //   type: 'radio',
-    //   order: 'inline',
-    //   property: 'UniverzitniVzdelani',
-    //   info: "Nějaké informace k vysvětlení",
-    //   hasCounter: false,
-    //   values: undefined,
-    // },
-    // SocialniVazby: {
-    //   id: sectionId++,
-    //   title: 'Sociální vazby',
-    //   type: 'radio',
-    //   order: 'inline',
-    //   info: "Nějaké informace k vysvětlení",
-    //   hasCounter: false,
-    //   values: undefined,
-    // },
     Fotografie: {
       id: sectionId++,
       title: 'Fotografie',
@@ -482,36 +604,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       hasCounter: false,
       values: undefined,
     },
-    // PocetMandatu: {
-    //   id: sectionId++,
-    //   title: 'Počet mandátů',
-    //   type: 'range',
-    //   order: 'inline',
-    //   info: "Nějaké informace k vysvětlení",
-    //   hasCounter: false,
-    //   queryStructure: ['MinimalniPocetMandatu', 'MaximalniPocetMandatu', 'AbsolutniMinimalniPocetMandatu', 'AbsolutniMaximalniPocetMandata'], // order matterrs, first lower bound, next higher bound
-    //   values: undefined,
-    // },
-    // VekNaZacatkuMandatu: {
-    //   id: sectionId++,
-    //   title: 'Věk na začátku mandátu',
-    //   type: 'range',
-    //   order: 'inline',
-    //   info: "Nějaké informace k vysvětlení",
-    //   hasCounter: false,
-    //   queryStructure: ['VekNaZacatkuMandatuMin', 'VekNaZacatkuMandatuMax'], // order matterrs, first lower bound, next higher bound
-    //   values: undefined,
-    // },
-    // VekNaKonciMandatu: {
-    //   id: sectionId++,
-    //   title: 'Věk na konci mandátu',
-    //   type: 'range',
-    //   order: 'inline',
-    //   info: "Nějaké informace k vysvětlení",
-    //   hasCounter: false,
-    //   queryStructure: ['VekNaKonciMandatuMin', 'VekNaKonciMandatuMax'], // order matterrs, first lower bound, next higher bound
-    //   values: undefined,
-    // },
+
 
 
   };
@@ -567,44 +660,9 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
     ...snemovniObdobiMapped
   ];
 
-  let narodnostiMapped = [...filterData.Narodnosti].map(item => {
-
-      return {
-              id: item.Id,
-              text: item.Nazev,
-              selected: false,
-            };
-
-    });
-    narodnostiMapped = [
-      {id: 'vse-narodnosti', text: 'Vše', default: true, reset: true, selected: true},
-      ...narodnostiMapped
-    ];
-
-    let vyznaniMapped = [...filterData.Vyznani].map(item => {
-
-      return {
-              id: item.Id,
-              text: item.Nazev,
-              selected: false,
-            };
-
-    });
-    vyznaniMapped = [
-      {id: 'vse-vyznani', text: 'Vše', default: true, reset: true, selected: true},
-      ...vyznaniMapped
-    ];
-
-    const vysokaSkolaMapped = [
-      {id: false, text: 'Vše', default: true, reset: true, selected: true},
-      {id: true, text: 'Má VŠ', disabled: false}
-    ];
 
 
-    const SocialniVazbyMapped = [
-      {id: false, text: 'Vše', default: true, reset: true, selected: true},
-      {id: true, text: 'Má sociální vztahy', disabled: false}
-    ];
+
 
     const maFotkuMapped = [
         {id: false, text: 'Vše', default: true, reset: true, selected: true},
@@ -619,9 +677,55 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   finalResult.Pohlavi.values = pohlaviMapped;
   finalResult.Snemovny.values = parlamentyMapped;
   finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
-  finalResult.Narodnosti.values = narodnostiMapped;
-  finalResult.Vyznani.values = vyznaniMapped;
   finalResult.Fotografie.values = maFotkuMapped;
+
+  if (filterData.Kluby && filterData.Kluby !== null) {
+
+    const klubyMapped = [...filterData.Kluby].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev.split('|')[0].trim(),
+              selected: false,
+            };
+
+    });
+
+    finalResult.Kluby.values = [
+      {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true},
+      ...klubyMapped
+    ];
+
+  } else {
+
+    delete finalResult.Kluby;
+
+  }
+
+
+  if (filterData.VolebniStrany && filterData.VolebniStrany !== null) {
+
+    const stranyMapped = [...filterData.VolebniStrany].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev,
+              selected: false,
+            };
+
+    });
+
+
+    finalResult.VolebniStrany.values = [
+      {id: 'vse-strany', text: 'Vše', default: true, reset: true, selected: true},
+      ...stranyMapped
+    ];
+
+  } else {
+
+    delete finalResult.VolebniStrany;
+
+  }
 
   ////////////////////////////////////////////////////////////////////////
 
