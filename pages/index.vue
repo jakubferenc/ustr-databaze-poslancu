@@ -6,15 +6,15 @@
 
   .section-padding.alt-bg
 
-    h2.section-title.section-title-no-margin-bottom Interaktivní mapy sněmoven
+    h2.section-title.section-title-no-margin-bottom Interaktivní mapy stranické příslušnosti
 
     p
       NuxtLink(to="/snemovny-mapy/")
         img(src="~/assets/images/banner-interaktivni-mapy.png" alt="")
 
-  PoslanciSeznam(v-if="poslanci" :PoslanciVstupniPolozky="poslanci" Nadpis="Výběr poslanců" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/" Mod="Seznam")
+  PoslanciSeznam(v-if="poslanci"  :PoslanciVstupniPolozky="poslanci" Nadpis="Výběr poslanců v databázi" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/" Mod="Seznam")
 
-  ParlamentySeznam(v-if="parlamenty" :Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
+  ParlamentySeznam(v-if="parlamenty" Nadpis="Parlamenty" Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
 
   SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 

@@ -2,7 +2,7 @@
 
   .snemovny-seznam.section-padding.alt-bg
 
-    h2.section-title Parlamentní tělesa
+    h2.section-title {{Nadpis}}
 
     .container-list.columns.is-multiline
 
@@ -39,6 +39,6 @@ export default {
    components: { ParlamentNahled },
 
 
-   props: ['Parlamenty', 'MaButtonMore', 'ButtonMoreLink'],
+   props: ['Parlamenty', 'MaButtonMore', 'ButtonMoreLink', 'Nadpis'],
 }
 </script>

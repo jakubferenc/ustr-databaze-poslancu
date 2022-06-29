@@ -197,6 +197,9 @@
 
 <style lang="sass" scoped>
 
+  .section-title
+    @extend %typography-section-title
+
   .info-icon
     display: inline-flex
     justify-content: center
