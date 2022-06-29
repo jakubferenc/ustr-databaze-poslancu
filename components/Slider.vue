@@ -17,11 +17,12 @@
 </template>
 
 
-<style lang="sass" scoped>
+<style lang="sass">
 
 
   html:not(.has-slider) .slider
     display: none
+
 
   .slider
     position: relative
@@ -32,11 +33,19 @@
     .slider-item
       position: relative
       height: 100vh
-    .slider-image
-      position: absolute
-      width: 100%
-      height: 100%
-      object-fit: cover
+
+
+      .slider-image
+        position: absolute
+        width: 100%
+        height: 100%
+
+        img
+          width: 100%
+          height: 100%
+          object-fit: cover
+
+
     .slider-text
       position: absolute
       z-index: 1

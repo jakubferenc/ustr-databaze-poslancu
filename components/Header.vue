@@ -5,7 +5,7 @@
       <MainMenu />
       //- <SearchNav />
 
-    <Slider v-if="true" />
+    <Slider />
 
 </template>
 
