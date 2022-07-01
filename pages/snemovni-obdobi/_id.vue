@@ -282,8 +282,7 @@
   const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
   const TabNavigace = () => import('~/components/TabNavigace.vue');
 
-
-  const SnemovniObdobiData = () => import('~/data/snemovni-obdobi.json').then(m => m.default || m);
+  // const SnemovniObdobiData = () => import('~/data/snemovni-obdobi.json').then(m => m.default || m);
 
   import IconPerson from "~/assets/images/icon-person.svg?inline";
 
