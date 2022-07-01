@@ -14,6 +14,9 @@ export default {
   globalTitle: 'Databáze poslanců.cz',
   baseURL: 'https://www.databazeposlancu.cz',
   useFileCachedAPI: true,
+  placeholders: {
+    missingDate: '?'
+  },
   map: {
     accessToken: 'pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
   },
