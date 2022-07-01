@@ -8,7 +8,7 @@
 
     PoslanciSeznamAPI(
 
-      v-if="poslanci && nastaveniFiltrace"
+      v-if="poslanci && nastaveniFiltrace && paginaceNastaveni.Celkem"
 
       :PoslanciVstupniPolozky="poslanci"
       :NastaveniFiltrace="nastaveniFiltrace"
