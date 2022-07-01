@@ -19,8 +19,9 @@ const allowDownloads = [
   // 'slovnik',
   // 'casova-osa',
   // 'parlamenty',
-  'snemovni-obdobi',
+  // 'snemovni-obdobi',
   // 'stranky',
+  'poslanciHomepage',
 ];
 
 (async() => {
@@ -28,6 +29,19 @@ const allowDownloads = [
   try {
 
     // media
+
+    if (allowDownloads.includes('poslanciHomepage')) {
+
+      console.log("starting to download: poslanci homepage");
+      const limit = 20;
+      const poslanciRes = await apiFactory.getPoslanciHomepageFactory(projectConfig.databazePoslancuURL, {
+        limit: 20,
+      });
+      const pathToWritePoslanci = path.join(__dirname, 'data/poslanciHomepage.json');
+      writeFileSync(pathToWritePoslanci, JSON.stringify(poslanciRes), writeOptionsSettings);
+      console.log("download finished: poslanci homepage");
+
+    }
 
     if (allowDownloads.includes('media')) {
 

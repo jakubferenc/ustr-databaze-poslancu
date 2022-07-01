@@ -44,6 +44,8 @@ const MediaData = () => import('~/data/media.json').then(m => m.default || m);
 const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
 const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.default || m);
 
+const PoslanciHomepageData = () => import('~/data/poslanciHomepage.json').then(m => m.default || m);
+
 
 export default {
 
@@ -83,12 +85,16 @@ export default {
         });
 
         const souboryRes  = await MediaData();
+        const parlamentyRes = await ParlamentyData();
+        const slovnikRes = await SlovnikovaHeslaData();
+
+        const poslanciHomepageRes = await PoslanciHomepageData();
 
 
         return {
-          poslanci: store.state.poslanci_homepage,
-          parlamenty: await ParlamentyData(),
-          slovnikova_hesla: await SlovnikovaHeslaData(),
+          poslanci: poslanciHomepageRes,
+          parlamenty: parlamentyRes,
+          slovnikova_hesla: slovnikRes,
           soubory: souboryRes.slice(0, limit),
         }
 

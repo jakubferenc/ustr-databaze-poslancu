@@ -9,6 +9,7 @@ import {
   getCasovaOsaDataForPoslanec,
   stripHTMLTags,
   dateISOStringToCZFormat,
+  shuffleArray,
 } from './utils/functions.js';
 
 
@@ -1293,6 +1294,39 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 
 };
 
+
+const getPoslanciHomepageFactory = async(databazePoslancuURL, {limit, stranka, filterCallback = null}) => {
+
+  let poslanciRequest = await axiosInstance.get(`${databazePoslancuURL}/Api/osoby?Limit=${limit}&Stranka=${stranka}&Fotografie=true`);
+  poslanciRequest = poslanciRequest.data;
+
+  let poslanci = poslanciRequest.Poslanci;
+
+  let poslanciRequestZeny = await axiosInstance.get(`${databazePoslancuURL}/Api/osoby?Limit=${limit}&Stranka=${stranka}&Fotografie=true&Pohlavi=2`);
+  poslanciRequestZeny = poslanciRequestZeny.data;
+
+  const poslanciZeny = poslanciRequestZeny.Poslanci;
+
+  poslanci = shuffleArray([...poslanci, ...poslanciZeny]);
+
+
+  return poslanci
+  .map((poslanec) => {
+
+    if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
+      poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(poslanec.DatumNarozeni);
+    }
+
+    if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
+      poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(poslanec.DatumUmrti);
+    }
+
+    return poslanec;
+
+  });
+
+};
+
 export default {
   createFilterSettingsForApiUseParliamentMapsFactory,
   getPoslanecDetailFactory,
@@ -1306,5 +1340,6 @@ export default {
   getSlovnikovaHeslaFactory,
   createFilterSettingsForApiUseFactory,
   getParlamentyDatabazeFactory,
+  getPoslanciHomepageFactory,
 };
 

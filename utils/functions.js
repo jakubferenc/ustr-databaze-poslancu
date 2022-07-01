@@ -1,8 +1,6 @@
 // import typopoPackage from 'typopo';
 // const {fixTypos} = typopoPackage;
 
-import {fixTypos} from 'typopo';
-
 export function shuffleArray(unshuffledArray) {
 
   return unshuffledArray
@@ -544,7 +542,7 @@ export const normalizeSouborAttrs = (file) => {
   if (file.media_details) {
     // most probably a file from wordpress media gallery
 
-    newFile.caption = (file.caption.rendered) ? fixTypos(stripHTMLTags(file.caption.rendered)) : undefined; // remove html from the caption
+    newFile.caption = (file.caption.rendered) ? stripHTMLTags(file.caption.rendered) : undefined; // remove html from the caption
     newFile.alt_text = file.alt_text;
     newFile.slug = file.slug;
 
@@ -553,7 +551,7 @@ export const normalizeSouborAttrs = (file) => {
       // we need to clean up the description from the wordpress media gallery
       // media gallery joins together description and html for displaying the subpage for the given attachment
 
-      newFile.description = fixTypos(stripHTMLTags(file.description.rendered.split('</a></p>')[1]));
+      newFile.description = stripHTMLTags(file.description.rendered.split('</a></p>')[1]);
 
     }
 

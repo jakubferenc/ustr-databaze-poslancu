@@ -4,7 +4,7 @@ this is where we will eventually hold the data for all of our posts
 /*eslint no-unsafe-optional-chaining: "error"*/
 import apiFactory from '../factories';
 import projectConfig from '../project.config';
-import { stripHTMLTags, shuffleArray, dateISOStringToCZFormat } from '../utils/functions';
+import { dateISOStringToCZFormat } from '../utils/functions';
 
 import {
   getFilterDataFromPoslanciAll,
@@ -275,38 +275,10 @@ export const actions = {
 
   async getPoslanciHomepage({ state, commit }, {limit = 20, stranka = 1, filterCallback = null} ) {
     if (state.poslanci.length) return;
+
     try {
 
-      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Limit=${limit}&Stranka=${stranka}&Fotografie=true`);
-      poslanciRequest = poslanciRequest.data;
-
-      let poslanci = poslanciRequest.Poslanci;
-
-      let poslanciRequestZeny = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby?Limit=${limit}&Stranka=${stranka}&Fotografie=true&Pohlavi=2`);
-      poslanciRequestZeny = poslanciRequestZeny.data;
-
-      const poslanciZeny = poslanciRequestZeny.Poslanci;
-
-      poslanci = shuffleArray([...poslanci, ...poslanciZeny]);
-
-      if (filterCallback !== null) {
-        poslanci = poslanci.filter(filterCallback);
-      }
-
-      poslanci = poslanci
-        .map((poslanec) => {
-
-          if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
-            poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(poslanec.DatumNarozeni);
-          }
-
-          if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
-            poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(poslanec.DatumUmrti);
-          }
-
-          return poslanec;
-
-        });
+      const poslanci = await apiFactory.getPoslanciHomepageFactory(projectConfig.databazePoslancuURL, {limit, stranka, filterCallback,});
 
       commit("updatePoslanciHomepage", poslanci);
 
