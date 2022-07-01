@@ -15,9 +15,9 @@ export default {
     port: 8000, // default: 3000
     host: '0.0.0.0', // default: localhost
   },
-  serverMiddleware: [
-    "~/server-middleware/index.js",
-  ],
+  // serverMiddleware: [
+  //   "~/server-middleware/index.js",
+  // ],
   router: {
     trailingSlash: undefined,
   },
