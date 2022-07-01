@@ -45,10 +45,10 @@
       //-     a(href="#") Poslat zpětnou vazbu na aplikaci DOPLNIT text, chceme též, aby se ozvali pamětníci. Mohou zde být i kontaktní informace, email, výzva k aktivní spolupráci
 
 
-    .columns
+    //- .columns
 
-      .footer-section.is-section-claim.column.is-full
-        p.typography-body-text.typography-smaller-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+    //-   .footer-section.is-section-claim.column.is-full
+    //-     p.typography-body-text.typography-smaller-text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
 
 </template>
 
