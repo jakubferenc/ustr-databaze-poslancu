@@ -14,12 +14,22 @@
         .footer-section-title Na projektu spolupracovali
         .footer-section-content
           nav.nav-logos.typography-body-text
-            a.logo(href="#")
-              img.logo-image(src="~/assets/images/logo-ustr.svg" alt="Logo Ústavu pro studium totalitních režimů")
+            a.logo(href="https://www.nm.cz/")
+              .logo-image-container
+                img.logo-image(src="~/assets/images/logo-nm.svg" alt="Logo Národní muzeum")
+              span.logo-text.typography-smaller-text Národní muzeum
+
+
+            a.logo(href="https://www.ustrcr.cz/")
+              .logo-image-container
+                img.logo-image(src="~/assets/images/logo-ustr.svg" alt="Logo Ústavu pro studium totalitních režimů")
               span.logo-text.typography-smaller-text Ústav pro studium totalitních režimů
-            a.logo(href="#")
-              img.logo-image(src="~/assets/images/logo-ustr.svg" alt="Logo Ústavu pro studium totalitních režimů")
-              span.logo-text.typography-smaller-text Další instituce
+
+            a.logo(href="https://www.mua.cas.cz/")
+              .logo-image-container
+                img.logo-image(src="~/assets/images/logo-mua.png" alt="Logo Masarykův ústav a Archiv Akademie věd České republiky")
+              span.logo-text.typography-smaller-text Masarykův ústav a Archiv Akademie věd České republiky
+
 
       .footer-section.is-section-app-logos.column.is-one-third-widescreen.is-half-desktop.is-full
         .footer-section-title Důležité odkazy
@@ -132,12 +142,23 @@
 
   .nav-logos
     display: flex
+    margin-top: -30px
 
     .logo
       display: flex
       flex-direction: column
-      width: 150px
+      width: 100%
       margin-left: 30px
+
+      .logo-image-container
+        height: 80px
+        display: flex
+        align-items: center
+        justify-content: flex-start
+
+      img
+        height: auto
+        object-fit: contain
 
       &:first-child
         margin-left: 0
