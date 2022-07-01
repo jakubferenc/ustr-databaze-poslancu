@@ -4,6 +4,7 @@ import projectConfig from './project.config';
 const dev = process.env.NODE_ENV !== 'production';
 
 const config = {dev, ...projectConfig};
+config.useFileCachedAPI = dev === true;
 
 // data
 
@@ -73,17 +74,6 @@ export default {
       }));
 
 
-      //const osobyRes = await y.get(`${databazePoslancuURL}/Api/osoby/?Poslanec=true`);
-
-      // const osobyRoutes = osobyRes.data.map(item => {
-
-      //   return {
-      //     route: `/poslanec/${item.id}`,
-      //     payload: item // thanks to the payload, we are caching results for the subpage here
-      //   };
-
-      // });
-
       const mediaRoutes = mediaRes.map(item => {
 
         return {
@@ -137,9 +127,7 @@ export default {
 
       });
 
-      routes = [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes, ...slovnikRoutes, ...snemovniObdobiRoutes];
-
-      return routes;
+      return [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes, ...slovnikRoutes, ...snemovniObdobiRoutes];
 
     },
     fallback: true
