@@ -61,7 +61,7 @@
 
 
                             .profese-title {{itemNabozenstvi.Nazev}}
-                            .profese-date-range
+                            .profese-date-range(v-if="itemNabozenstvi.Zacatek")
                               | (
                               span od roku {{itemNabozenstvi.Zacatek}}
                               | )
@@ -121,11 +121,11 @@
       </client-only>
 
 
-    .section-padding-h-margin-v.typography-has-no-h-padding(v-if="socialniMapaData")
+    //- .section-padding-h-margin-v.typography-has-no-h-padding(v-if="socialniMapaData")
 
-      h2.section-title Sociální mapa poslance
+    //-   h2.section-title Sociální mapa poslance
 
-      #socialni-mapy-container
+    //-   #socialni-mapy-container
       //- <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
 
 
@@ -309,8 +309,8 @@
 
                 let snemovniObdobiString = '';
 
-
-                if (item.Zacatek || item.Konec) {
+                // we don't want to show "od" and "do" dates for addresses of types 1,5,6  as they are addresses of birth and death and grave
+                if ( (item.Zacatek || item.Konec) && ![1,5,6].includes(item.Druh)) {
 
 
                   snemovniObdobiString += `<div class="map-card__date-item">`;
@@ -405,7 +405,7 @@
                     `;
                   }
 
-                  if (![1, 5].includes(item.Druh)) {
+                  if (![1, 5, 6].includes(item.Druh)) {
 
                     content = `
 

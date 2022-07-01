@@ -1,12 +1,12 @@
 <template lang="pug">
 
-  .section
+.section
 
-    h1.typography-main-title {{title}}
+  h1.typography-main-title {{title}}
 
-    .section-padding-h-margin-v
+  .section-padding-h-margin-v
 
-      GalerieMediiSeznam(v-if="soubory" :Soubory="soubory" :MaButtonMore="false" :MaFilter="true")
+    GalerieMediiSeznam(v-if="soubory" :Soubory="soubory" :MaButtonMore="false" :MaFilter="true")
 
 </template>
 
@@ -29,7 +29,7 @@ export default {
           await store.dispatch("getMedia");
 
           return {
-            soubory: [...this.$store.state.media_soubory],
+            soubory: [...store.state.media_soubory],
           }
 
         } else {
@@ -52,6 +52,7 @@ export default {
     data() {
       return {
         title: `Galerie médií`,
+        soubory: [],
       }
     },
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 
-.section
+.sections-container
 
   <Rozcestnik />
 
@@ -14,7 +14,7 @@
 
   PoslanciSeznam(v-if="poslanci"  :PoslanciVstupniPolozky="poslanci" Nadpis="Výběr poslanců v databázi" :MaStatistiky="false" :MaPaginaci="false" :MaFilter="false" :MaButtonMore="true" ButtonMoreLink="/poslanci/" Mod="Seznam")
 
-  ParlamentySeznam(v-if="parlamenty" Nadpis="Parlamenty" Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
+  ParlamentySeznam(v-if="parlamenty" Nadpis="Zastupitelské sbory" :Parlamenty="parlamenty" :MaButtonMore="true" ButtonMoreLink="/parlamenty/")
 
   SlovnikSlider(v-if="slovnikova_hesla"  :MaButtonMore="true" :SlovnikovaHesla="slovnikova_hesla")
 

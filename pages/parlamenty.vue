@@ -69,7 +69,7 @@ export default {
 
     data() {
       return {
-        title: `Představení parlamentních těles`,
+        title: `Představení zastupitelských sborů`,
         parlamenty: [],
       }
     },
