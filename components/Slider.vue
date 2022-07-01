@@ -1,7 +1,7 @@
 <template lang="pug">
 .slider
-  .slider-item(data-slider-item="first")
-    .slider-text.typography-hero-title.slider-text-light(v-html="stranka_homepage_obsah.content")
+  .slider-item(v-for="stranka in Polozky" :key="stranka.id" data-slider-item="first")
+    .slider-text.typography-hero-title.slider-text-light(v-html="stranka.content")
     .slider-footer
       .slider-footer-description
         span.slider-footer-descriotion-image
@@ -26,7 +26,6 @@
 
   .slider
     position: relative
-    z-index: -1
     color: #fff
     margin-left: 0
 
@@ -82,23 +81,22 @@
 <script>
   import SliderFooterLogo01Image from "~/assets/images/slider-footer-logo-01.svg?inline";
 
+
   export default {
 
-    async fetch() {
+    props: ['Polozky'],
 
-      await this.$store.dispatch("getStranky");
+    mounted() {
 
     },
 
     components: { SliderFooterLogo01Image },
 
-    computed: {
+    data() {
 
-      stranka_homepage_obsah() {
+      return {
 
-        return this.$store.state.stranky.filter(item => item.id == 538)[0];
-
-      },
+      }
 
     },
   };

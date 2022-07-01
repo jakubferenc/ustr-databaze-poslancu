@@ -2,6 +2,8 @@
 
 .sections-container
 
+  <Slider :Polozky="sliderItems" />
+
   <Rozcestnik />
 
   .section-padding.alt-bg
@@ -34,6 +36,7 @@
 </style>
 
 <script>
+const Slider = () => import('~/components/Slider.vue');
 const Rozcestnik = () => import('~/components/Rozcestnik.vue');
 const PoslanciSeznam = () => import('~/components/PoslanciSeznam.vue');
 const ParlamentySeznam = () => import('~/components/ParlamentySeznam.vue');
@@ -47,9 +50,12 @@ const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.defa
 const PoslanciHomepageData = () => import('~/data/poslanciHomepage.json').then(m => m.default || m);
 
 
+const StrankyData = () => import('~/data/stranky.json').then(m => m.default || m);
+
+
 export default {
 
-    components: { Rozcestnik, PoslanciSeznam, ParlamentySeznam, SlovnikSlider, GalerieMediiSeznam },
+    components: {Slider, Rozcestnik, PoslanciSeznam, ParlamentySeznam, SlovnikSlider, GalerieMediiSeznam },
 
     async asyncData ({store, $config}) {
 
@@ -69,12 +75,16 @@ export default {
 
         await store.dispatch("getParlamenty");
 
+        await store.dispatch("getStranky");
+
         return {
           poslanci: store.state.poslanci_homepage,
           parlamenty: store.state.parlamenty,
           slovnikova_hesla: store.state.slovnikova_hesla,
-          soubory: [...store.state.media_soubory].slice(0, limit)
+          soubory: [...store.state.media_soubory].slice(0, limit),
+          sliderItems: [...store.state.stranky].filter(item => item.id == 538),
         }
+
 
 
       } else {
@@ -88,6 +98,8 @@ export default {
         const parlamentyRes = await ParlamentyData();
         const slovnikRes = await SlovnikovaHeslaData();
 
+        const strankyRes = await StrankyData();
+
         const poslanciHomepageRes = await PoslanciHomepageData();
 
 
@@ -96,6 +108,7 @@ export default {
           parlamenty: parlamentyRes,
           slovnikova_hesla: slovnikRes,
           soubory: souboryRes.slice(0, limit),
+          sliderItems: [...strankyRes].filter(item => item.id == 538),
         }
 
 

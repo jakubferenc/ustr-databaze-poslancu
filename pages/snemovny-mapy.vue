@@ -8,7 +8,7 @@
 
     PoslanciSeznamAPI(
 
-      v-if="poslanci && nastaveniFiltrace"
+      v-if="poslanci && nastaveniFiltrace && paginaceNastaveni.Celkem"
 
       :PoslanciVstupniPolozky="poslanci"
       :NastaveniFiltrace="nastaveniFiltrace"
@@ -287,8 +287,8 @@ export default {
       paginaceNastaveni() {
 
         const Celkem = this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu;
-        const Limit = this.currentQuery.Limit[0] || this.defaultQuery.Limit[0];
-        const Stranka = this.currentQuery.Stranka[0] || this.defaultQuery.Stranka[0];
+        const Limit = this.currentQuery?.Limit?.[0] || this.defaultQuery.Limit[0];
+        const Stranka = this.currentQuery?.Stranka?.[0] || this.defaultQuery.Stranka[0];
         const PocetStranek = Math.ceil(Celkem / Limit);
 
         return {

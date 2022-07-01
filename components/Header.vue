@@ -3,7 +3,6 @@
     .top-bar
       <Logo />
       <MainMenu />
-      //- <SearchNav />
 
     <Slider />
 
