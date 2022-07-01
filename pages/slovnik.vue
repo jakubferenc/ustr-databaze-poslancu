@@ -45,7 +45,7 @@ export default {
         await store.dispatch("getSlovnikovaHesla");
 
         return {
-          slovnikova_hesla: this.$store.state.slovnikova_hesla,
+          slovnikova_hesla: store.state.slovnikova_hesla,
         }
 
       } else {
