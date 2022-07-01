@@ -12,7 +12,7 @@
   //- input(@input="_setRightValue()" @mouseup="mouseUpHandler"  type="range" id="input-right" :min="MinValue" :max="MaxValue" :value="MaxValue")
   input(@input="setRightValueHandler()" @mouseup="mouseUpHandler"  type="range" ref="inputRightEl" :min="MinValue" :max="MaxValue" :value="rightValue")
 
-  .slider
+  .range-slider
     .track
     .range(ref="customRange")
     .thumb.left(ref="thumbLeft") {{leftValue}}
@@ -39,7 +39,7 @@
 
 
 
-  .slider
+  .range-slider
     position: relative
     z-index: 1
     height: 10px
