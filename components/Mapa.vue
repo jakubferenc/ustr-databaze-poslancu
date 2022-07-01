@@ -197,7 +197,6 @@ export default {
           console.error(e);
         }
 
-        console.log("test from color setting up", newColor, this.partyColorRelations);
 
         return newColor;
 
@@ -466,9 +465,11 @@ export default {
 
             html: (item, styleString = '') => {
 
+              const hasBgColor = (this.NastaveniMapa && this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable) ? true : false;
+
 
               const imageContent = (item.ProfilovaFotka && item.ProfilovaFotka !== '') ? `
-                <img src="${item.ProfilovaFotka}" class="map-person-thumb-head-icon-image has--bg-color" />
+                <img src="${item.ProfilovaFotka}" class="map-person-thumb-head-icon-image ${(hasBgColor) ? 'has--bg-color' : ''}" />
               ` : `<div class="map-person-thumb-head-icon-image" style="${styleString}">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="90" height="98" viewBox="0 0 90 98">

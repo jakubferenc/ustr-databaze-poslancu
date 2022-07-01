@@ -10,7 +10,7 @@
       span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
 
 
-    Mapa(:PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa")
+    Mapa(v-if="poslanci" :PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa")
 
   .filter-seznam
 
@@ -144,7 +144,7 @@
           .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
 
 
-            Mapa(:PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa" :Velka="true")
+            Mapa(v-if="poslanci" :PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa" :Velka="true")
 
 
           .component-footer(v-if="(MaButtonMore || MaPaginaci) && ['Vse', 'Seznam'].includes(Mod)")

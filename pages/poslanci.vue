@@ -26,7 +26,7 @@
       v-on:loadPreviousItems="loadPreviousItemsHandler($event)"
       v-on:loadMoreItems="loadMoreItemsHandler($event)"
       v-on:refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
-
+      :NastaveniMapa="nastaveniMapa"
       :MaMapu="true"
       Nadpis="Poslanci"
       Mod="Vse"
@@ -265,6 +265,22 @@ export default {
 
 
     computed: {
+
+      nastaveniMapa() {
+
+
+        return {
+
+          zvyraznitPoslancePodlePolitickePrislusnosti: {
+
+            enable: false,
+            currentSnemovny: null,
+
+          }
+
+        }
+
+      },
 
       paginaceNastaveni() {
 

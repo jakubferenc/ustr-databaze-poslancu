@@ -38,6 +38,8 @@ export default {
 
         if (!this.$config.useFileCachedAPI) {
 
+          console.log("not cached, goes to store");
+
 
           await this.$store.dispatch("getParlamenty");
 
@@ -46,6 +48,8 @@ export default {
 
 
         } else {
+
+          console.log("uses cached json file");
 
           const parlamentyRes = await ParlamentyData();
 
