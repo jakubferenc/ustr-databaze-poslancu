@@ -213,64 +213,21 @@ export const actions = {
 
     // Wordpress media REST API reference — https://developer.wordpress.org/rest-api/reference/media/#list-media
 
-    let media_soubory = [];
+    if (state.is_downloaded.media_soubory) return;
 
 
-    if (opts.id) {
-      // we want a specific media id
+    try {
 
-      // check if we have it in the store
-      const storeItem = [...state.media_soubory].filter(soubor => soubor.id == opts.id);
+      const media_soubory = await apiFactory.getAllMediaFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, opts.limit);
 
-      if (storeItem.length && storeItem.length > 0) {
-        // return the required item from the store
-        return storeItem[0];
+      commit("updateMedia", media_soubory);
+      commit("updateIsDownloaded", 'media_soubory');
 
-      } else {
-
-        // we do not have the item in the store, we need to make the axios call to the API
-
-        try {
-          let post = await this.$axios.get(`${projectConfig.wordpressAPIURLWebsite}/wp/v2/media/${opts.id}`);
-          post = post.data;
-
-          let media_soubory = [...state.media_soubory, post];
-
-          media_soubory = media_soubory.map(item => {
-            return normalizeSouborAttrs(item);
-          });
-
-          commit("updateMedia", media_soubory);
-          return;
-
-        } catch (err) {
-          console.warn(err);
-        }
-
-      }
-
-    } else {
-
-      if (state.is_downloaded.media_soubory) {
-
-        return;
-
-      } else {
-
-        try {
-
-          let media_soubory = await apiFactory.getAllMediaFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, opts.limit);
-
-          commit("updateMedia", media_soubory);
-          commit("updateIsDownloaded", 'media_soubory');
-
-        } catch (err) {
-          console.warn(err);
-        }
-
-      }
-
+    } catch (err) {
+      console.warn(err);
     }
+
+
 
   },
 

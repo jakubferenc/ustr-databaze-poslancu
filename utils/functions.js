@@ -1,4 +1,7 @@
-import { fixTypos } from 'typopo';
+// import typopoPackage from 'typopo';
+// const {fixTypos} = typopoPackage;
+
+import {fixTypos} from 'typopo';
 
 export function shuffleArray(unshuffledArray) {
 

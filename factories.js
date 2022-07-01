@@ -14,14 +14,14 @@ import {
 
 const axiosInstance = axios.create({
   // Keep the timeout low in development so it at least somehow responsive
-  timeout: process.dev ? 10000 : 45000,
+  timeout: process.dev ? 5000 : 45000,
   // httpsAgent = new https.Agent({ keepAlive: true });
 
 });
 
 // We need retrying on timeout, because wordpress api quite often hangs
 axiosRetry(axiosInstance, {
-  retries: 50,
+  retries: 5,
   retryDelay: () => 5000,
   shouldResetTimeout: true,
   retryCondition: (error) => {
@@ -68,7 +68,7 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     },
     Snemovny: {
       id: sectionId++,
-      title: 'Parlamentní tělesa',
+      title: 'Zastupitelské sbory',
       type: 'checkbox',
       multiple: true,
       reset: true,
@@ -551,7 +551,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
     },
     Snemovny: {
       id: sectionId++,
-      title: 'Parlamentní tělesa',
+      title: 'Zastupitelské sbory',
       type: 'checkbox',
       multiple: true,
       reset: true,
@@ -808,6 +808,7 @@ const getAllStrankyFactory = async (wordpressAPIURLWebsite) => {
 const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, limit) => {
 
   let media_soubory = [];
+  const mediaIdsToFilter = [25];
 
   // generate media
   const wpFetchHeaders = {
@@ -825,13 +826,12 @@ const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, l
     const posts = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
     media_soubory = [...media_soubory, ...posts.data];
 
+
   }
 
-  media_soubory = media_soubory.map(item => {
-    return normalizeSouborAttrs(item);
-  });
-
-  return media_soubory;
+  return media_soubory
+  .filter(soubor => !mediaIdsToFilter.includes(soubor.id))
+  .map(item => normalizeSouborAttrs(item));
 
 };
 
@@ -1010,9 +1010,9 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
     const parlamenty = await getParlamentyDatabazeFactory(databazePoslancuURL);
 
 
-
     let parlamentyWPData = await axiosInstance.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
     parlamentyWPData = parlamentyWPData.data;
+
 
     return await Promise.all(parlamenty.map(async (parlament) => {
 
