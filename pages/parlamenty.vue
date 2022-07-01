@@ -31,39 +31,27 @@ export default {
 
     components: { ParlamentRadek },
 
+    async asyncData ({store, $config}) {
 
-    async fetch() {
+      if (!$config.useFileCachedAPI) {
 
-      try {
+         await this.$store.dispatch("getParlamenty");
 
-        if (!this.$config.useFileCachedAPI) {
-
-          console.log("not cached, goes to store");
-
-
-          await this.$store.dispatch("getParlamenty");
-
-
-          this.parlamenty = this.$store.state.parlamenty;
-
-
-        } else {
-
-          console.log("uses cached json file");
-
-          const parlamentyRes = await ParlamentyData();
-
-          this.parlamenty = parlamentyRes;
-
+        return {
+          parlamenty: store.state.parlamenty,
         }
 
+      } else {
 
-      } catch (err) {
-        console.warn(err);
+         const parlamentyRes = await ParlamentyData();
+
+        return {
+          parlamenty: parlamentyRes,
+        }
+
       }
 
     },
-
 
 
     computed: {
