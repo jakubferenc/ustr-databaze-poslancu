@@ -35,7 +35,7 @@ export default {
 
       if (!$config.useFileCachedAPI) {
 
-         await this.$store.dispatch("getParlamenty");
+         await store.dispatch("getParlamenty");
 
         return {
           parlamenty: store.state.parlamenty,
