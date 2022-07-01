@@ -466,10 +466,9 @@ export default {
 
             html: (item, styleString = '') => {
 
-              let snemovniObdobiString = '';
 
               const imageContent = (item.ProfilovaFotka && item.ProfilovaFotka !== '') ? `
-                <img src="${item.ProfilovaFotka}" class="map-person-thumb-head-icon-image" />
+                <img src="${item.ProfilovaFotka}" class="map-person-thumb-head-icon-image has--bg-color" />
               ` : `<div class="map-person-thumb-head-icon-image" style="${styleString}">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="90" height="98" viewBox="0 0 90 98">
@@ -498,7 +497,10 @@ export default {
 
                       <div class="content">
                         <div class="desc">
-                          <p>Narození: ${item.DatumNarozeniZobrazene} — Úmrtí: ${item.DatumUmrtiZobrazene}</p>
+                          <p>
+                            Narození: ${item.DatumNarozeniZobrazene}<br>
+                            Úmrtí: ${item.DatumUmrtiZobrazene || '??'}
+                          </p>
 
                           <div class="map-card__content__address">Místo narození: ${item.Nazev}</div>
                           <div class="map-card__content__address__meta">GPS lokace: ${item.GeoX} ${item.GeoY}</div>
@@ -545,7 +547,7 @@ export default {
                 if (item.ProfilovaFotka) {
 
 
-                  content = `<img class="map-person-thumb-head-icon-image" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
+                  content = `<img class="map-person-thumb-head-icon-image has--bg-color" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
 
 
                 } else {

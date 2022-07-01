@@ -262,12 +262,6 @@ input[type="checkbox"]
      height: calc(100vh - 80px)
 
 
-
-.leaflet-container .leaflet-marker-pane img
-
-  max-width: none
-  max-height: none
-
 .leaflet-popup
   .leaflet-popup-close-button
     z-index: 9
@@ -316,6 +310,15 @@ input[type="checkbox"]
     .map-person-thumb-head-icon-image,
     .map-person-thumb-head-icon-image[style]
       position: absolute
+      width: 100% !important
+      height: 100% !important
+      object-fit: cover
+      object-position: top
+
+      &.has--bg-color
+        width: 70% !important
+        height: 70% !important
+
 
     &.map-person-thumb-head-icon
 
@@ -337,6 +340,8 @@ input[type="checkbox"]
   height: 50px
 
 
+
+
 .map-person-thumb-head-icon-image,
 .map-person-thumb-head-icon-image[style]
 
@@ -351,6 +356,7 @@ input[type="checkbox"]
   object-fit: cover
   max-width: 100%
   max-height: 100%
+  object-position: top
 
   svg
     height: 60%
@@ -359,10 +365,6 @@ input[type="checkbox"]
     path
       stroke: white
       stroke-width: 4px
-
-  +desktop
-    width: 130px
-    height: 130px
 
 .leaflet-popup-tip-container
 
@@ -512,6 +514,8 @@ input[type="checkbox"]
     width: 110px
     +desktop
       width: 130px
+      height: 130px
+
 
   .content-container
 
