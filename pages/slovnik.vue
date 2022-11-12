@@ -4,7 +4,7 @@
 
       h1.main-title {{title}}
 
-      .container-list.columns.is-multiline.section-padding-h-margin-v
+      .container-list.container-slovnik.columns.is-multiline.section-padding-h-margin-v
 
         SlovnikoveHeslo(
           v-for="item in slovnikova_hesla"
@@ -23,6 +23,9 @@
 
   .main-title
     @extend %typography-main-title
+
+  .container-slovnik
+    align-items: flex-start
 
 </style>
 
