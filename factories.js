@@ -1309,7 +1309,6 @@ const getPoslanciHomepageFactory = async(databazePoslancuURL, {limit, stranka, f
 
   poslanci = shuffleArray([...poslanci, ...poslanciZeny]);
 
-
   return poslanci
   .map((poslanec) => {
 

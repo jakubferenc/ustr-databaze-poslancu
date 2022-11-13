@@ -32,6 +32,7 @@
     .slider-item
       position: relative
       height: 100vh
+      max-height: 1000px
 
 
       .slider-image

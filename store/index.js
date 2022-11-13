@@ -36,6 +36,11 @@ export const state = () => ({
     media_soubory: false
   },
 });
+
+export const getters = {
+  getPoslanciHomepage: (state) => state.poslanci_homepage,
+};
+
 /*
 this will update the state with the posts
 */
@@ -279,7 +284,7 @@ export const actions = {
     try {
 
       const poslanci = await apiFactory.getPoslanciHomepageFactory(projectConfig.databazePoslancuURL, {limit, stranka, filterCallback,});
-
+      console.log('from poslanci homepage', poslanci);
       commit("updatePoslanciHomepage", poslanci);
 
     } catch (err) {

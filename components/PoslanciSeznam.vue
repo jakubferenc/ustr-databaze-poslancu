@@ -1,7 +1,8 @@
 <template lang="pug">
 
-
-  #scroll-top.poslanci-seznam.seznam-with-filter()
+.poslanci-seznam-container
+  LoaderIndication(v-if="isLoading")
+  #scroll-top.poslanci-seznam.seznam-with-filter(v-if="!isLoading")
 
     .mapa-container.section(v-if="MaMapu && Mod === 'Vse' ")
 
@@ -143,12 +144,11 @@
 
 
 
-          .seznam-filter-list
+          .seznam-filter-list(v-if="PoslanciVstupniPolozky")
 
             .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
 
               Mapa(:PoslanciVstupniData="poslanci" :Velka="true")
-
 
             .columns.is-multiline.is-mobile(v-if="['Vse', 'Seznam'].includes(Mod)")
 
@@ -330,13 +330,9 @@
 </style>
 
 <script>
-
-
 const Poslanec = () => import('~/components/Poslanec.vue');
 const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
 const Mapa = () => import('~/components/Mapa.vue');
-
-
 
 export default {
 
@@ -361,6 +357,10 @@ export default {
   ],
 
   computed: {
+
+    isLoading() {
+      return !(this.PoslanciVstupniPolozky?.length > 0 === true);
+    },
 
     filtrNastaveni() {
 
@@ -732,6 +732,8 @@ export default {
       }
     }
 
+    this.currentFilteredPoslanci = [...this.PoslanciVstupniPolozky];
+
   },
 
   mounted() {
@@ -780,7 +782,7 @@ export default {
       },
       filtrNastaveniAktualniPolozky: {},
       isSidebarOpen: true, // can set a default value
-      currentFilteredPoslanci: [...this.PoslanciVstupniPolozky],
+      currentFilteredPoslanci: [],
     };
   },
 };
