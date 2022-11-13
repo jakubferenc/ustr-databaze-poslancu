@@ -20,12 +20,12 @@
       :ButtonMoreLink="false"
       :PaginaceNastaveni="paginaceNastaveni"
       :MaButtonMorePrevious="this.currentQuery.stranka > 1"
-      v-on:doPagination="doPaginationHandler($event)"
-      v-on:selectOrderOption="selectOrderOptionHandler($event)"
+      @doPagination="doPaginationHandler($event)"
+      @selectOrderOption="selectOrderOptionHandler($event)"
 
-      v-on:loadPreviousItems="loadPreviousItemsHandler($event)"
-      v-on:loadMoreItems="loadMoreItemsHandler($event)"
-      v-on:refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
+      @loadPreviousItems="loadPreviousItemsHandler($event)"
+      @loadMoreItems="loadMoreItemsHandler($event)"
+      @refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
       :NastaveniMapa="nastaveniMapa"
       :MaMapu="true"
       Nadpis="Poslanci"
@@ -88,7 +88,8 @@ export default {
 
     async fetch() {
 
-      const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
+      // take URL params at the request time and add them to the request for API
+      const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query);
 
       this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
 
@@ -127,7 +128,10 @@ export default {
 
         const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
 
-        this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
+        this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(
+          this.currentFilterData,
+          currentQueryNormalized
+        );
 
 
         this.$router.push({

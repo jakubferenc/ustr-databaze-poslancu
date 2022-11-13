@@ -43,7 +43,10 @@ axiosRetry(axiosInstance, {
 
 
 
-const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) => {
+const createFilterSettingsForApiUseFactory = (
+  filterData = {},
+  activeData = {}
+) => {
 
   let sectionId = 0;
 
@@ -189,6 +192,30 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
       hasCounter: false,
       values: undefined,
     },
+    DruhMandatu: {
+      id: sectionId++,
+      title: 'Druh mandátu',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      property: 'DruhMandatu',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      values: undefined
+    },
+    DruhUkonceniMandatu: {
+      id: sectionId++,
+      title: 'Druh ukončení mandátu',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      property: 'DruhMandatu',
+      info: "Nějaké informace k vysvětlení",
+      hasCounter: false,
+      values: undefined
+    },
     PocetMandatu: {
       id: sectionId++,
       title: 'Počet mandátů',
@@ -255,8 +282,6 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
     {id: 0, text: 'Vše', default: true, reset: true, selected: true},
     ...pohlaviMapped
   ];
-
-
 
   let parlamentyMapped = [...filterData.Parlamenty].map(item => {
 
@@ -338,6 +363,36 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
   */
 
 
+
+  let druhMandatuMapped = [...filterData.DruhMandatu].map(item => {
+
+    return {
+            id: item.Id,
+            text: item.Nazev,
+            selected: false,
+          };
+
+  });
+  druhMandatuMapped = [
+    {id: 'vse-druh-mandatu', text: 'Vše', default: true, reset: true, selected: true},
+    ...druhMandatuMapped,
+  ];
+
+
+  let druhUkonceniMandatuMapped = [...filterData.DruhUkonceniMandatu].map(item => {
+
+    return {
+            id: item.Id,
+            text: item.Nazev,
+            selected: false,
+          };
+
+  });
+  druhUkonceniMandatuMapped = [
+    {id: 'vse-druh-mandatu', text: 'Vše', default: true, reset: true, selected: true},
+    ...druhUkonceniMandatuMapped,
+  ];
+
   const pocetMandatuMapped = [
     filterData.PocetMandatu[0], // current min
     filterData.PocetMandatu[filterData.PocetMandatu.length-1], // current max
@@ -374,13 +429,13 @@ const createFilterSettingsForApiUseFactory = (filterData = {}, activeData = {}) 
   finalResult.SocialniVazby.values = SocialniVazbyMapped;
   finalResult.Fotografie.values = maFotkuMapped;
 
+  finalResult.DruhMandatu.values = druhMandatuMapped;
+  finalResult.DruhUkonceniMandatu.values = druhUkonceniMandatuMapped;
   finalResult.PocetMandatu.values = pocetMandatuMapped;
   finalResult.VekNaZacatkuMandatu.values = vekyNaZacatkuMandatuMapped;
   finalResult.VekNaKonciMandatu.values = vekyNaKonciMandatuMapped;
 
   if (filterData.Kluby && filterData.Kluby !== null) {
-
-
 
     const klubyMapped = [...filterData.Kluby].map(item => {
 
