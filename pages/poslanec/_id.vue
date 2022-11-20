@@ -258,7 +258,7 @@
 
   const CasovaOsa = () => import('~/components/CasovaOsa.vue');
   const MandatRadek = () => import('~/components/MandatRadek.vue');
-  const SocialniMapa = () => import('~/components/SocialniMapa.vue');
+  // const SocialniMapa = () => import('~/components/SocialniMapa.vue');
   const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
   let leafletObj;
@@ -278,7 +278,15 @@
 
   export default {
 
-      components: { CasovaOsa, MandatRadek, SocialniMapa, GalerieMediiSeznam, MapaIkonaNarozeni,  MapaIkonaUmrti, ParlamentNahledObecnyImage },
+  components: {
+      CasovaOsa,
+      MandatRadek,
+      // SocialniMapa,
+      GalerieMediiSeznam,
+      MapaIkonaNarozeni,
+      MapaIkonaUmrti,
+      ParlamentNahledObecnyImage,
+  },
 
       async asyncData({$config, params, error, payload, store, $axios}) {
 
