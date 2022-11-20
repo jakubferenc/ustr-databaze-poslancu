@@ -4,8 +4,6 @@
       <Logo />
       <MainMenu />
 
-    <Slider />
-
 </template>
 
 <style lang="sass">

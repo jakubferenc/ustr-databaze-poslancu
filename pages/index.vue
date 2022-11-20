@@ -2,7 +2,7 @@
 
 .sections-container
 
-  <Slider :Polozky="sliderItems" />
+  <Slider />
 
   <Rozcestnik />
 
@@ -76,16 +76,15 @@ export default {
       await store.dispatch("getMedia");
       await store.dispatch("getSlovnikovaHesla");
 
-
       await store.dispatch("getParlamenty");
 
-      await store.dispatch("getStranky");
+      // await store.dispatch("getStranky");
 
       return {
         parlamenty: store.state.parlamenty,
         slovnikova_hesla: store.state.slovnikova_hesla,
         soubory: [...store.state.media_soubory].slice(0, limit),
-        sliderItems: [...store.state.stranky].filter(item => item.id == 538),
+        // sliderItems: [...store.state.stranky].filter(item => item.id == 538),
       }
 
     },
@@ -103,13 +102,10 @@ export default {
 
 
     async mounted() {
-
-
       await this.$store.dispatch("getPoslanciHomepage", {
-          limit: 10,
-          stranka: 1
-        });
-
+        limit: 10,
+        stranka: 1
+      });
     },
 
     data() {

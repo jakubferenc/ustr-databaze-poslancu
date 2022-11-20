@@ -22,3 +22,6 @@ dist
 # storybook
 .nuxt-storybook
 storybook-static
+
+# Nuxt bridge
+.output

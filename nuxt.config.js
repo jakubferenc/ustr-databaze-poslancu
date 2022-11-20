@@ -1,3 +1,4 @@
+import { defineNuxtConfig } from '@nuxt/bridge';
 import apiFactory from './factories';
 import projectConfig from './project.config';
 
@@ -8,10 +9,16 @@ config.useFileCachedAPI = dev === true;
 
 // data
 
-export default {
+export default defineNuxtConfig({
+  bridge: true, // Temporarily disable bridge integration
+  vite: true,
   target: 'static', // default is 'server'
   ssr: true,
   components: false,
+  nitro: {
+    preset: 'aws-lambda',
+    serveStatic: true
+  },
   server: {
     port: 8000, // default: 3000
     host: '0.0.0.0', // default: localhost
@@ -22,7 +29,10 @@ export default {
   router: {
     trailingSlash: undefined,
   },
-  publicRuntimeConfig: config,
+  runtimeConfig: {
+    ...config,
+    public: config,
+  },
   env: {
     baseUrl: process.env.BASE_URL || 'https://localhost:3000'
   },
@@ -149,14 +159,13 @@ export default {
       hoistUseStatements: true  // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
     }],
     "@nuxtjs/svg",
-    ['@nuxt/image', {
-      // The screen sizes predefined by `@nuxt/image`:
-      screens: config.responsive.breakpoints,
-      domains: [config.wordpressURLWebsite, config.netlifyURL]
-    }],
+    // ['@nuxt/image', {
+    //   // The screen sizes predefined by `@nuxt/image`:
+    //   screens: config.responsive.breakpoints,
+    //   domains: [config.wordpressURLWebsite, config.netlifyURL]
+    // }],
   ],
   modules: [
-
     ['@nuxtjs/proxy', {
       '/Api/snemovny/seznam': `${config.databazePoslancuURL}`,
       '/Api/snemovny/': `${config.databazePoslancuURL}`,
@@ -228,4 +237,4 @@ export default {
     ]
   }
 
-};
+});

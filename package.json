@@ -6,13 +6,12 @@
     },
     "license": "",
     "author": "Jakub A. Ferenc <hello@jakubferenc.cz> (https://jakubferenc.cz)",
-    "type": "module",
     "scripts": {
-        "dev": "node --max-old-space-size=8192 node_modules/nuxt/bin/nuxt.js",
-        "build": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js build --modern",
-        "analyze": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js build --analyze",
-        "generate": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js generate",
-        "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js start",
+        "dev": "npx browserslist@latest --update-db && nuxi dev --max-old-space-size=8192",
+        "build": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxi.js build --modern",
+        "analyze": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxi.js build --analyze",
+        "generate": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxi.js generate",
+        "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxi.js start",
         "downloadData": "node --max-old-space-size=4096 ./scripts/index.js"
     },
     "browserslist": [
@@ -30,8 +29,7 @@
         "express": "^4.17.1",
         "leaflet": "^1.8",
         "leaflet.markercluster": "^1.5.3",
-        "nuxt": "^2.2.0",
-        "nuxt-speedkit": "^2.0.13",
+        "nuxt-edge": "latest",
         "qs": "^6.10.2",
         "typopo": "^2.5.2"
     },
@@ -40,7 +38,7 @@
         "@babel/plugin-proposal-optional-chaining": "^7.14.2",
         "@babel/preset-env": "^7.14.4",
         "@babel/runtime-corejs3": "^7.14.0",
-        "@nuxt/image": "^0.5.0",
+        "@nuxt/bridge": "npm:@nuxt/bridge-edge",
         "@nuxtjs/bulma": "^1.3.0",
         "@nuxtjs/style-resources": "^1.0.0",
         "@nuxtjs/svg": "^0.1.12",
