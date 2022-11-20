@@ -111,13 +111,13 @@ export default {
     data() {
       return {
         title: `Hlavní stránka`,
-        hasSlider: false,
+        hasSlider: true,
       }
     },
 
     head () {
       return {
-        title: `${this.title} — ${this.$config.globalTitle}`,
+        title: `${this.title} — ${this.$config.public.globalTitle}`,
         htmlAttrs: {
           class: 'index has-slider'
         }
