@@ -536,7 +536,7 @@
 
             return {
               id: itemId,
-              text: item,
+              text: item.replace(/\s*\(.*?\)\s*/g, ''), // remove parentheses from names
               selected: false,
               validate: (property) => {
 
