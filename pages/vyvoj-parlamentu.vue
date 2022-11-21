@@ -232,7 +232,7 @@ export default {
 
     head () {
       return {
-        title: `${this.title} — ${this.$config.globalTitle}`,
+        title: `${this.title} — ${this.$config.public.globalTitle}`,
         htmlAttrs: {
           class: this.htmlClassComputed
         }

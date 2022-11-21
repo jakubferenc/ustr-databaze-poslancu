@@ -36,7 +36,6 @@ export default {
         }
       } else {
 
-        // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
         await store.dispatch("getStranky");
 
         return {
@@ -59,7 +58,7 @@ export default {
     },
     head () {
       return {
-        title: `${this.stranka.slug} — ${this.$config.globalTitle}`,
+        title: `${this.stranka.slug} — ${this.$config.public.globalTitle}`,
         htmlAttrs: {
           class: 'page genericka-stranka'
         }

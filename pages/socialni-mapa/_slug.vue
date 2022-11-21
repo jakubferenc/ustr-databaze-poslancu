@@ -195,7 +195,7 @@ export default {
     },
     head () {
       return {
-        title: `${this.rodina.title} — ${this.$config.globalTitle}`,
+        title: `${this.rodina.title} — ${this.$config.public.globalTitle}`,
         htmlAttrs: {
           class: 'subpage-socialni-mapa'
         },

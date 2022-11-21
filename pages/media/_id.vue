@@ -113,7 +113,7 @@ export default {
     },
     head () {
       return {
-        title: `${this.soubor.caption} — ${this.$config.globalTitle}`,
+        title: `${this.soubor.caption} — ${this.$config.public.globalTitle}`,
         htmlAttrs: {
           class: 'alt-bg subpage-media'
         },

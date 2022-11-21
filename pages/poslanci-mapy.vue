@@ -214,7 +214,7 @@ export default {
           ...activeFilterItems,
         };
 
- 
+
 
         // // call API
         await this.prepareRequestFilteredViaAPI(this.currentQuery);
@@ -476,7 +476,7 @@ export default {
 
     head () {
       return {
-        title: `${this.title} — ${this.$config.globalTitle}`,
+        title: `${this.title} — ${this.$config.public.globalTitle}`,
           link: [
             {
               rel:'stylesheet',
