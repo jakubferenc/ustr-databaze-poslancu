@@ -318,7 +318,7 @@
                 let snemovniObdobiString = '';
 
                 // we don't want to show "od" and "do" dates for addresses of types 1,5,6  as they are addresses of birth and death and grave
-                if ( (item.Zacatek || item.Konec) && ![1,5,6].includes(item.Druh)) {
+                if ( (item.Zacatek || item.Konec) && ![1,4,5,2].includes(item.Druh)) {
 
 
                   snemovniObdobiString += `<div class="map-card__date-item">`;
@@ -328,6 +328,17 @@
                   snemovniObdobiString += `</div>`;
 
                 };
+
+                if ((item.Zacatek || item.Konec) && [1, 4, 5, 2].includes(item.Druh)) {
+                  snemovniObdobiString += `<div class="map-card__date-item">`;
+                  if (item.Zacatek) {
+                    snemovniObdobiString += `<span>${dateISOStringToCZFormat(item.Zacatek)}</span>`;
+                  }
+                  if (item.Konec) {
+                    snemovniObdobiString += `<span>${dateISOStringToCZFormat(item.Konec)}</span>`;
+                  }
+                  snemovniObdobiString += `</div>`;
+                }
 
 
                 return `
@@ -345,7 +356,7 @@
 
                       <div class="map-card__content__address">${item.Nazev}</div>
                       <div class="map-card__content__address__meta">
-                        GPS lokace: ${item.GeoX} ${item.GeoY}
+                        GPS lokace:<br>${item.GeoX} ${item.GeoY}
                       </div>
 
 
@@ -488,7 +499,7 @@
             this.mapInstance = map($mapElement, mapOptions);
 
 
-            tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.map.accessToken}`, {
+            tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.public.map.accessToken}`, {
               id: 'mapbox.light',
               attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             }).addTo(this.mapInstance);
@@ -672,7 +683,7 @@
 
             let preparedItems = [createThisPoslanecRootObject, ...sekundarniVztahyMapped, ...resultItems];
 
-            if (!this.$config.poslanec.socialniVazby.showPritelType) {
+            if (!this.$config.public.poslanec.socialniVazby.showPritelType) {
 
               preparedItems = [...preparedItems].filter(item => item.DruhVztahu !== 'přítel'); // filter out type "přítel"
 
@@ -815,7 +826,7 @@
           if (this.poslanec.Adresy) {
 
             // :TODO: Refactor, make the function global
-            const addressObject = this.poslanec.Adresy.filter(adresa => adresa.Druh === 1)[0] ?? undefined;
+            const addressObject = this.poslanec.Adresy.filter(adresa => adresa.Druh === 1)?.[0] ?? false;
             if (addressObject) {
 
               const parts = addressObject.Nazev.split('|');
@@ -866,7 +877,7 @@
 
       head () {
         return {
-          title: `${this.poslanec?.Jmeno} ${this.poslanec?.Prijmeni} — ${this.$config.globalTitle}`, // :TODO:
+          title: `${this.poslanec?.Jmeno} ${this.poslanec?.Prijmeni} — ${this.$config.public.globalTitle}`, // :TODO:
           link: [
             {
               rel:'stylesheet',
