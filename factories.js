@@ -1076,6 +1076,7 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
       const getSnemovniObdobi = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
 
       parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
+      parlament.SnemovniObdobi = parlament.SnemovniObdobi.filter(snemovniObdobi => snemovniObdobi.Id !== 67); // :TODO: temporary, do on BE
 
 
       // get wordpress content referenced via Id
