@@ -1097,6 +1097,9 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
       parlament.Popis = thisWPParlamentObj.content.rendered;
       parlament.WPNazev = thisWPParlamentObj.title.rendered;
       parlament.StrucnyPopis = thisWPParlamentObj.excerpt.rendered;
+      if (thisWPParlamentObj?.acf) {
+        parlament.acf = thisWPParlamentObj.acf;
+      }
 
       parlament.Barva = thisWPParlamentObj.barva;
 
@@ -1255,6 +1258,10 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
     snemovniObdobiObj.Popis = snemovniObdobiObjWpData.content.rendered;
     snemovniObdobiObj.WPNazev = snemovniObdobiObjWpData.title.rendered;
     snemovniObdobiObj.StrucnyPopis = snemovniObdobiObjWpData.excerpt.rendered;
+    snemovniObdobiObj.acf = {};
+    if (snemovniObdobiObjWpData?.acf) {
+      snemovniObdobiObj.acf = snemovniObdobiObjWpData.acf;
+    }
 
     if (snemovniObdobiObjWpData.acf?.casova_osa) {
       snemovniObdobiObj.CasovaOsa = snemovniObdobiObjWpData.acf.casova_osa;

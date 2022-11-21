@@ -299,7 +299,7 @@ export default {
   data() {
     return {
       defaultStyles: {},
-      activeTabId: Object.values(this.Nastaveni.polozky).filter(item => item.aktivni === true)[0].id
+      activeTabId: Object.values(this.Nastaveni.polozky).filter(item => item.aktivni === true)?.[0]?.id
     }
   },
   computed: {

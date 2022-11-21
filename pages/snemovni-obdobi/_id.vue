@@ -360,6 +360,13 @@
 
       computed: {
 
+        hideKurie() {
+
+          return this.snemovniObdobi?.acf.hasOwnProperty('zobrazovat_kurie')
+            && this.snemovniObdobi?.acf?.zobrazovat_kurie === false;
+
+        },
+
         poslanci() {
 
           let poslanci =  this.snemovniObdobi.Poslanci;
@@ -852,7 +859,7 @@
           ];
 
 
-          return {
+          let filterFinalNastaveni = {
             PoslaneckySlib: {
               id: sectionId++,
               title: 'Poslanecky Slib',
@@ -931,18 +938,6 @@
               info: "Nějaké informace k vysvětlení",
               hasCounter: true,
               values: volebni_strany
-            },
-            MandatyKurie: {
-              id: sectionId++,
-              title: 'Kurie',
-              type: 'checkbox',
-              multiple: true,
-              reset: true,
-              order: 'block',
-              property: 'Mandaty',
-              info: "Nějaké informace k vysvětlení",
-              hasCounter: true,
-              values: kurie
             },
             MandatyVybory: {
               id: sectionId++,
@@ -1053,6 +1048,28 @@
 
           }
 
+          if (!this.hideKurie) {
+
+            filterFinalNastaveni = {
+              ...filterFinalNastaveni,
+              MandatyKurie: {
+                id: sectionId++,
+                title: 'Kurie',
+                type: 'checkbox',
+                multiple: true,
+                reset: true,
+                order: 'block',
+                property: 'Mandaty',
+                info: "Nějaké informace k vysvětlení",
+                hasCounter: true,
+                values: kurie
+              },
+            }
+
+          }
+
+          return filterFinalNastaveni;
+
         },
 
         mapBoundsOnly() {
@@ -1110,37 +1127,43 @@
 
 
         tabNavigaceNastaveni() {
+          let polozky = {
+            poslaneckeKluby: {
+              id: 'poslanecke-kluby',
+              title: 'poslanecké kluby',
+              data: this.statistiky.PoslaneckeKluby,
+              aktivni: true
+            },
+            volebniStrany: {
+              id: 'volebni-strany',
+              title: 'volební strany',
+              data: this.statistiky.VolebniStrany,
+            },
+            narodnost: {
+              id: 'narodnost',
+              title: 'národnosti',
+              data: this.statistiky.Narodnosti,
+            },
+            vybory: {
+              id: 'vybory',
+              title: 'výbory',
+              data: this.statistiky.Vybory,
+            }
+          };
 
-          return {
-            polozky: {
-              poslaneckeKluby: {
-                id: 'poslanecke-kluby',
-                title: 'poslanecké kluby',
-                data: this.statistiky.PoslaneckeKluby,
-                aktivni: true
-              },
-              volebniStrany: {
-                id: 'volebni-strany',
-                title: 'volební strany',
-                data: this.statistiky.VolebniStrany,
-              },
+          if (!this.hideKurie) {
+            polozky = {
+              ...polozky,
               kurie: {
                 id: 'kurie',
                 title: 'kurie',
                 data: this.statistiky.Kurie,
               },
-              narodnost: {
-                id: 'narodnost',
-                title: 'národnosti',
-                data: this.statistiky.Narodnosti,
-              },
-              vybory: {
-                id: 'vybory',
-                title: 'výbory',
-                data: this.statistiky.Vybory,
-              }
-            },
+            }
+          };
 
+          return {
+            polozky,
           };
 
         },
