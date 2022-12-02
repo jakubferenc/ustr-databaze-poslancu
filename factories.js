@@ -1,7 +1,6 @@
 import axios from "axios";
 import axiosRetry from "axios-retry";
-
-// import https from 'https';
+import https from 'https';
 
 import {
   normalizeSouborAttrs,
@@ -15,8 +14,8 @@ import {
 
 const axiosInstance = axios.create({
   // Keep the timeout low in development so it at least somehow responsive
-  timeout: process.dev ? 5000 : 45000,
-  // httpsAgent = new https.Agent({ keepAlive: true });
+  timeout: process.dev ? 45000 : 45000,
+  httpsAgent: new https.Agent({ keepAlive: true })
 
 });
 
