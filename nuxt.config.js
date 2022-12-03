@@ -31,7 +31,6 @@ export default {
     static: {
       // Add CORS header to static files.
       setHeaders(res) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
         res.setHeader(
           'Access-Control-Allow-Headers',
@@ -146,11 +145,11 @@ export default {
       hoistUseStatements: true  // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
     }],
     "@nuxtjs/svg",
-    // ['@nuxt/image', {
-    //   // The screen sizes predefined by `@nuxt/image`:
-    //   screens: config.responsive.breakpoints,
-    //   domains: [config.wordpressURLWebsite, config.netlifyURL]
-    // }],
+    ['@nuxt/image', {
+      // The screen sizes predefined by `@nuxt/image`:
+      screens: config.responsive.breakpoints,
+      domains: [config.wordpressURLWebsite, config.netlifyURL]
+    }],
   ],
   modules: [
     ['@nuxtjs/proxy', {
