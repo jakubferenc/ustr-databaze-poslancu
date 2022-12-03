@@ -2,9 +2,7 @@ import apiFactory from './factories';
 import projectConfig from './project.config';
 
 const dev = process.env.NODE_ENV !== 'production';
-
 const config = {dev, ...projectConfig};
-config.useFileCachedAPI = dev === true;
 
 // data
 
@@ -19,9 +17,8 @@ export default {
   router: {
     trailingSlash: undefined,
   },
-  runtimeConfig: {
+  publicRuntimeConfig: {
     ...config,
-    public: config,
   },
   env: {
     baseUrl: process.env.BASE_URL || 'https://localhost:3000'

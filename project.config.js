@@ -17,7 +17,7 @@ export default {
   placeholders: {
     missingDate: '?'
   },
-  map: {
+  mapbox: {
     accessToken: 'pk.eyJ1IjoiamFrdWJmZXJlbmMiLCJhIjoiY2tjbTNjbDI2MW01NzJ5czUzNGc0Y3FwNyJ9.bTpq3aGIwEIUqRkxlMOvCw',
   },
   router: {
