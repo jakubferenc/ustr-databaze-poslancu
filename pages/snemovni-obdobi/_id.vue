@@ -6,8 +6,7 @@
 
       .parlament-detail-header-stats.stats-left
 
-        .chart-row
-
+        .chart-row(v-if="statistiky.ProcentoMuzu")
 
           .chart-widget.text-right.chart-pie
             .chart-graphics.text-data
@@ -15,7 +14,7 @@
               .text-data-sub mužů
             .chart-text Poměr pohlaví poslanců
 
-        .chart-row
+        .chart-row(v-if="statistiky.ProcentoVysokoskolaku")
 
           .chart-widget.text-right.chart-pie
             //.chart-graphics.pie
@@ -24,7 +23,7 @@
               .text-data-sub
             .chart-text Vysokoškoláků
 
-        .chart-row
+        .chart-row(v-if="statistiky.PocetMazaku && statistiky.CelkovyPocetPoslancu")
 
           .chart-widget.text-right.chart-pie
             .chart-graphics.text-data
@@ -37,7 +36,7 @@
 
       .parlament-detail-header-stats.stats-right
 
-        .chart-row
+        .chart-row(v-if="statistiky.PrumernyVekPoslancu")
 
           .chart-widget.text-left.chart-pie
             .chart-graphics.text-data
@@ -45,7 +44,7 @@
               .text-data-sub let
             .chart-text Průměrný věk
 
-        .chart-row
+        .chart-row(v-if="statistiky.NejnizsiVekPoslance")
 
           .chart-widget.text-left.chart-pie
             .chart-graphics.text-data
@@ -53,7 +52,7 @@
               .text-data-sub let
             .chart-text Nejnižší věk
 
-        .chart-row
+        .chart-row(v-if="statistiky.NejvyssiVekPoslance")
 
           .chart-widget.text-left.chart-pie
             .chart-graphics.text-data
