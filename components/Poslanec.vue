@@ -1,25 +1,25 @@
 <template lang="pug">
 
-  NuxtLink.poslanec-thumb(:to="`/poslanec/${Id}/`")
-    .poslanec-image
+NuxtLink.poslanec-thumb(:to="`/poslanec/${detailUrl}/`")
+  .poslanec-image
 
-      img(v-if="profilovaFotka" :src="profilovaFotka" )
+    img(v-if="profilovaFotka" :src="profilovaFotka" )
 
 
-    .poslanec-metadata
-      .poslanec-title {{ Jmeno }} {{ Prijmeni }}
+  .poslanec-metadata
+    .poslanec-title {{ Jmeno }} {{ Prijmeni }}
 
-      .poslanec-years(v-if="DatumNarozeniZobrazene || DatumUmrtiZobrazene")
-        span(v-if="DatumNarozeniZobrazene") ({{DatumNarozeniZobrazene}}&nbsp;&mdash;
-        span(v-else) (?&nbsp;&mdash;
-        span(v-if="DatumUmrtiZobrazene") &nbsp;{{DatumUmrtiZobrazene}})
-        span(v-else) &nbsp;?)
-      .mandaty(v-if="ZobrazitMandaty")
-        span {{ pocetMandatu }}&nbsp;
-        span(v-show="pocetMandatu > 4") mandátů
-        span(v-show="pocetMandatu > 1 && pocetMandatu < 5") mandáty
-        span(v-show="pocetMandatu === 1") mandát
-      .content {{ VekBehemSnemovny }}
+    .poslanec-years(v-if="DatumNarozeniZobrazene || DatumUmrtiZobrazene")
+      span(v-if="DatumNarozeniZobrazene") ({{DatumNarozeniZobrazene}}&nbsp;&mdash;
+      span(v-else) (?&nbsp;&mdash;
+      span(v-if="DatumUmrtiZobrazene") &nbsp;{{DatumUmrtiZobrazene}})
+      span(v-else) &nbsp;?)
+    .mandaty(v-if="ZobrazitMandaty")
+      span {{ pocetMandatu }}&nbsp;
+      span(v-show="pocetMandatu > 4") mandátů
+      span(v-show="pocetMandatu > 1 && pocetMandatu < 5") mandáty
+      span(v-show="pocetMandatu === 1") mandát
+    .content {{ VekBehemSnemovny }}
 
 </template>
 
@@ -67,29 +67,31 @@
 </style>
 
 <script>
+import slugify from "slugify";
 export default {
   props: [
-    'Id',
-    'Jmeno',
-    'Prijmeni',
-    'ZivotniData',
-    'DatumNarozeniZobrazene',
-    'DatumUmrtiZobrazene',
-    'Mandaty',
-    'ZobrazitMandaty',
-    'VekBehemSnemovny',
-    'Soubory',
+    "Id",
+    "Jmeno",
+    "Prijmeni",
+    "ZivotniData",
+    "DatumNarozeniZobrazene",
+    "DatumUmrtiZobrazene",
+    "Mandaty",
+    "ZobrazitMandaty",
+    "VekBehemSnemovny",
+    "Soubory",
   ],
   computed: {
+    detailUrl() {
+      return slugify(`${this.Jmeno}-${this.Prijmeni}-${this.Id}`, {
+        locale: "cs",
+      }).toLowerCase();
+    },
 
     profilovaFotka() {
-
       if (this.Soubory && this.Soubory.length && this.Soubory.length > 0) {
-
         return this.Soubory[0].URLNahled;
-
       }
-
     },
 
     pocetMandatu() {

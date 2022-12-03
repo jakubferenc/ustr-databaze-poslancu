@@ -287,7 +287,9 @@ export default {
         poslanec: payload,
       };
     } else {
-      await store.dispatch("getPoslanecDetail", { poslanecId: params.id });
+      const numericIdParts = params.id.split("-");
+      const numericId = numericIdParts[numericIdParts.length - 1];
+      await store.dispatch("getPoslanecDetail", { poslanecId: numericId });
 
       return {
         poslanec: store.state.poslanec,

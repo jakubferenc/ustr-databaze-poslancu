@@ -33,327 +33,238 @@
 </template>
 <style lang="sass">
 
-  @use "sass:math"
+@use "sass:math"
 
-  .section-title
+.section-title
 
-    @extend %typography-section-title
-
-
+  @extend %typography-section-title
 </style>
 
 <script>
+import apiModule from "../factories";
 
-
-import apiModule from '../factories';
-
-import {customLogger, normalizeURLParamsToValueInArrayFormat} from '~/utils/functions'
+import { customLogger, normalizeURLParamsToValueInArrayFormat } from "~/utils/functions";
 
 let leafletObj;
 let leafletObjMarkerCluster;
 
 if (process.client) {
-
   leafletObj = () => import("leaflet");
   leafletObjMarkerCluster = () => import("leaflet.markercluster");
-
 }
 
-const PoslanciSeznamAPI = () => import('~/components/PoslanciSeznamAPI.vue');
-
+const PoslanciSeznamAPI = () => import("~/components/PoslanciSeznamAPI.vue");
 
 const normalizeQueryParamsVariableTypes = (queryParams) => {
-
   // transform string boolean to real boolean
   // transform string numbers to real numbers
 
-  let queryParamsNormalized = {...queryParams};
+  let queryParamsNormalized = { ...queryParams };
 
   Object.keys(queryParamsNormalized).forEach((key) => {
-
     if (Array.isArray(queryParams[key])) {
-
       queryParamsNormalized[key] = [...queryParamsNormalized[key]].map((item) => {
-
-
-        if (item === 'true' || item === true) {
+        if (item === "true" || item === true) {
           return true;
-        } else if (item === 'false' || item === false) {
-
+        } else if (item === "false" || item === false) {
           return false;
-
         } else if (!Number.isNaN(Number(item))) {
-
           return parseInt(item);
-
         }
-
-
       });
-
     }
-
   });
 
   return queryParamsNormalized;
-
-}
-
-
+};
 
 export default {
+  components: { PoslanciSeznamAPI },
 
-    components: { PoslanciSeznamAPI },
+  async fetch() {
+    const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
 
-    async fetch() {
+    this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
 
-      const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
+    // make API requests to get parlaments that will be fixed in the filter
+    // also, get API request for poslanci and related filter settings
 
-      this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
+    // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
 
-      // make API requests to get parlaments that will be fixed in the filter
-      // also, get API request for poslanci and related filter settings
+    await this.prepareRequestFilteredViaAPI(this.currentQuery);
+  },
 
+  methods: {
+    async prepareRequestFilteredViaAPI(currentQuery) {
+      this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
-      // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
+      await this.$store.dispatch("getParlamentyDatabaze");
 
-      await this.prepareRequestFilteredViaAPI(this.currentQuery);
+      await this.$store.dispatch("getPoslanciAll", this.currentQueryStringified);
 
+      // Defines which params are reacting to the current filter settings
+      // But for Parlamenty/Snemovny which must stay fixed
+
+      this.currentFilterData = {
+        ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
+        Pohlavi: this.defaultFilterData.Pohlavi.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
+        PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
+        Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
+      };
+
+      const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
+
+      this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(
+        this.currentFilterData,
+        currentQueryNormalized
+      );
+
+      this.$router.push({
+        path: "/poslanci-mapy/",
+        query: this.currentQuery,
+      });
     },
 
+    stringifyQueryForAPI(query = {}) {
+      let finalQueryString = "";
 
-    methods: {
+      Object.keys(query).forEach((key, index) => {
+        const thisPrefix = index === 0 ? "" : "&";
 
-      async prepareRequestFilteredViaAPI(currentQuery) {
+        const thisItem = query[key];
 
-
-        this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
-
-
-        await this.$store.dispatch("getParlamentyDatabaze");
-
-        await this.$store.dispatch("getPoslanciAll", this.currentQueryStringified);
-
-        // Defines which params are reacting to the current filter settings
-        // But for Parlamenty/Snemovny which must stay fixed
-
-        this.currentFilterData = {
-          ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
-          Pohlavi: this.defaultFilterData.Pohlavi.map(item => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
-          PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map(item => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
-          Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
-        };
-
-        const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
-
-
-        this.currentFilterSettings = apiModule.createFilterSettingsForApiUseFactory(this.currentFilterData, currentQueryNormalized);
-
-
-        this.$router.push({
-          path: '/poslanci-mapy/',
-          query: this.currentQuery
-        });
-
-
-      },
-
-
-      stringifyQueryForAPI(query = {}) {
-
-
-        let finalQueryString = '';
-
-        Object.keys(query).forEach((key, index) => {
-
-          const thisPrefix = (index === 0) ? '' : '&';
-
-          const thisItem = query[key];
-
-
-          if (thisItem.length === 1) {
-
-            // it's a single value param
-            finalQueryString = finalQueryString + `${thisPrefix}${key}=${thisItem[0]}`;
-
-          }
-
-          if (thisItem.length >= 2) {
-
-            // it's a multiple value param
-            // we need to iterate over it and add for each value the same Key=value string because of how API is designed
-            // for example: to get multiple names, you need "Name=Jakub&Name=Josef&name=Anežka"
-            thisItem.forEach((subItem, subIndex) => {
-
-              const thisPrefix = (index == 0 && subIndex == 0) ? '' : '&';
-
-              finalQueryString = finalQueryString + `${thisPrefix}${key}=${subItem}`;
-
-            });
-
-
-          }
-
-
-        });
-
-        return finalQueryString;
-
-
-
-      },
-
-      async refreshSelectedFiltersHandler($event) {
-
-        const activeFilterItems = $event;
-
-        customLogger("from refreshSelectedFiltersHandler", activeFilterItems);
-
-        this.currentQuery = {
-          ...this.defaultQuery,
-          ...activeFilterItems,
-        };
-
-
-
-        // // call API
-        await this.prepareRequestFilteredViaAPI(this.currentQuery);
-
-      },
-
-
-      async loadItems(newStranka) {
-
-
-        const newLimit = parseInt(this.currentQuery.limit) || this.defaultQuery.limit;
-
-        this.currentQuery = {
-          ...this.$route.query,
-          ...{ stranka: [newStranka]},
-          ...{ limit: [newLimit]},
-        };
-
-        this.$router.push({
-          path: '/poslanci-mapy/',
-          query: this.currentQuery
-        });
-
-        // call API
-        await this.getPoslanciFilteredAPI(this.currentQuery, this.$store);
-
-      },
-
-
-      async doPaginationHandler($event) {
-
-        this.currentQuery = {
-          ...this.currentQuery,
-          ...{ Stranka: [$event]},
-
-        };
-
-        // // call API
-
-        await this.prepareRequestFilteredViaAPI(this.currentQuery);
-
-      },
-
-      async selectOrderOptionHandler($event) {
-
-        this.currentQuery = {
-          ...this.currentQuery,
-          ...{ Razeni: [$event]},
-        };
-
-        await this.prepareRequestFilteredViaAPI(this.currentQuery);
-
-      },
-
-      async loadPreviousItemsHandler($event) {
-
-        const newStranka = parseInt(this.currentQuery.stranka) - 1 > 0 ? parseInt(this.currentQuery.stranka) - 1: 1;
-        this.loadItems(newStranka);
-
-      },
-
-      async loadMoreItemsHandler($event) {
-
-        const newStranka = parseInt(this.currentQuery.stranka) + 1;
-        this.loadItems(newStranka);
-
-
-      }
-
-    },
-
-    mounted() {
-
-
-
-    },
-
-
-    computed: {
-
-
-
-
-      paginaceNastaveni() {
-
-        const Celkem = this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu;
-        const Limit = this.currentQuery.Limit[0] || this.defaultQuery.Limit[0];
-        const Stranka = this.currentQuery.Stranka[0] || this.defaultQuery.Stranka[0];
-        const PocetStranek = Math.ceil(Celkem / Limit);
-
-        return {
-          Celkem,
-          Limit,
-          Stranka,
-          PocetStranek,
+        if (thisItem.length === 1) {
+          // it's a single value param
+          finalQueryString = finalQueryString + `${thisPrefix}${key}=${thisItem[0]}`;
         }
 
-      },
+        if (thisItem.length >= 2) {
+          // it's a multiple value param
+          // we need to iterate over it and add for each value the same Key=value string because of how API is designed
+          // for example: to get multiple names, you need "Name=Jakub&Name=Josef&name=Anežka"
+          thisItem.forEach((subItem, subIndex) => {
+            const thisPrefix = index == 0 && subIndex == 0 ? "" : "&";
 
-      poslanci() {
+            finalQueryString = finalQueryString + `${thisPrefix}${key}=${subItem}`;
+          });
+        }
+      });
 
-        return this.$store.state.poslanci || [];
-
-
-      },
-
-       nastaveniFiltrace() {
-
-         return this.currentFilterSettings;
-
-       },
-
-       poslanciStatistiky() {
-
-         return {
-
-           pocetPoslancu: this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu,
-
-
-         }
-
-       },
-
+      return finalQueryString;
     },
 
-    data() {
+    async refreshSelectedFiltersHandler($event) {
+      const activeFilterItems = $event;
+
+      customLogger("from refreshSelectedFiltersHandler", activeFilterItems);
+
+      this.currentQuery = {
+        ...this.defaultQuery,
+        ...activeFilterItems,
+      };
+
+      // // call API
+      await this.prepareRequestFilteredViaAPI(this.currentQuery);
+    },
+
+    async loadItems(newStranka) {
+      const newLimit = parseInt(this.currentQuery.limit) || this.defaultQuery.limit;
+
+      this.currentQuery = {
+        ...this.$route.query,
+        ...{ stranka: [newStranka] },
+        ...{ limit: [newLimit] },
+      };
+
+      this.$router.push({
+        path: "/poslanci-mapy/",
+        query: this.currentQuery,
+      });
+
+      // call API
+      await this.getPoslanciFilteredAPI(this.currentQuery, this.$store);
+    },
+
+    async doPaginationHandler($event) {
+      this.currentQuery = {
+        ...this.currentQuery,
+        ...{ Stranka: [$event] },
+      };
+
+      // // call API
+
+      await this.prepareRequestFilteredViaAPI(this.currentQuery);
+    },
+
+    async selectOrderOptionHandler($event) {
+      this.currentQuery = {
+        ...this.currentQuery,
+        ...{ Razeni: [$event] },
+      };
+
+      await this.prepareRequestFilteredViaAPI(this.currentQuery);
+    },
+
+    async loadPreviousItemsHandler($event) {
+      const newStranka =
+        parseInt(this.currentQuery.stranka) - 1 > 0
+          ? parseInt(this.currentQuery.stranka) - 1
+          : 1;
+      this.loadItems(newStranka);
+    },
+
+    async loadMoreItemsHandler($event) {
+      const newStranka = parseInt(this.currentQuery.stranka) + 1;
+      this.loadItems(newStranka);
+    },
+  },
+
+  mounted() {},
+
+  computed: {
+    paginaceNastaveni() {
+      const Celkem = this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu;
+      const Limit = this.currentQuery.Limit[0] || this.defaultQuery.Limit[0];
+      const Stranka = this.currentQuery.Stranka[0] || this.defaultQuery.Stranka[0];
+      const PocetStranek = Math.ceil(Celkem / Limit);
+
       return {
-        mapInstance: null,
-        mapSettings: {
+        Celkem,
+        Limit,
+        Stranka,
+        PocetStranek,
+      };
+    },
 
-          popup: {
+    poslanci() {
+      return this.$store.state.poslanci || [];
+    },
 
-            html: (item) => {
+    nastaveniFiltrace() {
+      return this.currentFilterSettings;
+    },
 
-              let snemovniObdobiString = '';
+    poslanciStatistiky() {
+      return {
+        pocetPoslancu: this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu,
+      };
+    },
+  },
 
-              const imageContent = (item.ProfilovaFotka && item.ProfilovaFotka !== '') ? `
+  data() {
+    return {
+      mapInstance: null,
+      mapSettings: {
+        popup: {
+          html: (item) => {
+            let snemovniObdobiString = "";
+
+            const imageContent =
+              item.ProfilovaFotka && item.ProfilovaFotka !== ""
+                ? `
                 <img src="${item.ProfilovaFotka}" class="map-person-thumb-head-icon-image" />
-              ` : `<div class="map-person-thumb-head-icon-image">
+              `
+                : `<div class="map-person-thumb-head-icon-image">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="90" height="98" viewBox="0 0 90 98">
                     <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
@@ -367,11 +278,13 @@ export default {
 
 
               </div>`;
+            const detailUrl = slugify(`${item.Jmeno}-${item.Prijmeni}-${item.Id}`, {
+              locale: "cs",
+            }).toLowerCase();
+            return `
 
-              return `
 
-
-                  <a class="is-map-card person-poslanec-card" href="/poslanec/${item.Id}/">
+                  <a class="is-map-card person-poslanec-card" href="/poslanec/${detailUrl}/">
 
                     <div class="content-container">
 
@@ -401,38 +314,31 @@ export default {
 
 
               `;
-
-
-            }
           },
-          addresses: {
-            cluster: {
-              className: 'map__marker map__marker--cluster',
-              iconSize: 30,
+        },
+        addresses: {
+          cluster: {
+            className: "map__marker map__marker--cluster",
+            iconSize: 30,
+          },
+          iconLargePerson: {
+            className: "map__marker map__marker--address",
+            iconSize: 50,
+            popupAnchor: [-200, 95],
+            tooltip: {
+              direction: "bottom",
+              offset: { x: 0, y: 20 },
             },
-            iconLargePerson: {
-              className: 'map__marker map__marker--address',
-              iconSize: 50,
-              popupAnchor: [-200, 95],
-              tooltip: {
-                direction: 'bottom',
-                offset: { x: 0, y: 20 },
-              },
-              html: (item, index) => {
+            html: (item, index) => {
+              const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon">`;
+              const end = `</div>`;
 
-                const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon">`;
-                const end = `</div>`;
+              let content = "";
 
-                let content = '';
-
-                if (item.ProfilovaFotka) {
-
-
-                  content = `<img class="map-person-thumb-head-icon-image" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
-
-
-                } else {
-                  content = `
+              if (item.ProfilovaFotka) {
+                content = `<img class="map-person-thumb-head-icon-image" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
+              } else {
+                content = `
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="88.772" height="95.926" viewBox="0 0 88.772 95.926">
                       <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
@@ -444,60 +350,56 @@ export default {
                     </svg>
 
                   `;
-                }
-
-                return `${start} ${content} ${end}`;
-
-
               }
+
+              return `${start} ${content} ${end}`;
             },
-            zIndex: 9,
           },
+          zIndex: 9,
         },
-        mapMarkers: [],
-        mapBoundingBox: [],
-        currentQueryStringified: '',
-        currentFilterSettings: {},
-        defaultFilterSettings: {},
-        defaultFilterData: {
-          PoslaneckySlib: [true, false],
-          Pohlavi: [1, 2]
-        },
-        currentFilterData: {},
-        currentQuery: {},
-        defaultQuery: {
-          Poslanec: ['true'],
-          Limit: [300],
-          Stranka: [1],
-        },
-        title: `Poslanci`,
-      }
-    },
+      },
+      mapMarkers: [],
+      mapBoundingBox: [],
+      currentQueryStringified: "",
+      currentFilterSettings: {},
+      defaultFilterSettings: {},
+      defaultFilterData: {
+        PoslaneckySlib: [true, false],
+        Pohlavi: [1, 2],
+      },
+      currentFilterData: {},
+      currentQuery: {},
+      defaultQuery: {
+        Poslanec: ["true"],
+        Limit: [300],
+        Stranka: [1],
+      },
+      title: `Poslanci`,
+    };
+  },
 
-    head () {
-      return {
-        title: `${this.title} — ${this.$config.globalTitle}`,
-          link: [
-            {
-              rel:'stylesheet',
-              href:'//unpkg.com/leaflet/dist/leaflet.css'
-            },
-            {
-              rel:'stylesheet',
-              href:'https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css'
-            },
-            {
-              rel:'stylesheet',
-              href:'//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css'
-            },
-          ],
-        htmlAttrs: {
-          class: 'alt-bg'
-        }
-      }
-    }
-
-}
+  head() {
+    return {
+      title: `${this.title} — ${this.$config.globalTitle}`,
+      link: [
+        {
+          rel: "stylesheet",
+          href: "//unpkg.com/leaflet/dist/leaflet.css",
+        },
+        {
+          rel: "stylesheet",
+          href:
+            "https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
+        },
+        {
+          rel: "stylesheet",
+          href: "//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css",
+        },
+      ],
+      htmlAttrs: {
+        class: "alt-bg",
+      },
+    };
+  },
+};
 </script>
-
-

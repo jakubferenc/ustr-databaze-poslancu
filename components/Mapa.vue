@@ -97,6 +97,7 @@
 </style>
 
 <script>
+import slugify from "slugify";
 let leafletObj;
 let leafletObjMarkerCluster;
 
@@ -452,12 +453,14 @@ export default {
 
               </div>`;
 
+            const detailUrl = slugify(`${item.Jmeno}-${item.Prijmeni}-${item.Id}`, {
+              locale: "cs",
+            }).toLowerCase();
+
             return `
 
 
-                  <a class="is-map-card person-poslanec-card" href="/poslanec/${
-                    item.Id
-                  }/">
+                  <a class="is-map-card person-poslanec-card" href="/poslanec/${detailUrl}/">
 
                     <div class="content-container">
 
