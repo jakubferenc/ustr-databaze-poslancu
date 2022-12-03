@@ -17,53 +17,44 @@
 
 <style lang="sass">
 
-  .section-stranka
-    .typography-main-title
-      margin-top: 0
-      padding-top: 0
-
+.section-stranka
+  .typography-main-title
+    margin-top: 0
+    padding-top: 0
 </style>
 <script>
-
 export default {
-
-    // :NOTE: {params, error, payload, store} is a deconstructed "context" object
-    async asyncData({params, error, payload, store}) {
-
-      if (payload) {
-        return {
-          stranka: payload
-        }
-      } else {
-
-        await store.dispatch("getStranky");
-
-        return {
-          stranka: store.state.stranky.filter(stranka => stranka.slug === params.slug)[0]
-        }
-
-      }
-
-    },
-
-    mounted() {
-    },
-
-    data() {
+  // :NOTE: {params, error, payload, store} is a deconstructed "context" object
+  async asyncData({ params, error, payload, store }) {
+    if (payload) {
       return {
-        excerptKontejnerStyly: {
-          'has-featured-image': true,
-        }
-      }
-    },
-    head () {
+        stranka: payload,
+      };
+    } else {
+      await store.dispatch("getStranky");
+
       return {
-        title: `${this.stranka.slug} — ${this.$config.globalTitle}`,
-        htmlAttrs: {
-          class: 'page genericka-stranka'
-        }
-      }
+        stranka: store.state.stranky.filter((stranka) => stranka.slug === params.slug)[0],
+      };
     }
+  },
 
-}
+  mounted() {},
+
+  data() {
+    return {
+      excerptKontejnerStyly: {
+        "has-featured-image": true,
+      },
+    };
+  },
+  head() {
+    return {
+      title: `${this.stranka.title} — ${this.$config.globalTitle}`,
+      htmlAttrs: {
+        class: "page genericka-stranka",
+      },
+    };
+  },
+};
 </script>
