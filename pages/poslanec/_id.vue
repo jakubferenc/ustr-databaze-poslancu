@@ -246,102 +246,94 @@
 
   .button-show-full-name
     font-size: 12px
-
 </style>
 
 <script>
+import { addRecursivelyPerson, dateISOStringToCZFormat } from "~/utils/functions";
 
+import OrgChart from "~/vendor/org-chart";
 
-  import {addRecursivelyPerson, dateISOStringToCZFormat} from '~/utils/functions';
+const CasovaOsa = () => import("~/components/CasovaOsa.vue");
+const MandatRadek = () => import("~/components/MandatRadek.vue");
+// const SocialniMapa = () => import('~/components/SocialniMapa.vue');
+const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
 
-  import OrgChart from '~/vendor/org-chart';
+let leafletObj;
+let leafletObjMarkerCluster;
 
-  const CasovaOsa = () => import('~/components/CasovaOsa.vue');
-  const MandatRadek = () => import('~/components/MandatRadek.vue');
-  // const SocialniMapa = () => import('~/components/SocialniMapa.vue');
-  const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+if (process.client) {
+  leafletObj = () => import("leaflet");
+  leafletObjMarkerCluster = () => import("leaflet.markercluster");
+}
 
-  let leafletObj;
-  let leafletObjMarkerCluster;
+import MapaIkonaNarozeni from "~/assets/images/mapa-icon-birth.svg?inline";
+import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
+import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
-  if (process.client) {
-
-    leafletObj = () => import("leaflet");
-    leafletObjMarkerCluster = () => import("leaflet.markercluster");
-
-  }
-
-
-  import MapaIkonaNarozeni from "~/assets/images/mapa-icon-birth.svg?inline";
-  import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
-  import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
-
-  export default {
-
+export default {
   components: {
-      CasovaOsa,
-      MandatRadek,
-      // SocialniMapa,
-      GalerieMediiSeznam,
-      MapaIkonaNarozeni,
-      MapaIkonaUmrti,
-      ParlamentNahledObecnyImage,
+    CasovaOsa,
+    MandatRadek,
+    // SocialniMapa,
+    GalerieMediiSeznam,
+    MapaIkonaNarozeni,
+    MapaIkonaUmrti,
+    ParlamentNahledObecnyImage,
   },
 
-      async asyncData({$config, params, error, payload, store, $axios}) {
+  async asyncData({ $config, params, error, payload, store, $axios }) {
+    if (payload) {
+      return {
+        poslanec: payload,
+      };
+    } else {
+      await store.dispatch("getPoslanecDetail", { poslanecId: params.id });
 
-        if (payload) {
-          return {
-            poslanec: payload
-          }
-        } else {
+      return {
+        poslanec: store.state.poslanec,
+      };
+    }
+  },
 
-          await store.dispatch("getPoslanecDetail", {poslanecId: params.id});
+  data() {
+    return {
+      showFullNameWithTitles: false,
+      mapSettings: {
+        popup: {
+          html: (item) => {
+            let snemovniObdobiString = "";
 
-          return {
-            poslanec: store.state.poslanec
-          }
+            // we don't want to show "od" and "do" dates for addresses of types 1,5,6  as they are addresses of birth and death and grave
+            if ((item.Zacatek || item.Konec) && ![1, 4, 5, 2].includes(item.Druh)) {
+              snemovniObdobiString += `<div class="map-card__date-item">`;
 
-        }
+              snemovniObdobiString += item.Zacatek
+                ? `<span>od ${dateISOStringToCZFormat(item.Zacatek)}</span>`
+                : "<span>od ???</span>";
+              snemovniObdobiString += item.Konec
+                ? `&nbsp; &mdash; do <span>${dateISOStringToCZFormat(
+                    item.Konec
+                  )}</span> <br>`
+                : "&nbsp;<span>do ???</span>";
+              snemovniObdobiString += `</div>`;
+            }
 
-      },
+            if ((item.Zacatek || item.Konec) && [1, 4, 5, 2].includes(item.Druh)) {
+              snemovniObdobiString += `<div class="map-card__date-item">`;
+              if (item.Zacatek) {
+                snemovniObdobiString += `<span>${dateISOStringToCZFormat(
+                  item.Zacatek
+                )}</span>`;
+              }
+              if (item.Konec) {
+                snemovniObdobiString += `<span>${dateISOStringToCZFormat(
+                  item.Konec
+                )}</span>`;
+              }
+              snemovniObdobiString += `</div>`;
+            }
 
-      data() {
-        return {
-          showFullNameWithTitles: false,
-          mapSettings: {
-
-            popup: {
-
-              html: (item) => {
-
-                let snemovniObdobiString = '';
-
-                // we don't want to show "od" and "do" dates for addresses of types 1,5,6  as they are addresses of birth and death and grave
-                if ( (item.Zacatek || item.Konec) && ![1,4,5,2].includes(item.Druh)) {
-
-
-                  snemovniObdobiString += `<div class="map-card__date-item">`;
-
-                  snemovniObdobiString += (item.Zacatek) ? `<span>od ${dateISOStringToCZFormat(item.Zacatek)}</span>` : '<span>od ???</span>';
-                  snemovniObdobiString += (item.Konec) ? `&nbsp; &mdash; do <span>${dateISOStringToCZFormat(item.Konec)}</span> <br>` : '&nbsp;<span>do ???</span>';
-                  snemovniObdobiString += `</div>`;
-
-                };
-
-                if ((item.Zacatek || item.Konec) && [1, 4, 5, 2].includes(item.Druh)) {
-                  snemovniObdobiString += `<div class="map-card__date-item">`;
-                  if (item.Zacatek) {
-                    snemovniObdobiString += `<span>${dateISOStringToCZFormat(item.Zacatek)}</span>`;
-                  }
-                  if (item.Konec) {
-                    snemovniObdobiString += `<span>${dateISOStringToCZFormat(item.Konec)}</span>`;
-                  }
-                  snemovniObdobiString += `</div>`;
-                }
-
-
-                return `
+            return `
 
                   <div class="is-map-card">
 
@@ -365,32 +357,29 @@
                   </div>
 
                 `;
-
-
-              }
+          },
+        },
+        addresses: {
+          cluster: {
+            className: "map__marker map__marker--cluster",
+            iconSize: 30,
+          },
+          iconLarge: {
+            className: "map__marker map__marker--address",
+            iconSize: 50,
+            popupAnchor: [-200, 95],
+            tooltip: {
+              direction: "bottom",
+              offset: { x: 0, y: 20 },
             },
-            addresses: {
-              cluster: {
-                className: 'map__marker map__marker--cluster',
-                iconSize: 30,
-              },
-              iconLarge: {
-                className: 'map__marker map__marker--address',
-                iconSize: 50,
-                popupAnchor: [-200, 95],
-                tooltip: {
-                  direction: 'bottom',
-                  offset: { x: 0, y: 20 },
-                },
-                html: (item, index) => {
+            html: (item, index) => {
+              const start = `<div class="map__marker__container map-address-icon">`;
+              const end = `</div>`;
 
-                  const start = `<div class="map__marker__container map-address-icon">`;
-                  const end = `</div>`;
+              let content = "";
 
-                  let content = '';
-
-                  if (item.Druh === 1) {
-                    content = `
+              if (item.Druh === 1) {
+                content = `
 
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21.458" height="21.458" viewBox="0 0 21.458 21.458">
                         <defs>
@@ -411,10 +400,10 @@
                       </svg>
 
                     `;
-                  }
+              }
 
-                  if (item.Druh === 5) {
-                    content = `
+              if (item.Druh === 5) {
+                content = `
 
                       <svg id="mapa-icon-death" xmlns="http://www.w3.org/2000/svg" width="13.797" height="21.458" viewBox="0 0 13.797 21.458">
                         <line id="Line_73" data-name="Line 73" y2="21.458" transform="translate(6.899)" fill="none" stroke="#fff" stroke-width="1"/>
@@ -422,11 +411,10 @@
                       </svg>
 
                     `;
-                  }
+              }
 
-                  if (![1, 5].includes(item.Druh)) {
-
-                    content = `
+              if (![1, 5].includes(item.Druh)) {
+                content = `
                       <svg xmlns="http://www.w3.org/2000/svg" width="17.41" height="23.03" viewBox="0 0 17.41 23.03">
                         <g id="Group_1366" data-name="Group 1366" transform="translate(-616.172 -3375)">
                           <g id="Path_412" data-name="Path 412" transform="translate(616.172 3375)" fill="none">
@@ -440,463 +428,383 @@
                         </g>
                       </svg>
                     `;
+              }
 
-                  }
-
-
-                  return `${start} ${content} ${end}`;
-
-
-                }
-              },
-              zIndex: 9,
+              return `${start} ${content} ${end}`;
             },
           },
-          mapMarkers: [],
-          mapBoundingBox: [],
-          defaultZoom: 8
-        }
-      },
-
-      methods: {
-
-
-        toggleFullNameWithTitles(e) {
-
-          e.preventDefault();
-          this.showFullNameWithTitles = !this.showFullNameWithTitles;
-
-
+          zIndex: 9,
         },
-
       },
+      mapMarkers: [],
+      mapBoundingBox: [],
+      defaultZoom: 8,
+    };
+  },
 
-      mounted() {
+  methods: {
+    toggleFullNameWithTitles(e) {
+      e.preventDefault();
+      this.showFullNameWithTitles = !this.showFullNameWithTitles;
+    },
+  },
 
+  mounted() {
+    this.$nextTick(() => {
+      setTimeout(async () => {
+        const $mapElement = this.$refs.mapElement;
 
-        this.$nextTick(() => {
+        const {
+          Map,
+          map,
+          Marker,
+          Browser,
+          tileLayer,
+          DomEvent,
+          divIcon,
+          latLng,
+          latLngBounds,
+          Polyline,
+          popup,
+        } = await leafletObj();
 
-          setTimeout(async () => {
+        const { MarkerClusterGroup, MarkerCluster } = await leafletObjMarkerCluster();
 
-            const $mapElement = this.$refs.mapElement;
+        const mapOptions = {
+          dragging: true, // !Browser.mobile
+          scrollWheelZoom: false,
+          tap: false,
+          zoomSnap: 0.5,
+          zoom: 8,
+          // minZoom: 12,
+          // maxZoom: 18,
+        };
 
-            const {Map, map, Marker, Browser, tileLayer, DomEvent, divIcon, latLng, latLngBounds, Polyline, popup} = await leafletObj();
+        this.mapInstance = map($mapElement, mapOptions);
 
-            const { MarkerClusterGroup, MarkerCluster } = await leafletObjMarkerCluster();
+        tileLayer(
+          `https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.mapbox.accessToken}`,
+          {
+            id: "mapbox.light",
+            attribution:
+              'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          }
+        ).addTo(this.mapInstance);
 
+        this.mapInstance.createPane("addresses");
 
-            const mapOptions = {
-              dragging: true, // !Browser.mobile
-              scrollWheelZoom: false,
-              tap: false,
-              zoomSnap: .5,
-              zoom: 8,
-              // minZoom: 12,
-              // maxZoom: 18,
-            };
-
-
-            this.mapInstance = map($mapElement, mapOptions);
-
-
-            tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.map.accessToken}`, {
-              id: 'mapbox.light',
-              attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            }).addTo(this.mapInstance);
-
-            this.mapInstance.createPane('addresses');
-
-
-            // // init clusters for places
-            // https://github.com/Leaflet/Leaflet.markercluster
-            const mapMarkersClusterAddresses = new MarkerClusterGroup({
-              // clusterPane: 'addresses-clusters',
-              maxClusterRadius: 25,
-              showCoverageOnHover: false,
-              // iconCreateFunction: (cluster) => divIcon({
-              //   ...this.mapSettings.addresses.cluster,
-              //   html: `${cluster.getAllChildMarkers()[0].getIcon().options.html}<span></span><span></span>`,
-              // }),
-            })
-            .on('clusterclick', (event) => {
-              DomEvent.stopPropagation(event);
-              // this.resetAll();
-            });
-
-
-            [...this.poslanec.AdresyProMapu].forEach((item, index) => {
-
-
-              const icon = new divIcon({
-                ...this.mapSettings.addresses.iconLarge,
-                className: `${this.mapSettings.addresses.iconLarge.className}`,
-                html: this.mapSettings.addresses.iconLarge.html(item, index),
-              });
-
-              const marker = new Marker([item.GeoX, item.GeoY], {
-                // pane: 'addresses',
-                bubblingMouseEvents: false,
-                riseOnHover: true,
-                icon,
-                zIndexOffset: 2,
-              });
-
-              marker.on('click', (event) => {
-
-                // in dev tools in chrome, you can get error on click, but it's a Chrome bug
-                // viz https://stackoverflow.com/a/50857216/12058461
-
-                // DomEvent.stopPropagation(event);
-
-                // console.log("click on marker", item);
-
-              });
-
-
-              marker.bindPopup(this.mapSettings.popup.html(item));
-
-
-              this.mapMarkers[index] = marker;
-
-              this.mapBoundingBox = [...this.mapBoundingBox, [item.GeoX, item.GeoY]];
-
-              //marker.addTo(this.mapInstance);
-
-              mapMarkersClusterAddresses.addLayer(marker);
-
-
-            });
-
-
-            this.mapInstance.addLayer(mapMarkersClusterAddresses);
-
-
-
-            const fitBoundsOptionsDefault = {
-              animate: false,
-              paddingTopLeft: [80, 60],
-              paddingBottomRight: [60, 60]
-            };
-
-            const realFitBoundsOptions = Object.assign({}, fitBoundsOptionsDefault);
-
-
-            if (this.mapBoundingBox.length > 1) {
-
-              // if we have more than one address, make bounds and find automatically center, given the bounds with fitBounds()
-
-              this.mapInstance.fitBounds(this.mapBoundingBox, realFitBoundsOptions);
-
-
-            } else {
-
-              // if we have just one marker / address, make the center of the map based on this marker's coordinates
-
-              this.mapInstance.setView(this.mapBoundingBox[0], this.defaultZoom);
-
-            }
-
-
-
-
-          }, 100);
-
-
-          setTimeout(async () => {
-
-            if (this.socialniMapaData) {
-
-              const dataNew = this.socialniMapaData;
-
-              const orgChartInstance = new OrgChart({
-                'chartContainer': '#socialni-mapy-container',
-                'data' : dataNew,
-                'depth': 7,
-                'nodeContent': 'title',
-                'toggleSiblingsResp': false,
-                // 'direction': 'l2r',
-              });
-
-            }
-
-          }, 0);
-
+        // // init clusters for places
+        // https://github.com/Leaflet/Leaflet.markercluster
+        const mapMarkersClusterAddresses = new MarkerClusterGroup({
+          // clusterPane: 'addresses-clusters',
+          maxClusterRadius: 25,
+          showCoverageOnHover: false,
+          // iconCreateFunction: (cluster) => divIcon({
+          //   ...this.mapSettings.addresses.cluster,
+          //   html: `${cluster.getAllChildMarkers()[0].getIcon().options.html}<span></span><span></span>`,
+          // }),
+        }).on("clusterclick", (event) => {
+          DomEvent.stopPropagation(event);
+          // this.resetAll();
         });
 
-
-      },
-
-      computed: {
-
-        socialniMapaData() {
-
-          let result = [];
-
-          const {Id, Jmeno, Prijmeni, DatumNarozeniZobrazene, DatumUmrtiZobrazene, OsobniVztahyPrimarni, OsobniVztahySekundarni, SouvisejiciPoslanci} = this.poslanec;
-
-          if (SouvisejiciPoslanci && SouvisejiciPoslanci.length > 0) {
-
-            const createThisPoslanecRootObject = {
-              Id,
-              PrimarniOsobaId: 0,
-              Jmeno,
-              Prijmeni,
-              ZivotniData: `${DatumNarozeniZobrazene} ${DatumUmrtiZobrazene}`,
-              name: `${Jmeno} ${Prijmeni}`,
-              title: 'Poslanec'
-
-            };
-
-            const resultItems = [...SouvisejiciPoslanci, ]
-            .map((person) => {
-
-
-              return {
-                Id: person.Id,
-                PrimarniOsobaId: person.VztahovaCesta[0].PrimarniOsobaId,
-                Jmeno: person.Jmeno.split("|")[0].trim() || person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
-                ZivotniData: person.VztahovaCesta[0].SouvisejícíOsobaZivotniData,
-                DruhVztahu: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
-                JePoslanec: person.VztahovaCesta[0].JeSouvisejiciOsobaPoslanec,
-                Uroven: person.VztahovaCesta[0].Uroven,
-                name:  person.Jmeno.split("|")[0].trim() || person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
-                title: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
-              }
-
-            });
-
-            const sekundarniVztahyMapped = [...OsobniVztahyPrimarni, ...OsobniVztahySekundarni].map(person => {
-
-              return {
-                Id: person.Id,
-                PrimarniOsobaId: person.PrimarniOsobaId,
-                Jmeno: person.PrimarniOsobaJmeno.split("|")[0].trim(),
-                ZivotniData: null,
-                DruhVztahu: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
-                JePoslanec: person.JeSouvisejiciOsobaPoslanec,
-                Uroven: person.Uroven,
-                name:  person.PrimarniOsobaJmeno.split("|")[0].trim(),
-                title: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
-              }
-
-            });
-
-            let preparedItems = [createThisPoslanecRootObject, ...sekundarniVztahyMapped, ...resultItems];
-
-            if (!this.$config.poslanec.socialniVazby.showPritelType) {
-
-              preparedItems = [...preparedItems].filter(item => item.DruhVztahu !== 'přítel'); // filter out type "přítel"
-
-            }
-
-
-
-
-            result = [...preparedItems]
-            .reduce((prev, current) => {
-
-              return addRecursivelyPerson(prev, current, preparedItems);
-
-            }, preparedItems);
-
-
-            // filter out from the first level of the array those items that do not have a direct link to the poslanec via PrimarniOsobaId
-
-            const resultOnlyChildrenWithTheirChildren = result.filter(person => person.PrimarniOsobaId === this.poslanec.Id);
-
-
-            result = {
-              ...createThisPoslanecRootObject,
-              children: resultOnlyChildrenWithTheirChildren,
-            }
-
-            return result;
-
-
-          } else {
-
-            return false;
-          }
-
-
-        },
-
-        mandatyChronologicky() {
-
-
-
-        },
-
-        profileImage() {
-
-          const hasProfileImage = this.poslanec.Soubory && this.poslanec.Soubory.length && this.poslanec.Soubory.length > 0;
-
-          if (hasProfileImage) {
-            return this.poslanec.Soubory[0].URLNahled;
-          } else {
-            return false;
-          }
-
-        },
-
-
-        geojsonBoundsOnly() {
-
-          return this.poslanec.AdresyProMapu.map((adresa) => {
-
-            return [adresa.GeoX, adresa.GeoY];
-
-
+        [...this.poslanec.AdresyProMapu].forEach((item, index) => {
+          const icon = new divIcon({
+            ...this.mapSettings.addresses.iconLarge,
+            className: `${this.mapSettings.addresses.iconLarge.className}`,
+            html: this.mapSettings.addresses.iconLarge.html(item, index),
           });
 
-        },
-
-
-
-        geojson() {
-
-          return this.poslanec.AdresyProMapu.map((adresa) => {
-
-            return {
-
-              LatLng: [adresa.GeoX, adresa.GeoY],
-              Nazev: adresa.Nazev,
-              DruhTyp: adresa.DruhTyp,
-              Druh: adresa.Druh,
-              Parlament: adresa.Parlament,
-              DatumZacatkuZobrazene: adresa?.Zacatek,
-              DatumKonceZobrazene: adresa?.Konec,
-              DruhNazev: adresa.DruhNazev,
-
-              PopupHTML: ``,
-
-            }
-
+          const marker = new Marker([item.GeoX, item.GeoY], {
+            // pane: 'addresses',
+            bubblingMouseEvents: false,
+            riseOnHover: true,
+            icon,
+            zIndexOffset: 2,
           });
 
-        },
+          marker.on("click", (event) => {
+            // in dev tools in chrome, you can get error on click, but it's a Chrome bug
+            // viz https://stackoverflow.com/a/50857216/12058461
+            // DomEvent.stopPropagation(event);
+            // console.log("click on marker", item);
+          });
 
-        tituly() {
+          marker.bindPopup(this.mapSettings.popup.html(item));
 
-          return this.poslanec.Tituly.join(" ") ?? false;
+          this.mapMarkers[index] = marker;
 
-        },
+          this.mapBoundingBox = [...this.mapBoundingBox, [item.GeoX, item.GeoY]];
 
-        pocetMandatu() {
+          //marker.addTo(this.mapInstance);
 
-          if (this.poslanec.Mandaty) {
-            return this.poslanec.Mandaty.length;
-          } else {
-            return this.$t('error.notDefined');
-          }
-        },
+          mapMarkersClusterAddresses.addLayer(marker);
+        });
 
-        profese() {
+        this.mapInstance.addLayer(mapMarkersClusterAddresses);
 
-          if (this.poslanec.Mandaty) {
+        const fitBoundsOptionsDefault = {
+          animate: false,
+          paddingTopLeft: [80, 60],
+          paddingBottomRight: [60, 60],
+        };
 
-            const profeseArray = this.poslanec.Mandaty
-            .filter((mandat) => {
-              return mandat.Profese !== null
-            }).map((mandat) => {
+        const realFitBoundsOptions = Object.assign({}, fitBoundsOptionsDefault);
 
-              return {
-                profese: mandat.Profese,
-                datumZacatku: mandat.DatumZacatkuZobrazene,
-                datumKonce: mandat.DatumKonceZobrazene,
-                mandatId: mandat.Id
-              };
+        if (this.mapBoundingBox.length > 1) {
+          // if we have more than one address, make bounds and find automatically center, given the bounds with fitBounds()
 
-            });
+          this.mapInstance.fitBounds(this.mapBoundingBox, realFitBoundsOptions);
+        } else {
+          // if we have just one marker / address, make the center of the map based on this marker's coordinates
 
+          this.mapInstance.setView(this.mapBoundingBox[0], this.defaultZoom);
+        }
+      }, 100);
 
-            return profeseArray;
+      setTimeout(async () => {
+        if (this.socialniMapaData) {
+          const dataNew = this.socialniMapaData;
 
-          } else {
-            return false;
-          }
+          const orgChartInstance = new OrgChart({
+            chartContainer: "#socialni-mapy-container",
+            data: dataNew,
+            depth: 7,
+            nodeContent: "title",
+            toggleSiblingsResp: false,
+            // 'direction': 'l2r',
+          });
+        }
+      }, 0);
+    });
+  },
 
-        },
+  computed: {
+    socialniMapaData() {
+      let result = [];
 
+      const {
+        Id,
+        Jmeno,
+        Prijmeni,
+        DatumNarozeniZobrazene,
+        DatumUmrtiZobrazene,
+        OsobniVztahyPrimarni,
+        OsobniVztahySekundarni,
+        SouvisejiciPoslanci,
+      } = this.poslanec;
 
+      if (SouvisejiciPoslanci && SouvisejiciPoslanci.length > 0) {
+        const createThisPoslanecRootObject = {
+          Id,
+          PrimarniOsobaId: 0,
+          Jmeno,
+          Prijmeni,
+          ZivotniData: `${DatumNarozeniZobrazene} ${DatumUmrtiZobrazene}`,
+          name: `${Jmeno} ${Prijmeni}`,
+          title: "Poslanec",
+        };
 
-        adresaNarozeni() {
+        const resultItems = [...SouvisejiciPoslanci].map((person) => {
+          return {
+            Id: person.Id,
+            PrimarniOsobaId: person.VztahovaCesta[0].PrimarniOsobaId,
+            Jmeno:
+              person.Jmeno.split("|")[0].trim() ||
+              person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
+            ZivotniData: person.VztahovaCesta[0].SouvisejícíOsobaZivotniData,
+            DruhVztahu: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+            JePoslanec: person.VztahovaCesta[0].JeSouvisejiciOsobaPoslanec,
+            Uroven: person.VztahovaCesta[0].Uroven,
+            name:
+              person.Jmeno.split("|")[0].trim() ||
+              person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
+            title: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+          };
+        });
 
-          // the current form of the string "City | Information, Country"
-          if (this.poslanec.Adresy) {
+        const sekundarniVztahyMapped = [
+          ...OsobniVztahyPrimarni,
+          ...OsobniVztahySekundarni,
+        ].map((person) => {
+          return {
+            Id: person.Id,
+            PrimarniOsobaId: person.PrimarniOsobaId,
+            Jmeno: person.PrimarniOsobaJmeno.split("|")[0].trim(),
+            ZivotniData: null,
+            DruhVztahu: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+            JePoslanec: person.JeSouvisejiciOsobaPoslanec,
+            Uroven: person.Uroven,
+            name: person.PrimarniOsobaJmeno.split("|")[0].trim(),
+            title: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
+          };
+        });
 
-            // :TODO: Refactor, make the function global
-            const addressObject = this.poslanec.Adresy.filter(adresa => adresa.Druh === 1)?.[0] ?? false;
-            if (addressObject) {
+        let preparedItems = [
+          createThisPoslanecRootObject,
+          ...sekundarniVztahyMapped,
+          ...resultItems,
+        ];
 
-              const parts = addressObject.Nazev.split('|');
-              const city = parts[0];
-
-              const countryParts = parts[1].split(',');
-              // const country = countryParts[countryParts.length-1];
-
-              return {
-
-                mesto: city,
-                zeme: country,
-
-              }
-
-            }
-
-          }
-
-        },
-
-        adresaUmrti() {
-
-          // the current form of the string "City | Information, Country"
-
-          // :TODO: Refactor, make the function global
-          const addressObject = this.poslanec.Adresy.filter(adresa => adresa.Druh === 5)[0] ?? false;
-          if (addressObject) {
-
-            const parts = addressObject.Nazev.split('|');
-            const city = parts[0];
-            const countryParts = parts[1].split(',');
-            // const country = countryParts[countryParts.length-1];
-
-            return {
-
-              city,
-              country,
-
-            }
-
-          }
-
+        if (!this.$config.poslanec.socialniVazby.showPritelType) {
+          preparedItems = [...preparedItems].filter(
+            (item) => item.DruhVztahu !== "přítel"
+          ); // filter out type "přítel"
         }
 
+        result = [...preparedItems].reduce((prev, current) => {
+          return addRecursivelyPerson(prev, current, preparedItems);
+        }, preparedItems);
 
-      },
+        // filter out from the first level of the array those items that do not have a direct link to the poslanec via PrimarniOsobaId
 
-      head () {
+        const resultOnlyChildrenWithTheirChildren = result.filter(
+          (person) => person.PrimarniOsobaId === this.poslanec.Id
+        );
+
+        result = {
+          ...createThisPoslanecRootObject,
+          children: resultOnlyChildrenWithTheirChildren,
+        };
+
+        return result;
+      } else {
+        return false;
+      }
+    },
+
+    mandatyChronologicky() {},
+
+    profileImage() {
+      const hasProfileImage =
+        this.poslanec.Soubory &&
+        this.poslanec.Soubory.length &&
+        this.poslanec.Soubory.length > 0;
+
+      if (hasProfileImage) {
+        return this.poslanec.Soubory[0].URLNahled;
+      } else {
+        return false;
+      }
+    },
+
+    geojsonBoundsOnly() {
+      return this.poslanec.AdresyProMapu.map((adresa) => {
+        return [adresa.GeoX, adresa.GeoY];
+      });
+    },
+
+    geojson() {
+      return this.poslanec.AdresyProMapu.map((adresa) => {
         return {
-          title: `${this.poslanec?.Jmeno} ${this.poslanec?.Prijmeni} — ${this.$config.globalTitle}`, // :TODO:
-          link: [
-            {
-              rel:'stylesheet',
-              href:'//unpkg.com/leaflet/dist/leaflet.css'
-            },
-            {
-              rel:'stylesheet',
-              href:'https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css'
-            },
-            {
-              rel:'stylesheet',
-              href:'//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css'
-            },
-          ],
-          htmlAttrs: {
-            class: 'subpage-poslanci'
-          }
+          LatLng: [adresa.GeoX, adresa.GeoY],
+          Nazev: adresa.Nazev,
+          DruhTyp: adresa.DruhTyp,
+          Druh: adresa.Druh,
+          Parlament: adresa.Parlament,
+          DatumZacatkuZobrazene: adresa?.Zacatek,
+          DatumKonceZobrazene: adresa?.Konec,
+          DruhNazev: adresa.DruhNazev,
+
+          PopupHTML: ``,
+        };
+      });
+    },
+
+    tituly() {
+      return this.poslanec.Tituly.join(" ") ?? false;
+    },
+
+    pocetMandatu() {
+      if (this.poslanec.Mandaty) {
+        return this.poslanec.Mandaty.length;
+      } else {
+        return this.$t("error.notDefined");
+      }
+    },
+
+    profese() {
+      if (this.poslanec.Mandaty) {
+        const profeseArray = this.poslanec.Mandaty.filter((mandat) => {
+          return mandat.Profese !== null;
+        }).map((mandat) => {
+          return {
+            profese: mandat.Profese,
+            datumZacatku: mandat.DatumZacatkuZobrazene,
+            datumKonce: mandat.DatumKonceZobrazene,
+            mandatId: mandat.Id,
+          };
+        });
+
+        return profeseArray;
+      } else {
+        return false;
+      }
+    },
+
+    adresaNarozeni() {
+      // the current form of the string "City | Information, Country"
+      if (this.poslanec.Adresy) {
+        // :TODO: Refactor, make the function global
+        const addressObject =
+          this.poslanec.Adresy.filter((adresa) => adresa.Druh === 1)?.[0] ?? false;
+        if (addressObject) {
+          const parts = addressObject.Nazev.split("|");
+          const city = parts[0];
+
+          const countryParts = parts[1].split(",");
+          // const country = countryParts[countryParts.length-1];
+
+          return {
+            mesto: city,
+            zeme: country,
+          };
         }
       }
+    },
 
-  }
+    adresaUmrti() {
+      // the current form of the string "City | Information, Country"
+
+      // :TODO: Refactor, make the function global
+      const addressObject =
+        this.poslanec.Adresy.filter((adresa) => adresa.Druh === 5)[0] ?? false;
+      if (addressObject) {
+        const parts = addressObject.Nazev.split("|");
+        const city = parts[0];
+        const countryParts = parts[1].split(",");
+        // const country = countryParts[countryParts.length-1];
+
+        return {
+          city,
+          country,
+        };
+      }
+    },
+  },
+
+  head() {
+    return {
+      title: `${this.poslanec?.Jmeno} ${this.poslanec?.Prijmeni} — ${this.$config.globalTitle}`, // :TODO:
+      link: [
+        {
+          rel: "stylesheet",
+          href: "//unpkg.com/leaflet/dist/leaflet.css",
+        },
+        {
+          rel: "stylesheet",
+          href:
+            "https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
+        },
+        {
+          rel: "stylesheet",
+          href: "//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css",
+        },
+      ],
+      htmlAttrs: {
+        class: "subpage-poslanci",
+      },
+    };
+  },
+};
 </script>
