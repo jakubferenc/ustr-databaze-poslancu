@@ -1279,23 +1279,23 @@ export default {
         poslaneckeKluby: {
           id: "poslanecke-kluby",
           title: "poslanecké kluby",
-          data: this.statistiky.PoslaneckeKluby,
+          data: this?.statistiky?.PoslaneckeKluby || [],
           aktivni: true,
         },
         volebniStrany: {
           id: "volebni-strany",
           title: "volební strany",
-          data: this.statistiky.VolebniStrany,
+          data: this?.statistiky?.VolebniStrany || [],
         },
         narodnost: {
           id: "narodnost",
           title: "národnosti",
-          data: this.statistiky.Narodnosti,
+          data: this?.statistiky?.Narodnosti || [],
         },
         vybory: {
           id: "vybory",
           title: "výbory",
-          data: this.statistiky.Vybory,
+          data: this?.statistiky?.Vybory || [],
         },
       };
 
@@ -1305,7 +1305,7 @@ export default {
           kurie: {
             id: "kurie",
             title: "kurie",
-            data: this.statistiky.Kurie,
+            data: this?.statistiky?.Kurie || [],
           },
         };
       }
