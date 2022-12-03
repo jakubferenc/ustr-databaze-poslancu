@@ -39,20 +39,19 @@
 
 <style lang="sass" scoped>
 
-  .section-title
-    @extend %typography-section-title
-
+.section-title
+  @extend %typography-section-title
 </style>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
-const Slider = () => import('~/components/Slider.vue');
-const Rozcestnik = () => import('~/components/Rozcestnik.vue');
-const PoslanciSeznam = () => import('~/components/PoslanciSeznam.vue');
-const ParlamentySeznam = () => import('~/components/ParlamentySeznam.vue');
-const SlovnikSlider = () => import('~/components/SlovnikSlider.vue');
-const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+const Slider = () => import("~/components/Slider.vue");
+const Rozcestnik = () => import("~/components/Rozcestnik.vue");
+const PoslanciSeznam = () => import("~/components/PoslanciSeznam.vue");
+const ParlamentySeznam = () => import("~/components/ParlamentySeznam.vue");
+const SlovnikSlider = () => import("~/components/SlovnikSlider.vue");
+const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
 
 // const MediaData = () => import('~/data/media.json').then(m => m.default || m);
 // const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
@@ -60,69 +59,65 @@ const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
 // const PoslanciHomepageData = () => import('~/data/poslanciHomepage.json').then(m => m.default || m);
 
-
 // const StrankyData = () => import('~/data/stranky.json').then(m => m.default || m);
 
-
 export default {
+  components: {
+    Slider,
+    Rozcestnik,
+    PoslanciSeznam,
+    ParlamentySeznam,
+    SlovnikSlider,
+    GalerieMediiSeznam,
+  },
 
-    components: {Slider, Rozcestnik, PoslanciSeznam, ParlamentySeznam, SlovnikSlider, GalerieMediiSeznam },
+  async asyncData({ store, $config }) {
+    const limit = 20;
 
-    async asyncData ({store, $config}) {
+    // wordpress api calls
+    await store.dispatch("getMedia");
+    await store.dispatch("getSlovnikovaHesla");
 
-      const limit = 20;
+    await store.dispatch("getParlamenty");
 
-      // wordpress api calls
-      await store.dispatch("getMedia");
-      await store.dispatch("getSlovnikovaHesla");
+    // await store.dispatch("getStranky");
 
-      await store.dispatch("getParlamenty");
+    return {
+      parlamenty: store.state.parlamenty,
+      slovnikova_hesla: store.state.slovnikova_hesla,
+      soubory: [...store.state.media_soubory].slice(0, limit),
+      // sliderItems: [...store.state.stranky].filter(item => item.id == 538),
+    };
+  },
+  computed: {
+    ...mapGetters({
+      poslanci: "getPoslanciHomepage",
+    }),
+  },
 
-      // await store.dispatch("getStranky");
+  async created() {},
 
-      return {
-        parlamenty: store.state.parlamenty,
-        slovnikova_hesla: store.state.slovnikova_hesla,
-        soubory: [...store.state.media_soubory].slice(0, limit),
-        // sliderItems: [...store.state.stranky].filter(item => item.id == 538),
-      }
+  async mounted() {
+    await this.$store.dispatch("getPoslanciHomepage", {
+      limit: 10,
+      stranka: 1,
+    });
+  },
 
-    },
-    computed: {
-      ...mapGetters({
-        poslanci: 'getPoslanciHomepage',
-      })
+  data() {
+    return {
+      title: `Hlavní stránka`,
+      hasSlider: true,
+    };
+  },
 
-    },
-
-    async created() {
-
-
-    },
-
-
-    async mounted() {
-      await this.$store.dispatch("getPoslanciHomepage", {
-        limit: 10,
-        stranka: 1
-      });
-    },
-
-    data() {
-      return {
-        title: `Hlavní stránka`,
-        hasSlider: true,
-      }
-    },
-
-    head () {
-      return {
-        title: `${this.title} — ${this.$config.globalTitle}`,
-        htmlAttrs: {
-          class: 'index has-slider'
-        }
-      }
-    }
-
-}
+  head() {
+    return {
+      title: `${this.title} — ${this.$config.globalTitle}`,
+      htmlAttrs: {
+        class: "index has-slider",
+      },
+    };
+  },
+};
 </script>
