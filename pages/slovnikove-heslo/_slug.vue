@@ -106,7 +106,7 @@ export default {
     },
     head () {
       return {
-        title: `${this.slovnikove_heslo.title || 'Nenalezeno'} — ${this.$config.public.globalTitle}`,
+        title: `${this.slovnikove_heslo.title || 'Nenalezeno'} — ${this.$config.globalTitle}`,
         htmlAttrs: {
           class: 'subpage-slovnik'
         }

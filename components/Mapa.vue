@@ -231,7 +231,7 @@ export default {
 
         this.mapInstance = map($mapElement, this.mapOptions);
 
-        tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.public.map.accessToken}`, {
+        tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.map.accessToken}`, {
           id: 'mapbox.light',
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         }).addTo(this.mapInstance);

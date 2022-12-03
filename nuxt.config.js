@@ -1,4 +1,3 @@
-import { defineNuxtConfig } from '@nuxt/bridge';
 import apiFactory from './factories';
 import projectConfig from './project.config';
 
@@ -9,23 +8,14 @@ config.useFileCachedAPI = dev === true;
 
 // data
 
-export default defineNuxtConfig({
-  bridge: true, // Temporarily disable bridge integration
-  vite: true,
+export default {
   target: 'static', // default is 'server'
   ssr: true,
   components: false,
-  nitro: {
-    preset: 'aws-lambda',
-    serveStatic: true
-  },
   server: {
     port: 8000, // default: 3000
-    host: '0.0.0.0', // default: localhost
+    host: 'localhost', // default: localhost
   },
-  // serverMiddleware: [
-  //   "~/server-middleware/index.js",
-  // ],
   router: {
     trailingSlash: undefined,
   },
@@ -175,15 +165,15 @@ export default defineNuxtConfig({
       '/wp/v2/pages': `${config.wordpressAPIURLWebsite}`,
       '/wp/v2/casova_osa': `${config.wordpressAPIURLWebsite}`,
     }],
-    // ['@nuxtjs/sentry', {
-    //   dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
-    //   // Additional Module Options go here
-    //   // https://sentry.nuxtjs.org/sentry/options
-    //   config: {
-    //     // Add native Sentry config here
-    //     // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
-    //   },
-    // }],
+    ['@nuxtjs/sentry', {
+      dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
+      // Additional Module Options go here
+      // https://sentry.nuxtjs.org/sentry/options
+      config: {
+        // Add native Sentry config here
+        // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
+      },
+    }],
     ['@nuxtjs/i18n', {
       locales: [
         {code: 'cs', iso: 'cs-CZ', file: 'cs-CZ.js', dir: 'ltr'}
@@ -237,4 +227,4 @@ export default defineNuxtConfig({
     ]
   }
 
-});
+};

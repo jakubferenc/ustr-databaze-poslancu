@@ -10,61 +10,48 @@
 
 </template>
 
-
 <script>
-const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
 
-const MediaData = () => import('~/data/media.json').then(m => m.default || m);
+const MediaData = () => import("~/data/media.json").then((m) => m.default || m);
 
 export default {
+  components: { GalerieMediiSeznam },
 
-    components: { GalerieMediiSeznam },
+  async asyncData({ params, error, payload, store, $config }) {
+    try {
+      if (!$config.useFileCachedAPI) {
+        await store.dispatch("getMedia");
 
+        return {
+          soubory: [...store.state.media_soubory],
+        };
+      } else {
+        const MediaRes = await MediaData();
 
-    async asyncData({params, error, payload, store, $config}) {
-
-      try {
-
-        if (!$config.useFileCachedAPI) {
-          await store.dispatch("getMedia");
-
-          return {
-            soubory: [...store.state.media_soubory],
-          }
-
-        } else {
-
-          const MediaRes = await MediaData();
-
-          return {
-            soubory: MediaRes,
-          }
-
-        }
-
-
-      } catch (err) {
-        console.warn(err);
+        return {
+          soubory: MediaRes,
+        };
       }
-
-    },
-
-    data() {
-      return {
-        title: `Galerie médií`,
-        soubory: [],
-      }
-    },
-
-    head () {
-      return {
-        title: `${this.title} — ${this.$config.public.globalTitle}`,
-        htmlAttrs: {
-          class: 'alt-bg'
-        }
-      }
+    } catch (err) {
+      console.warn(err);
     }
+  },
 
-}
+  data() {
+    return {
+      title: `Galerie médií`,
+      soubory: [],
+    };
+  },
 
+  head() {
+    return {
+      title: `${this.title} — ${this.$config.globalTitle}`,
+      htmlAttrs: {
+        class: "alt-bg",
+      },
+    };
+  },
+};
 </script>

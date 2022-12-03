@@ -476,7 +476,7 @@ export default {
 
     head () {
       return {
-        title: `${this.title} — ${this.$config.public.globalTitle}`,
+        title: `${this.title} — ${this.$config.globalTitle}`,
           link: [
             {
               rel:'stylesheet',

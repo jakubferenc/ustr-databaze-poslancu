@@ -58,7 +58,7 @@ export default {
     },
     head () {
       return {
-        title: `${this.stranka.slug} — ${this.$config.public.globalTitle}`,
+        title: `${this.stranka.slug} — ${this.$config.globalTitle}`,
         htmlAttrs: {
           class: 'page genericka-stranka'
         }

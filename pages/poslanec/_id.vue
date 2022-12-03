@@ -499,7 +499,7 @@
             this.mapInstance = map($mapElement, mapOptions);
 
 
-            tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.public.map.accessToken}`, {
+            tileLayer(`https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.map.accessToken}`, {
               id: 'mapbox.light',
               attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             }).addTo(this.mapInstance);
@@ -683,7 +683,7 @@
 
             let preparedItems = [createThisPoslanecRootObject, ...sekundarniVztahyMapped, ...resultItems];
 
-            if (!this.$config.public.poslanec.socialniVazby.showPritelType) {
+            if (!this.$config.poslanec.socialniVazby.showPritelType) {
 
               preparedItems = [...preparedItems].filter(item => item.DruhVztahu !== 'přítel'); // filter out type "přítel"
 
@@ -877,7 +877,7 @@
 
       head () {
         return {
-          title: `${this.poslanec?.Jmeno} ${this.poslanec?.Prijmeni} — ${this.$config.public.globalTitle}`, // :TODO:
+          title: `${this.poslanec?.Jmeno} ${this.poslanec?.Prijmeni} — ${this.$config.globalTitle}`, // :TODO:
           link: [
             {
               rel:'stylesheet',
