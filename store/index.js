@@ -39,6 +39,7 @@ export const state = () => ({
 
 export const getters = {
   getPoslanciHomepage: (state) => state.poslanci_homepage,
+  getSouboryHomepage: (state) => [...state.media_soubory].slice(0, 20),
 };
 
 /*
