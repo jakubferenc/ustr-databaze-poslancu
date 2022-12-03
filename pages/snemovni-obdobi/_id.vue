@@ -1,132 +1,132 @@
 <template lang="pug">
 
-  .parlament-detail.section
+.parlament-detail.section
 
-    .parlament-detail-header
+  .parlament-detail-header
 
-      .parlament-detail-header-stats.stats-left
+    .parlament-detail-header-stats.stats-left(v-if="statistiky")
 
-        .chart-row(v-if="statistiky.ProcentoMuzu")
+      .chart-row(v-if="statistiky.ProcentoMuzu")
 
-          .chart-widget.text-right.chart-pie
-            .chart-graphics.text-data
-              .text-data-main {{statistiky.ProcentoMuzu}}<small class="text-data-sub">%</small>
-              .text-data-sub mužů
-            .chart-text Poměr pohlaví poslanců
+        .chart-widget.text-right.chart-pie
+          .chart-graphics.text-data
+            .text-data-main {{statistiky.ProcentoMuzu}}<small class="text-data-sub">%</small>
+            .text-data-sub mužů
+          .chart-text Poměr pohlaví poslanců
 
-        .chart-row(v-if="statistiky.ProcentoVysokoskolaku")
+      .chart-row(v-if="statistiky.ProcentoVysokoskolaku")
 
-          .chart-widget.text-right.chart-pie
-            //.chart-graphics.pie
-            .chart-graphics.text-data
-              .text-data-main {{statistiky.ProcentoVysokoskolaku}}<small class="text-data-sub">%</small>
-              .text-data-sub
-            .chart-text Vysokoškoláků
+        .chart-widget.text-right.chart-pie
+          //.chart-graphics.pie
+          .chart-graphics.text-data
+            .text-data-main {{statistiky.ProcentoVysokoskolaku}}<small class="text-data-sub">%</small>
+            .text-data-sub
+          .chart-text Vysokoškoláků
 
-        .chart-row(v-if="statistiky.PocetMazaku && statistiky.CelkovyPocetPoslancu")
+      .chart-row(v-if="statistiky.PocetMazaku && statistiky.CelkovyPocetPoslancu")
 
-          .chart-widget.text-right.chart-pie
-            .chart-graphics.text-data
-              .text-data-main {{ parseInt(statistiky.PocetMazaku / (statistiky.CelkovyPocetPoslancu / 100))  }}<small class="text-data-sub">%</small>
-              .text-data-sub
-            .chart-text Znovuzvolených
+        .chart-widget.text-right.chart-pie
+          .chart-graphics.text-data
+            .text-data-main {{ parseInt(statistiky.PocetMazaku / (statistiky.CelkovyPocetPoslancu / 100))  }}<small class="text-data-sub">%</small>
+            .text-data-sub
+          .chart-text Znovuzvolených
 
-      .component-snemovna-schema
-        <ParlamentNahledObecnyImage />
+    .component-snemovna-schema
+      <ParlamentNahledObecnyImage />
 
-      .parlament-detail-header-stats.stats-right
+    .parlament-detail-header-stats.stats-right(v-if="statistiky")
 
-        .chart-row(v-if="statistiky.PrumernyVekPoslancu")
+      .chart-row(v-if="statistiky.PrumernyVekPoslancu")
 
-          .chart-widget.text-left.chart-pie
-            .chart-graphics.text-data
-              .text-data-main {{statistiky.PrumernyVekPoslancu}}
-              .text-data-sub let
-            .chart-text Průměrný věk
+        .chart-widget.text-left.chart-pie
+          .chart-graphics.text-data
+            .text-data-main {{statistiky.PrumernyVekPoslancu}}
+            .text-data-sub let
+          .chart-text Průměrný věk
 
-        .chart-row(v-if="statistiky.NejnizsiVekPoslance")
+      .chart-row(v-if="statistiky.NejnizsiVekPoslance")
 
-          .chart-widget.text-left.chart-pie
-            .chart-graphics.text-data
-              .text-data-main {{statistiky.NejnizsiVekPoslance}}
-              .text-data-sub let
-            .chart-text Nejnižší věk
+        .chart-widget.text-left.chart-pie
+          .chart-graphics.text-data
+            .text-data-main {{statistiky.NejnizsiVekPoslance}}
+            .text-data-sub let
+          .chart-text Nejnižší věk
 
-        .chart-row(v-if="statistiky.NejvyssiVekPoslance")
+      .chart-row(v-if="statistiky.NejvyssiVekPoslance")
 
-          .chart-widget.text-left.chart-pie
-            .chart-graphics.text-data
-              .text-data-main {{statistiky.NejvyssiVekPoslance}}
-              .text-data-sub let
-            .chart-text Nejvyšší věk
+        .chart-widget.text-left.chart-pie
+          .chart-graphics.text-data
+            .text-data-main {{statistiky.NejvyssiVekPoslance}}
+            .text-data-sub let
+          .chart-text Nejvyšší věk
 
-    .parlament-detail-title
-      h1.typography-main-title.typography-has-no-margin-top.typography-has-no-margin-bottom {{snemovniObdobi.Nazev}} <br> ({{snemovniObdobi.DatumZacatkuZobrazene}} — {{snemovniObdobi.DatumKonceZobrazene}} )
-      .counter-poslanci celkem {{snemovniObdobi.PocetPoslancu}} poslanců
-
-
-    .parlament-meta-tab-navigation
-      TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-detail-navigace")
+  .parlament-detail-title
+    h1.typography-main-title.typography-has-no-margin-top.typography-has-no-margin-bottom {{snemovniObdobi.Nazev}} <br> ({{snemovniObdobi.DatumZacatkuZobrazene}} — {{snemovniObdobi.DatumKonceZobrazene}} )
+    .counter-poslanci celkem {{snemovniObdobi.PocetPoslancu}} poslanců
 
 
-
-
-    .parlament-detail-poslanci
-
-
-      PoslanciSeznam(
-        :PoslanciVstupniPolozky="poslanci"
-        :NastaveniFiltrace="nastaveniFiltrace"
-        :MaPaginaci="false"
-        :MaFiltr="true"
-        :MaStatistiky="false"
-        :MaButtonMore="false"
-        :ButtonMoreLink="false"
-        :MaMapu="true"
-        :UkladatFiltrovanePoslanceDoStore="true"
-        Nadpis="Poslanci"
-        Mod="Vse"
-        :MaRazeni="true"
-      )
-
-    .parlament-detail-about.section-padding-h-margin-v
-
-      h2.section-title  O sněmovně
-
-      .typography-text-block.columns.is-multiline
-
-        .text-block-image.next-to-text.column.is-full.is-full-tablet.is-half-desktop
-          img(v-if="snemovniObdobi.UvodniFotografie" :src="snemovniObdobi.UvodniFotografie" :alt="snemovniObdobi.Nazev")
-        .typography-body-text.text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
-
-
-    .parlament-detail-events.section-padding-h-margin-v(v-if="snemovniObdobi.CasovaOsa")
-
-      h2.section-title Důležité události
-
-      CasovaOsa(:Data="snemovniObdobi.CasovaOsa")
-
-
-    .parlament-detail-galerie-medii.section-padding-h-margin-v(v-if="snemovniObdobi.Galerie")
-
-      h2.section-title Galerie médií
-
-      GalerieMediiSeznam(:Soubory="snemovniObdobi.Galerie" :MaButtonMore="false" :MaFilter="false")
-
-    //- .parlament-detail-metadata-table.section-padding-h-margin-v
-
-    //-   h2.section-title Kompletní informace o sněmovně
-
-    //-   p :TODO: DOPLNIT
+  .parlament-meta-tab-navigation
+    TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-detail-navigace")
 
 
 
-    .parlament-detail-navigation
-      .parlament-detail-navigation-title {{$t('showDataForWhen')}}
 
-      .button-toggler-component.normal
-        .button-toggle(title="Začátek sněmovního období" :class="{active: buttonToggleTypeActive === 'start'}" @click="toggleDate('start', $event)") {{snemovniObdobi.DatumZacatkuZobrazene}}
-        .button-toggle(title="Konec sněmovního období" :class="{active: buttonToggleTypeActive === 'end'}" @click="toggleDate('end', $event)") {{snemovniObdobi.DatumKonceZobrazene}}
+  .parlament-detail-poslanci
+
+
+    PoslanciSeznam(
+      :PoslanciVstupniPolozky="poslanci"
+      :NastaveniFiltrace="nastaveniFiltrace"
+      :MaPaginaci="false"
+      :MaFiltr="true"
+      :MaStatistiky="false"
+      :MaButtonMore="false"
+      :ButtonMoreLink="false"
+      :MaMapu="true"
+      :UkladatFiltrovanePoslanceDoStore="true"
+      Nadpis="Poslanci"
+      Mod="Vse"
+      :MaRazeni="true"
+    )
+
+  .parlament-detail-about.section-padding-h-margin-v
+
+    h2.section-title  O sněmovně
+
+    .typography-text-block.columns.is-multiline
+
+      .text-block-image.next-to-text.column.is-full.is-full-tablet.is-half-desktop
+        img(v-if="snemovniObdobi.UvodniFotografie" :src="snemovniObdobi.UvodniFotografie" :alt="snemovniObdobi.Nazev")
+      .typography-body-text.text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
+
+
+  .parlament-detail-events.section-padding-h-margin-v(v-if="snemovniObdobi.CasovaOsa")
+
+    h2.section-title Důležité události
+
+    CasovaOsa(:Data="snemovniObdobi.CasovaOsa")
+
+
+  .parlament-detail-galerie-medii.section-padding-h-margin-v(v-if="snemovniObdobi.Galerie")
+
+    h2.section-title Galerie médií
+
+    GalerieMediiSeznam(:Soubory="snemovniObdobi.Galerie" :MaButtonMore="false" :MaFilter="false")
+
+  //- .parlament-detail-metadata-table.section-padding-h-margin-v
+
+  //-   h2.section-title Kompletní informace o sněmovně
+
+  //-   p :TODO: DOPLNIT
+
+
+
+  .parlament-detail-navigation
+    .parlament-detail-navigation-title {{$t('showDataForWhen')}}
+
+    .button-toggler-component.normal
+      .button-toggle(title="Začátek sněmovního období" :class="{active: buttonToggleTypeActive === 'start'}" @click="toggleDate('start', $event)") {{snemovniObdobi.DatumZacatkuZobrazene}}
+      .button-toggle(title="Konec sněmovního období" :class="{active: buttonToggleTypeActive === 'end'}" @click="toggleDate('end', $event)") {{snemovniObdobi.DatumKonceZobrazene}}
 
 </template>
 
