@@ -304,21 +304,16 @@ export default {
             let snemovniObdobiString = "";
 
             // we don't want to show "od" and "do" dates for addresses of types 1,5,6  as they are addresses of birth and death and grave
-            if ((item.Zacatek || item.Konec) && ![1, 4, 5, 2].includes(item.Druh)) {
+            if ((item.Zacatek || item.Konec) && [2].includes(item.Druh)) {
               snemovniObdobiString += `<div class="map-card__date-item">`;
 
               snemovniObdobiString += item.Zacatek
-                ? `<span>od ${dateISOStringToCZFormat(item.Zacatek)}</span>`
-                : "<span>od ???</span>";
-              snemovniObdobiString += item.Konec
-                ? `&nbsp; &mdash; do <span>${dateISOStringToCZFormat(
-                    item.Konec
-                  )}</span> <br>`
-                : "&nbsp;<span>do ???</span>";
+                ? `<span>od dne ${dateISOStringToCZFormat(item.Zacatek)}</span>`
+                : "<span>od dne ???</span>";
               snemovniObdobiString += `</div>`;
             }
 
-            if ((item.Zacatek || item.Konec) && [1, 4, 5, 2].includes(item.Druh)) {
+            if ((item.Zacatek || item.Konec) && [1, 4, 5].includes(item.Druh)) {
               snemovniObdobiString += `<div class="map-card__date-item">`;
               if (item.Zacatek) {
                 snemovniObdobiString += `<span>${dateISOStringToCZFormat(
@@ -562,20 +557,20 @@ export default {
         }
       }, 100);
 
-      setTimeout(async () => {
-        if (this.socialniMapaData) {
-          const dataNew = this.socialniMapaData;
+      // setTimeout(async () => {
+      //   if (this.socialniMapaData) {
+      //     const dataNew = this.socialniMapaData;
 
-          const orgChartInstance = new OrgChart({
-            chartContainer: "#socialni-mapy-container",
-            data: dataNew,
-            depth: 7,
-            nodeContent: "title",
-            toggleSiblingsResp: false,
-            // 'direction': 'l2r',
-          });
-        }
-      }, 0);
+      //     const orgChartInstance = new OrgChart({
+      //       chartContainer: "#socialni-mapy-container",
+      //       data: dataNew,
+      //       depth: 7,
+      //       nodeContent: "title",
+      //       toggleSiblingsResp: false,
+      //       // 'direction': 'l2r',
+      //     });
+      //   }
+      // }, 0);
     });
   },
 
