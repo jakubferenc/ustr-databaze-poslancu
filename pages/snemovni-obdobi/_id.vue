@@ -349,11 +349,30 @@ export default {
 
   computed: {
     hideKurie() {
+      const kurie = [...this.poslanci]
+        .map((poslanec) => {
+          return poslanec.Mandaty.filter(
+            (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
+          )
+            .filter((item) => item !== null)
+            .map((mandat) =>
+              mandat.Kurie && mandat.Kurie.length > 0 ? mandat.Kurie : ["neuvedeno"]
+            )
+            .reduce((prev, current) => {
+              return [...prev, ...current];
+            }, []);
+        })
+        .reduce((prev, current) => {
+          return [...prev, ...current];
+        }, []);
+
       const hasZobrazovatKurieProperty = this.snemovniObdobi?.acf?.hasOwnProperty(
         "zobrazovat_kurie"
       );
       if (hasZobrazovatKurieProperty) {
         return this.snemovniObdobi?.acf?.zobrazovat_kurie === false;
+      } else if (kurie.length > 1) {
+        return true;
       } else {
         return false;
       }
