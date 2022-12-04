@@ -399,6 +399,8 @@ export default {
 
       let funkce = [];
 
+      let druh_konce_mandatu = [];
+
       [...this.poslanci].forEach((item) => {
         if (item.Nabozenstvi.length === 0) {
           nabozenske_vyznani.push("neuvedeno");
@@ -423,7 +425,7 @@ export default {
           ).map((mandat) =>
             mandat.VolebniStrana && mandat.VolebniStrana !== ""
               ? mandat.VolebniStrana
-              : "neuvedeno"
+              : ["neuvedeno"]
           ),
         ];
 
@@ -432,9 +434,14 @@ export default {
           ...kurie,
           ...item.Mandaty.filter(
             (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
-          ).map((mandat) =>
-            mandat.Kurie && mandat.Kurie !== "" ? mandat.Kurie : "neuvedeno"
-          ),
+          )
+            .map((mandat) =>
+              mandat.Kurie && mandat.Kurie.length > 0 ? mandat.Kurie : ["neuvedeno"]
+            )
+            .reduce((prev, current) => {
+              return [...prev, ...current];
+            }, [])
+            .filter((item) => item !== null),
         ];
 
         // vybory
@@ -481,6 +488,18 @@ export default {
             .reduce((prev, current) => {
               return [...prev, ...current];
             }, [])
+            .filter((item) => item !== null),
+        ];
+
+        // volebni strany
+        druh_konce_mandatu = [
+          ...druh_konce_mandatu,
+          ...item.Mandaty.filter(
+            (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
+          )
+            .map((mandat) =>
+              mandat.DruhKonce && mandat.DruhKonce !== "" ? mandat.DruhKonce : "neuvedeno"
+            )
             .filter((item) => item !== null),
         ];
       });
@@ -610,8 +629,12 @@ export default {
               const kurieItems = [...property]
                 .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
                 .map((mandat) =>
-                  mandat.Kurie && mandat.Kurie !== "" ? mandat.Kurie : "neuvedeno"
-                );
+                  mandat.Kurie && mandat.Kurie !== "" ? mandat.Kurie : ["neuvedeno"]
+                )
+                .reduce((prev, current) => {
+                  return [...prev, ...current];
+                }, [])
+                .filter((item) => item !== null);
 
               return kurieItems.includes(item);
             },
@@ -749,7 +772,45 @@ export default {
           selected: true,
           validate: (property) => true,
         },
-        ...funkce,
+        ...funkce.sort(),
+      ];
+
+      // make unique values
+      druh_konce_mandatu = [...new Set(druh_konce_mandatu)]
+        .sort((a, b) => a.toString().localeCompare(b))
+        .map((item) => {
+          const itemId = item === "neuvedeno" ? "neuvedeno" : item;
+
+          return {
+            id: itemId,
+            text: item,
+            selected: false,
+            validate: (property) => {
+              const druhUkonceniMandatu = [...property]
+                .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+                .map((mandat) =>
+                  mandat.DruhKonce && mandat.DruhKonce !== ""
+                    ? mandat.DruhKonce
+                    : "neuvedeno"
+                )
+                .filter((item) => item !== null);
+
+              return druhUkonceniMandatu.includes(item);
+            },
+          };
+        });
+
+      // add default value
+      druh_konce_mandatu = [
+        {
+          id: "vse-konec-mandatu",
+          text: "Vše",
+          default: true,
+          reset: true,
+          selected: true,
+          validate: (property) => true,
+        },
+        ...druh_konce_mandatu,
       ];
 
       // make unique values
@@ -1134,6 +1195,18 @@ export default {
               validate: (property) => !property.length || property.length === 0,
             },
           ],
+        },
+        MandatyDruhUkonceni: {
+          id: sectionId++,
+          title: "Druh ukončení mandátu",
+          type: "checkbox",
+          multiple: true,
+          reset: true,
+          order: "block",
+          property: "Mandaty",
+          info: "Nějaké informace k vysvětlení",
+          hasCounter: true,
+          values: druh_konce_mandatu,
         },
         PocetMandatu: {
           id: sectionId++,

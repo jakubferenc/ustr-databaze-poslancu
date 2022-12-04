@@ -197,147 +197,147 @@
 
 <style lang="sass" scoped>
 
-  .section-title
-    @extend %typography-section-title
+.filter-list-item-value
+  &::first-letter
+    text-transform: uppercase
+.section-title
+  @extend %typography-section-title
 
-  .info-icon
-    display: inline-flex
-    justify-content: center
-    align-items: center
-    content: "i"
-    width: 20px
-    height: 20px
-    background-color: black
-    color: #fff
-    position: relative
-    margin-left: 1em
-    top: 4px
+.info-icon
+  display: inline-flex
+  justify-content: center
+  align-items: center
+  content: "i"
+  width: 20px
+  height: 20px
+  background-color: black
+  color: #fff
+  position: relative
+  margin-left: 1em
+  top: 4px
 
-    &:hover
-      .info-text
-        display: block
-
+  &:hover
     .info-text
-      background-color: #fff
-      color: #000
-      min-width: 250px
-      border-radius: 5px
+      display: block
+
+  .info-text
+    background-color: #fff
+    color: #000
+    min-width: 250px
+    border-radius: 5px
+    display: none
+    position: absolute
+    top: 1em
+    left: 1em
+    padding: 1em 2em
+    z-index: 9
+
+.pagination-bar
+  display: flex
+  justify-content: space-between
+  margin-bottom: 3em
+
+  .pagination-item
+    text-decoration: none
+    min-width: 30px
+    text-align: center
+    display: inline-block
+    border: 1px solid transparent
+
+    &:not(.bullets):hover
+      border-color: #000
+
+
+  .pagination-list
+    display: flex
+    justify-content: space-between
+
+
+
+.statistics-diagram
+  display: flex
+  justify-content: center
+  align-item: center
+
+
+label.disabled,
+input:disabled
+  cursor: not-allowed
+  pointer-events: none
+  opacity: .5
+
+
+.filter-seznam-bar
+  display: flex
+  align-item: center
+  justify-content: space-between
+  margin-bottom: 40px
+  font-size: 12px
+
+.custom-select
+
+  $custom-select-width: 260px
+
+  @extend %button
+
+  cursor: pointer
+  width: $custom-select-width
+  position: relative
+  font-size: 12px
+
+
+  &, &:focus, &:active
+    outline: none
+    user-select: none
+
+  &[data-has-been-selected="true"]
+    .option-default-text
       display: none
-      position: absolute
-      top: 1em
-      left: 1em
-      padding: 1em 2em
-      z-index: 9
 
-  .pagination-bar
-    display: flex
-    justify-content: space-between
-    margin-bottom: 3em
+  &[data-open="true"]
 
-    .pagination-item
-      text-decoration: none
-      min-width: 30px
-      text-align: center
-      display: inline-block
-      border: 1px solid transparent
+    top: -1px // :TODO: #4 A bug when a custom select is open, it moves down by 1px
 
-      &:not(.bullets):hover
-        border-color: #000
-
-
-    .pagination-list
-      display: flex
-      justify-content: space-between
-
-
-
-  .statistics-diagram
-    display: flex
-    justify-content: center
-    align-item: center
-
-
-  label.disabled,
-  input:disabled
-    cursor: not-allowed
-    pointer-events: none
-    opacity: .5
-
-
-  .filter-seznam-bar
-    display: flex
-    align-item: center
-    justify-content: space-between
-    margin-bottom: 40px
-    font-size: 12px
-
-  .custom-select
-
-    $custom-select-width: 260px
-
-    @extend %button
-
-    cursor: pointer
-    width: $custom-select-width
-    position: relative
-    font-size: 12px
-
-
-    &, &:focus, &:active
-      outline: none
-      user-select: none
-
-    &[data-has-been-selected="true"]
-      .option-default-text
-        display: none
-
-    &[data-open="true"]
-
-      top: -1px // :TODO: #4 A bug when a custom select is open, it moves down by 1px
-
-      border-bottom: none
-      border-bottom-left-radius: 0
-      border-bottom-right-radius: 0
-      .options
-        display: flex
-
-      .option-default-text
-        display: inline-block
-
-
-      .option-selected-text
-        display: none
-
-
+    border-bottom: none
+    border-bottom-left-radius: 0
+    border-bottom-right-radius: 0
     .options
-      background: #fff
-      position: absolute
-      left: -1px
+      display: flex
+
+    .option-default-text
+      display: inline-block
+
+
+    .option-selected-text
       display: none
-      flex-direction: column
-      border: 1px solid #000
-      border-top: none
-      width: $custom-select-width
-      border-bottom-left-radius: 10px
-      border-bottom-right-radius: 10px
 
-      .option
-        display: block
 
-        &.selected
-          text-decoration: underline
+  .options
+    background: #fff
+    position: absolute
+    left: -1px
+    display: none
+    flex-direction: column
+    border: 1px solid #000
+    border-top: none
+    width: $custom-select-width
+    border-bottom-left-radius: 10px
+    border-bottom-right-radius: 10px
 
+    .option
+      display: block
+
+      &.selected
+        text-decoration: underline
 </style>
 
 <script>
-const Poslanec = () => import('~/components/Poslanec.vue');
-const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
-const Mapa = () => import('~/components/Mapa.vue');
+const Poslanec = () => import("~/components/Poslanec.vue");
+const MultiRangeSlider = () => import("~/components/MultiRangeSlider.vue");
+const Mapa = () => import("~/components/Mapa.vue");
 
 export default {
-
   components: { Mapa, Poslanec, MultiRangeSlider },
-
 
   props: [
     "MaButtonMorePrevious",
@@ -353,87 +353,66 @@ export default {
     "MaMapu",
     "Nadpis",
     "Mod",
-    "MaRazeni"
+    "MaRazeni",
   ],
 
   computed: {
-
     isLoading() {
       return !(this.PoslanciVstupniPolozky?.length > 0 === true);
     },
 
     filtrNastaveni() {
-
-
       return this.NastaveniFiltrace;
-
     },
 
     poslanci() {
-
       return this.currentFilteredPoslanci;
-
     },
-
-
 
     sidebarButtonToggleStyles() {
       return {
-        active: this.isSidebarOpen
-      }
+        active: this.isSidebarOpen,
+      };
     },
     pocetPoslancuFiltrovanych() {
       return this.poslanci.length;
     },
-    pocetPoslancu: function() {
+    pocetPoslancu: function () {
       return this.PoslanciVstupniPolozky.length;
     },
     aktualniNastaveniRazeni() {
       return this.radit.selectedOptionId;
-    }
+    },
   },
 
-
   methods: {
-
     getFilteredPoslanci() {
-
-
       let currentPoslanci = [...this.PoslanciVstupniPolozky];
 
-
       if (this.MaFiltr) {
-
         if (!this.radit.hasBeenSelected) {
-
           // make zakladni razeni sort filter
-          currentPoslanci = [...currentPoslanci].sort((a, b) => (a.Id > b.Id) ? 1 : -1);
-
+          currentPoslanci = [...currentPoslanci].sort((a, b) => (a.Id > b.Id ? 1 : -1));
         }
 
-        if ( this.filtrovat.hasBeenSelected ) {
-
+        if (this.filtrovat.hasBeenSelected) {
           // filter has been set, let us filter poslance
 
           // here filtering based on the this.filterNastaveni
 
           currentPoslanci = currentPoslanci.filter((poslanec) => {
-
             let itemSatisfyFilter = [];
-
 
             // filter
             Object.keys(this.filtrNastaveni).forEach((polozkaFiltrKey) => {
-
-
               const itemPropertyToTest = this.filtrNastaveni[polozkaFiltrKey].property;
 
               let tempFilterResults = []; // here will be several boolean variables true or false, we need to get at least one true for the filter item to be true as such and this the item passes the filter
 
-
-              if (this.filtrNastaveni[polozkaFiltrKey].type !== 'range') {
-
-                const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.selected);
+              if (this.filtrNastaveni[polozkaFiltrKey].type !== "range") {
+                const thisFilterItemSelectedItems = this.filtrNastaveni[
+                  polozkaFiltrKey
+                ].values.filter((item) => item.selected);
 
                 // filter these properties of checkbox and radio buttons
 
@@ -441,44 +420,50 @@ export default {
                 // or multiple items for multiple "poslanec" properties, then attribute "property" must be for each filter item as well as "property" for the filter section must be an array
 
                 // we are testing one property with multiple values
-                thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
-
-                  tempFilterResults = [...tempFilterResults, itemFiltervalidator.validate(poslanec[itemPropertyToTest])];
-
+                thisFilterItemSelectedItems.forEach((itemFiltervalidator) => {
+                  tempFilterResults = [
+                    ...tempFilterResults,
+                    itemFiltervalidator.validate(poslanec[itemPropertyToTest]),
+                  ];
                 });
 
-                itemSatisfyFilter = [...itemSatisfyFilter, tempFilterResults.includes(true)];
-
-
+                itemSatisfyFilter = [
+                  ...itemSatisfyFilter,
+                  tempFilterResults.includes(true),
+                ];
               } else {
-
                 // range
                 // here we are testing attributes of the given poslanec against the range element and its setting inside this.filtrNastaveni
                 // the validator function differs from radio or checkbox elements so that we need the current "min" or "max" value of the given range element
 
                 console.log("validation range", polozkaFiltrKey);
 
-                const thisFilterItemSelectedItems = this.filtrNastaveni[polozkaFiltrKey].values.filter(item => item.hasOwnProperty('selected'));
+                const thisFilterItemSelectedItems = this.filtrNastaveni[
+                  polozkaFiltrKey
+                ].values.filter((item) => item.hasOwnProperty("selected"));
 
-                thisFilterItemSelectedItems.forEach(itemFiltervalidator => {
-
-                  tempFilterResults = itemFiltervalidator.selected === false ? [...tempFilterResults, true] : [...tempFilterResults, itemFiltervalidator.validate(poslanec[itemPropertyToTest], itemFiltervalidator.currentValue)];
-
+                thisFilterItemSelectedItems.forEach((itemFiltervalidator) => {
+                  tempFilterResults =
+                    itemFiltervalidator.selected === false
+                      ? [...tempFilterResults, true]
+                      : [
+                          ...tempFilterResults,
+                          itemFiltervalidator.validate(
+                            poslanec[itemPropertyToTest],
+                            itemFiltervalidator.currentValue
+                          ),
+                        ];
                 });
 
                 // both min and max must be validated as true in order for the given poslanec to be included in the filtered list
                 // threfore, we have to modify the imteSatisfyFilter evaluation for the range element
                 // if one false is included, entire validation for the range element is false
-                itemSatisfyFilter = [...itemSatisfyFilter, !tempFilterResults.includes(false)];
-
-
+                itemSatisfyFilter = [
+                  ...itemSatisfyFilter,
+                  !tempFilterResults.includes(false),
+                ];
               }
-
-
-
-
             });
-
 
             // must be all true
 
@@ -486,62 +471,51 @@ export default {
             // :TODO: but I am not sure if it is necessary for the performance
 
             return ![...new Set(itemSatisfyFilter)].includes(false);
-
-
           });
-
         }
 
         if (this.radit.hasBeenSelected) {
-
-          currentPoslanci = this.getRazeniPoslanciSeznam(this.radit.selectedOptionId, currentPoslanci);
-
+          currentPoslanci = this.getRazeniPoslanciSeznam(
+            this.radit.selectedOptionId,
+            currentPoslanci
+          );
         }
-
-
       }
 
       if (this.UkladatFiltrovanePoslanceDoStore) {
-
         // commit & dispatch
         this.$store.dispatch("setPoslanciFiltrovani", currentPoslanci);
-
       }
 
       // return
 
       return currentPoslanci;
-
     },
 
-
     toggleSidebar() {
-
-      this.isSidebarOpen = (this.isSidebarOpen) ? false: true;
-
+      this.isSidebarOpen = this.isSidebarOpen ? false : true;
     },
 
     toggleSelect() {
-
-      this.radit.isActive = (this.radit.isActive) ? false: true;
-
+      this.radit.isActive = this.radit.isActive ? false : true;
     },
 
     selectOrderOption(selectedOptionId, selectedOptionText) {
-
       if (!this.radit.hasBeenSelected) {
-        this.radit.hasBeenSelected = true
+        this.radit.hasBeenSelected = true;
       }
 
       this.radit.selectedOptionId = selectedOptionId;
       this.radit.selectedOptionText = selectedOptionText;
-      this.$el.querySelectorAll(`.option.selected`).forEach(item => item.classList.remove('selected'));
-      this.$el.querySelector(`[data-option-id="${selectedOptionId}"]`).classList.add('selected');
+      this.$el
+        .querySelectorAll(`.option.selected`)
+        .forEach((item) => item.classList.remove("selected"));
+      this.$el
+        .querySelector(`[data-option-id="${selectedOptionId}"]`)
+        .classList.add("selected");
 
       this.currentFilteredPoslanci = this.getFilteredPoslanci();
-
     },
-
 
     // this functions edits the reactive object this.FiltrNastaveni
     // html elements inside the Sidebar filter will be then automagically, reactivelly re-renders based on the contents of that reactive object this.FiltrNastaveni
@@ -552,152 +526,123 @@ export default {
     // This function merges together this.FilterNastaveni and the whole subproperty of this object
     // This function basically selects which filter items are selected and which not.
     // The filtering as such is done inside the computer property this.poslanci where the whole logic based on this.FilterNastaveni lies
-    onSelectFilterOption(filtrSekceKey, thisObjIndex, type, multiple, sectionHasReset, $event) {
-
+    onSelectFilterOption(
+      filtrSekceKey,
+      thisObjIndex,
+      type,
+      multiple,
+      sectionHasReset,
+      $event
+    ) {
       if (!this.filtrovat.hasBeenSelected) {
         this.filtrovat.hasBeenSelected = true;
       }
 
       const tempResult = this.filtrNastaveni[filtrSekceKey];
 
-
       // for checkboxes and radio buttons
-      if (type !== 'range') {
-
+      if (type !== "range") {
         // checkboxes
         if (multiple) {
-
           if (sectionHasReset) {
-
             const isItemReset = tempResult.values[thisObjIndex].reset || false;
 
             tempResult.values.forEach((item, index) => {
-
               if (isItemReset) {
-
                 item.selected = index === thisObjIndex;
-
               } else {
-
                 if (index === thisObjIndex) {
-                  item.selected = (item.selected) ? false : true;
+                  item.selected = item.selected ? false : true;
                 }
 
                 if (item.reset) {
                   item.selected = false;
                 }
-
               }
-
-
             });
 
             // Check if no options are selected, then select vse/reset button
-            if (tempResult.values.filter(item => item.selected).length === 0) {
-              tempResult.values.filter(item => item.reset)[0].selected = true;
+            if (tempResult.values.filter((item) => item.selected).length === 0) {
+              tempResult.values.filter((item) => item.reset)[0].selected = true;
             }
-
-
           } else {
-
-            tempResult.values[thisObjIndex].selected = (tempResult.values[thisObjIndex].selected) ? false : true;
-
+            tempResult.values[thisObjIndex].selected = tempResult.values[thisObjIndex]
+              .selected
+              ? false
+              : true;
           }
-
         } else {
-
           // radio buttons
 
           tempResult.values.forEach((item, index) => {
-
             // make a radio button option active if the selected radio button id equals the index within the filter section (the order is the same)
             item.selected = thisObjIndex === index;
-
           });
-
         }
-
       }
 
-
       this.currentFilteredPoslanci = this.getFilteredPoslanci();
-
-
     },
 
     getRazeniPoslanciSeznam(selectedOptionId, poslanci) {
-
-
       let filteredPoslanci = [...poslanci];
-
 
       // Sorting
 
-      if (selectedOptionId === 'radit-datum-narozeni') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene) ? 1 : -1);
-
+      if (selectedOptionId === "radit-datum-narozeni") {
+        filteredPoslanci = filteredPoslanci.sort((a, b) =>
+          a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene ? 1 : -1
+        );
       }
 
-      if (selectedOptionId === 'radit-datum-narozeni-sestupne') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene) ? 1 : -1);
-
+      if (selectedOptionId === "radit-datum-narozeni-sestupne") {
+        filteredPoslanci = filteredPoslanci.sort((a, b) =>
+          a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene ? 1 : -1
+        );
       }
 
-      if (selectedOptionId === 'radit-prijmeni') {
-
+      if (selectedOptionId === "radit-prijmeni") {
         filteredPoslanci = filteredPoslanci.sort((a, b) => {
           const nameA = a.Prijmeni.toLowerCase();
           const nameB = b.Prijmeni.toLowerCase();
 
-          return (nameA > nameB) ? 1 : -1;
-
+          return nameA > nameB ? 1 : -1;
         });
-
       }
 
-      if (selectedOptionId === 'radit-prijmeni-sestupne') {
-
+      if (selectedOptionId === "radit-prijmeni-sestupne") {
         filteredPoslanci = filteredPoslanci.sort((a, b) => {
           const nameA = a.Prijmeni.toLowerCase();
           const nameB = b.Prijmeni.toLowerCase();
 
-          return (nameA < nameB) ? 1 : -1;
-
+          return nameA < nameB ? 1 : -1;
         });
-
       }
 
-      if (selectedOptionId === 'radit-pocet-mandatu') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Mandaty.length > b.Mandaty.length) ? 1 : -1);
-
+      if (selectedOptionId === "radit-pocet-mandatu") {
+        filteredPoslanci = filteredPoslanci.sort((a, b) =>
+          a.Mandaty.length > b.Mandaty.length ? 1 : -1
+        );
       }
 
-      if (selectedOptionId === 'radit-pocet-mandatu-sestupne') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Mandaty.length < b.Mandaty.length) ? 1 : -1);
-
+      if (selectedOptionId === "radit-pocet-mandatu-sestupne") {
+        filteredPoslanci = filteredPoslanci.sort((a, b) =>
+          a.Mandaty.length < b.Mandaty.length ? 1 : -1
+        );
       }
 
-      if (selectedOptionId === 'radit-id') {
-
-        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Id > b.Id) ? 1 : -1);
-
+      if (selectedOptionId === "radit-id") {
+        filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Id > b.Id ? 1 : -1));
       }
-
 
       // commit & dispatch
 
       this.$store.commit("updatePoslanciFiltrovani", filteredPoslanci);
 
       return filteredPoslanci;
-
     },
 
     onRangeChange(filtrSekceKey, $event) {
-
       if (!this.filtrovat.hasBeenSelected) {
         this.filtrovat.hasBeenSelected = true;
       }
@@ -706,63 +651,53 @@ export default {
 
       if ($event.values.MinimalniPocetMandatu) {
         tempResult.values[0].currentValue = $event.values.MinimalniPocetMandatu;
-        tempResult.values[0].selected = tempResult.values[2] !== $event.values.MinimalniPocetMandatu;
+        tempResult.values[0].selected =
+          tempResult.values[2] !== $event.values.MinimalniPocetMandatu;
       }
       if ($event.values.MaximalniPocetMandatu) {
         tempResult.values[1].currentValue = $event.values.MaximalniPocetMandatu;
-        tempResult.values[1].selected = tempResult.values[3] !== $event.values.MaximalniPocetMandatu;
+        tempResult.values[1].selected =
+          tempResult.values[3] !== $event.values.MaximalniPocetMandatu;
       }
 
-
       this.currentFilteredPoslanci = this.getFilteredPoslanci();
-
-
     },
-
   },
 
   created() {
     // :TODO: #5 Check if this is necessary and will be implemented
     if (this.radit.selectedOptionId !== undefined) {
       // we have a default order value set
-      let getFilterInDefaults = this.RaditDle.filter(item => item.id === this.radit.selectedOptionId);
+      let getFilterInDefaults = this.RaditDle.filter(
+        (item) => item.id === this.radit.selectedOptionId
+      );
       if (getFilterInDefaults.length) {
-        const {selectedOptionId, selectedOptionText} = getFilterInDefaults;
-        this.$emit('selectOption', {selectedOptionId, selectedOptionText});
+        const { selectedOptionId, selectedOptionText } = getFilterInDefaults;
+        this.$emit("selectOption", { selectedOptionId, selectedOptionText });
       }
     }
 
     this.currentFilteredPoslanci = [...this.PoslanciVstupniPolozky];
-
   },
 
   mounted() {
-
-    this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
+    this.$sidebar = this.$el.querySelector(".seznam-filter-sidebar");
 
     if (this.MaPaginaci) {
-
-      const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
-      $scrollIntoViewBtn.addEventListener('click', (e) => {
-
+      const $scrollIntoViewBtn = this.$el.querySelector("[data-scroll-into]");
+      $scrollIntoViewBtn.addEventListener("click", (e) => {
         e.preventDefault();
 
-        const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
+        const $target = this.$el.querySelector(e.currentTarget.getAttribute("rel"));
         $target.scrollIntoView();
-
-
       });
-
     }
-
-
-
   },
 
   data() {
     return {
       filtrovat: {
-        hasBeenSelected: false
+        hasBeenSelected: false,
       },
       radit: {
         isActive: false,
@@ -770,15 +705,15 @@ export default {
         selectedOptionText: undefined,
         hasBeenSelected: false,
         RaditDle: [
-          { id: 'radit-id', text: 'Základní řazení' },
-          { id: 'radit-prijmeni', text: 'Podle příjmení (od A)' },
-          { id: 'radit-prijmeni-sestupne', text: 'Podle příjmení (od Z)' },
-          { id: 'radit-pocet-mandatu', text: 'Nejméně mandátů' },
-          { id: 'radit-pocet-mandatu-sestupne', text: 'Nejvíce mandátů' },
-          { id: 'radit-datum-narozeni', text: 'Od nejmladších' },
-          { id: 'radit-datum-narozeni-sestupne', text: 'Od nejstarších' },
+          { id: "radit-id", text: "Základní řazení" },
+          { id: "radit-prijmeni", text: "Podle příjmení (od A)" },
+          { id: "radit-prijmeni-sestupne", text: "Podle příjmení (od Z)" },
+          { id: "radit-pocet-mandatu", text: "Nejméně mandátů" },
+          { id: "radit-pocet-mandatu-sestupne", text: "Nejvíce mandátů" },
+          { id: "radit-datum-narozeni", text: "Od nejmladších" },
+          { id: "radit-datum-narozeni-sestupne", text: "Od nejstarších" },
         ],
-        ZakladniPolozka: { id: 'radit-default', text: 'řadit dle' },
+        ZakladniPolozka: { id: "radit-default", text: "řadit dle" },
       },
       filtrNastaveniAktualniPolozky: {},
       isSidebarOpen: true, // can set a default value
