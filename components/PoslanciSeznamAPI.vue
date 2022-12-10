@@ -7,7 +7,7 @@
   .mapa-container.section(v-if="MaMapu && Mod === 'Vse' ")
 
     h2.section-title Místo narození poslanců
-      span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
+      span.section-title-subtitle Mapa se aktualizuje podle zvoleného nastavení filtru
 
 
     Mapa(v-if="poslanci" :PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa")
@@ -210,174 +210,169 @@
 
 <style lang="sass" scoped>
 
-  .section-title
+.section-title
 
-    @extend %typography-section-title
+  @extend %typography-section-title
 
 
-  .mapa-container
-    margin-bottom: 4em
+.mapa-container
+  margin-bottom: 4em
 
-  .info-icon
-    display: inline-flex
-    justify-content: center
-    align-items: center
-    content: "i"
-    width: 20px
-    height: 20px
-    background-color: black
-    color: #fff
-    position: relative
-    margin-left: 1em
-    top: 4px
+.info-icon
+  display: inline-flex
+  justify-content: center
+  align-items: center
+  content: "i"
+  width: 20px
+  height: 20px
+  background-color: black
+  color: #fff
+  position: relative
+  margin-left: 1em
+  top: 4px
 
-    &:hover
-      .info-text
-        display: block
-
+  &:hover
     .info-text
-      background-color: #fff
-      color: #000
-      min-width: 250px
-      border-radius: 5px
-      display: none
-      position: absolute
-      top: 1em
-      left: 1em
-      padding: 1em 2em
-      z-index: 9
+      display: block
 
-  .hidden
+  .info-text
+    background-color: #fff
+    color: #000
+    min-width: 250px
+    border-radius: 5px
     display: none
+    position: absolute
+    top: 1em
+    left: 1em
+    padding: 1em 2em
+    z-index: 9
 
-  .seznam-filter-sidebar-content-section-content
-    max-height: 300px
-    overflow-y: auto
+.hidden
+  display: none
 
-  .filter-list
-    padding-left: 5px
+.seznam-filter-sidebar-content-section-content
+  max-height: 300px
+  overflow-y: auto
 
-  .pagination-bar
+.filter-list
+  padding-left: 5px
 
-    margin-bottom: 3em
+.pagination-bar
 
-    .pagination-item
-      text-decoration: none
-      min-width: 30px
-      text-align: center
-      display: inline-block
-      border: 1px solid transparent
-      cursor: pointer
+  margin-bottom: 3em
 
-      &:not(.bullets).active
-        border-color: #000
-        background-color: #000
-        color: #fff
-
-      &:not(.bullets):hover
-        border-color: #000
-
-
-    .pagination-list
-      display: flex
-      justify-content: flex-start
-      flex-wrap: wrap
-      margin-top: 1em
-
-
-
-
-  .statistics-diagram
-    display: flex
-    justify-content: center
-    align-item: center
-
-
-  label.disabled,
-  input:disabled
-    cursor: not-allowed
-    pointer-events: none
-    opacity: .5
-
-
-  .filter-seznam-bar
-    display: flex
-    align-item: center
-    justify-content: space-between
-    margin-bottom: 40px
-    font-size: 12px
-
-  .custom-select
-
-    $custom-select-width: 260px
-
-    @extend %button
-
+  .pagination-item
+    text-decoration: none
+    min-width: 30px
+    text-align: center
+    display: inline-block
+    border: 1px solid transparent
     cursor: pointer
-    width: $custom-select-width
-    position: relative
-    font-size: 12px
+
+    &:not(.bullets).active
+      border-color: #000
+      background-color: #000
+      color: #fff
+
+    &:not(.bullets):hover
+      border-color: #000
 
 
-    &, &:focus, &:active
-      outline: none
-      user-select: none
-
-    &[data-has-been-selected="true"]
-      .option-default-text
-        display: none
-
-    &[data-open="true"]
-
-      top: -1px // :TODO: #4 A bug when a custom select is open, it moves down by 1px
-
-      border-bottom: none
-      border-bottom-left-radius: 0
-      border-bottom-right-radius: 0
-      .options
-        display: flex
-
-      .option-default-text
-        display: inline-block
+  .pagination-list
+    display: flex
+    justify-content: flex-start
+    flex-wrap: wrap
+    margin-top: 1em
 
 
-      .option-selected-text
-        display: none
 
 
-    .options
-      background: #fff
-      position: absolute
-      left: -1px
+.statistics-diagram
+  display: flex
+  justify-content: center
+  align-item: center
+
+
+label.disabled,
+input:disabled
+  cursor: not-allowed
+  pointer-events: none
+  opacity: .5
+
+
+.filter-seznam-bar
+  display: flex
+  align-item: center
+  justify-content: space-between
+  margin-bottom: 40px
+  font-size: 12px
+
+.custom-select
+
+  $custom-select-width: 260px
+
+  @extend %button
+
+  cursor: pointer
+  width: $custom-select-width
+  position: relative
+  font-size: 12px
+
+
+  &, &:focus, &:active
+    outline: none
+    user-select: none
+
+  &[data-has-been-selected="true"]
+    .option-default-text
       display: none
-      flex-direction: column
-      border: 1px solid #000
-      border-top: none
-      width: $custom-select-width
-      border-bottom-left-radius: 10px
-      border-bottom-right-radius: 10px
 
-      .option
-        display: block
+  &[data-open="true"]
 
-        &.selected
-          text-decoration: underline
+    top: -1px // :TODO: #4 A bug when a custom select is open, it moves down by 1px
 
+    border-bottom: none
+    border-bottom-left-radius: 0
+    border-bottom-right-radius: 0
+    .options
+      display: flex
+
+    .option-default-text
+      display: inline-block
+
+
+    .option-selected-text
+      display: none
+
+
+  .options
+    background: #fff
+    position: absolute
+    left: -1px
+    display: none
+    flex-direction: column
+    border: 1px solid #000
+    border-top: none
+    width: $custom-select-width
+    border-bottom-left-radius: 10px
+    border-bottom-right-radius: 10px
+
+    .option
+      display: block
+
+      &.selected
+        text-decoration: underline
 </style>
 
 <script>
+const Poslanec = () => import("~/components/Poslanec.vue");
+const Mapa = () => import("~/components/Mapa.vue");
+const MultiRangeSlider = () => import("~/components/MultiRangeSlider.vue");
 
-const Poslanec = () => import('~/components/Poslanec.vue');
-const Mapa = () => import('~/components/Mapa.vue');
-const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
-
-import {customLogger, normalizeURLParamsToValueInArrayFormat} from '~/utils/functions'
-
+import { customLogger, normalizeURLParamsToValueInArrayFormat } from "~/utils/functions";
 
 export default {
-
   components: { Poslanec, MultiRangeSlider, Mapa },
-
 
   props: [
     "MaButtonMorePrevious",
@@ -394,38 +389,26 @@ export default {
     "Nadpis",
     "NastaveniMapa",
     "Mod",
-    "MaRazeni"
+    "MaRazeni",
   ],
 
   computed: {
-
     isDefaultParlamentSelected() {
-
-
-      return this.NastaveniFiltrace['Snemovny'].values[0].selected;
-
-
+      return this.NastaveniFiltrace["Snemovny"].values[0].selected;
     },
 
-
-
     filtrNastaveni() {
-
-
-      return {...this.NastaveniFiltrace };
-
+      return { ...this.NastaveniFiltrace };
     },
 
     poslanci() {
-
       return this.PoslanciVstupniPolozky;
-
     },
 
     sidebarButtonToggleStyles() {
       return {
-        active: this.isSidebarOpen
-      }
+        active: this.isSidebarOpen,
+      };
     },
     pocetPoslancuFiltrovanych() {
       return this.poslanci.length;
@@ -433,38 +416,29 @@ export default {
 
     aktualniNastaveniRazeni() {
       return this.radit.selectedOptionId;
-    }
+    },
   },
 
-
   methods: {
-
-
     getOnlyActiveFilterSectionsWithSelectedValues() {
-
-
-      const allFilters = {...this.filtrNastaveni};
+      const allFilters = { ...this.filtrNastaveni };
 
       const onlyActivelySelectedFilters = {};
 
       Object.keys(allFilters).forEach((itemKeyName) => {
-
         const keyName = itemKeyName;
         const item = allFilters[keyName];
 
         // check active values for radio or checkboxes
-        if ( item.type === 'radio' || item.type === 'checkbox') {
-
-            const activeValues = item.values
-            .filter(valueObj => valueObj.selected === true)
-            .map(valueObj => {
-
+        if (item.type === "radio" || item.type === "checkbox") {
+          const activeValues = item.values
+            .filter((valueObj) => valueObj.selected === true)
+            .map((valueObj) => {
               // if we selected a default option, we won't send the particular section of a filter
               // so that the particular section will not influence the API filtering of the data
               return valueObj.default === true ? null : valueObj.id;
-
             })
-            .filter(item => item !== null);
+            .filter((item) => item !== null);
 
           // if (activeValues.length > 1) {
           //   // we have multiple options selected in the filter for the given parameter
@@ -479,12 +453,9 @@ export default {
           if (activeValues.length > 0) {
             onlyActivelySelectedFilters[keyName] = activeValues;
           }
-
-
         }
 
-        if (item.type === 'range') {
-
+        if (item.type === "range") {
           if (item.values[0] !== item.values[2]) {
             onlyActivelySelectedFilters[item.queryStructure[0]] = [item.values[0]];
           }
@@ -492,137 +463,100 @@ export default {
           if (item.values[1] !== item.values[3]) {
             onlyActivelySelectedFilters[item.queryStructure[1]] = [item.values[1]];
           }
-
         }
-
-
       });
 
       return onlyActivelySelectedFilters;
-
-
     },
 
-
-
     doPagination(index) {
-
-      this.$emit('doPagination', index);
-
+      this.$emit("doPagination", index);
     },
 
     loadPreviousItems() {
-      this.$emit('loadPreviousItems');
+      this.$emit("loadPreviousItems");
     },
 
     loadMoreItems() {
-      this.$emit('loadMoreItems');
+      this.$emit("loadMoreItems");
     },
 
     toggleSidebar() {
-
-      this.isSidebarOpen = (this.isSidebarOpen) ? false: true;
-
+      this.isSidebarOpen = this.isSidebarOpen ? false : true;
     },
 
     toggleSelect() {
-
-      this.radit.isActive = (this.radit.isActive) ? false: true;
-
+      this.radit.isActive = this.radit.isActive ? false : true;
     },
 
     onSelectOrderOption(selectedOptionId, selectedOptionText, apiId) {
-
       if (!this.radit.hasBeenSelected) {
-        this.radit.hasBeenSelected = true
+        this.radit.hasBeenSelected = true;
       }
 
       this.radit.selectedOptionId = selectedOptionId;
       this.radit.selectedOptionText = selectedOptionText;
-      this.$el.querySelectorAll(`.option.selected`).forEach(item => item.classList.remove('selected'));
-      this.$el.querySelector(`[data-option-id="${selectedOptionId}"]`).classList.add('selected');
+      this.$el
+        .querySelectorAll(`.option.selected`)
+        .forEach((item) => item.classList.remove("selected"));
+      this.$el
+        .querySelector(`[data-option-id="${selectedOptionId}"]`)
+        .classList.add("selected");
 
-      this.$emit('selectOrderOption', apiId);
-
+      this.$emit("selectOrderOption", apiId);
     },
 
-
     onSelectFilterOption(filtrSekceKey, thisObjIndex, multiple, sectionHasReset, $event) {
-
       if (!this.filtrovat.hasBeenSelected) {
         this.filtrovat.hasBeenSelected = true;
       }
 
-
-      const tempResult = this.filtrNastaveni[filtrSekceKey] ; // by reference
+      const tempResult = this.filtrNastaveni[filtrSekceKey]; // by reference
 
       if (multiple) {
-
         if (sectionHasReset) {
-
           const isItemReset = tempResult.values[thisObjIndex].reset || false;
 
           tempResult.values.forEach((item, index) => {
-
             if (isItemReset) {
-
               item.selected = index === thisObjIndex;
-
             } else {
-
               if (index === thisObjIndex) {
-                item.selected = (item.selected) ? false : true;
+                item.selected = item.selected ? false : true;
               }
 
               if (item.reset) {
                 item.selected = false;
               }
-
             }
-
-
           });
 
           // Check if no options are selected, then select vse/reset button
-          if (tempResult.values.filter(item => item.selected).length === 0) {
-            tempResult.values.filter(item => item.reset)[0].selected = true;
+          if (tempResult.values.filter((item) => item.selected).length === 0) {
+            tempResult.values.filter((item) => item.reset)[0].selected = true;
           }
-
-
         } else {
-
-          tempResult.values[thisObjIndex].selected = (tempResult.values[thisObjIndex].selected) ? false : true;
-
+          tempResult.values[thisObjIndex].selected = tempResult.values[thisObjIndex]
+            .selected
+            ? false
+            : true;
         }
-
       } else {
-
         tempResult.values.forEach((item, index) => {
-
-          item.selected = (thisObjIndex === index) ? true : false;
-
+          item.selected = thisObjIndex === index ? true : false;
         });
-
       }
 
       const onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
 
-      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
-
-
+      this.$emit("refreshSelectedFilters", onlyActivelySelectedFilters);
     },
 
-
     onRangeChange($event) {
-
-
       // Process this range
-
 
       /// Normalize this range request Query by containing the value with an array, like all other filter values
       const currentRangeQuery = normalizeURLParamsToValueInArrayFormat($event.values);
-
-
 
       // check all other range sliders if the absolute max or min is different from current min or max values
       // if so, add them to the query, because we want it to have it in the URL string
@@ -630,60 +564,39 @@ export default {
       let onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
 
       onlyActivelySelectedFilters = {
-
         ...onlyActivelySelectedFilters,
         ...currentRangeQuery,
-
       };
 
-
-      this.$emit('refreshSelectedFilters', onlyActivelySelectedFilters);
-
+      this.$emit("refreshSelectedFilters", onlyActivelySelectedFilters);
     },
-
-
   },
 
   mounted() {
-
     this.$nextTick(() => {
-
       const timer = setTimeout(() => {
-
-        this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
+        this.$sidebar = this.$el.querySelector(".seznam-filter-sidebar");
 
         if (this.MaPaginaci) {
-
-          const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
+          const $scrollIntoViewBtn = this.$el.querySelector("[data-scroll-into]");
 
           if ($scrollIntoViewBtn) {
-            $scrollIntoViewBtn.addEventListener('click', (e) => {
-
+            $scrollIntoViewBtn.addEventListener("click", (e) => {
               e.preventDefault();
 
-              const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
+              const $target = this.$el.querySelector(e.currentTarget.getAttribute("rel"));
               $target.scrollIntoView();
-
-
             });
           }
-
-
         }
-
-
       }, 500);
-
-
     });
-
-
   },
 
   data() {
     return {
       filtrovat: {
-        hasBeenSelected: false
+        hasBeenSelected: false,
       },
       radit: {
         isActive: false,
@@ -691,21 +604,37 @@ export default {
         selectedOptionText: undefined,
         hasBeenSelected: false,
         RaditDle: [
-          { id: 'radit-id', text: 'Základní řazení', apiId: 0, },
-          { id: 'radit-prijmeni', text: 'Podle příjmení (od A)', apiId: 1 },
-          { id: 'radit-prijmeni-sestupne', text: 'Podle příjmení (od Z)', apiId: 2 },
-          { id: 'radit-pocet-mandatu', text: 'Nejméně mandátů', apiId: 3 },
-          { id: 'radit-pocet-mandatu-sestupne', text: 'Nejvíce mandátů', apiId: 4 },
-          { id: 'radit-datum-narozeni', text: 'Datum narození', apiId: 9 },
-          { id: 'radit-datum-narozeni-sestupne', text: 'Datum narození(Sestupně)', apiId: 10 },
-          { id: 'radit-datum-umrti', text: 'Datum úmrtí', apiId: 11 },
-          { id: 'radit-datum-umrti-sestupne', text: 'Datum úmrtí (Sestupně)', apiId: 12 },
-          { id: 'radit-datum-narozeni-mandat', text: 'Věk na začátku mandátu', apiId: 5 },
-          { id: 'radit-datum-narozeni-mandat-sestupne', text: 'Věk na začátku mandátu (Sestupně)', apiId: 6 },
-          { id: 'radit-datum-narozeni-konec-mandatu', text: 'Věk na konci mandátu', apiId: 7 },
-          { id: 'radit-datum-narozeni-konec-mandatu-sestupne', text: 'Věk na konci mandátu (Sestupně)', apiId: 8 },
+          { id: "radit-id", text: "Základní řazení", apiId: 0 },
+          { id: "radit-prijmeni", text: "Podle příjmení (od A)", apiId: 1 },
+          { id: "radit-prijmeni-sestupne", text: "Podle příjmení (od Z)", apiId: 2 },
+          { id: "radit-pocet-mandatu", text: "Nejméně mandátů", apiId: 3 },
+          { id: "radit-pocet-mandatu-sestupne", text: "Nejvíce mandátů", apiId: 4 },
+          { id: "radit-datum-narozeni", text: "Datum narození", apiId: 9 },
+          {
+            id: "radit-datum-narozeni-sestupne",
+            text: "Datum narození(Sestupně)",
+            apiId: 10,
+          },
+          { id: "radit-datum-umrti", text: "Datum úmrtí", apiId: 11 },
+          { id: "radit-datum-umrti-sestupne", text: "Datum úmrtí (Sestupně)", apiId: 12 },
+          { id: "radit-datum-narozeni-mandat", text: "Věk na začátku mandátu", apiId: 5 },
+          {
+            id: "radit-datum-narozeni-mandat-sestupne",
+            text: "Věk na začátku mandátu (Sestupně)",
+            apiId: 6,
+          },
+          {
+            id: "radit-datum-narozeni-konec-mandatu",
+            text: "Věk na konci mandátu",
+            apiId: 7,
+          },
+          {
+            id: "radit-datum-narozeni-konec-mandatu-sestupne",
+            text: "Věk na konci mandátu (Sestupně)",
+            apiId: 8,
+          },
         ],
-        ZakladniPolozka: { id: 'radit-default', text: 'řadit dle' },
+        ZakladniPolozka: { id: "radit-default", text: "řadit dle" },
       },
       PoslanciFiltrovani: [],
       isSidebarOpen: true, // can set a default value
