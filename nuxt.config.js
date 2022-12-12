@@ -8,7 +8,7 @@ const config = {dev, ...projectConfig};
 
 export default {
   target: 'server', // default is 'server'
-  ssr: false,
+  ssr: true,
   components: false,
   server: {
     port: 8000, // default: 3000
