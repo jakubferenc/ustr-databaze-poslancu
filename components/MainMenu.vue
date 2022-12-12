@@ -1,32 +1,32 @@
 <template lang="pug">
-  nav.main-menu(role="navigation" aria-label="Primary")
-    NuxtLink(to="/")
-      span Úvod
-    span &nbsp;|
-    NuxtLink(to="/vyvoj-parlamentu/")
-      span.full-text Vývoj parlamentarismu
-      span.short-text Parlamentarismus
-    span &nbsp;|
-    NuxtLink.link-snemovny-mapy(to="/snemovny-mapy/")
-      span Mapy
-    span &nbsp;|
-    NuxtLink.link-poslanci(to="/poslanci/")
-      span Poslanci
-    span &nbsp;|
-    NuxtLink.link-parlamenty(to="/parlamenty/")
-      span.full-text Zastupitelské sbory
-      span.short-text Sbory
-    span &nbsp;|
-    //- NuxtLink.link-socialni-mapy(to="/socialni-mapy/") Sociální mapy
-    //- span &nbsp;|
-    NuxtLink.link-slovnik(to="/slovnik/")
-      span Slovník
-    span &nbsp;|
-    NuxtLink.link-galerie-medii(to="/galerie-medii/")
-      span Galerie
-    span &nbsp;|
-    NuxtLink(to="/stranka/o-projektu/")
-      span O projektu
+nav.main-menu(role="navigation" aria-label="Primary")
+  NuxtLink(to="/")
+    span Úvod
+  span &nbsp;|
+  NuxtLink(to="/vyvoj-parlamentu/")
+    span.full-text Vývoj parlamentarismu
+    span.short-text Parlamentarismus
+  span &nbsp;|
+  NuxtLink.link-snemovny-mapy(to="/snemovny-mapy/")
+    span Mapy 
+  span &nbsp;|
+  NuxtLink.link-poslanci(to="/poslanci/")
+    span Poslanci
+  span &nbsp;|
+  NuxtLink.link-parlamenty(to="/parlamenty/")
+    span.full-text Zastupitelské sbory
+    span.short-text Sbory
+  span &nbsp;|
+  //- NuxtLink.link-socialni-mapy(to="/socialni-mapy/") Sociální mapy
+  //- span &nbsp;|
+  NuxtLink.link-slovnik(to="/slovnik/")
+    span Slovník
+  span &nbsp;|
+  NuxtLink.link-galerie-medii(to="/galerie-medii/")
+    span Galerie
+  span &nbsp;|
+  NuxtLink(to="/stranka/o-projektu/")
+    span O projektu
 </template>
 
 <style lang="sass" scoped>

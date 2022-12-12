@@ -19,6 +19,8 @@ header.main-header
 
       .loading-message(v-if="isLoading") Načítám data...
 
+      .loading-message(v-if="!isLoading && (poslanci !==  null || poslanci.length === 0)") Žádní poslanci nevyvhovují vyhledávání
+
       PoslanciSeznamAPI(
         v-if="!isLoading && poslanci"
 
@@ -29,9 +31,9 @@ header.main-header
         :MaButtonMore="false"
         :ButtonMoreLink="false"
         :MaMapu="false"
-        :Nadpis="false"
+        :Nadpis="'Výsledky vyhledávání'"
         Mod="Seznam"
-        :MaRazeni="false"
+        :MaRazeni="true"
       )
 
 </template>
@@ -147,7 +149,7 @@ export default {
       return `?${this.stringifyQueryForAPI(this.currentQuery)}`;
     },
     poslanci() {
-      return this.$store.state.poslanci || [];
+      return this.$store.state.poslanci ? this.$store.state.poslanci : null;
     },
   },
   methods: {
