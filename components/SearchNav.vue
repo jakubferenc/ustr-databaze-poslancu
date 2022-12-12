@@ -19,6 +19,7 @@
   align-items: center
   padding: 0 1em
   text-decoration: none
+  height: 80px
 
   .icon-text
     margin-left: 1rem
