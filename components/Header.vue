@@ -19,7 +19,7 @@ header.main-header
 
       .loading-message(v-if="isLoading") Načítám data...
 
-      .loading-message(v-if="!isLoading && (poslanci !==  null || poslanci.length === 0)") Žádní poslanci nevyvhovují vyhledávání
+      .loading-message(v-if="!isLoading && (poslanci ===  null || poslanci.length === 0)") Žádní poslanci nevyvhovují vyhledávání
 
       PoslanciSeznamAPI(
         v-if="!isLoading && poslanci"
