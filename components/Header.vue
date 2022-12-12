@@ -182,11 +182,10 @@ export default {
       }
     },
     searchNavHandler(e) {
+      this.$store.dispatch("resetPoslanci");
+
       this.searchNavToggle = !this.searchNavToggle;
       this.$store.dispatch("searchNavToggle", this.searchNavToggle);
-      if (!this.searchNavToggle) {
-        this.$store.dispatch("resetPoslanci");
-      }
     },
   },
   head() {
