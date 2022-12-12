@@ -5,7 +5,6 @@
   </NuxtLink>
 </template>
 
-
 <style lang="sass" scoped>
 
 .logo
@@ -24,9 +23,9 @@
 </style>
 
 <script>
-  import AppLogoImage from "~/assets/images/logo.svg?inline";
+import AppLogoImage from "~/assets/images/logo.svg?inline";
 
-  export default {
-    components: { AppLogoImage },
-  };
+export default {
+  components: { AppLogoImage },
+};
 </script>

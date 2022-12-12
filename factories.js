@@ -402,11 +402,11 @@ const createFilterSettingsForApiUseFactory = (
 
   const vekyNaZacatkuMandatuMapped = [
     filterData.VekNaZacatkuMandatu[0], // current min
-    filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length-1], // current max
+    filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length - 1], // current max
     filterData.AbsolutniMinimalniVekNaZacatkuMandatu, // default min
     filterData.AbsolutniMaximalniVekNaZacatkuMandatu, // default max
 
-  ] ///
+  ]; ///
 ////////
 
   const vekyNaKonciMandatuMapped = [
@@ -1063,6 +1063,9 @@ const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL)
 
 
     const parlamenty = await getParlamentyDatabazeFactory(databazePoslancuURL);
+
+    console.log('hello here 1', parlamenty);
+
 
 
     let parlamentyWPData = await axiosInstance.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);

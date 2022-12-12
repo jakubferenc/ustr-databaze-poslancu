@@ -194,6 +194,34 @@ export const getAdresaDruhHumanReadableName = (adresaDruhNumber) => {
 
 };
 
+export function stringifyQueryForAPI(query = {}) {
+  let finalQueryString = "";
+
+  Object.keys(query).forEach((key, index) => {
+    const thisPrefix = index === 0 ? "" : "&";
+
+    const thisItem = query[key];
+
+    if (thisItem.length === 1) {
+      // it's a single value param
+      finalQueryString = finalQueryString + `${thisPrefix}${key}=${thisItem[0]}`;
+    }
+
+    if (thisItem.length >= 2) {
+      // it's a multiple value param
+      // we need to iterate over it and add for each value the same Key=value string because of how API is designed
+      // for example: to get multiple names, you need "Name=Jakub&Name=Josef&name=Anežka"
+      thisItem.forEach((subItem, subIndex) => {
+        const thisPrefix = index == 0 && subIndex == 0 ? "" : "&";
+
+        finalQueryString = finalQueryString + `${thisPrefix}${key}=${subItem}`;
+      });
+    }
+  });
+
+  return finalQueryString;
+}
+
 
 export const getAdresyProMapuForPoslanecFromMandaty = (poslanec) => {
 

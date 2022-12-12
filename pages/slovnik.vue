@@ -21,62 +21,51 @@
 
 <style lang="sass">
 
-  .main-title
-    @extend %typography-main-title
+.main-title
+  @extend %typography-main-title
 
-  .container-slovnik
-    align-items: flex-start
-
+.container-slovnik
+  align-items: flex-start
 </style>
 
-
 <script>
+const SlovnikoveHeslo = () => import("~/components/SlovnikoveHeslo.vue");
 
-const SlovnikoveHeslo = () => import('~/components/SlovnikoveHeslo.vue');
-
-const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.default || m);
+const SlovnikovaHeslaData = () =>
+  import("~/data/slovnik.json").then((m) => m.default || m);
 
 export default {
+  components: { SlovnikoveHeslo },
 
-    components: { SlovnikoveHeslo },
+  async asyncData({ store, $config }) {
+    if (!$config.useFileCachedAPI) {
+      await store.dispatch("getSlovnikovaHesla");
 
-
-    async asyncData ({store, $config}) {
-
-      if (!$config.useFileCachedAPI) {
-
-        await store.dispatch("getSlovnikovaHesla");
-
-        return {
-          slovnikova_hesla: store.state.slovnikova_hesla,
-        }
-
-      } else {
-
-        const slovnikovaHeslaRes = await SlovnikovaHeslaData();
-
-        return {
-          slovnikova_hesla: slovnikovaHeslaRes,
-        }
-
-      }
-
-    },
-
-    data() {
       return {
-        title: `Slovník pojmů`,
-      }
-    },
+        slovnikova_hesla: store.state.slovnikova_hesla,
+      };
+    } else {
+      const slovnikovaHeslaRes = await SlovnikovaHeslaData();
 
-    head () {
       return {
-        title: `${this.title} — ${this.$config.globalTitle}`,
-        htmlAttrs: {
-          class: 'alt-bg'
-        }
-      }
+        slovnikova_hesla: slovnikovaHeslaRes,
+      };
     }
+  },
 
-}
+  data() {
+    return {
+      title: `Slovník pojmů`,
+    };
+  },
+
+  head() {
+    return {
+      title: `${this.title} — ${this.$config.globalTitle}`,
+      htmlAttrs: {
+        class: "alt-bg",
+      },
+    };
+  },
+};
 </script>

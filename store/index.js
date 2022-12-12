@@ -35,10 +35,12 @@ export const state = () => ({
     snemovni_obdobi: false,
     media_soubory: false
   },
+  search_nav: false,
 });
 
 export const getters = {
   getPoslanciHomepage: (state) => state.poslanci_homepage,
+  getSearchNavStatus: (state) => state.search_nav,
   getSouboryHomepage: (state) => [...state.media_soubory].slice(0, 20),
 };
 
@@ -46,6 +48,12 @@ export const getters = {
 this will update the state with the posts
 */
 export const mutations = {
+
+  updateSearchNavState: ( state, search_nav ) => {
+
+    state.search_nav = search_nav;
+
+  },
 
   updateFilterData: ( state, filter_data ) => {
 
@@ -122,10 +130,14 @@ and then commits the mutation to update it
 */
 export const actions = {
 
-  async getAllDataForInteractiveParliamentMaps({ state, commit, dispatch }) {
+  searchNavToggle ({ state, commit }, searchNavToggleState) {
+    try {
 
+      commit("updateSearchNavState", searchNavToggleState);
 
-
+    } catch (err) {
+      console.warn(err);
+    }
   },
 
 
@@ -273,7 +285,6 @@ export const actions = {
 
     const parlamenty = await apiFactory.getParlamentyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
 
-
     commit("updateParlamenty", parlamenty);
 
 
@@ -360,6 +371,19 @@ export const actions = {
       commit("updatePoslanci", poslanci);
       commit("updateFilterData", filterData);
 
+
+    } catch (err) {
+      console.warn(err);
+    }
+
+  },
+
+  async resetPoslanci({ state, commit, dispatch }) {
+
+    try {
+
+      commit("updatePoslanci", []);
+      commit("updateFilterData", []);
 
     } catch (err) {
       console.warn(err);

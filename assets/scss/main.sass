@@ -47,7 +47,6 @@ html
       position: fixed
 
 
-
 body
   font-family: 'Courier', monospace
   font-weight: 400
@@ -56,6 +55,9 @@ body
   margin: 0
   overflow-x: hidden // :TODO: #3 Zkontrolovat, co způsobuje horizontální scrolling (Safari, Mac OS)
 
+  &.is-search-open
+      max-height: 100vh
+      overflow: hidden
 
 a
   color: inherit

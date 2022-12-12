@@ -79,9 +79,9 @@
               span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="onSelectOrderOption(polozka.id, polozka.text, polozka.apiId)") {{polozka.text}}
 
 
-      .seznam-content-container(v-if="MaFiltr")
+      .seznam-content-container()
 
-        .seznam-filter-sidebar(v-show="isSidebarOpen")
+        .seznam-filter-sidebar(v-if="MaFiltr" v-show="isSidebarOpen")
           .seznam-filter-sidebar-content
 
             .seznam-filter-sidebar-content-header
@@ -394,7 +394,10 @@ export default {
 
   computed: {
     isDefaultParlamentSelected() {
-      return this.NastaveniFiltrace["Snemovny"].values[0].selected;
+      return (
+        this.NastaveniFiltrace &&
+        this.NastaveniFiltrace?.["Snemovny"]?.values[0]?.selected
+      );
     },
 
     filtrNastaveni() {
