@@ -1,31 +1,31 @@
 <template lang="pug">
 nav.main-menu(role="navigation" aria-label="Primary")
-  NuxtLink(to="/")
+  NuxtLink(@click.native="checkHideSearchNav" to="/")
     span Úvod
   span &nbsp;|
-  NuxtLink(to="/vyvoj-parlamentu/")
+  NuxtLink(@click.native="checkHideSearchNav" to="/vyvoj-parlamentu/")
     span.full-text Vývoj parlamentarismu
     span.short-text Parlamentarismus
   span &nbsp;|
-  NuxtLink.link-snemovny-mapy(to="/snemovny-mapy/")
-    span Mapy 
+  NuxtLink.link-snemovny-mapy(@click.native="checkHideSearchNav" to="/snemovny-mapy/")
+    span Mapy
   span &nbsp;|
-  NuxtLink.link-poslanci(to="/poslanci/")
+  NuxtLink.link-poslanci(@click.native="checkHideSearchNav" to="/poslanci/")
     span Poslanci
   span &nbsp;|
-  NuxtLink.link-parlamenty(to="/parlamenty/")
+  NuxtLink.link-parlamenty(@click.native="checkHideSearchNav" to="/parlamenty/")
     span.full-text Zastupitelské sbory
     span.short-text Sbory
   span &nbsp;|
-  //- NuxtLink.link-socialni-mapy(to="/socialni-mapy/") Sociální mapy
+  //- NuxtLink.link-socialni-mapy(@click.native="checkHideSearchNav" to="/socialni-mapy/") Sociální mapy
   //- span &nbsp;|
-  NuxtLink.link-slovnik(to="/slovnik/")
+  NuxtLink.link-slovnik(@click.native="checkHideSearchNav" to="/slovnik/")
     span Slovník
   span &nbsp;|
-  NuxtLink.link-galerie-medii(to="/galerie-medii/")
+  NuxtLink.link-galerie-medii(@click.native="checkHideSearchNav" to="/galerie-medii/")
     span Galerie
   span &nbsp;|
-  NuxtLink(to="/stranka/o-projektu/")
+  NuxtLink(@click.native="checkHideSearchNav" to="/stranka/o-projektu/")
     span O projektu
 </template>
 
@@ -70,6 +70,11 @@ html.subpage-slovnik .link-slovnik
 export default {
   data() {
     return {};
+  },
+  methods: {
+    checkHideSearchNav(e) {
+      this.$store.dispatch("searchNavToggle", false);
+    },
   },
 };
 </script>

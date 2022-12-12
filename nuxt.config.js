@@ -7,8 +7,8 @@ const config = {dev, ...projectConfig};
 // data
 
 export default {
-  target: 'static', // default is 'server'
-  ssr: true,
+  target: 'server', // default is 'server'
+  ssr: false,
   components: false,
   server: {
     port: 8000, // default: 3000

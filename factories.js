@@ -15,7 +15,7 @@ import {
 const axiosInstance = axios.create({
   // Keep the timeout low in development so it at least somehow responsive
   timeout: process.dev ? 45000 : 45000,
-  httpsAgent: new https.Agent({ keepAlive: true })
+  // httpsAgent: new https.Agent({ keepAlive: true })
 
 });
 
@@ -1058,97 +1058,101 @@ const getParlamentyDatabazeFactory = async (databazePoslancuURL) => {
 };
 
 const getParlamentyFactory = async (wordpressAPIURLWebsite, databazePoslancuURL) => {
-
+  const interval = 50;
+  let time = 0;
   try {
 
 
     const parlamenty = await getParlamentyDatabazeFactory(databazePoslancuURL);
 
-    console.log('hello here 1', parlamenty);
-
-
-
     let parlamentyWPData = await axiosInstance.get( `${wordpressAPIURLWebsite}/wp/v2/parlamentni_telesa?per_page=100`);
     parlamentyWPData = parlamentyWPData.data;
 
+    const promisesToAwait = parlamenty.map(async (parlament) => {
 
-    return await Promise.all(parlamenty.map(async (parlament) => {
+      return new Promise((resolve, reject) => {
+        time = time + interval;
+        setTimeout(async () => {
 
+          const getSnemovniObdobi = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
 
-      const getSnemovniObdobi = await axiosInstance.get(`${databazePoslancuURL}/Api/snemovny/${parlament.Id}`);
-
-      parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
-      parlament.SnemovniObdobi = parlament.SnemovniObdobi.filter(snemovniObdobi => snemovniObdobi.Id !== 67); // :TODO: temporary, do on BE
-
-
-      // get wordpress content referenced via Id
-      let thisWPParlamentObj = parlamentyWPData.filter((item) => item.databaze_id == parlament.Id);
+          parlament.SnemovniObdobi = getSnemovniObdobi.data.SnemovniObdobi;
+          parlament.SnemovniObdobi = parlament.SnemovniObdobi.filter(snemovniObdobi => snemovniObdobi.Id !== 67); // :TODO: temporary, do on BE
 
 
-      // checking potential errors
-      if (!thisWPParlamentObj.length) {
-        throw new Error(`There is not Wordpress Parlament object matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
-        return;
-      }
-
-      if (thisWPParlamentObj.length > 1) {
-        throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
-        return;
-      }
-
-      thisWPParlamentObj = thisWPParlamentObj[0];
-      parlament.Popis = thisWPParlamentObj.content.rendered;
-      parlament.WPNazev = thisWPParlamentObj.title.rendered;
-      parlament.StrucnyPopis = thisWPParlamentObj.excerpt.rendered;
-      if (thisWPParlamentObj?.acf) {
-        parlament.acf = thisWPParlamentObj.acf;
-      }
-
-      parlament.Barva = thisWPParlamentObj.barva;
-
-      if (thisWPParlamentObj.acf?.casova_osa) {
-        parlament.CasovaOsa = thisWPParlamentObj.acf.casova_osa;
-
-        // sort by date
-        parlament.CasovaOsa.sort();
-
-        const beginningOfParlamentObj = {
-          "datum_udalosti": parlament.SnemovniObdobi[0].DatumZacatku.split('T')[0],
-          "nazev_udalosti": "Začátek parlamentního tělesa",
-          "dulezita": [
-          "true"
-          ],
-          "typUdalosti": ['datumZacatekParlamentu'],
-        };
-
-        const endOfParlamentObj = {
-          "datum_udalosti": parlament.SnemovniObdobi[parlament.SnemovniObdobi.length-1].DatumKonce.split('T')[0],
-          "nazev_udalosti": "Konec parlamentního tělesa",
-          "dulezita": [
-          "true"
-          ],
-          "typUdalosti": ['datumKonecParlamentu'],
-        };
-
-        parlament.CasovaOsa = [beginningOfParlamentObj, ...parlament.CasovaOsa, endOfParlamentObj];
+          // get wordpress content referenced via Id
+          let thisWPParlamentObj = parlamentyWPData.filter((item) => item.databaze_id == parlament.Id);
 
 
-      }
+          // checking potential errors
+          if (!thisWPParlamentObj.length) {
+            throw new Error(`There is not Wordpress Parlament object matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
+            return;
+          }
 
-      if (thisWPParlamentObj.acf?.galerie) {
+          if (thisWPParlamentObj.length > 1) {
+            throw new Error(`There are more than one Wordpress Parlament objects matching the id from the main database. Parlament.Id is: ${parlament.Id}. 'Parlament name is: ${parlament.Nazev}`);
+            return;
+          }
 
-        parlament.Galerie = thisWPParlamentObj.acf.galerie.map(item => {
+          thisWPParlamentObj = thisWPParlamentObj[0];
+          parlament.Popis = thisWPParlamentObj.content.rendered;
+          parlament.WPNazev = thisWPParlamentObj.title.rendered;
+          parlament.StrucnyPopis = thisWPParlamentObj.excerpt.rendered;
+          if (thisWPParlamentObj?.acf) {
+            parlament.acf = thisWPParlamentObj.acf;
+          }
 
-          return normalizeSouborAttrs(item);
+          parlament.Barva = thisWPParlamentObj.barva;
 
-        });
+          if (thisWPParlamentObj.acf?.casova_osa) {
+            parlament.CasovaOsa = thisWPParlamentObj.acf.casova_osa;
 
-      }
+            // sort by date
+            parlament.CasovaOsa.sort();
 
-      return parlament;
+            const beginningOfParlamentObj = {
+              "datum_udalosti": parlament.SnemovniObdobi[0].DatumZacatku.split('T')[0],
+              "nazev_udalosti": "Začátek parlamentního tělesa",
+              "dulezita": [
+              "true"
+              ],
+              "typUdalosti": ['datumZacatekParlamentu'],
+            };
 
-    }));
+            const endOfParlamentObj = {
+              "datum_udalosti": parlament.SnemovniObdobi[parlament.SnemovniObdobi.length-1].DatumKonce.split('T')[0],
+              "nazev_udalosti": "Konec parlamentního tělesa",
+              "dulezita": [
+              "true"
+              ],
+              "typUdalosti": ['datumKonecParlamentu'],
+            };
 
+            parlament.CasovaOsa = [beginningOfParlamentObj, ...parlament.CasovaOsa, endOfParlamentObj];
+
+
+          }
+
+          if (thisWPParlamentObj.acf?.galerie) {
+
+            parlament.Galerie = thisWPParlamentObj.acf.galerie.map(item => {
+
+              return normalizeSouborAttrs(item);
+
+            });
+
+          }
+
+          resolve(parlament);
+
+
+        }, time);
+      });
+
+    });
+
+    return await Promise.all(promisesToAwait);
 
   } catch (err) {
 
