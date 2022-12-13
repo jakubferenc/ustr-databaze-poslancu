@@ -12,14 +12,14 @@ header.main-header
       h2.section-title.section-title-no-margin-bottom Vyhledat poslance
 
       .search-results__search-bar
-        input(type="text" name="search-input" @input="searchHandler" placeholder="Vyhledejte pomocí jména, příjmení, nebo celého jména poslance")
+        input(type="text" name="search-input" v-model="searchQuery" placeholder="Vyhledejte pomocí jména, příjmení, nebo celého jména poslance")
         .search-button
 
     .search-results__content-container
 
       .loading-message(v-if="isLoading") Načítám data...
 
-      .loading-message(v-if="!isLoading && (poslanci ===  null || poslanci.length === 0)") Žádní poslanci nevyvhovují vyhledávání
+      .loading-message(v-if="!isLoading && searchQuery && (poslanci ===  null || poslanci.length === 0)") Žádní poslanci nevyvhovují vyhledávání
 
       PoslanciSeznamAPI(
         v-if="!isLoading && poslanci"
@@ -149,13 +149,17 @@ export default {
       return `?${this.stringifyQueryForAPI(this.currentQuery)}`;
     },
     poslanci() {
-      return this.$store.state.poslanci ? this.$store.state.poslanci : null;
+      return this.$store.state.poslanci.length ? this.$store.state.poslanci : null;
+    },
+  },
+  watch: {
+    searchQuery(oldVal, newVal) {
+      this.searchHandler();
     },
   },
   methods: {
     stringifyQueryForAPI,
-    async searchHandler(e) {
-      this.searchQuery = e.target.value;
+    async searchHandler() {
       clearTimeout(this.timeoutCallback);
 
       if (!this.searchQuery || this.searchQuery === "") {
