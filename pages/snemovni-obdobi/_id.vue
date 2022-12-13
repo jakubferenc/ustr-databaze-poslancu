@@ -419,6 +419,7 @@ export default {
       let funkce = [];
 
       let druh_konce_mandatu = [];
+      let znovuzvolen = [];
 
       [...this.poslanci].forEach((item) => {
         if (item.Nabozenstvi.length === 0) {
@@ -444,7 +445,7 @@ export default {
           ).map((mandat) =>
             mandat.VolebniStrana && mandat.VolebniStrana !== ""
               ? mandat.VolebniStrana
-              : ["neuvedeno"]
+              : "neuvedeno"
           ),
         ];
 
@@ -597,15 +598,56 @@ export default {
         },
       ];
 
+      const znovuzvolenMapped = [
+        {
+          id: 0,
+          text: "Vše",
+          default: true,
+          reset: true,
+          selected: true,
+          validate: (property) => true,
+        },
+        {
+          id: true,
+          text: "Ano",
+          default: false,
+          selected: false,
+          validate: (property) => {
+            const isZvolenMoreThanOnceForGivenParlament = [...property].filter(
+              (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
+            );
+
+            return isZvolenMoreThanOnceForGivenParlament.length > 1;
+          },
+        },
+        {
+          id: false,
+          text: "Ne",
+          default: false,
+          selected: false,
+          validate: (property) => {
+            const isZvolenMoreThanOnceForGivenParlament = [...property].filter(
+              (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
+            );
+
+            return isZvolenMoreThanOnceForGivenParlament.length === 1;
+          },
+        },
+      ];
+
       // make unique values
       volebni_strany = [...new Set(volebni_strany)]
         .sort((a, b) => a.toString().localeCompare(b))
         .map((item) => {
           const itemId = item === "neuvedeno" ? "volebni-strana-neuvedeno" : item;
 
+          const itemName =
+            item === "neuvedeno" ? "neuvedeno" : item.replace(/\s*\(.*?\)\s*/g, "");
+
           return {
             id: itemId,
-            text: item.replace(/\s*\(.*?\)\s*/g, ""), // remove parentheses from names
+            text: itemName,
+            // text: item === "neuvedeno" ? item : item.replace(/\s*\(.*?\)\s*/g, ""), // remove parentheses from names
             selected: false,
             validate: (property) => {
               const volebniStrany = [...property]
@@ -1226,6 +1268,16 @@ export default {
           info: "Nějaké informace k vysvětlení",
           hasCounter: true,
           values: druh_konce_mandatu,
+        },
+        Znovuzvoleni: {
+          id: sectionId++,
+          title: "Znovuzvolení",
+          type: "radio",
+          order: "inline",
+          info: "Nějaké informace k vysvětlení",
+          property: "Mandaty",
+          hasCounter: false,
+          values: znovuzvolenMapped,
         },
         PocetMandatu: {
           id: sectionId++,
