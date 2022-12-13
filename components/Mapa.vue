@@ -123,7 +123,7 @@ export default {
       default: false,
     },
     NastaveniMapa: {
-      type: Object,
+      type: [Object, Boolean],
       required: false,
       default: false,
     },
