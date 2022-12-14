@@ -1,23 +1,21 @@
 <template lang="pug">
+.mandat-radek.section-padding(:style="`background-color: ${BarvaPozadi}`" :data-mandat-id="Mandat.Id")
 
-  .mandat-radek.section-padding(:style="`background-color: ${BarvaPozadi}`" :data-mandat-id="Mandat.Id")
+  .mandat-radek-content.columns.is-multiline
+    .mandat-radek-image.column.is-full-tablet.is-one-third-desktop
+      <ParlamentNahledObecnyImage />
+      h2.mandat-radek-title.typography-snemovna-obr-nadpis
+        NuxtLink(:to="`/snemovni-obdobi/${Mandat.SnemovniObdobiId}/`") {{Mandat.Parlament}} <br>({{Mandat.DatumZacatkuZobrazene}} — {{Mandat.DatumKonceZobrazene}})
 
-    .mandat-radek-content.columns.is-multiline
-      .mandat-radek-image.column.is-full-tablet.is-one-third-desktop
-        <ParlamentNahledObecnyImage />
-        h2.mandat-radek-title.typography-snemovna-obr-nadpis {{Mandat.Parlament}} <br>({{Mandat.DatumZacatkuZobrazene}} — {{Mandat.DatumKonceZobrazene}})
+    .mandat-radek-text.column.is-full-tablet.is-two-thirds-desktop
 
-      .mandat-radek-text.column.is-full-tablet.is-two-thirds-desktop
-
-        TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="mandat-radek")
+      TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="mandat-radek")
 
 </template>
 
 <style lang="sass">
 
 @use "sass:math"
-
-
 
 .parlament-snemovni-obdobi-list
   display: flex
@@ -130,101 +128,91 @@
     +from($widescreen)
 
     +from($fullhd)
-
 </style>
 
 <script>
+const TabNavigace = () => import("~/components/TabNavigace.vue");
 
-  const TabNavigace = () => import('~/components/TabNavigace.vue');
+import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
+// const snemovnyHTMLHelperContainer = (data, parlamentId) => {
 
-  import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+//   const start = `  <div class="parlament-snemovni-obdobi-list columns is-mobile is-multiline">`;
+//   const end = `</div>`;
 
+//   let content = '';
 
-  // const snemovnyHTMLHelperContainer = (data, parlamentId) => {
+//   data.forEach(item => {
 
-  //   const start = `  <div class="parlament-snemovni-obdobi-list columns is-mobile is-multiline">`;
-  //   const end = `</div>`;
+//     let dateYearStart = item.DatumZacatkuZobrazene + "";
+//     dateYearStart = dateYearStart.split(". ")[2];
 
-  //   let content = '';
+//     let dateYearEnd = item.DatumKonceZobrazene + "";
+//     dateYearEnd = dateYearEnd.split(". ")[2];
 
-  //   data.forEach(item => {
+//     content = content + `
+//       <a href="/snemovni-obdobi/${item.Id}" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
+//         <span class="parlament-snemovni-obdobi-in">
+//           <span class="image"></span>
+//           <span class="date">(${dateYearStart}–${dateYearEnd})</span>
+//         </span>
 
-  //     let dateYearStart = item.DatumZacatkuZobrazene + "";
-  //     dateYearStart = dateYearStart.split(". ")[2];
+//       </a>
+//     `;
 
-  //     let dateYearEnd = item.DatumKonceZobrazene + "";
-  //     dateYearEnd = dateYearEnd.split(". ")[2];
+//   });
 
-  //     content = content + `
-  //       <a href="/snemovni-obdobi/${item.Id}" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
-  //         <span class="parlament-snemovni-obdobi-in">
-  //           <span class="image"></span>
-  //           <span class="date">(${dateYearStart}–${dateYearEnd})</span>
-  //         </span>
+//   return start + content + end;
 
-  //       </a>
-  //     `;
+// };
 
-  //   });
+export default {
+  components: { TabNavigace, ParlamentNahledObecnyImage },
 
-  //   return start + content + end;
+  props: ["Mandat"],
 
-  // };
-
-  export default {
-
-    components: { TabNavigace, ParlamentNahledObecnyImage },
-
-
-    props: ['Mandat'],
-
-    computed: {
-
-      tabNavigaceNastaveni() {
-
-        return {
-          typ: 'mandat',
-          tabNavigaceNastaveni: {
-            style: {
-              'margin-top': 0
-            }
-          },
-          polozky: {
-            zakladniInformace: {
-              id: 'zakladni-informace',
-              title: 'Základní informace',
-              obsah: '',
-              mandat: this.Mandat,
-              aktivni: true
-            },
-            parlamentniFunkce: {
-              id: 'parlamentni-funkce',
-              title: 'Parlamentní funkce',
-              mandat: this.Mandat,
-              obsah: 'obsah druhy tab parlamentni funkce',
-              pocetPolozekNadpis: this.Mandat.Funkce.length,
-              aktivni: false
-            },
-            vybory: {
-              id: 'vybory',
-              title: 'Výbory',
-              mandat: this.Mandat,
-              pocetPolozekNadpis: this.Mandat.Vybory.length,
-              obsah: 'obsah pro tab vybory',
-              aktivni: false
-            },
-          },
-        };
-
-      },
-    },
-
-    data() {
+  computed: {
+    tabNavigaceNastaveni() {
       return {
-        BarvaPozadi: '#F8F6F1',
+        typ: "mandat",
+        tabNavigaceNastaveni: {
+          style: {
+            "margin-top": 0,
+          },
+        },
+        polozky: {
+          zakladniInformace: {
+            id: "zakladni-informace",
+            title: "Základní informace",
+            obsah: "",
+            mandat: this.Mandat,
+            aktivni: true,
+          },
+          parlamentniFunkce: {
+            id: "parlamentni-funkce",
+            title: "Parlamentní funkce",
+            mandat: this.Mandat,
+            obsah: "obsah druhy tab parlamentni funkce",
+            pocetPolozekNadpis: this.Mandat.Funkce.length,
+            aktivni: false,
+          },
+          vybory: {
+            id: "vybory",
+            title: "Výbory",
+            mandat: this.Mandat,
+            pocetPolozekNadpis: this.Mandat.Vybory.length,
+            obsah: "obsah pro tab vybory",
+            aktivni: false,
+          },
+        },
       };
     },
-  };
+  },
 
+  data() {
+    return {
+      BarvaPozadi: "#F8F6F1",
+    };
+  },
+};
 </script>
