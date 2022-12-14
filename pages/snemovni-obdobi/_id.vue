@@ -614,7 +614,7 @@ export default {
           selected: false,
           validate: (property) => {
             const isZvolenMoreThanOnceForGivenParlament = [...property].filter(
-              (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
+              (mandat) => mandat.ParlamentId === this.snemovniObdobi.SnemovnaId
             );
 
             return isZvolenMoreThanOnceForGivenParlament.length > 1;
@@ -627,7 +627,7 @@ export default {
           selected: false,
           validate: (property) => {
             const isZvolenMoreThanOnceForGivenParlament = [...property].filter(
-              (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
+              (mandat) => mandat.ParlamentId === this.snemovniObdobi.SnemovnaId
             );
 
             return isZvolenMoreThanOnceForGivenParlament.length === 1;
