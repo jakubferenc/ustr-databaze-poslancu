@@ -10,7 +10,11 @@
       span.section-title-subtitle Mapa se aktualizuje podle zvoleného nastavení filtru
 
 
-    Mapa(v-if="poslanci" :PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa")
+    Mapa(
+      v-if="poslanci"
+      :PoslanciVstupniData="poslanci"
+      :NastaveniMapa="NastaveniMapa"
+    )
 
   .filter-seznam
 

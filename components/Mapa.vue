@@ -128,6 +128,149 @@ export default {
       default: false,
     },
   },
+
+  data() {
+    return {
+      partyColorRelations: {},
+      mapInstance: null,
+      mapSettings: {
+        popup: {
+          html: (item, styleString = "") => {
+            const hasBgColor =
+              this.NastaveniMapa &&
+              this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable
+                ? true
+                : false;
+
+            const imageContent =
+              item.ProfilovaFotka && item.ProfilovaFotka !== ""
+                ? `
+                <img src="${
+                  item.ProfilovaFotka
+                }" class="map-person-thumb-head-icon-image ${
+                    hasBgColor ? "has--bg-color" : ""
+                  }" />
+              `
+                : `<div class="map-person-thumb-head-icon-image" style="${styleString}">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="90" height="98" viewBox="0 0 90 98">
+                    <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
+                      <g id="Group_1365" data-name="Group 1365" transform="translate(3.578)">
+                        <path id="Path_409" data-name="Path 409" d="M47.893,47.221c11.768,0,21.341-10.592,21.341-23.611S59.66,0,47.893,0,26.55,10.592,26.55,23.61,36.125,47.221,47.893,47.221Z" transform="translate(-2.965)"/>
+                        <path id="Path_410" data-name="Path 410" d="M73.431,44.123a3.059,3.059,0,0,0-3.236,1.355A26.435,26.435,0,0,1,48.577,58.2,26.432,26.432,0,0,1,26.961,45.478a3.059,3.059,0,0,0-3.244-1.354C6.914,47.777,2.485,72.8,3.792,93.115a3.024,3.024,0,0,0,3.035,2.811h83.5a3.024,3.024,0,0,0,3.034-2.811C94.673,72.775,90.241,47.74,73.431,44.123Z" transform="translate(-3.578 2.074)"/>
+                      </g>
+                    </g>
+                  </svg>
+
+
+
+              </div>`;
+
+            const detailUrl = slugify(`${item.Jmeno}-${item.Prijmeni}-${item.Id}`, {
+              locale: "cs",
+            }).toLowerCase();
+
+            return `
+
+
+                  <a class="is-map-card person-poslanec-card" href="/poslanec/${detailUrl}/">
+
+                    <div class="content-container">
+
+                      <div class="header">
+                        <div class="full-name">${item.Jmeno} ${item.Prijmeni}</div>
+                      </div>
+
+                      <div class="content">
+                        <div class="desc">
+                          <p>
+                            Narození: ${item.DatumNarozeniZobrazene}<br>
+                            Úmrtí: ${item.DatumUmrtiZobrazene || "??"}
+                          </p>
+
+                          <div class="map-card__content__address">Místo narození: ${
+                            item.Nazev
+                          }</div>
+                          <div class="map-card__content__address__meta">GPS lokace: ${
+                            item.GeoX
+                          } ${item.GeoY}</div>
+                          <div class="map-card__footer">Zobrazit detail poslance →</div>
+                        </div>
+
+
+
+                      </div>
+
+
+                    </div>
+
+                    <div class="image-container">${imageContent}</div>
+
+                  </a>
+
+
+              `;
+          },
+        },
+        addresses: {
+          cluster: {
+            className: "map__marker map__marker--cluster",
+            iconSize: 30,
+          },
+          iconLargePerson: {
+            className: "map__marker map__marker--address",
+            iconSize: 50,
+            popupAnchor: [-240, 95],
+            tooltip: {
+              direction: "bottom",
+              offset: { x: 0, y: 20 },
+            },
+            html: (item, index, styleString = "") => {
+              const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon" style="${styleString}">`;
+              const end = `</div>`;
+
+              let content = "";
+
+              if (item.ProfilovaFotka) {
+                content = `<img class="map-person-thumb-head-icon-image has--bg-color" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
+              } else {
+                content = `
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="88.772" height="95.926" viewBox="0 0 88.772 95.926">
+                      <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
+                        <g id="Group_1365" data-name="Group 1365">
+                          <path id="Path_409" data-name="Path 409" d="M47.893,47.221c11.768,0,21.341-10.592,21.341-23.611S59.66,0,47.893,0,26.55,10.592,26.55,23.61,36.125,47.221,47.893,47.221Z"/>
+                          <path id="Path_410" data-name="Path 410" d="M72.477,44.123a3,3,0,0,0-3.192,1.355A26.016,26.016,0,0,1,47.962,58.2a26.013,26.013,0,0,1-21.32-12.722,3,3,0,0,0-3.2-1.354C6.868,47.777,2.5,72.8,3.789,93.115a3,3,0,0,0,2.994,2.811h82.36a3,3,0,0,0,2.993-2.811C93.429,72.775,89.057,47.74,72.477,44.123Z"/>
+                        </g>
+                      </g>
+                    </svg>
+
+                  `;
+              }
+
+              return `${start} ${content} ${end}`;
+            },
+          },
+          zIndex: 9,
+        },
+      },
+      mapMarkers: [],
+      mapBoundingBox: [],
+      mapOptions: {
+        dragging: true, // !Browser.mobile
+        scrollWheelZoom: false,
+        tap: false,
+        zoomSnap: 0.5,
+        zoom: 8,
+        center: [47.31322, -1.319482],
+        // minZoom: 12,
+        // maxZoom: 18,
+      },
+      title: ``,
+      zobrazovatDruhyAdres: [1, 2, 3, 4, 5, 6, 7, 8],
+    };
+  },
+
   methods: {
     getColorForGivenPartyAffiliationId(affiliationObj) {
       if (affiliationObj.Id === null) return;
@@ -363,7 +506,9 @@ export default {
   },
 
   created() {
-    console.log("testing config", this.$config);
+    this.zobrazovatDruhyAdres = this.NastaveniMapa.zobrazovatDruhyAdres
+      ? this.NastaveniMapa.zobrazovatDruhyAdres
+      : this.zobrazovatDruhyAdres;
   },
 
   computed: {
@@ -376,7 +521,14 @@ export default {
       const whichPoslanci = this.PoslanciVstupniData;
 
       return [...whichPoslanci]
-        .filter((poslanec) => poslanec.Adresy && poslanec.Adresy.length > 0)
+        .filter(
+          (poslanec) =>
+            poslanec.Adresy &&
+            poslanec.Adresy.length &&
+            poslanec.Adresy.filter((adresa) =>
+              this.zobrazovatDruhyAdres.includes(adresa.Druh)
+            ).length
+        )
         .map((poslanec) => {
           return {
             Id: poslanec.Id,
@@ -414,147 +566,6 @@ export default {
 
       this.initMap();
     },
-  },
-
-  data() {
-    return {
-      partyColorRelations: {},
-      mapInstance: null,
-      mapSettings: {
-        popup: {
-          html: (item, styleString = "") => {
-            const hasBgColor =
-              this.NastaveniMapa &&
-              this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable
-                ? true
-                : false;
-
-            const imageContent =
-              item.ProfilovaFotka && item.ProfilovaFotka !== ""
-                ? `
-                <img src="${
-                  item.ProfilovaFotka
-                }" class="map-person-thumb-head-icon-image ${
-                    hasBgColor ? "has--bg-color" : ""
-                  }" />
-              `
-                : `<div class="map-person-thumb-head-icon-image" style="${styleString}">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" width="90" height="98" viewBox="0 0 90 98">
-                    <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
-                      <g id="Group_1365" data-name="Group 1365" transform="translate(3.578)">
-                        <path id="Path_409" data-name="Path 409" d="M47.893,47.221c11.768,0,21.341-10.592,21.341-23.611S59.66,0,47.893,0,26.55,10.592,26.55,23.61,36.125,47.221,47.893,47.221Z" transform="translate(-2.965)"/>
-                        <path id="Path_410" data-name="Path 410" d="M73.431,44.123a3.059,3.059,0,0,0-3.236,1.355A26.435,26.435,0,0,1,48.577,58.2,26.432,26.432,0,0,1,26.961,45.478a3.059,3.059,0,0,0-3.244-1.354C6.914,47.777,2.485,72.8,3.792,93.115a3.024,3.024,0,0,0,3.035,2.811h83.5a3.024,3.024,0,0,0,3.034-2.811C94.673,72.775,90.241,47.74,73.431,44.123Z" transform="translate(-3.578 2.074)"/>
-                      </g>
-                    </g>
-                  </svg>
-
-
-
-              </div>`;
-
-            const detailUrl = slugify(`${item.Jmeno}-${item.Prijmeni}-${item.Id}`, {
-              locale: "cs",
-            }).toLowerCase();
-
-            return `
-
-
-                  <a class="is-map-card person-poslanec-card" href="/poslanec/${detailUrl}/">
-
-                    <div class="content-container">
-
-                      <div class="header">
-                        <div class="full-name">${item.Jmeno} ${item.Prijmeni}</div>
-                      </div>
-
-                      <div class="content">
-                        <div class="desc">
-                          <p>
-                            Narození: ${item.DatumNarozeniZobrazene}<br>
-                            Úmrtí: ${item.DatumUmrtiZobrazene || "??"}
-                          </p>
-
-                          <div class="map-card__content__address">Místo narození: ${
-                            item.Nazev
-                          }</div>
-                          <div class="map-card__content__address__meta">GPS lokace: ${
-                            item.GeoX
-                          } ${item.GeoY}</div>
-                          <div class="map-card__footer">Zobrazit detail poslance →</div>
-                        </div>
-
-
-
-                      </div>
-
-
-                    </div>
-
-                    <div class="image-container">${imageContent}</div>
-
-                  </a>
-
-
-              `;
-          },
-        },
-        addresses: {
-          cluster: {
-            className: "map__marker map__marker--cluster",
-            iconSize: 30,
-          },
-          iconLargePerson: {
-            className: "map__marker map__marker--address",
-            iconSize: 50,
-            popupAnchor: [-240, 95],
-            tooltip: {
-              direction: "bottom",
-              offset: { x: 0, y: 20 },
-            },
-            html: (item, index, styleString = "") => {
-              const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon" style="${styleString}">`;
-              const end = `</div>`;
-
-              let content = "";
-
-              if (item.ProfilovaFotka) {
-                content = `<img class="map-person-thumb-head-icon-image has--bg-color" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
-              } else {
-                content = `
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="88.772" height="95.926" viewBox="0 0 88.772 95.926">
-                      <g id="user-filled-person-shape-svgrepo" transform="translate(-3.577)">
-                        <g id="Group_1365" data-name="Group 1365">
-                          <path id="Path_409" data-name="Path 409" d="M47.893,47.221c11.768,0,21.341-10.592,21.341-23.611S59.66,0,47.893,0,26.55,10.592,26.55,23.61,36.125,47.221,47.893,47.221Z"/>
-                          <path id="Path_410" data-name="Path 410" d="M72.477,44.123a3,3,0,0,0-3.192,1.355A26.016,26.016,0,0,1,47.962,58.2a26.013,26.013,0,0,1-21.32-12.722,3,3,0,0,0-3.2-1.354C6.868,47.777,2.5,72.8,3.789,93.115a3,3,0,0,0,2.994,2.811h82.36a3,3,0,0,0,2.993-2.811C93.429,72.775,89.057,47.74,72.477,44.123Z"/>
-                        </g>
-                      </g>
-                    </svg>
-
-                  `;
-              }
-
-              return `${start} ${content} ${end}`;
-            },
-          },
-          zIndex: 9,
-        },
-      },
-      mapMarkers: [],
-      mapBoundingBox: [],
-      mapOptions: {
-        dragging: true, // !Browser.mobile
-        scrollWheelZoom: false,
-        tap: false,
-        zoomSnap: 0.5,
-        zoom: 8,
-        center: [47.31322, -1.319482],
-        // minZoom: 12,
-        // maxZoom: 18,
-      },
-      title: ``,
-    };
   },
 
   head() {

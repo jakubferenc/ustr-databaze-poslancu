@@ -42,37 +42,15 @@ import {
   customLogger,
   normalizeURLParamsToValueInArrayFormat,
   stringifyQueryForAPI,
+  normalizeQueryParamsVariableTypes,
 } from "~/utils/functions";
 
 const PoslanciSeznamAPI = () => import("~/components/PoslanciSeznamAPI.vue");
 
-const normalizeQueryParamsVariableTypes = (queryParams) => {
-  // transform string boolean to real boolean
-  // transform string numbers to real numbers
-
-  let queryParamsNormalized = { ...queryParams };
-
-  Object.keys(queryParamsNormalized).forEach((key) => {
-    if (Array.isArray(queryParams[key])) {
-      queryParamsNormalized[key] = [...queryParamsNormalized[key]].map((item) => {
-        if (item === "true" || item === true) {
-          return true;
-        } else if (item === "false" || item === false) {
-          return false;
-        } else if (!Number.isNaN(Number(item))) {
-          return parseInt(item);
-        }
-      });
-    }
-  });
-
-  return queryParamsNormalized;
-};
-
 export default {
   components: { PoslanciSeznamAPI },
 
-  async fetch() {
+  async created() {
     // take URL params at the request time and add them to the request for API
     const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query);
 
@@ -186,6 +164,7 @@ export default {
   computed: {
     nastaveniMapa() {
       return {
+        zobrazovatDruhyAdres: [1],
         zvyraznitPoslancePodlePolitickePrislusnosti: {
           enable: false,
           currentSnemovny: null,

@@ -192,6 +192,28 @@ export const getAdresaDruhHumanReadableName = (adresaDruhNumber) => {
   }
 
 };
+export const normalizeQueryParamsVariableTypes = (queryParams) => {
+  // transform string boolean to real boolean
+  // transform string numbers to real numbers
+
+  let queryParamsNormalized = { ...queryParams };
+
+  Object.keys(queryParamsNormalized).forEach((key) => {
+    if (Array.isArray(queryParams[key])) {
+      queryParamsNormalized[key] = [...queryParamsNormalized[key]].map((item) => {
+        if (item === "true" || item === true) {
+          return true;
+        } else if (item === "false" || item === false) {
+          return false;
+        } else if (!Number.isNaN(Number(item))) {
+          return parseInt(item);
+        }
+      });
+    }
+  });
+
+  return queryParamsNormalized;
+};
 
 export function stringifyQueryForAPI(query = {}) {
   let finalQueryString = "";
@@ -631,7 +653,7 @@ export const getDruhMandatuFromId = (MandatDruhId) => {
     '8': 'přijetí za stav',
     '255': 'jiné',
   });
-  
+
   if (!Object.keys(MandatTypeEnum).includes(mandatDruhIdString)) throw new Error(`Mandat type Id ${mandatDruhIdString} is not in the Enum`);
   return MandatTypeEnum[mandatDruhIdString];
 };
