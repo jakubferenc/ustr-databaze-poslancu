@@ -9,6 +9,7 @@ import {
   stripHTMLTags,
   dateISOStringToCZFormat,
   shuffleArray,
+  getDruhMandatuFromId,
 } from './utils/functions.js';
 
 
@@ -1234,6 +1235,12 @@ const getSnemovniObdobiDetailFactory = async (wordpressAPIURLWebsite, databazePo
     if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
       poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(poslanec.DatumUmrti);
     }
+
+    poslanec.Mandaty = poslanec.Mandaty.map((mandat) => {
+      mandat.DruhMandatu = (mandat?.DruhMandatu) ? getDruhMandatuFromId(mandat.DruhMandatu) : null;
+      return mandat;
+
+    });
 
     return poslanec;
 
