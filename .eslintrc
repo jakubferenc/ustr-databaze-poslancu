@@ -5,7 +5,11 @@
     "ecmaFeatures": {
       "jsx": false
     },
-    "extends" : ["plugin:you-dont-need-lodash-underscore/compatible"]
+    "extends" : [
+      "eslint:recommended",
+      "plugin:vue/recommended",
+      "plugin:you-dont-need-lodash-underscore/compatible"
+    ]
   },
   "rules": {
       "semi": "error"
