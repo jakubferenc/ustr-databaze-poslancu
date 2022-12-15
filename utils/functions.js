@@ -9,10 +9,13 @@ export function shuffleArray(unshuffledArray) {
 
 };
 
-export const dateISOStringToCZFormat = (dateString, removeStartZero = true) => {
-  const res = dateString.split("T")[0].split("-").reverse().join(". ");
+export const dateISOStringToCZFormat = (dateString, removeStartZero = true, asArray = false) => {
+  const res = dateString.split("T")[0].split("-").reverse();
 
-  return removeStartZero ? (res[0] === "0" ? res.slice(1) : res) : res;
+  res[0] = removeStartZero && res[0][0] === "0" ? res[0].slice(1) : res[0];
+  res[1] = removeStartZero && res[1][0] === "0" ? res[1].slice(1) : res[1];
+
+  return asArray ? res : res.join(". ");
 };
 
 export const addRecursivelyPerson = (dimensionalArrayOfPersons, searchedPersonObj, topLevelDimensionalArrayOfPersons) => {
@@ -172,7 +175,7 @@ export const getAdresaDruhHumanReadableName = (adresaDruhNumber) => {
   }
 
   if (adresaDruhNumber == 3) {
-    return 'Adresa bydliště při začátku mandátu';
+    return 'Adresa bydliště během mandátu';
   }
 
   if (adresaDruhNumber == 4) {
@@ -262,12 +265,10 @@ export const getAdresyProMapuForPoslanecFromMandaty = (poslanec) => {
   // check if adresa from the mandat is in the poslanec.Adresy
   // if so, add date and other metadata to the same address (don't create a new one)
 
-  if (poslanec.Mandaty && poslanec.Mandaty.length > 0) {
-
-
+  if (poslanec.Mandaty?.length) {
     [...poslanec.Mandaty].forEach((mandat) => {
 
-      if (mandat.AdresyVykonMandatu.length) {
+      if (mandat.AdresyVykonMandatu?.length) {
 
         mandat.AdresyVykonMandatu.forEach((thisItemAddress) => {
 
@@ -368,34 +369,21 @@ export const getAdresyProMapuForPoslanecFromMandaty = (poslanec) => {
 
 
     });
-
-
-
-
   }
-
-
-
   return adresyPolozky;
-
-
 };
 
 export const getAdresyProMapuForPoslanec = (poslanec) => {
 
-  if (poslanec.Adresy) {
+  if (!poslanec.Adresy) return;
 
-    return [...poslanec.Adresy].map((adresa) => {
+  return [...poslanec.Adresy].map((adresa) => {
 
-      adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
+    adresa.DruhNazev = getAdresaDruhHumanReadableName(adresa.Druh);
 
-      return adresa;
+    return adresa;
 
-    });
-  }
-
-  return [];
-
+  });
 
 };
 

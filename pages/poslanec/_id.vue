@@ -330,6 +330,16 @@ export default {
               snemovniObdobiString += `</div>`;
             }
 
+            if (item.Zacatek && [3].includes(item.Druh)) {
+              snemovniObdobiString += `<div class="map-card__date-item">`;
+              if (item.Zacatek) {
+                snemovniObdobiString += `kolem roku <span>${dateISOStringToCZFormat(
+                  item.Zacatek, false, true
+                )[2]}</span>`;
+              }
+              snemovniObdobiString += `</div>`;
+            }
+
             return `
 
                   <div class="is-map-card">
@@ -691,22 +701,21 @@ export default {
       });
     },
 
-    geojson() {
-      return this.poslanec.AdresyProMapu.map((adresa) => {
-        return {
-          LatLng: [adresa.GeoX, adresa.GeoY],
-          Nazev: adresa.Nazev,
-          DruhTyp: adresa.DruhTyp,
-          Druh: adresa.Druh,
-          Parlament: adresa.Parlament,
-          DatumZacatkuZobrazene: adresa?.Zacatek,
-          DatumKonceZobrazene: adresa?.Konec,
-          DruhNazev: adresa.DruhNazev,
+    // geojson() {
+    //   return this.poslanec.AdresyProMapu.map((adresa) => {
+    //     return {
+    //       LatLng: [adresa.GeoX, adresa.GeoY],
+    //       Nazev: adresa.Nazev,
+    //       Druh: adresa.Druh,
+    //       Parlament: adresa.Parlament,
+    //       DatumZacatkuZobrazene: adresa?.Zacatek,
+    //       DatumKonceZobrazene: adresa?.Konec,
+    //       DruhNazev: adresa.DruhNazev,
 
-          PopupHTML: ``,
-        };
-      });
-    },
+    //       PopupHTML: ``,
+    //     };
+    //   });
+    // },
 
     tituly() {
       return this.poslanec.Tituly.join(" ") ?? false;
