@@ -16,12 +16,13 @@ export default {
   },
   router: {
     trailingSlash: undefined,
+    // middleware: ['custom-router'],
   },
   publicRuntimeConfig: {
     ...config,
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://localhost:3000'
+    baseUrl: process.env.BASE_URL || 'https://localhost:8000'
   },
   sitemap: {
     hostname: !dev ? config.baseURL.production : config.baseURL.development,
