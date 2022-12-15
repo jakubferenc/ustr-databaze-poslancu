@@ -349,6 +349,8 @@ export default {
 
   computed: {
     hideKurie() {
+      if (!this.poslanci?.length) return;
+
       const kurie = [...this.poslanci]
         .map((poslanec) => {
           return poslanec.Mandaty.filter(
@@ -403,6 +405,8 @@ export default {
     },
 
     nastaveniFiltrace() {
+      if (!this.poslanci?.length) return;
+
       let sectionId = 0;
 
       let nabozenske_vyznani = [];
@@ -418,6 +422,7 @@ export default {
 
       let funkce = [];
 
+      let druh_mandatu = [];
       let druh_konce_mandatu = [];
       let znovuzvolen = [];
 
@@ -511,7 +516,19 @@ export default {
             .filter((item) => item !== null),
         ];
 
-        // volebni strany
+        druh_mandatu = [
+          ...druh_mandatu,
+          ...item.Mandaty.filter(
+            (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
+          )
+            .map((mandat) =>
+              mandat.DruhMandatu && mandat.DruhMandatu !== ""
+                ? mandat.DruhMandatu
+                : "neuvedeno"
+            )
+            .filter((item) => item !== null),
+        ];
+
         druh_konce_mandatu = [
           ...druh_konce_mandatu,
           ...item.Mandaty.filter(
@@ -637,7 +654,11 @@ export default {
 
       // make unique values
       volebni_strany = [...new Set(volebni_strany)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "volebni-strana-neuvedeno" : item;
 
@@ -678,7 +699,11 @@ export default {
 
       // make unique values
       kurie = [...new Set(kurie)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "kurie-neuvedeno" : item;
 
@@ -717,7 +742,11 @@ export default {
 
       // make unique values
       vybory = [...new Set(vybory)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "vybor-neuvedeno" : item;
 
@@ -758,7 +787,11 @@ export default {
 
       // make unique values
       kluby = [...new Set(kluby)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "kluby-neuvedeno" : item;
 
@@ -797,7 +830,11 @@ export default {
 
       // make unique values
       funkce = [...new Set(funkce)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "funkce-neuvedeno" : item;
 
@@ -837,8 +874,41 @@ export default {
       ];
 
       // make unique values
+      druh_mandatu = [...new Set(druh_mandatu)]
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
+        .map((item) => {
+          const itemId = item === "neuvedeno" ? "neuvedeno" : item;
+
+          return {
+            id: itemId,
+            text: item,
+            selected: false,
+            validate: (property) => {
+              const DruhMandatu = [...property]
+                .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
+                .map((mandat) =>
+                  mandat.DruhMandatu && mandat.DruhMandatu !== ""
+                    ? mandat.DruhMandatu
+                    : "neuvedeno"
+                )
+                .filter((item) => item !== null);
+
+              return DruhMandatu.includes(item);
+            },
+          };
+        });
+
+      // make unique values
       druh_konce_mandatu = [...new Set(druh_konce_mandatu)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "neuvedeno" : item;
 
@@ -862,6 +932,19 @@ export default {
         });
 
       // add default value
+      druh_mandatu = [
+        {
+          id: "vse-druh-mandatu",
+          text: "Vše",
+          default: true,
+          reset: true,
+          selected: true,
+          validate: (property) => true,
+        },
+        ...druh_mandatu,
+      ];
+
+      // add default value
       druh_konce_mandatu = [
         {
           id: "vse-konec-mandatu",
@@ -876,7 +959,11 @@ export default {
 
       // make unique values
       nabozenske_vyznani = [...new Set(nabozenske_vyznani)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "nabozenstvi-neuvedeno" : item;
 
@@ -909,7 +996,11 @@ export default {
       ];
 
       narodnosti = [...new Set(narodnosti)]
-        .sort((a, b) => a.toString().localeCompare(b))
+        .sort((a, b) => {
+          if (a === "neuvedeno") return 1;
+          if (b === "neuvedeno") return -1;
+          return a.toString().localeCompare(b);
+        })
         .map((item) => {
           const itemId = item === "neuvedeno" ? "narodnost-neuvedeno" : item;
 
@@ -1256,6 +1347,18 @@ export default {
               validate: (property) => !property.length || property.length === 0,
             },
           ],
+        },
+        MandatyDruhMandatu: {
+          id: sectionId++,
+          title: "Druh mandátu",
+          type: "checkbox",
+          multiple: true,
+          reset: true,
+          order: "block",
+          property: "Mandaty",
+          info: "Nějaké informace k vysvětlení",
+          hasCounter: true,
+          values: druh_mandatu,
         },
         MandatyDruhUkonceni: {
           id: sectionId++,
