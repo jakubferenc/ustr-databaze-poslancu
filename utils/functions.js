@@ -1,6 +1,5 @@
 // import typopoPackage from 'typopo';
 // const {fixTypos} = typopoPackage;
-
 export function shuffleArray(unshuffledArray) {
 
   return unshuffledArray
@@ -617,6 +616,24 @@ export const normalizeSouborAttrs = (file) => {
 
   return newFile;
 
+};
+
+export const getDruhMandatuFromId = (MandatDruhId) => {
+  const mandatDruhIdString = MandatDruhId.toString();
+  const MandatTypeEnum = Object.freeze({
+    '1': 'virilista',
+    '2': 'řádný',
+    '3': 'doplňovací volba',
+    '4': 'volený náhradník',
+    '5': 'dosazený náhradník',
+    '6': 'dědičné právo',
+    '7': 'jmenování',
+    '8': 'přijetí za stav',
+    '255': 'jiné',
+  });
+  
+  if (!Object.keys(MandatTypeEnum).includes(mandatDruhIdString)) throw new Error(`Mandat type Id ${mandatDruhIdString} is not in the Enum`);
+  return MandatTypeEnum[mandatDruhIdString];
 };
 
 

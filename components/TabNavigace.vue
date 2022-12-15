@@ -88,6 +88,16 @@
               //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
               //- div {{adresaNarozeni.zeme}}
 
+        .column.is-one-third-widescreen
+
+          .metadata-section
+            .metadata-section-title.typography-metadata-section-title
+              h3 Druh mandátu
+            .metadata-section-content
+              div.first-letter-capitalize {{getDruhMandatuFromId(item.mandat.DruhMandatu)}}
+              //- div(v-if="adresaNarozeni.mesto") {{adresaNarozeni.mesto}}
+              //- div {{adresaNarozeni.zeme}}
+
         .column.is-one-third-widescreen(v-if="item.mandat.VolebniStrana")
           .metadata-section
             .metadata-section-title.typography-metadata-section-title
@@ -152,177 +162,170 @@
 
 </template>
 
-
 <style lang="sass">
 
-  @use "sass:math"
+@use "sass:math"
 
 
 
-  .metadata-section-content
-    @extend %typography-item-detail-text
+.metadata-section-content
+  @extend %typography-item-detail-text
 
-  .tab-navigation.parlament-detail-navigace
+.tab-navigation.parlament-detail-navigace
 
-    .parlament-detail-data-item-circle-container
+  .parlament-detail-data-item-circle-container
 
-      display: flex
-      margin-left: auto
-      margin-right: auto
-      flex-wrap: wrap
-      justify-content: flex-start
+    display: flex
+    margin-left: auto
+    margin-right: auto
+    flex-wrap: wrap
+    justify-content: flex-start
 
-      .chart-widget
-        margin-bottom: math.div($margin-until-desktop, 2)
+    .chart-widget
+      margin-bottom: math.div($margin-until-desktop, 2)
 
-        +until($desktop)
+      +until($desktop)
 
-        +from($desktop)
-          margin-left: math.div($margin-from-desktop, 4)
-          margin-right: math.div($margin-from-desktop, 4)
+      +from($desktop)
+        margin-left: math.div($margin-from-desktop, 4)
+        margin-right: math.div($margin-from-desktop, 4)
 
-        +from($tablet)
+      +from($tablet)
 
-        +from($desktop)
+      +from($desktop)
 
-        +from($fullhd)
+      +from($fullhd)
 
-        .chart-graphics
-          width: 90px
-          height: 90px
-          border-radius: 100%
-          background-color: #fff
-
-        .chart-text
-          width: 150px
-
-    .tab-navigation-content-item
-      display: none
-
-      &.active
-        display: block
-
-    .tabs
-      max-width: 886px
-      margin: 0 auto
-
-    .tab
-      @extend %typography-filter-heading
-
-      width: 175px
-      height: 41px
-      border-radius: 8px
-      text-decoration: none
-      display: flex
-      align-items: center
-      justify-content: center
-
-      &:hover,
-      &.active
+      .chart-graphics
+        width: 90px
+        height: 90px
+        border-radius: 100%
         background-color: #fff
-        text-decoration: underline
+
+      .chart-text
+        width: 150px
+
+  .tab-navigation-content-item
+    display: none
+
+    &.active
+      display: block
+
+  .tabs
+    max-width: 886px
+    margin: 0 auto
+
+  .tab
+    @extend %typography-filter-heading
+
+    width: 175px
+    height: 41px
+    border-radius: 8px
+    text-decoration: none
+    display: flex
+    align-items: center
+    justify-content: center
+
+    &:hover,
+    &.active
+      background-color: #fff
+      text-decoration: underline
 
 
-  .tab-navigation
-    margin-top: 100px
+.tab-navigation
+  margin-top: 100px
 
-    &.mandat-radek,
-    &.parlament-radek
+  &.mandat-radek,
+  &.parlament-radek
 
-      .parlament-tabs-nav
+    .parlament-tabs-nav
 
-        .line
-          height: 1px
-          background: #000
-          position: relative
-          z-index: 0
+      .line
+        height: 1px
+        background: #000
+        position: relative
+        z-index: 0
 
-        .tabs
-          display: flex
-          margin-bottom: 0
+      .tabs
+        display: flex
+        margin-bottom: 0
 
-        .tab
-          height: 100px
-          text-align: center
-          position: relative
-          bottom: -1px
-          margin-left: -1px
-          display: flex
-          align-items: center
-          justify-content: center
-          text-decoration: none
-          border-width: 1px
-          border-style: solid
-          border-color: transparent
+      .tab
+        height: 100px
+        text-align: center
+        position: relative
+        bottom: -1px
+        margin-left: -1px
+        display: flex
+        align-items: center
+        justify-content: center
+        text-decoration: none
+        border-width: 1px
+        border-style: solid
+        border-color: transparent
 
-          &:hover,
-          &.active
-            border-top-left-radius: 15px
-            border-top-right-radius: 15px
-            border-color: #000
-            border-bottom: 1px solid #F8F6F1
-            z-index: 2
+        &:hover,
+        &.active
+          border-top-left-radius: 15px
+          border-top-right-radius: 15px
+          border-color: #000
+          border-bottom: 1px solid #F8F6F1
+          z-index: 2
 
-          &.active
-            text-decoration: underline
+        &.active
+          text-decoration: underline
 
-    .parlament-tabs-content-item
-      padding: 50px 20px 0 20px
+  .parlament-tabs-content-item
+    padding: 50px 20px 0 20px
 
-      display: none
+    display: none
 
-      &.active
-        display: block
+    &.active
+      display: block
 
-      &.dalsi-informace
-        text-align: left
+    &.dalsi-informace
+      text-align: left
 
-        p
-          margin-bottom: 1em
-
-
-
+      p
+        margin-bottom: 1em
 </style>
 
 <script>
-
-const CasovaOsa = () => import('~/components/CasovaOsa.vue');
-const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
-
+import { getDruhMandatuFromId } from "~/utils/functions";
+const CasovaOsa = () => import("~/components/CasovaOsa.vue");
+const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
 
 export default {
-
   components: { CasovaOsa, GalerieMediiSeznam },
 
-
-  props: ['Nastaveni', 'Typ'],
+  props: ["Nastaveni", "Typ"],
   data() {
     return {
       defaultStyles: {},
-      activeTabId: Object.values(this.Nastaveni.polozky).filter(item => item.aktivni === true)?.[0]?.id
-    }
+      activeTabId: Object.values(this.Nastaveni.polozky).filter(
+        (item) => item.aktivni === true
+      )?.[0]?.id,
+    };
   },
   computed: {
-
     componentStyles() {
-
-      return Object.assign({}, this.defaultStyles, this.Nastaveni?.tabNavigaceNastaveni?.style ? this.Nastaveni.tabNavigaceNastaveni.style : {});
-
+      return Object.assign(
+        {},
+        this.defaultStyles,
+        this.Nastaveni?.tabNavigaceNastaveni?.style
+          ? this.Nastaveni.tabNavigaceNastaveni.style
+          : {}
+      );
     },
-
   },
 
-  mounted() {
-
-  },
+  mounted() {},
 
   methods: {
-    selectActiveTab: function(id) {
-
+    getDruhMandatuFromId,
+    selectActiveTab: function (id) {
       this.activeTabId = id;
-
     },
-  }
-
-}
+  },
+};
 </script>
