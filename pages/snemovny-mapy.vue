@@ -26,7 +26,7 @@
       v-on:loadPreviousItems="loadPreviousItemsHandler($event)"
       v-on:loadMoreItems="loadMoreItemsHandler($event)"
       v-on:refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
-
+      :IsLoading="isGlobalLoading"
       Nadpis="Mapa místa narození poslanců"
       :MaRazeni="false"
       :MaMapu="true"
@@ -38,6 +38,7 @@
 
 <script>
 import apiModule from "../factories";
+import { mapGetters } from "vuex";
 
 import {
   customLogger,
@@ -74,6 +75,7 @@ export default {
   components: { PoslanciSeznamAPI },
 
   async created() {
+    this.$store.dispatch("setLoading", { loadingState: true });
     const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
 
     this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
@@ -89,6 +91,8 @@ export default {
   methods: {
     stringifyQueryForAPI,
     async prepareRequestFilteredViaAPI(currentQuery) {
+      this.$store.dispatch("setLoading", { loadingState: true });
+
       this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
       await this.$store.dispatch("getParlamentyDatabaze");
@@ -116,6 +120,7 @@ export default {
         path: "/snemovny-mapy/",
         query: this.currentQuery,
       });
+      this.$store.dispatch("setLoading", { loadingState: false });
     },
 
     async refreshSelectedFiltersHandler($event) {
@@ -132,6 +137,9 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      isGlobalLoading: "getLoadingState",
+    }),
     nastaveniMapa() {
       return {
         zobrazovatDruhyAdres: [1],

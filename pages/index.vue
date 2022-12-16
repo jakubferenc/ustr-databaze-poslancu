@@ -95,14 +95,17 @@ export default {
     }),
   },
 
-  async created() {},
+  async created() {
+    this.$store.dispatch("setLoading", { loadingState: true });
 
-  async mounted() {
     await this.$store.dispatch("getPoslanciHomepage", {
       limit: 10,
       stranka: 1,
     });
+    this.$store.dispatch("setLoading", { loadingState: false });
   },
+
+  async mounted() {},
 
   data() {
     return {

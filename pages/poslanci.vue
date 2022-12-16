@@ -51,6 +51,8 @@ export default {
   components: { PoslanciSeznamAPI },
 
   async created() {
+    this.$store.dispatch("setLoading", { loadingState: true });
+
     // take URL params at the request time and add them to the request for API
     const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query);
 
@@ -62,12 +64,14 @@ export default {
     // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
 
     await this.prepareRequestFilteredViaAPI(this.currentQuery);
+    this.$store.dispatch("setLoading", { loadingState: false });
   },
 
   methods: {
     stringifyQueryForAPI,
 
     async prepareRequestFilteredViaAPI(currentQuery) {
+      this.$store.dispatch("setLoading", { loadingState: true });
       this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
       await this.$store.dispatch("getParlamentyDatabaze");
@@ -95,6 +99,7 @@ export default {
         path: "/poslanci/",
         query: this.currentQuery,
       });
+      this.$store.dispatch("setLoading", { loadingState: false });
     },
 
     async refreshSelectedFiltersHandler($event) {

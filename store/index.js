@@ -138,7 +138,7 @@ and then commits the mutation to update it
 */
 export const actions = {
 
-  setLoading ({ state, commit }, loadingState) {
+  setLoading ({ state, commit }, {loadingState}) {
     try {
       commit("updateLoadingState", loadingState);
     } catch (err) {

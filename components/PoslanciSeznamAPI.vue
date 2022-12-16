@@ -394,6 +394,7 @@ export default {
     "NastaveniMapa",
     "Mod",
     "MaRazeni",
+    "IsLoading",
   ],
 
   computed: {
@@ -596,6 +597,10 @@ export default {
             });
           }
         }
+        if (this.IsLoading) {
+          this.$store.dispatch("setLoading", { loadingState: false });
+        }
+        clearTimeout(timer);
       }, 500);
     });
   },
