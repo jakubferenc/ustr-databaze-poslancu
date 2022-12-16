@@ -76,7 +76,7 @@
 
   .map__marker__container.map-address-icon.map-person-thumb-head-icon
 
-    background-color: red
+    // background-color: red
 
 
 .marker-cluster-small
@@ -401,9 +401,9 @@ export default {
           ];
 
           // const stranaColor = this.getColorForGivenPartyAffiliationId(strany[0]);
-          const klubColor = this.getColorForGivenPartyAffiliationId(kluby[0]);
+          // const klubColor = this.getColorForGivenPartyAffiliationId(kluby[0]);
 
-          styleString = `background-color: ${klubColor}`;
+          styleString = ""; // `background-color: ${klubColor}`;
         }
 
         const icon = new divIcon({
@@ -464,7 +464,9 @@ export default {
     // load map
     this.$nextTick(() => {
       setTimeout(async () => {
+        this.$store.dispatch("setLoading", { loadingState: true });
         await this.initMap();
+        this.$store.dispatch("setLoading", { loadingState: false });
       }, 500);
     });
 
