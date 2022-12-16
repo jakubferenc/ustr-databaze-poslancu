@@ -627,30 +627,18 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       hasCounter: true,
       values: undefined
     },
-    VolebniStrany: {
+    Kluby: {
       id: sectionId++,
-      title: 'Politické strany',
+      title: 'Kluby',
       type: 'checkbox',
       multiple: true,
       reset: true,
       order: 'block',
       info: "Nějaké informace k vysvětlení",
-      property: 'VolebniStrany',
+      property: 'Kluby',
       hasCounter: true,
       values: undefined
     },
-    // Kluby: {
-    //   id: sectionId++,
-    //   title: 'Kluby',
-    //   type: 'checkbox',
-    //   multiple: true,
-    //   reset: true,
-    //   order: 'block',
-    //   info: "Nějaké informace k vysvětlení",
-    //   property: 'Kluby',
-    //   hasCounter: true,
-    //   values: undefined
-    // },
     Fotografie: {
       id: sectionId++,
       title: 'Fotografie',
@@ -684,8 +672,6 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
     ...pohlaviMapped
   ];
 
-
-
   let parlamentyMapped = [...filterData.Parlamenty].map(item => {
 
     return {
@@ -716,10 +702,6 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
     ...snemovniObdobiMapped
   ];
 
-
-
-
-
     const maFotkuMapped = [
         {id: false, text: 'Vše', default: true, reset: true, selected: true},
         {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
@@ -735,51 +717,26 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
   finalResult.Fotografie.values = maFotkuMapped;
 
-  // if (filterData.Kluby && filterData.Kluby !== null) {
+  if (filterData.Kluby && filterData.Kluby !== null) {
 
-  //   const klubyMapped = [...filterData.Kluby].map(item => {
-
-  //     return {
-  //             id: item.Id,
-  //             text: item.Nazev.split('|')[0].trim(),
-  //             selected: false,
-  //           };
-
-  //   });
-
-  //   finalResult.Kluby.values = [
-  //     {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true},
-  //     ...klubyMapped
-  //   ];
-
-  // } else {
-
-  //   delete finalResult.Kluby;
-
-  // }
-
-
-  if (filterData.VolebniStrany && filterData.VolebniStrany !== null) {
-
-    const stranyMapped = [...filterData.VolebniStrany].map(item => {
+    const klubyMapped = [...filterData.Kluby].map(item => {
 
       return {
               id: item.Id,
-              text: item.Nazev,
+              text: item.Nazev.split('|')[0].trim(),
               selected: false,
             };
 
     });
 
-
-    finalResult.VolebniStrany.values = [
-      {id: 'vse-strany', text: 'Vše', default: true, reset: true, selected: true},
-      ...stranyMapped
+    finalResult.Kluby.values = [
+      {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true},
+      ...klubyMapped
     ];
 
   } else {
 
-    delete finalResult.VolebniStrany;
+    delete finalResult.Kluby;
 
   }
 

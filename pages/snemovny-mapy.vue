@@ -102,9 +102,7 @@ export default {
         ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
         Pohlavi: this.defaultFilterData.Pohlavi.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
         PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
-        Parlamenty: this.$store.state.parlamentyDatabaze.filter((parlament) =>
-          [147, 151, 152, 157].includes(parlament.Id)
-        ), // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
+        Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
       };
 
       const currentQueryNormalized = normalizeQueryParamsVariableTypes(this.currentQuery);
@@ -130,57 +128,6 @@ export default {
 
       // // call API
       await this.prepareRequestFilteredViaAPI(this.currentQuery);
-    },
-
-    async loadItems(newStranka) {
-      const newLimit = parseInt(this.currentQuery.limit) || this.defaultQuery.limit;
-
-      this.currentQuery = {
-        ...this.$route.query,
-        ...{ stranka: [newStranka] },
-        ...{ limit: [newLimit] },
-      };
-
-      this.$router.push({
-        path: "/poslanci/",
-        query: this.currentQuery,
-      });
-
-      // call API
-      await this.getPoslanciFilteredAPI(this.currentQuery, this.$store);
-    },
-
-    async doPaginationHandler($event) {
-      this.currentQuery = {
-        ...this.currentQuery,
-        ...{ Stranka: [$event] },
-      };
-
-      // // call API
-
-      await this.prepareRequestFilteredViaAPI(this.currentQuery);
-    },
-
-    async selectOrderOptionHandler($event) {
-      this.currentQuery = {
-        ...this.currentQuery,
-        ...{ Razeni: [$event] },
-      };
-
-      await this.prepareRequestFilteredViaAPI(this.currentQuery);
-    },
-
-    async loadPreviousItemsHandler($event) {
-      const newStranka =
-        parseInt(this.currentQuery.stranka) - 1 > 0
-          ? parseInt(this.currentQuery.stranka) - 1
-          : 1;
-      this.loadItems(newStranka);
-    },
-
-    async loadMoreItemsHandler($event) {
-      const newStranka = parseInt(this.currentQuery.stranka) + 1;
-      this.loadItems(newStranka);
     },
   },
 
