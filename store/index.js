@@ -311,7 +311,6 @@ export const actions = {
     try {
 
       const poslanci = await apiFactory.getPoslanciHomepageFactory(projectConfig.databazePoslancuURL, {limit, stranka, filterCallback,});
-      console.log('from poslanci homepage', poslanci);
       commit("updatePoslanciHomepage", poslanci);
 
     } catch (err) {
