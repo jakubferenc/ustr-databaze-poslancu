@@ -39,7 +39,6 @@
 import apiModule from "../factories";
 
 import {
-  customLogger,
   normalizeURLParamsToValueInArrayFormat,
   stringifyQueryForAPI,
   normalizeQueryParamsVariableTypes,
@@ -75,12 +74,10 @@ export default {
       this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
       await this.$store.dispatch("getParlamentyDatabaze");
-
       await this.$store.dispatch("getPoslanciAll", this.currentQueryStringified);
 
       // Defines which params are reacting to the current filter settings
       // But for Parlamenty/Snemovny which must stay fixed
-
       this.currentFilterData = {
         ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
         Pohlavi: this.defaultFilterData.Pohlavi.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
