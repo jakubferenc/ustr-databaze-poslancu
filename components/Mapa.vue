@@ -10,6 +10,8 @@
 
   .map-legend(v-if="geojson && Object.keys(partyColorRelations).length > 0")
     .map-legend__title Legenda
+    .map-legend__subtitle
+      i I když je řada politických stran spojována s určitými barvami, v této legendě jsou barvy k politickým stranám přiřazovány náhodně. Politických stran je totiž mnohem více než tradičně používaných barev a navíc některé barvy byly historicky spojovány s více stranami.
     .map-legend__list
       .item-legend(v-for="stranaObj in partyColorRelations")
         .color(:style="`background-color: ${stranaObj.color}`")
@@ -42,6 +44,8 @@
     margin-bottom: 1em
     text-align: center
 
+  .map-legend__subtitle
+    margin: 1em 0 2em 0
 
   .map-legend__list
     display: flex
@@ -275,18 +279,11 @@ export default {
     getColorForGivenPartyAffiliationId(affiliationObj) {
       if (affiliationObj.Id === null) return;
 
-      const komunistickeStrany = [17, 19, 5222];
-      const lidoveckeStrany = [22, 23, 24, 19550, 9885, 15684];
-      const socialniDemokrateStrany = [890, 20889, 21688, 11332, 17577];
+      const komunistickeStrany = [869];
+      const lidoveckeStrany = [40, 56, 680, 37];
+      const socialniDemokrateStrany = [682];
 
       const sadaNahodnychBarev = [];
-
-      // 147 = Národní shromáždění ČSR/ČSSR
-      // 157 = Česká národní rada
-      // 151 = Federální shromáždění ČSSR/ČSFR - Sněmovna lidu
-      // 152 = Federální shromáždění ČSSR/ČSFR - Sněmovna národů
-
-      const idSnemovenKdePouzivameKluby = [147, 151, 152, 157];
 
       const minHSL = 38;
       const maxHSL = 315;
@@ -391,21 +388,22 @@ export default {
         ) {
           iconClassNames = [...iconClassNames, "has--political-indicator"];
 
-          const strany = Array.from(new Set(item.VolebniStrany));
+          // const strany = Array.from(new Set(item.VolebniStrany));
           const kluby = Array.from(new Set(item.Kluby));
 
-          iconClassNames = [
-            ...iconClassNames,
-            ...strany.map((item) => `is--strana-${item.Id}`),
-          ];
+          // iconClassNames = [
+          //   ...iconClassNames,
+          //   ...strany.map((item) => `is--strana-${item.Id}`),
+          // ];
           iconClassNames = [
             ...iconClassNames,
             ...kluby.map((item) => `is--klub-${item.Id}`),
           ];
 
-          const stranaColor = this.getColorForGivenPartyAffiliationId(strany[0]);
+          // const stranaColor = this.getColorForGivenPartyAffiliationId(strany[0]);
+          const klubColor = this.getColorForGivenPartyAffiliationId(kluby[0]);
 
-          styleString = `background-color: ${stranaColor}`;
+          styleString = `background-color: ${klubColor}`;
         }
 
         const icon = new divIcon({
