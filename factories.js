@@ -616,17 +616,17 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       hasCounter: true,
       values: undefined
     },
-    SnemovniObdobi: {
-      id: sectionId++,
-      title: 'Sněmovní období',
-      type: 'checkbox',
-      multiple: true,
-      reset: true,
-      order: 'block',
-      info: "Nějaké informace k vysvětlení",
-      hasCounter: true,
-      values: undefined
-    },
+    // SnemovniObdobi: {
+    //   id: sectionId++,
+    //   title: 'Sněmovní období',
+    //   type: 'checkbox',
+    //   multiple: true,
+    //   reset: true,
+    //   order: 'block',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: true,
+    //   values: undefined
+    // },
     Kluby: {
       id: sectionId++,
       title: 'Kluby',
@@ -687,20 +687,20 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
     ...parlamentyMapped
   ];
 
-  let snemovniObdobiMapped = [...filterData.SnemovniObdobi].map(item => {
+  // let snemovniObdobiMapped = [...filterData.SnemovniObdobi].map(item => {
 
-    return {
-            id: item.Id,
-            text: item.Nazev,
-            selected: false,
-          };
+  //   return {
+  //           id: item.Id,
+  //           text: item.Nazev,
+  //           selected: false,
+  //         };
 
-  });
+  // });
 
-  snemovniObdobiMapped = [
-    {id: 'vse-snemovni-obdobi', text: 'Vše', default: true, reset: true, selected: true},
-    ...snemovniObdobiMapped
-  ];
+  // snemovniObdobiMapped = [
+  //   {id: 'vse-snemovni-obdobi', text: 'Vše', default: true, reset: true, selected: true},
+  //   ...snemovniObdobiMapped
+  // ];
 
     const maFotkuMapped = [
         {id: false, text: 'Vše', default: true, reset: true, selected: true},
@@ -714,7 +714,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
 
   finalResult.Pohlavi.values = pohlaviMapped;
   finalResult.Snemovny.values = parlamentyMapped;
-  finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
+  // finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
   finalResult.Fotografie.values = maFotkuMapped;
 
   if (filterData.Kluby && filterData.Kluby !== null) {
