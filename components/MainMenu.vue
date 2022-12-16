@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     checkHideSearchNav(e) {
-      this.$store.dispatch("searchNavToggle", false);
+      this.$store.dispatch("searchNavToggle", { searchNavToggle: false });
     },
   },
 };

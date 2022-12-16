@@ -12,6 +12,7 @@ import {
 } from '../utils/functions';
 
 export const state = () => ({
+  is_loading: false,
   slovnikova_hesla: [],
   parlamenty: [],
   parlamentyDatabaze: [],
@@ -41,6 +42,7 @@ export const state = () => ({
 export const getters = {
   getPoslanciHomepage: (state) => state.poslanci_homepage,
   getSearchNavStatus: (state) => state.search_nav,
+  getLoadingState: (state) => state.is_loading,
   getSouboryHomepage: (state) => [...state.media_soubory].slice(0, 20),
 };
 
@@ -48,6 +50,12 @@ export const getters = {
 this will update the state with the posts
 */
 export const mutations = {
+
+  updateLoadingState: ( state, loadingState ) => {
+
+    state.is_loading = loadingState;
+
+  },
 
   updateSearchNavState: ( state, search_nav ) => {
 
@@ -130,10 +138,17 @@ and then commits the mutation to update it
 */
 export const actions = {
 
-  searchNavToggle ({ state, commit }, searchNavToggleState) {
+  setLoading ({ state, commit }, loadingState) {
     try {
+      commit("updateLoadingState", loadingState);
+    } catch (err) {
+      console.warn(err);
+    }
+  },
 
-      commit("updateSearchNavState", searchNavToggleState);
+  searchNavToggle ({ state, commit }, { searchState }) {
+    try {
+      commit("updateSearchNavState", searchState);
 
     } catch (err) {
       console.warn(err);

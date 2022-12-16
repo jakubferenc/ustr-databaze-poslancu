@@ -15,8 +15,8 @@ export default {
     host: 'localhost', // default: localhost
   },
   router: {
-    trailingSlash: undefined,
-    // middleware: ['custom-router'],
+    trailingSlash: true,
+    middleware: ['custom-router'],
   },
   publicRuntimeConfig: {
     ...config,

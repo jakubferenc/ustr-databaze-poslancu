@@ -6,7 +6,7 @@ header.main-header
     SearchNav(
       @click.native.prevent="searchNavHandler"
     )
-  .search-results(v-show="searchNavToggle")
+  .search-results(v-show="searchNavStatus")
     .search-results__header-container
 
       h2.section-title.section-title-no-margin-bottom Vyhledat poslance
@@ -128,7 +128,6 @@ export default {
   data() {
     return {
       isLoading: false,
-      searchNavToggle: false,
       searchQuery: "",
       currentQuery: {},
       timeoutCallback: () => {},
@@ -188,8 +187,8 @@ export default {
     searchNavHandler(e) {
       this.$store.dispatch("resetPoslanci");
 
-      this.searchNavToggle = !this.searchNavToggle;
-      this.$store.dispatch("searchNavToggle", this.searchNavToggle);
+      const searchNavToggle = !this.searchNavStatus;
+      this.$store.dispatch("searchNavToggle", { searchState: searchNavToggle });
     },
   },
   head() {
