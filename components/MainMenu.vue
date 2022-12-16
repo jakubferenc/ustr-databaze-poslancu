@@ -1,31 +1,31 @@
 <template lang="pug">
 nav.main-menu(role="navigation" aria-label="Primary")
-  NuxtLink(@click.native="checkHideSearchNav" to="/")
+  NuxtLink.link-index(to="/")
     span Úvod
   span &nbsp;|
-  NuxtLink(@click.native="checkHideSearchNav" to="/vyvoj-parlamentu/")
+  NuxtLink(to="/vyvoj-parlamentu/")
     span.full-text Vývoj parlamentarismu
     span.short-text Parlamentarismus
   span &nbsp;|
-  NuxtLink.link-snemovny-mapy(@click.native="checkHideSearchNav" to="/snemovny-mapy/")
+  NuxtLink.link-snemovny-mapy(to="/snemovny-mapy/")
     span Mapy
   span &nbsp;|
-  NuxtLink.link-poslanci(@click.native="checkHideSearchNav" to="/poslanci/")
+  NuxtLink.link-poslanci(to="/poslanci/")
     span Poslanci
   span &nbsp;|
-  NuxtLink.link-parlamenty(@click.native="checkHideSearchNav" to="/parlamenty/")
+  NuxtLink.link-parlamenty(to="/parlamenty/")
     span.full-text Zastupitelské sbory
     span.short-text Sbory
   span &nbsp;|
-  //- NuxtLink.link-socialni-mapy(@click.native="checkHideSearchNav" to="/socialni-mapy/") Sociální mapy
+  //- NuxtLink.link-socialni-mapy(to="/socialni-mapy/") Sociální mapy
   //- span &nbsp;|
-  NuxtLink.link-slovnik(@click.native="checkHideSearchNav" to="/slovnik/")
+  NuxtLink.link-slovnik(to="/slovnik/")
     span Slovník
   span &nbsp;|
-  NuxtLink.link-galerie-medii(@click.native="checkHideSearchNav" to="/galerie-medii/")
+  NuxtLink.link-galerie-medii(to="/galerie-medii/")
     span Galerie
   span &nbsp;|
-  NuxtLink(@click.native="checkHideSearchNav" to="/stranka/o-projektu/")
+  NuxtLink(to="/stranka/o-projektu/")
     span O projektu
 </template>
 
@@ -37,8 +37,10 @@ nav.main-menu(role="navigation" aria-label="Primary")
     &:first-child
       margin-left: 0
 
+  .nuxt-link-active:not(.link-index),
   .nuxt-link-exact-active
     text-decoration: underline
+    display: inline-flex
 
 .full-text
   +until($fullhd)
@@ -50,20 +52,6 @@ nav.main-menu(role="navigation" aria-label="Primary")
     display: none
   +until($fullhd)
     display: inline-block
-html.subpage-parlament .link-parlamenty
-  @extend .nuxt-link-exact-active
-
-html.subpage-socialni-mapa .link-socialni-mapy
-  @extend .nuxt-link-exact-active
-
-html.subpage-poslanci .link-poslanci
-  @extend .nuxt-link-exact-active
-
-html.subpage-media .link-galerie-medii
-  @extend .nuxt-link-exact-active
-
-html.subpage-slovnik .link-slovnik
-  @extend .nuxt-link-exact-active
 </style>
 
 <script>
