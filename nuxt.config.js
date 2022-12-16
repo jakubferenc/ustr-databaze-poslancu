@@ -7,7 +7,7 @@ const config = {dev, ...projectConfig};
 // data
 
 export default {
-  target: 'server', // default is 'server'
+  target: 'static', // default is 'server'
   ssr: true,
   components: false,
   server: {
