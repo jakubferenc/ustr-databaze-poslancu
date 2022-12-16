@@ -354,8 +354,10 @@ const createFilterSettingsForApiUseFactory = (
   ];
 
   const maFotkuMapped = [
-      {id: false, text: 'Vše', default: true, reset: true, selected: true},
-      {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
+      {id: null, text: 'Vše', default: true, reset: true, selected: true},
+    { id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
+    {id: false, text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', },
+
   ];
 
   /* finding the lowest and highest integer number from an array
@@ -704,7 +706,8 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
 
     const maFotkuMapped = [
         {id: false, text: 'Vše', default: true, reset: true, selected: true},
-        {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
+      { id: 'has-photo', text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
+      {id: 'no-photo', text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', },
     ];
 
     /* finding the lowest and highest integer number from an array
@@ -755,8 +758,6 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
 
 
         // let's check the specific selected values, it's not the default reset one
-
-
 
           finalResult[key].values.map((valueItem) => {
 
