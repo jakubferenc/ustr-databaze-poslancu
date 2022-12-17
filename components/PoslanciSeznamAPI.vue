@@ -2,19 +2,26 @@
 
 
 
-#scroll-top.poslanci-seznam.seznam-with-filter(v-on="$listeners")
+#scroll-top.poslanci-seznam.seznam-with-filter(v-on="$listeners" :class="{'has-modes-nav': MaModNavigace}")
 
-  .mapa-container.section(v-if="MaMapu && Mod === 'Vse' ")
+  //- .mapa-container.section(v-if="MaMapu && Mod === 'Vse' ")
 
-    h2.section-title Místo narození poslanců
-      span.section-title-subtitle Mapa se aktualizuje podle zvoleného nastavení filtru
+  //-   h2.section-title Místo narození poslanců
+  //-     span.section-title-subtitle Mapa se aktualizuje podle zvoleného nastavení filtru
 
 
-    Mapa(
-      v-if="poslanci"
-      :PoslanciVstupniData="poslanci"
-      :NastaveniMapa="NastaveniMapa"
-    )
+  //-   Mapa(
+  //-     v-if="poslanci"
+  //-     :PoslanciVstupniData="poslanci"
+  //-     :NastaveniMapa="NastaveniMapa"
+  //-   )
+
+  .filter-modes-nav(v-if="MaModNavigace")
+    .button(v-for="(modItem, index) in Mod" :class="{'active': modeType === modItem}" @click="changeMode(modItem)")
+      span(v-if="modItem === 'map' ") Mapa
+      span(v-if="modItem === 'list' ") Seznam
+      span(v-if="modItem === 'all' ") Vše
+
 
   .filter-seznam
 
@@ -145,13 +152,20 @@
 
         .seznam-filter-list
 
-          .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
+          .mapa-container.section(v-if="MaMapu & ['all', 'map'].includes(modeType)")
 
 
-            Mapa(v-if="poslanci" :PoslanciVstupniData="poslanci" :NastaveniMapa="NastaveniMapa" :Velka="true")
+            Mapa(
+              v-if="poslanci"
+              :PoslanciVstupniData="poslanci"
+              :NastaveniMapa="NastaveniMapa"
+              :Velka="true"
+              :Nadpis="'Místo narození poslanců'"
+              :InvalidateMap="invalidateMapCounter"
+            )
 
 
-          .component-footer(v-if="(MaButtonMore || MaPaginaci) && ['Vse', 'Seznam'].includes(Mod)")
+          .component-footer(v-if="(MaButtonMore || MaPaginaci) && ['all', 'list'].includes(modeType)")
 
             .pagination-bar(v-if="MaPaginaci")
               //- .to-the-top
@@ -167,7 +181,7 @@
                 a.pagination-list-next.pagination-item(@click="doPagination(Array(PaginaceNastaveni.PocetStranek).length)") &nbsp;  &gt;  &gt;
 
 
-          .columns.is-multiline.is-mobile(v-if="['Vse', 'Seznam'].includes(Mod)")
+          .columns.is-multiline.is-mobile(v-if="['all', 'list'].includes(modeType)")
 
 
             Poslanec(
@@ -213,6 +227,28 @@
 </template>
 
 <style lang="sass" scoped>
+.poslanci-seznam
+  &.has-modes-nav
+    margin-top: -6rem
+
+.filter-modes-nav
+  display: flex
+  justify-content: center
+  align-items: center
+  column-gap: 2rem
+  margin-bottom: 5rem
+
+  .button
+    min-width: 150px
+
+    &:not(.active)
+      &:hover
+        background-color: #f7f7f7
+
+    &.active
+      color: #fff
+      background-color: #002896
+
 
 .section-title
 
@@ -305,11 +341,13 @@ input:disabled
 
 
 .filter-seznam-bar
+  position: relative
   display: flex
   align-item: center
   justify-content: space-between
   margin-bottom: 40px
   font-size: 12px
+  z-index: 2
 
 .custom-select
 
@@ -395,6 +433,7 @@ export default {
     "Mod",
     "MaRazeni",
     "IsLoading",
+    "MaModNavigace",
   ],
 
   computed: {
@@ -428,6 +467,9 @@ export default {
   },
 
   methods: {
+    changeMode(modeType) {
+      this.modeType = modeType;
+    },
     getOnlyActiveFilterSectionsWithSelectedValues() {
       const allFilters = { ...this.filtrNastaveni };
 
@@ -494,6 +536,7 @@ export default {
 
     toggleSidebar() {
       this.isSidebarOpen = this.isSidebarOpen ? false : true;
+      this.invalidateMapCounter = this.invalidateMapCounter + 1;
     },
 
     toggleSelect() {
@@ -612,6 +655,8 @@ export default {
 
   data() {
     return {
+      invalidateMapCounter: 0,
+      modeType: this?.Mod?.length ? this.Mod[0] : "list",
       filtrovat: {
         hasBeenSelected: false,
       },

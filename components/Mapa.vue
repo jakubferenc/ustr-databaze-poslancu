@@ -2,6 +2,11 @@
 
 .map-container-main
 
+  .section-map-title-container(v-if="Nadpis")
+    .section-map-title-container__wrapper
+      h2.section-title {{Nadpis}}
+      span.section-title-subtitle Mapa se aktualizuje podle zvoleného nastavení filtru
+
   <client-only placeholder="Načítám...">
     .mapbox(ref="mapElement" data-component="mapbox" v-if="geojson" :class="{'is--large': Velka}")
 
@@ -23,9 +28,38 @@
 <style lang="sass">
 
 @use "sass:math"
+.section-title
+  @extend %typography-section-title
 
+.map-container-main
+  position: relative
 
+.section-map-title-container
+  position: absolute
+  width: 100%
+  display: flex
+  align-items: center
+  justify-content: center
+  z-index: 2
+  margin-bottom: -100px
+  margin-left: auto
+  margin-right: auto
 
+  .section-map-title-container__wrapper
+    margin-bottom: 0
+    width: 500px
+    background-color: rgba(255, 255, 255,.4)
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    margin-top: 2rem
+    flex-direction: column
+
+    .section-title
+      margin: 0
+
+    .section-title-subtitle
+      font-size: .85rem
 
 .mapbox
   height: 700px
@@ -128,6 +162,16 @@ export default {
       type: [Object, Boolean],
       required: false,
       default: false,
+    },
+    Nadpis: {
+      type: [String, Boolean],
+      required: false,
+      default: "Místa narození poslanců",
+    },
+    InvalidateMap: {
+      type: Number,
+      required: false,
+      default: 0,
     },
   },
 
@@ -272,7 +316,13 @@ export default {
       zobrazovatDruhyAdres: [1, 2, 3, 4, 5, 6, 7, 8],
     };
   },
-
+  watch: {
+    InvalidateMap(oldVal, newVal) {
+      setTimeout(() => {
+        this.mapInstance?.invalidateSize();
+      }, 400);
+    },
+  },
   methods: {
     getColorForGivenPartyAffiliationId(affiliationObj) {
       if (affiliationObj.Id === null) return;

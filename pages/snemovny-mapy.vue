@@ -27,11 +27,12 @@
       v-on:loadMoreItems="loadMoreItemsHandler($event)"
       v-on:refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
       :IsLoading="isGlobalLoading"
-      Nadpis="Mapa místa narození poslanců"
+      :Nadpis="false"
       :MaRazeni="false"
       :MaMapu="true"
+      :Mod="['map', 'list', 'all']"
       :NastaveniMapa="nastaveniMapa"
-      Mod="Mapa"
+      :MaModNavigace="true"
     )
 
 </template>

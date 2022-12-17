@@ -5,7 +5,6 @@
   h1.typography-main-title {{ title }}
 
   .section-padding-h-margin-v
-
     PoslanciSeznamAPI(
 
       v-if="poslanci && nastaveniFiltrace && paginaceNastaveni.Celkem"
@@ -28,9 +27,10 @@
       @refreshSelectedFilters="refreshSelectedFiltersHandler($event)"
       :NastaveniMapa="nastaveniMapa"
       :MaMapu="true"
-      Nadpis="Poslanci"
-      Mod="Vse"
+      :Nadpis="false"
+      :Mod="['list', 'map', 'all']"
       :MaRazeni="true"
+      :MaModNavigace="true"
     )
 
 </template>
@@ -80,7 +80,7 @@ export default {
       // But for Parlamenty/Snemovny which must stay fixed
       this.currentFilterData = {
         ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
-        // Pohlavi: this.defaultFilterData.Pohlavi.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
+        Pohlavi: this.defaultFilterData.Pohlavi.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
         PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
         Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
       };
@@ -226,7 +226,7 @@ export default {
         Limit: [400],
         Stranka: [1],
       },
-      title: `Seznam poslanců`,
+      title: `Poslanci`,
     };
   },
 

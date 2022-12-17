@@ -81,6 +81,7 @@ const createFilterSettingsForApiUseFactory = (
       order: 'block',
       info: "Nějaké informace k vysvětlení",
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     SnemovniObdobi: {
@@ -92,6 +93,7 @@ const createFilterSettingsForApiUseFactory = (
       order: 'block',
       info: "Nějaké informace k vysvětlení",
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     VolebniStrany: {
@@ -104,6 +106,7 @@ const createFilterSettingsForApiUseFactory = (
       info: "Nějaké informace k vysvětlení",
       property: 'VolebniStrany',
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     Kluby: {
@@ -116,6 +119,7 @@ const createFilterSettingsForApiUseFactory = (
       info: "Nějaké informace k vysvětlení",
       property: 'Kluby',
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     Vybory: {
@@ -128,6 +132,7 @@ const createFilterSettingsForApiUseFactory = (
       info: "Nějaké informace k vysvětlení",
       property: 'Vybory',
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     Kurie: {
@@ -140,6 +145,7 @@ const createFilterSettingsForApiUseFactory = (
       info: "Nějaké informace k vysvětlení",
       property: 'Kurie',
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     Narodnosti: {
@@ -152,6 +158,7 @@ const createFilterSettingsForApiUseFactory = (
       info: "Nějaké informace k vysvětlení",
       property: 'Narodnosti',
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     Vyznani: {
@@ -164,6 +171,7 @@ const createFilterSettingsForApiUseFactory = (
       property: 'NabozenstviNarozeni',
       info: "Nějaké informace k vysvětlení",
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     UniverzitniVzdelani: {
@@ -206,6 +214,7 @@ const createFilterSettingsForApiUseFactory = (
       property: 'DruhMandatu',
       info: "Nějaké informace k vysvětlení",
       hasCounter: false,
+      nullable: true,
       values: undefined
     },
     DruhUkonceniMandatu: {
@@ -218,6 +227,7 @@ const createFilterSettingsForApiUseFactory = (
       property: 'DruhMandatu',
       info: "Nějaké informace k vysvětlení",
       hasCounter: false,
+      nullable: true,
       values: undefined
     },
     PocetMandatu: {
@@ -298,7 +308,7 @@ const createFilterSettingsForApiUseFactory = (
   });
 
   parlamentyMapped = [
-    {id: 'vse-parlamenty', text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...parlamentyMapped
   ];
 
@@ -313,7 +323,7 @@ const createFilterSettingsForApiUseFactory = (
   });
 
   snemovniObdobiMapped = [
-    {id: 'vse-snemovni-obdobi', text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...snemovniObdobiMapped
   ];
 
@@ -327,7 +337,7 @@ const createFilterSettingsForApiUseFactory = (
 
   });
   narodnostiMapped = [
-    {id: 'vse-narodnosti', text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...narodnostiMapped
   ];
 
@@ -342,7 +352,7 @@ const createFilterSettingsForApiUseFactory = (
 
   });
   vyznaniMapped = [
-    {id: 'vse-vyznani', text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...vyznaniMapped
   ];
 
@@ -361,7 +371,6 @@ const createFilterSettingsForApiUseFactory = (
       {id: null, text: 'Vše', default: true, reset: true, selected: true},
     { id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
     {id: false, text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', },
-
   ];
 
   /* finding the lowest and highest integer number from an array
@@ -380,7 +389,7 @@ const createFilterSettingsForApiUseFactory = (
 
   });
   druhMandatuMapped = [
-    {id: 'vse-druh-mandatu', text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...druhMandatuMapped,
   ];
 
@@ -395,7 +404,7 @@ const createFilterSettingsForApiUseFactory = (
 
   });
   druhUkonceniMandatuMapped = [
-    {id: 'vse-druh-mandatu', text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...druhUkonceniMandatuMapped,
   ];
 
@@ -454,7 +463,7 @@ const createFilterSettingsForApiUseFactory = (
     });
 
     finalResult.Kluby.values = [
-      {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true},
+      {id: null, text: 'Vše', default: true, reset: true, selected: true},
       ...klubyMapped
     ];
 
@@ -479,7 +488,7 @@ const createFilterSettingsForApiUseFactory = (
 
 
     finalResult.VolebniStrany.values = [
-      {id: 'vse-strany', text: 'Vše', default: true, reset: true, selected: true},
+      {id: null, text: 'Vše', default: true, reset: true, selected: true},
       ...stranyMapped
     ];
 
@@ -505,7 +514,7 @@ const createFilterSettingsForApiUseFactory = (
 
 
     finalResult.Vybory.values = [
-      {id: 'vse-vybory', text: 'Vše', default: true, reset: true, selected: true},
+      {id: null, text: 'Vše', default: true, reset: true, selected: true},
       ...vyboryMapped
     ];
 
@@ -529,7 +538,7 @@ const createFilterSettingsForApiUseFactory = (
 
 
     finalResult.Kurie.values = [
-      {id: 'vse-kurie', text: 'Vše', default: true, reset: true, selected: true},
+      {id: null, text: 'Vše', default: true, reset: true, selected: true},
       ...kurieMapped
     ];
 
@@ -604,6 +613,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       order: 'inline',
       property: 'Pohlavi',
       hasCounter: false,
+      nullable: true,
       values: undefined,
     },
     Snemovny: {
@@ -615,6 +625,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       order: 'block',
       info: "Nějaké informace k vysvětlení",
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     // SnemovniObdobi: {
@@ -638,6 +649,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       info: "Nějaké informace k vysvětlení",
       property: 'Kluby',
       hasCounter: true,
+      nullable: true,
       values: undefined
     },
     Fotografie: {
@@ -647,6 +659,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
       order: 'inline',
       info: "Nějaké informace k vysvětlení",
       hasCounter: false,
+      nullable: true,
       values: undefined,
     },
 
@@ -684,7 +697,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   });
 
   parlamentyMapped = [
-    {id: 'vse-parlamenty', text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...parlamentyMapped
   ];
 
@@ -703,12 +716,11 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   //   ...snemovniObdobiMapped
   // ];
 
-    const maFotkuMapped = [
-        {id: false, text: 'Vše', default: true, reset: true, selected: true},
-      { id: 'has-photo', text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
-      {id: 'no-photo', text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', },
-    ];
-
+  const maFotkuMapped = [
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
+    {id: true, text: 'Má fotku', default: false, selected: false, property: 'Soubory', },
+    {id: false, text: 'Nemá fotku', default: false, selected: false, property: 'Soubory', },
+  ];
     /* finding the lowest and highest integer number from an array
        can be done to select first and last number, as API returns the numbers sorted from lowest to highest
     */
@@ -725,14 +737,14 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
 
       return {
               id: item.Id,
-              text: item.Nazev.split('|')[0].trim(),
+              text: item.Nazev?.split('|')?.[0]?.trim(),
               selected: false,
             };
 
     });
 
     finalResult.Kluby.values = [
-      {id: 'vse-kluby', text: 'Vše', default: true, reset: true, selected: true},
+      {id: null, text: 'Vše', default: true, reset: true, selected: true},
       ...klubyMapped
     ];
 
@@ -753,13 +765,10 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
 
       // we don't want to pick selected item from range, beucase there are no selected items, but just two numbers
 
-      if (activeData[key]) { // if the key is in the active data
-
+      if (activeData[key] && activeData[key] !== null) { // if the key is in the active data
 
         // let's check the specific selected values, it's not the default reset one
-
           finalResult[key].values.map((valueItem) => {
-
 
             valueItem.selected = activeData[key].includes(valueItem.id);
 
