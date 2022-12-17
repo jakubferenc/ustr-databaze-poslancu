@@ -40,41 +40,28 @@
 <script>
 import apiModule from "../factories";
 import { mapGetters } from "vuex";
-
 import {
-  customLogger,
   normalizeURLParamsToValueInArrayFormat,
   stringifyQueryForAPI,
+  normalizeQueryParamsVariableTypes,
 } from "~/utils/functions";
+import { poslanciFilterMixin } from "~/mixins/poslanciFilterMixin";
 
 const PoslanciSeznamAPI = () => import("~/components/PoslanciSeznamAPI.vue");
 
-const normalizeQueryParamsVariableTypes = (queryParams) => {
-  // transform string boolean to real boolean
-  // transform string numbers to real numbers
-
-  let queryParamsNormalized = { ...queryParams };
-
-  Object.keys(queryParamsNormalized).forEach((key) => {
-    if (Array.isArray(queryParams[key])) {
-      queryParamsNormalized[key] = [...queryParamsNormalized[key]].map((item) => {
-        if (item === "true" || item === true) {
-          return true;
-        } else if (item === "false" || item === false) {
-          return false;
-        } else if (!Number.isNaN(Number(item))) {
-          return parseInt(item);
-        }
-      });
-    }
-  });
-
-  return queryParamsNormalized;
-};
-
 export default {
   components: { PoslanciSeznamAPI },
-
+  mixins: [poslanciFilterMixin],
+  data() {
+    return {
+      title: "Interaktivní mapy stranické příslušnosti",
+      defaultQuery: {
+        Poslanec: ["true"],
+        Limit: [8000],
+        Stranka: [1],
+      },
+    };
+  },
   async created() {
     this.$store.dispatch("setLoading", { loadingState: true });
     const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
@@ -87,10 +74,14 @@ export default {
     // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
 
     await this.prepareRequestFilteredViaAPI(this.currentQuery);
+    this.$store.dispatch("setLoading", { loadingState: false });
   },
 
   methods: {
+    normalizeURLParamsToValueInArrayFormat,
     stringifyQueryForAPI,
+    normalizeQueryParamsVariableTypes,
+
     async prepareRequestFilteredViaAPI(currentQuery) {
       this.$store.dispatch("setLoading", { loadingState: true });
 
@@ -122,18 +113,6 @@ export default {
         query: this.currentQuery,
       });
       this.$store.dispatch("setLoading", { loadingState: false });
-    },
-
-    async refreshSelectedFiltersHandler($event) {
-      const activeFilterItems = $event;
-
-      this.currentQuery = {
-        ...this.defaultQuery,
-        ...activeFilterItems,
-      };
-
-      // // call API
-      await this.prepareRequestFilteredViaAPI(this.currentQuery);
     },
   },
 
@@ -178,26 +157,6 @@ export default {
         pocetPoslancu: this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu,
       };
     },
-  },
-
-  data() {
-    return {
-      currentQueryStringified: "",
-      currentFilterSettings: {},
-      defaultFilterSettings: {},
-      defaultFilterData: {
-        PoslaneckySlib: [true, false],
-        Pohlavi: [1, 2],
-      },
-      currentFilterData: {},
-      currentQuery: {},
-      defaultQuery: {
-        Poslanec: ["true"],
-        Limit: [8000],
-        Stranka: [1],
-      },
-      title: `Interaktivní mapy stranické příslušnosti`,
-    };
   },
 
   head() {

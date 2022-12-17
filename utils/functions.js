@@ -195,6 +195,7 @@ export const getAdresaDruhHumanReadableName = (adresaDruhNumber) => {
   }
 
 };
+
 export const normalizeQueryParamsVariableTypes = (queryParams) => {
   // transform string boolean to real boolean
   // transform string numbers to real numbers

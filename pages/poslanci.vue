@@ -37,18 +37,27 @@
 
 <script>
 import apiModule from "../factories";
-
 import {
   normalizeURLParamsToValueInArrayFormat,
   stringifyQueryForAPI,
   normalizeQueryParamsVariableTypes,
 } from "~/utils/functions";
-
+import { poslanciFilterMixin } from "~/mixins/poslanciFilterMixin";
 const PoslanciSeznamAPI = () => import("~/components/PoslanciSeznamAPI.vue");
 
 export default {
   components: { PoslanciSeznamAPI },
-
+  mixins: [poslanciFilterMixin],
+  data() {
+    return {
+      title: "Poslanci",
+      defaultQuery: {
+        Poslanec: ["true"],
+        Limit: [400],
+        Stranka: [1],
+      },
+    };
+  },
   async created() {
     this.$store.dispatch("setLoading", { loadingState: true });
 
@@ -67,7 +76,9 @@ export default {
   },
 
   methods: {
+    normalizeURLParamsToValueInArrayFormat,
     stringifyQueryForAPI,
+    normalizeQueryParamsVariableTypes,
 
     async prepareRequestFilteredViaAPI(currentQuery) {
       this.$store.dispatch("setLoading", { loadingState: true });
@@ -97,25 +108,6 @@ export default {
         query: this.currentQuery,
       });
       this.$store.dispatch("setLoading", { loadingState: false });
-    },
-
-    async refreshSelectedFiltersHandler($event) {
-      const activeFilterItems = $event;
-
-      this.currentQuery = {
-        ...this.defaultQuery,
-        ...this.currentQuery,
-        ...activeFilterItems,
-      };
-
-      Object.keys(this.currentQuery).forEach((paramKey) => {
-        if (this.currentQuery[paramKey].includes(null)) {
-          delete this.currentQuery[paramKey];
-        }
-      });
-
-      // // call API
-      await this.prepareRequestFilteredViaAPI(this.currentQuery);
     },
 
     async loadItems(newStranka) {
@@ -208,26 +200,6 @@ export default {
         pocetPoslancu: this.$store.state.filter_data.CelkovyPocetNalezenychZaznamu,
       };
     },
-  },
-
-  data() {
-    return {
-      currentQueryStringified: "",
-      currentFilterSettings: {},
-      defaultFilterSettings: {},
-      defaultFilterData: {
-        PoslaneckySlib: [true, false],
-        Pohlavi: [1, 2],
-      },
-      currentFilterData: {},
-      currentQuery: {},
-      defaultQuery: {
-        Poslanec: ["true"],
-        Limit: [400],
-        Stranka: [1],
-      },
-      title: `Poslanci`,
-    };
   },
 
   head() {
