@@ -74,7 +74,7 @@
 
 .has--political-indicator
 
-  .map__marker__container.map-address-icon.map-person-thumb-head-icon
+  // .map__marker__container.map-address-icon.map-person-thumb-head-icon
 
 
 .marker-cluster-small

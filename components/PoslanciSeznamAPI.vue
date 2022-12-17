@@ -441,13 +441,16 @@ export default {
         if (item.type === "radio" || item.type === "checkbox") {
           const activeValues = item.values
             .filter((valueObj) => valueObj.selected === true)
+            .filter(
+              (valueObj) =>
+                (item.nullable && valueObj.id === null) ||
+                (!valueObj.default && valueObj.id !== null)
+            )
             .map((valueObj) => {
               // if we selected a default option, we won't send the particular section of a filter
               // so that the particular section will not influence the API filtering of the data
-              return valueObj.default === true ? null : valueObj.id;
-            })
-            .filter((item) => item !== null);
-
+              return valueObj.id;
+            });
           // if (activeValues.length > 1) {
           //   // we have multiple options selected in the filter for the given parameter
           //   // let's make it serialized
@@ -463,15 +466,15 @@ export default {
           }
         }
 
-        if (item.type === "range") {
-          if (item.values[0] !== item.values[2]) {
-            onlyActivelySelectedFilters[item.queryStructure[0]] = [item.values[0]];
-          }
+        // if (item.type === "range") {
+        //   if (item.values[0] !== item.values[2]) {
+        //     onlyActivelySelectedFilters[item.queryStructure[0]] = [item.values[0]];
+        //   }
 
-          if (item.values[1] !== item.values[3]) {
-            onlyActivelySelectedFilters[item.queryStructure[1]] = [item.values[1]];
-          }
-        }
+        //   if (item.values[1] !== item.values[3]) {
+        //     onlyActivelySelectedFilters[item.queryStructure[1]] = [item.values[1]];
+        //   }
+        // }
       });
 
       return onlyActivelySelectedFilters;
@@ -569,10 +572,12 @@ export default {
       // check all other range sliders if the absolute max or min is different from current min or max values
       // if so, add them to the query, because we want it to have it in the URL string
 
-      let onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
+      let onlyActivelySelectedFilters = null;
+
+      // onlyActivelySelectedFilters = this.getOnlyActiveFilterSectionsWithSelectedValues();
 
       onlyActivelySelectedFilters = {
-        ...onlyActivelySelectedFilters,
+        // ...onlyActivelySelectedFilters,
         ...currentRangeQuery,
       };
 

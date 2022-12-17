@@ -24,319 +24,289 @@
 
 </template>
 
-
 <style lang="sass">
 
 
-  .multi-range-slider
-    min-height: 65px
-    position: relative
+.multi-range-slider
+  min-height: 65px
+  position: relative
+  justify-content: center
+  align-items: center
+  display: flex
+  margin-top: -15px
+  overflow: hidden
+
+
+
+.range-slider
+  position: relative
+  z-index: 1
+  height: 10px
+  margin: 0 15px
+  width: 100%
+
+  .text-left
+    position: absolute
+    left: -7.5px
+    top: 20px
+
+  .text-right
+    position: absolute
+    right: -7.5px
+    top: 20px
+
+  .track
+    position: absolute
+    z-index: 1
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    border-radius: 5px
+    background-color: rgba($color-primary-blue,.3)
+
+
+  .range
+    position: absolute
+    z-index: 2
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    border-radius: 5px
+    background-color: $color-primary-blue
+
+  .thumb
+    position: absolute
+    z-index: 3
+    width: 30px
+    height: 30px
+    background-color: $color-primary-blue
+    border-radius: 50%
+    color: #fff
+    font-size: 12px
+    display: flex
     justify-content: center
     align-items: center
-    display: flex
-    margin-top: -15px
-    overflow: hidden
-
-
-
-  .range-slider
-    position: relative
-    z-index: 1
-    height: 10px
-    margin: 0 15px
-    width: 100%
-
-    .text-left
-      position: absolute
-      left: -7.5px
-      top: 20px
-
-    .text-right
-      position: absolute
-      right: -7.5px
-      top: 20px
-
-    .track
-      position: absolute
-      z-index: 1
-      left: 0
-      right: 0
-      top: 0
-      bottom: 0
-      border-radius: 5px
-      background-color: rgba($color-primary-blue,.3)
-
-
-    .range
-      position: absolute
-      z-index: 2
-      left: 0
-      right: 0
-      top: 0
-      bottom: 0
-      border-radius: 5px
-      background-color: $color-primary-blue
-
-    .thumb
-      position: absolute
-      z-index: 3
-      width: 30px
-      height: 30px
-      background-color: $color-primary-blue
-      border-radius: 50%
-      color: #fff
-      font-size: 12px
-      display: flex
-      justify-content: center
-      align-items: center
-      cursor: pointer
-
-    .thumb.left
-      left: 0
-      transform: translate(-15px, -10px)
-
-    .thumb.right
-      right: 0
-      transform: translate(15px, -10px)
-
-  input[type="range"]
-    position: absolute
-    cursor: pointer
-    pointer-events: none
-    z-index: 2
-    height: 10px
-    width: 100%
-    opacity: 0
-
-    -webkit-appearance: none
-
-
-  input[type="range"]::-webkit-slider-thumb
-    pointer-events: all
-    width: 30px
-    height: 30px
-    border: 0 none
-    background-color: red
     cursor: pointer
 
-    -webkit-appearance: none
+  .thumb.left
+    left: 0
+    transform: translate(-15px, -10px)
 
-  input[type="range"]::-moz-range-thumb
-    pointer-events: all
-    width: 30px
-    height: 30px
-    border: 0 none
-    background-color: red
-    cursor: pointer
+  .thumb.right
+    right: 0
+    transform: translate(15px, -10px)
 
-  input[type="range"]::-ms-thumb
-    pointer-events: all
-    width: 30px
-    height: 30px
-    border: 0 none
-    background-color: red
-    cursor: pointer
+input[type="range"]
+  position: absolute
+  cursor: pointer
+  pointer-events: none
+  z-index: 2
+  height: 10px
+  width: 100%
+  opacity: 0
+
+  -webkit-appearance: none
 
 
+input[type="range"]::-webkit-slider-thumb
+  pointer-events: all
+  width: 30px
+  height: 30px
+  border: 0 none
+  background-color: red
+  cursor: pointer
+
+  -webkit-appearance: none
+
+input[type="range"]::-moz-range-thumb
+  pointer-events: all
+  width: 30px
+  height: 30px
+  border: 0 none
+  background-color: red
+  cursor: pointer
+
+input[type="range"]::-ms-thumb
+  pointer-events: all
+  width: 30px
+  height: 30px
+  border: 0 none
+  background-color: red
+  cursor: pointer
 </style>
 
-
 <script>
+export default {
+  components: {},
 
-  export default {
-    components: {  },
+  props: [
+    "Id",
+    "Name",
+    "CurrentMinValue",
+    "CurrentMaxValue",
+    "MinValue",
+    "MaxValue",
+    "QueryStructure",
+  ],
+  watch: {
+    MinValue: function (newVal, oldVal) {
+      // watch it
 
-    props: [
-      "Id",
-      "Name",
-      "CurrentMinValue",
-      "CurrentMaxValue",
-      "MinValue",
-      "MaxValue",
-      "QueryStructure"
-    ],
-    watch: {
-      MinValue: function(newVal, oldVal) { // watch it
+      this.regenerateSlider();
+    },
+    MaxValue: function (newVal, oldVal) {
+      // watch it
 
-        this.regenerateSlider();
+      this.regenerateSlider();
+    },
+    CurrentMinValue: function (newVal, oldVal) {
+      // watch it
 
-      },
-      MaxValue: function(newVal, oldVal) { // watch it
+      this.regenerateSlider();
+    },
+    CurrentMaxValue: function (newVal, oldVal) {
+      // watch it
 
-        this.regenerateSlider();
+      this.regenerateSlider();
+    },
+  },
+  data() {
+    return {
+      $thisEl: null,
+      leftValue: null,
+      rightValue: null,
 
+      leftHasBeenTouched: false,
+      rightHasBeenTouched: false,
+    };
+  },
+  created() {
+    this.leftValue = this.CurrentMinValue;
+    this.rightValue = this.CurrentMaxValue;
+  },
+  methods: {
+    mouseUpHandler() {
+      let valuesToSend = {};
+
+      if (
+        this.leftValue !== this.CurrentMinValue &&
+        this.leftValue !== this.MinValue &&
+        this.leftHasBeenTouched
+      ) {
+        valuesToSend[this.QueryStructure[0]] = this.leftValue;
       }
-    },
-    data() {
 
-      return {
-
-        $thisEl: null,
-        leftValue: null,
-        rightValue: null,
-
-        leftHasBeenTouched: false,
-        rightHasBeenTouched: false,
+      if (
+        this.leftValue !== this.CurrentMaxValue &&
+        this.rightValue !== this.MaxValue &&
+        this.rightHasBeenTouched
+      ) {
+        valuesToSend[this.QueryStructure[1]] = this.rightValue;
       }
 
+      this.$emit("multi-range-change", {
+        name: this.Name,
+        values: valuesToSend,
+      });
     },
-    created() {
 
-      this.leftValue = this.CurrentMinValue;
-      this.rightValue = this.CurrentMaxValue;
+    regenerateSlider() {
+      if (this.leftHasBeenTouched) {
+        if (this.MinValue > this.leftValue) {
+          this.leftValue = this.MinValue;
+        }
+      } else {
+        this.leftValue = this.CurrentMinValue;
+      }
 
+      if (this.rightHasBeenTouched) {
+        if (this.MaxValue < this.rightValue) {
+          this.rightValue = this.MaxValue;
+        }
+      } else {
+        this.rightValue = this.CurrentMaxValue;
+      }
+
+      // this.rightValue = this.CurrentMaxValue;
+
+      this._regenerateLeftCustomElementsPositions(this.MinValue, this.MaxValue);
+      this._regenerateRightCustomElementsPositions(this.MinValue, this.MaxValue);
+
+      this.leftHasBeenTouched = false;
+      this.rightHasBeenTouched = false;
     },
-    methods: {
 
-      mouseUpHandler() {
+    _regenerateLeftCustomElementsPositions(min, max) {
+      const percent = ((this.leftValue - min) / (max - min)) * 100;
 
-        let valuesToSend = {};
+      this.$thumbLeft.style.left = percent + "%";
+      this.$range.style.left = percent + "%";
+    },
 
-        if ( (this.leftValue !== this.CurrentMinValue) && this.leftValue !== this.MinValue && this.leftHasBeenTouched) {
-          valuesToSend[this.QueryStructure[0]] = this.leftValue;
-        }
-
-        if ( (this.leftValue !== this.CurrentMaxValue) && this.rightValue !== this.MaxValue && this.rightHasBeenTouched ) {
-          valuesToSend[this.QueryStructure[1]] = this.rightValue;
-        }
-
-        this.$emit('multi-range-change', {
-          name: this.Name,
-          values: valuesToSend,
-
-        });
-
-      },
-
-      regenerateSlider() {
-
-
-        if (this.leftHasBeenTouched) {
-
-          if (this.MinValue > this.leftValue) {
-            this.leftValue = this.MinValue;
-          }
-
-        } else {
-          this.leftValue = this.CurrentMinValue;
-        }
-
-
-
-        if (this.rightHasBeenTouched) {
-
-          if (this.MaxValue < this.rightValue) {
-            this.rightValue = this.MaxValue;
-          }
-
-        } else {
-          this.rightValue = this.CurrentMaxValue;
-        }
-
-        // this.rightValue = this.CurrentMaxValue;
-
-
-        this._regenerateLeftCustomElementsPositions(this.MinValue, this.MaxValue);
-        this._regenerateRightCustomElementsPositions(this.MinValue, this.MaxValue);
-
-
-
-      },
-
-      _regenerateLeftCustomElementsPositions(min, max) {
-
-        const percent = (  (this.leftValue - min) / (max - min) ) * 100;
-
-        this.$thumbLeft.style.left = percent + "%";
-        this.$range.style.left = percent + "%";
-
-
-      },
-
-      _regenerateRightCustomElementsPositions(min, max) {
-
-      const percent = (  (this.rightValue - min) / (max - min) ) * 100;
-
+    _regenerateRightCustomElementsPositions(min, max) {
+      const percent = ((this.rightValue - min) / (max - min)) * 100;
 
       this.$thumbRight.style.right = `${100 - percent}%`;
       this.$range.style.right = `${100 - percent}%`;
+    },
 
+    _setLeftValue() {
+      // this is internal for making the custom slider button work
 
-      },
+      const [min, max] = [parseInt(this.$inputLeft.min), parseInt(this.$inputLeft.max)];
 
-      _setLeftValue() {
+      this.$refs.inputLeftEl.value = this.leftValue = Math.min(
+        parseInt(this.$inputLeft.value),
+        parseInt(this.$inputRight.value) - 1
+      );
 
-        // this is internal for making the custom slider button work
-
-        const [min, max] = [parseInt(this.$inputLeft.min), parseInt(this.$inputLeft.max)];
-
-        this.$refs.inputLeftEl.value = this.leftValue = Math.min(parseInt(this.$inputLeft.value), parseInt(this.$inputRight.value) - 1);
-
-        this._regenerateLeftCustomElementsPositions(min, max);
-
-      },
+      this._regenerateLeftCustomElementsPositions(min, max);
+    },
 
     setLeftValueHandler() {
-
       this._setLeftValue();
 
       if (!this.leftHasBeenTouched) {
         this.leftHasBeenTouched = true;
       }
-
-
     },
 
-
     setRightValueHandler() {
-
-
       this._setRightValue();
-
 
       if (!this.rightHasBeenTouched) {
         this.rightHasBeenTouched = true;
       }
-
     },
 
-
     _setRightValue() {
-
       // this is internal for making the custom slider button work
       const [min, max] = [parseInt(this.$inputRight.min), parseInt(this.$inputRight.max)];
 
-      this.$refs.inputRightEl.value = this.rightValue = Math.max(parseInt(this.$inputRight.value), parseInt(this.$inputLeft.value) + 1);
+      this.$refs.inputRightEl.value = this.rightValue = Math.max(
+        parseInt(this.$inputRight.value),
+        parseInt(this.$inputLeft.value) + 1
+      );
 
       this._regenerateRightCustomElementsPositions(min, max);
-
-
-
-
-    }
-
     },
+  },
 
-    mounted() {
+  mounted() {
+    this.$thisEl = this.$refs.range;
 
-      this.$thisEl = this.$refs.range;
+    this.$inputLeft = this.$refs.inputLeftEl;
+    this.$inputRight = this.$refs.inputRightEl;
 
+    this.$thumbLeft = this.$refs.thumbLeft;
+    this.$thumbRight = this.$refs.thumbRight;
 
-      this.$inputLeft = this.$refs.inputLeftEl;
-      this.$inputRight = this.$refs.inputRightEl;
+    this.$range = this.$refs.customRange;
 
-      this.$thumbLeft = this.$refs.thumbLeft;
-      this.$thumbRight = this.$refs.thumbRight;
-
-      this.$range = this.$refs.customRange;
-
-      this._setLeftValue();
-      this._setRightValue();
-
-
-    },
-
-
-  };
-
+    this._setLeftValue();
+    this._setRightValue();
+  },
+};
 </script>

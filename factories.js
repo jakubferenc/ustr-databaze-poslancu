@@ -59,6 +59,7 @@ const createFilterSettingsForApiUseFactory = (
       property: 'PoslaneckySlib',
       info: "Nějaké informace k vysvětlení",
       hasCounter: false,
+      nullable: true,
       values: undefined,
     },
     Pohlavi: {
@@ -68,6 +69,7 @@ const createFilterSettingsForApiUseFactory = (
       order: 'inline',
       property: 'Pohlavi',
       hasCounter: false,
+      nullable: true,
       values: undefined,
     },
     Snemovny: {
@@ -172,6 +174,7 @@ const createFilterSettingsForApiUseFactory = (
       property: 'UniverzitniVzdelani',
       info: "Nějaké informace k vysvětlení",
       hasCounter: false,
+      nullable: true,
       values: undefined,
     },
     // SocialniVazby: {
@@ -190,6 +193,7 @@ const createFilterSettingsForApiUseFactory = (
       order: 'inline',
       info: "Nějaké informace k vysvětlení",
       hasCounter: false,
+      nullable: true,
       values: undefined,
     },
     DruhMandatu: {
@@ -262,7 +266,7 @@ const createFilterSettingsForApiUseFactory = (
   });
 
   poslaneckySlibMapped = [
-    {id: 0, text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...poslaneckySlibMapped,
   ];
 
@@ -279,7 +283,7 @@ const createFilterSettingsForApiUseFactory = (
   });
 
   pohlaviMapped = [
-    {id: 0, text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...pohlaviMapped
   ];
 
@@ -343,7 +347,7 @@ const createFilterSettingsForApiUseFactory = (
   ];
 
   const vysokaSkolaMapped = [
-    {id: false, text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     {id: true, text: 'Má VŠ', disabled: false}
   ];
 
@@ -547,15 +551,10 @@ const createFilterSettingsForApiUseFactory = (
 
       // we don't want to pick selected item from range, beucase there are no selected items, but just two numbers
 
-      if (activeData[key]) { // if the key is in the active data
-
+      if (activeData[key] && activeData[key] !== null) { // if the key is in the active data
 
         // let's check the specific selected values, it's not the default reset one
-
-
-
           finalResult[key].values.map((valueItem) => {
-
 
             valueItem.selected = activeData[key].includes(valueItem.id);
 
@@ -670,7 +669,7 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   });
 
   pohlaviMapped = [
-    {id: 0, text: 'Vše', default: true, reset: true, selected: true},
+    {id: null, text: 'Vše', default: true, reset: true, selected: true},
     ...pohlaviMapped
   ];
 

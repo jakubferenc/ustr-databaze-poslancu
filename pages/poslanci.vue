@@ -80,7 +80,7 @@ export default {
       // But for Parlamenty/Snemovny which must stay fixed
       this.currentFilterData = {
         ...this.$store.state.filter_data, // data, Filtry part from getPoslanciAll() action
-        Pohlavi: this.defaultFilterData.Pohlavi.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
+        // Pohlavi: this.defaultFilterData.Pohlavi.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
         PoslaneckySlib: this.defaultFilterData.PoslaneckySlib.map((item) => item), // default values directly injected into filter data, not from Filtry from getPoslanciAll()
         Parlamenty: this.$store.state.parlamentyDatabaze, // overwrite the .Parlamenty attribute because we want the parlaments to be fixed all the time and displayed in the filter
       };
@@ -104,8 +104,15 @@ export default {
 
       this.currentQuery = {
         ...this.defaultQuery,
+        ...this.currentQuery,
         ...activeFilterItems,
       };
+
+      Object.keys(this.currentQuery).forEach((paramKey) => {
+        if (this.currentQuery[paramKey].includes(null)) {
+          delete this.currentQuery[paramKey];
+        }
+      });
 
       // // call API
       await this.prepareRequestFilteredViaAPI(this.currentQuery);
