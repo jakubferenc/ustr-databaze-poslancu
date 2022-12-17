@@ -76,7 +76,6 @@
 
   .map__marker__container.map-address-icon.map-person-thumb-head-icon
 
-    background-color: rgba(0, 40, 150, 1)
 
 .marker-cluster-small
   background-color: rgba(191,191,191, 0.6)
