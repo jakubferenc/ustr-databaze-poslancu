@@ -11,7 +11,7 @@
       <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 </template>
 
-<style lang="sass">
+<style lang="sass" scoped>
 $margin-body: 50px
 
 .typography-main-title
