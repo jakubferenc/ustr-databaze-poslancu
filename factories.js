@@ -174,15 +174,15 @@ const createFilterSettingsForApiUseFactory = (
       hasCounter: false,
       values: undefined,
     },
-    SocialniVazby: {
-      id: sectionId++,
-      title: 'Sociální vazby',
-      type: 'radio',
-      order: 'inline',
-      info: "Nějaké informace k vysvětlení",
-      hasCounter: false,
-      values: undefined,
-    },
+    // SocialniVazby: {
+    //   id: sectionId++,
+    //   title: 'Sociální vazby',
+    //   type: 'radio',
+    //   order: 'inline',
+    //   info: "Nějaké informace k vysvětlení",
+    //   hasCounter: false,
+    //   values: undefined,
+    // },
     Fotografie: {
       id: sectionId++,
       title: 'Fotografie',
@@ -428,7 +428,7 @@ const createFilterSettingsForApiUseFactory = (
   finalResult.Narodnosti.values = narodnostiMapped;
   finalResult.Vyznani.values = vyznaniMapped;
   finalResult.UniverzitniVzdelani.values = vysokaSkolaMapped;
-  finalResult.SocialniVazby.values = SocialniVazbyMapped;
+  // finalResult.SocialniVazby.values = SocialniVazbyMapped;
   finalResult.Fotografie.values = maFotkuMapped;
 
   finalResult.DruhMandatu.values = druhMandatuMapped;
