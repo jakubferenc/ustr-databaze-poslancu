@@ -82,12 +82,10 @@ export default {
     });
     // await store.dispatch("getStranky");
     return {
-      ...mapGetters({
-        poslanci: "getPoslanciHomepage",
-        soubory: "getSouboryHomepage",
-        parlamenty: "getParlamenty",
-        slovnikova_hesla: "getSlovnikovaHesla",
-      }),
+      poslanci: store.getters.getPoslanciHomepage,
+      soubory: store.getters.getSouboryHomepage,
+      parlamenty: store.getters.getParlamenty,
+      slovnikova_hesla: store.getters.getSlovnikovaHesla,
     };
   },
   computed: {},
