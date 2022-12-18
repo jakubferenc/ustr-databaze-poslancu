@@ -44,6 +44,8 @@ export const getters = {
   getSearchNavStatus: (state) => state.search_nav,
   getLoadingState: (state) => state.is_loading,
   getSouboryHomepage: (state) => [...state.media_soubory].slice(0, 20),
+  getParlamenty: (state) => state.parlamenty,
+  getSlovnikovaHesla: (state) => state.slovnikova_hesla,
 };
 
 /*
@@ -118,8 +120,8 @@ export const mutations = {
     state.poslanci_seznam_razeni_id = poslanci_seznam_razeni_id;
   },
 
-  updatePoslanciHomepage: (state, poslanci) => {
-    state.poslanci_homepage = poslanci;
+  updatePoslanciHomepage: (state, poslanci_homepage) => {
+    state.poslanci_homepage = poslanci_homepage;
   },
   updateMedia: (state, media_soubory) => {
     state.media_soubory = media_soubory;
@@ -306,12 +308,12 @@ export const actions = {
   },
 
   async getPoslanciHomepage({ state, commit }, {limit = 20, stranka = 1, filterCallback = null} ) {
-    if (state.poslanci.length) return;
+    if (state.poslanci_homepage.length) return;
 
     try {
 
-      const poslanci = await apiFactory.getPoslanciHomepageFactory(projectConfig.databazePoslancuURL, {limit, stranka, filterCallback,});
-      commit("updatePoslanciHomepage", poslanci);
+      const poslanci_homepage = await apiFactory.getPoslanciHomepageFactory(projectConfig.databazePoslancuURL, {limit, stranka, filterCallback,});
+      commit("updatePoslanciHomepage", poslanci_homepage);
 
     } catch (err) {
       console.warn(err);
