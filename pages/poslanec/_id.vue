@@ -114,7 +114,10 @@
     .parlament-detail-map
 
       .section-map-title-container
-        h2.section-title Mapa poslance
+        h2.section-title
+          span(v-if="poslanec.Pohlavi === 2") Mapa poslankyně
+          span(v-else) Mapa poslance
+
 
       <client-only placeholder="Načítám...">
         .mapbox(ref="mapElement" data-component="mapbox")
@@ -333,9 +336,9 @@ export default {
             if (item.Zacatek && [3].includes(item.Druh)) {
               snemovniObdobiString += `<div class="map-card__date-item">`;
               if (item.Zacatek) {
-                snemovniObdobiString += `kolem roku <span>${dateISOStringToCZFormat(
-                  item.Zacatek, false, true
-                )[2]}</span>`;
+                snemovniObdobiString += `kolem roku <span>${
+                  dateISOStringToCZFormat(item.Zacatek, false, true)[2]
+                }</span>`;
               }
               snemovniObdobiString += `</div>`;
             }
