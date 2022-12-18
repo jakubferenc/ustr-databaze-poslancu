@@ -72,39 +72,25 @@ export default {
   },
 
   async asyncData({ store, $config }) {
-    store.dispatch("setLoading", { loadingState: true });
     // wordpress api calls
     await store.dispatch("getMedia");
     await store.dispatch("getSlovnikovaHesla");
     await store.dispatch("getParlamenty");
-
-    // await store.dispatch("getStranky");
-    store.dispatch("setLoading", { loadingState: false });
-
-    return {
-      // sliderItems: [...store.state.stranky].filter(item => item.id == 538),
-    };
-  },
-  computed: {
-    ...mapGetters({
-      poslanci: "getPoslanciHomepage",
-      soubory: "getSouboryHomepage",
-      parlamenty: "getParlamenty",
-      slovnikova_hesla: "getSlovnikovaHesla",
-    }),
-  },
-
-  async created() {
-    this.$store.dispatch("setLoading", { loadingState: true });
-    await this.$store.dispatch("getPoslanciHomepage", {
+    await store.dispatch("getPoslanciHomepage", {
       limit: 10,
       stranka: 1,
     });
-    this.$store.dispatch("setLoading", { loadingState: false });
+    // await store.dispatch("getStranky");
+    return {
+      ...mapGetters({
+        poslanci: "getPoslanciHomepage",
+        soubory: "getSouboryHomepage",
+        parlamenty: "getParlamenty",
+        slovnikova_hesla: "getSlovnikovaHesla",
+      }),
+    };
   },
-
-  async mounted() {},
-
+  computed: {},
   data() {
     return {
       title: `Hlavní stránka`,
