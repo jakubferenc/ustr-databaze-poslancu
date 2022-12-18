@@ -36,18 +36,17 @@
 
 .section-map-title-container
   position: absolute
-  width: 100%
+  width: 500px
   display: flex
   align-items: center
   justify-content: center
-  z-index: 2
-  margin-bottom: -100px
-  margin-left: auto
+  z-index: 5
+  margin-left: calc(50% - 500px/2)
   margin-right: auto
+
 
   .section-map-title-container__wrapper
     margin-bottom: 0
-    width: 500px
     background-color: rgba(255, 255, 255,.4)
     display: flex
     align-items: center
