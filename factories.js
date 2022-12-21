@@ -96,6 +96,19 @@ const createFilterSettingsForApiUseFactory = (
       nullable: true,
       values: undefined
     },
+    PolitickeStrany: {
+      id: sectionId++,
+      title: 'Politické strany',
+      type: 'checkbox',
+      multiple: true,
+      reset: true,
+      order: 'block',
+      info: "Nějaké informace k vysvětlení",
+      property: 'PolitickeStrany',
+      hasCounter: true,
+      nullable: true,
+      values: undefined
+    },
     VolebniStrany: {
       id: sectionId++,
       title: 'Volební strany',
@@ -414,8 +427,6 @@ const createFilterSettingsForApiUseFactory = (
     filterData.AbsolutniMinimalniPocetMandatu, // default min
     filterData.AbsolutniMaximalniPocetMandatu, // default max
   ];
-
-
   const vekyNaZacatkuMandatuMapped = [
     filterData.VekNaZacatkuMandatu[0], // current min
     filterData.VekNaZacatkuMandatu[filterData.VekNaZacatkuMandatu.length - 1], // current max
@@ -470,6 +481,30 @@ const createFilterSettingsForApiUseFactory = (
   } else {
 
     delete finalResult.Kluby;
+
+  }
+
+  if (filterData.PolitickeStrany && filterData.PolitickeStrany !== null) {
+
+    const politickeStranyMapped = [...filterData.PolitickeStrany].map(item => {
+
+      return {
+              id: item.Id,
+              text: item.Nazev,
+              selected: false,
+            };
+
+    });
+
+
+    finalResult.PolitickeStrany.values = [
+      {id: null, text: 'Vše', default: true, reset: true, selected: true},
+      ...politickeStranyMapped
+    ];
+
+  } else {
+
+    delete finalResult.PolitickeStrany;
 
   }
 
