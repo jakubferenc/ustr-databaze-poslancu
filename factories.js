@@ -674,15 +674,28 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
     //   hasCounter: true,
     //   values: undefined
     // },
-    Kluby: {
+    // Kluby: {
+    //   id: sectionId++,
+    //   title: 'Kluby',
+    //   type: 'checkbox',
+    //   multiple: true,
+    //   reset: true,
+    //   order: 'block',
+    //   info: "Nějaké informace k vysvětlení",
+    //   property: 'Kluby',
+    //   hasCounter: true,
+    //   nullable: true,
+    //   values: undefined
+    // },
+    PolitickeStrany: {
       id: sectionId++,
-      title: 'Kluby',
+      title: 'Politické strany',
       type: 'checkbox',
       multiple: true,
       reset: true,
       order: 'block',
       info: "Nějaké informace k vysvětlení",
-      property: 'Kluby',
+      property: 'PolitickeStrany',
       hasCounter: true,
       nullable: true,
       values: undefined
@@ -766,26 +779,27 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   // finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
   finalResult.Fotografie.values = maFotkuMapped;
 
-  if (filterData.Kluby && filterData.Kluby !== null) {
+  if (filterData.PolitickeStrany && filterData.PolitickeStrany !== null) {
 
-    const klubyMapped = [...filterData.Kluby].map(item => {
+    const politickeStranyMapped = [...filterData.PolitickeStrany].map(item => {
 
       return {
               id: item.Id,
-              text: item.Nazev?.split('|')?.[0]?.trim(),
+              text: item.Nazev,
               selected: false,
             };
 
     });
 
-    finalResult.Kluby.values = [
+
+    finalResult.PolitickeStrany.values = [
       {id: null, text: 'Vše', default: true, reset: true, selected: true},
-      ...klubyMapped
+      ...politickeStranyMapped
     ];
 
   } else {
 
-    delete finalResult.Kluby;
+    delete finalResult.PolitickeStrany;
 
   }
 
