@@ -31,26 +31,15 @@
 <script>
 const SlovnikoveHeslo = () => import("~/components/SlovnikoveHeslo.vue");
 
-const SlovnikovaHeslaData = () =>
-  import("~/data/slovnik.json").then((m) => m.default || m);
-
 export default {
   components: { SlovnikoveHeslo },
 
   async asyncData({ store, $config }) {
-    if (!$config.useFileCachedAPI) {
-      await store.dispatch("getSlovnikovaHesla");
+    await store.dispatch("getSlovnikovaHesla");
 
-      return {
-        slovnikova_hesla: store.state.slovnikova_hesla,
-      };
-    } else {
-      const slovnikovaHeslaRes = await SlovnikovaHeslaData();
-
-      return {
-        slovnikova_hesla: slovnikovaHeslaRes,
-      };
-    }
+    return {
+      slovnikova_hesla: store.state.slovnikova_hesla,
+    };
   },
 
   data() {

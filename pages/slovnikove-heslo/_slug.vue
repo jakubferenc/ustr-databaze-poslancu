@@ -21,97 +21,66 @@
 
 </template>
 
-
 <style lang="sass">
 
 
-  .section-stranka
-    .typography-main-title
-      margin-top: 0
-      padding-top: 0
+.section-stranka
+  .typography-main-title
+    margin-top: 0
+    padding-top: 0
 
-  .typography-row-with-image:not(.has-featured-image)
-    display: flex
-    align-items: center
-    justify-content: center
-
+.typography-row-with-image:not(.has-featured-image)
+  display: flex
+  align-items: center
+  justify-content: center
 </style>
 <script>
-
-const SlovnikovaHeslaData = () => import('~/data/slovnik.json').then(m => m.default || m);
-
+const SlovnikovaHeslaData = () =>
+  import("~/data/slovnik.json").then((m) => m.default || m);
 
 export default {
-
-    // :NOTE: {params, error, payload, store} is a deconstructed "context" object
-    async asyncData({$config, params, error, payload, store}) {
-
-      if (payload) {
-        return {
-          slovnikove_heslo: payload
-        }
-      } else {
-
-        if (!$config.useFileCachedAPI) {
-
-          await store.dispatch("getSlovnikovaHesla");
-
-          const slovnikove_heslo = store.state.slovnikova_hesla.filter(item => item.slug === params.slug)[0];
-
-          return {
-            slovnikove_heslo,
-            slug: params.slug,
-          }
-
-        } else {
-
-          const snemovniObdobiRes = await SlovnikovaHeslaData();
-
-          const slovnikove_heslo = snemovniObdobiRes.filter(item => item.slug === params.slug)[0];
-
-          return {
-            slovnikove_heslo,
-            slug: params.slug,
-          }
-
-
-        }
-
-
-
-      }
-
-    },
-
-    computed: {
-
-        excerptKontejnerStyly() {
-
-          return {
-            'has-featured-image': this.slovnikove_heslo.featured_image,
-          }
-
-        },
-
-    },
-
-    mounted() {
-
-
-    },
-
-    data() {
+  // :NOTE: {params, error, payload, store} is a deconstructed "context" object
+  async asyncData({ $config, params, error, payload, store }) {
+    if (payload) {
       return {
-      }
-    },
-    head () {
+        slovnikove_heslo: payload,
+      };
+    } else {
+      await store.dispatch("getSlovnikovaHesla");
+
+      const slovnikove_heslo = store.state.slovnikova_hesla.filter(
+        (item) => item.slug === params.slug
+      )[0];
+
       return {
-        title: `${this.slovnikove_heslo.title || 'Nenalezeno'} — ${this.$config.globalTitle}`,
-        htmlAttrs: {
-          class: 'subpage-slovnik'
-        }
-      }
+        slovnikove_heslo,
+        slug: params.slug,
+      };
     }
+  },
 
-}
+  computed: {
+    excerptKontejnerStyly() {
+      return {
+        "has-featured-image": this.slovnikove_heslo.featured_image,
+      };
+    },
+  },
+
+  mounted() {},
+
+  data() {
+    return {};
+  },
+  head() {
+    return {
+      title: `${this.slovnikove_heslo.title || "Nenalezeno"} — ${
+        this.$config.globalTitle
+      }`,
+      htmlAttrs: {
+        class: "subpage-slovnik",
+      },
+    };
+  },
+};
 </script>
