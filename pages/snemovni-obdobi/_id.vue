@@ -1179,17 +1179,20 @@ export default {
           title: 'Poslanecky Slib',
           type: 'radio',
           order: 'inline',
-          info: 'Nějaké informace k vysvětlení',
+          info:
+            'Poslanecký mandát nevzniká volbou, ale složením poslaneckého slibu. Zároveň je často nemožné v historických pramenech údaje o poslaneckém slibu dohledat. Proto za začátek mandátu v této databázi považujeme datum příslušných voleb. Tento filtr ovšem umožňuje vybrat poslance, u nichž máme údaj o poslaneckém slibu k dispozici.',
           hasCounter: false,
           property: 'Mandaty',
           values: poslaneckySlibMapped,
         },
         parlamentni_telesa: {
           id: sectionId++,
-          title: 'Parlamentní tělesa',
+          title: 'Zastupitelské sbory',
           type: 'checkbox',
           multiple: true,
           order: 'block',
+          info:
+            'Zastupitelským sborem se myslí parlament ale také jeho komora, pokud do ní probíhaly samostatné volby.',
           property: 'Mandaty',
           values: [
             {
@@ -1229,7 +1232,6 @@ export default {
           title: 'Kooptace',
           type: 'radio',
           order: 'inline',
-          info: 'Nějaké informace k vysvětlení',
           hasCounter: false,
           property: 'Mandaty',
           values: kooptaceMapped,
@@ -1242,7 +1244,6 @@ export default {
           reset: true,
           order: 'block',
           property: 'Mandaty',
-          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: funkce,
         },
@@ -1254,7 +1255,6 @@ export default {
           reset: true,
           order: 'block',
           property: 'Mandaty',
-          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: kluby,
         },
@@ -1266,7 +1266,6 @@ export default {
           reset: true,
           order: 'block',
           property: 'Mandaty',
-          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: volebni_strany,
         },
@@ -1278,7 +1277,6 @@ export default {
           reset: true,
           order: 'block',
           property: 'Mandaty',
-          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: vybory,
         },
@@ -1287,6 +1285,8 @@ export default {
           title: 'Vzdělání',
           type: 'radio',
           order: 'inline',
+          info:
+            'Údaje o vzdělání je v historických pramenech obtížné dohledat a jsou dostupné pouze u některých poslanců a poslankyň. Zejména pro období 19. století je obtížné je najít. Navíc se v průběhu dlouhého sledovaného období výrazně proměňovaly podoby vzdělání. Např. zatímco dříve bylo univerzitní vzdělání určeno jen velmi úzké elitě, na konci 20. století už bylo široce dostupné. Také proto je obtížné srovnávat dosažné stupně vzdělání v čase. Při vyhodnocování údajů o vzdělání je tyto skutečnosti třeba mít na paměti.',
           property: 'UniverzitniVzdelani',
           values: vysoka_skola,
         },
@@ -1298,7 +1298,8 @@ export default {
           reset: true,
           order: 'block',
           property: 'Nabozenstvi',
-          info: 'Nějaké informace k vysvětlení',
+          info:
+            'V databázi pracujeme s těmi údaji o náboženském vyznání, které jsou dostupné v historických pramenech. Tyto údaje nijak neupravujeme ani jinak neinterpretujeme. Běžně mohou nastat situace, že u jednoho poslance či jedné poslankyně je údajů o náboženském vyznání více, protože během života svou denominaci změnili. Stejně tak jde o údaje, které mohou být zavádějící. Například když dotyčný či dotyčná sice uváděli příslušnost k určitému náboženství, ale jen z toho důvodu, že šlo v dané době o běžnou konvenci, byli např. pouze pokřtění, ve skutečnosti však žádné náboženství nepraktikovali. Na druhou stranu mnoho poslanců a poslankyň z různých důvodů své vyznání skrývalo a veřejně neuvádělo. Pravou povahu náboženského vyznání dnes není pro účely databáze možné zjistit. Údaje o náboženském vyznání nejsou žádným „objektivním“ historickým faktem ale informací, jíž je potřeba dále odpovědně interpretovat.',
           hasCounter: true,
           values: nabozenske_vyznani,
         },
@@ -1309,7 +1310,8 @@ export default {
           multiple: true,
           reset: true,
           order: 'block',
-          info: 'Nějaké informace k vysvětlení',
+          info:
+            'V databázi pracujeme s těmi údaji o národnosti, které jsou dostupné v historických pramenech. Tyto údaje nijak neupravujeme ani jinak neinterpretujeme. Běžně mohou nastat situace, že u jednoho poslance či jedné poslankyně je údajů o národnosti více, protože se během života hlásili k různé národní identitě. Stejně tak jde o údaje, které mohou být zavádějící. Například dotyčný či dotyčná mohli patřit do více národních komunit zároveň (typicky Češi a Slováci ale i Češi a Němci) a svou deklarovanou národnost proměňovali podle konkrétního účelu. Údaje o národnosti nejsou žádným „objektivním“ historickým faktem ale informací, jíž je potřeba dále odpovědně interpretovat.',
           property: 'Narodnosti',
           hasCounter: true,
           values: narodnosti,
@@ -1319,7 +1321,8 @@ export default {
           title: 'Fotografie',
           type: 'radio',
           order: 'inline',
-          info: 'Nějaké informace k vysvětlení',
+          info:
+            'U všech poslanců a poslankyň byly dohledávány fotografie. U značné části však nalezeny nebyly. Filtr umožňuje zaměřit se pouze na ty, u nichž je alespoň jedna fotografie k dispozici. ',
           property: 'Soubory',
           hasCounter: false,
           values: [
@@ -1357,7 +1360,6 @@ export default {
           reset: true,
           order: 'block',
           property: 'Mandaty',
-          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: druh_mandatu,
         },
@@ -1369,7 +1371,6 @@ export default {
           reset: true,
           order: 'block',
           property: 'Mandaty',
-          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: druh_konce_mandatu,
         },
@@ -1378,7 +1379,6 @@ export default {
           title: 'Znovuzvolení',
           type: 'radio',
           order: 'inline',
-          info: 'Nějaké informace k vysvětlení',
           property: 'Mandaty',
           hasCounter: false,
           values: znovuzvolenMapped,
@@ -1388,7 +1388,6 @@ export default {
           title: 'Počet mandátů',
           type: 'range',
           order: 'inline',
-          info: 'Nějaké informace k vysvětlení',
           property: 'Mandaty',
           hasCounter: false,
           queryStructure: [
@@ -1404,7 +1403,6 @@ export default {
           title: 'Věk na začátku mandátu',
           type: 'range',
           order: 'inline',
-          info: 'Nějaké informace k vysvětlení',
           property: 'Mandaty',
           hasCounter: false,
           queryStructure: [
@@ -1420,7 +1418,6 @@ export default {
           title: 'Věk na konci mandátu',
           type: 'range',
           order: 'inline',
-          info: 'Nějaké informace k vysvětlení',
           property: 'Mandaty',
           hasCounter: false,
           queryStructure: [
@@ -1458,7 +1455,7 @@ export default {
             reset: true,
             order: 'block',
             property: 'Mandaty',
-            info: 'Nějaké informace k vysvětlení',
+
             hasCounter: true,
             values: kurie,
           },
