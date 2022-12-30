@@ -53,6 +53,7 @@
     justify-content: flex-start
     margin-top: 2rem
     flex-direction: column
+    padding: .5em 1em
 
     .section-title
       margin: 0
@@ -132,13 +133,13 @@
 </style>
 
 <script>
-import slugify from "slugify";
+import slugify from 'slugify';
 let leafletObj;
 let leafletObjMarkerCluster;
 
 if (process.client) {
-  leafletObj = () => import("leaflet");
-  leafletObjMarkerCluster = () => import("leaflet.markercluster");
+  leafletObj = () => import('leaflet');
+  leafletObjMarkerCluster = () => import('leaflet.markercluster');
 }
 
 export default {
@@ -150,7 +151,7 @@ export default {
     Typ: {
       type: String,
       required: false,
-      default: "MistoNarozeni",
+      default: 'MistoNarozeni',
     },
     Velka: {
       type: Boolean,
@@ -165,7 +166,7 @@ export default {
     Nadpis: {
       type: [String, Boolean],
       required: false,
-      default: "Místa narození poslanců",
+      default: 'Místa narození poslanců',
     },
     InvalidateMap: {
       type: Number,
@@ -180,7 +181,7 @@ export default {
       mapInstance: null,
       mapSettings: {
         popup: {
-          html: (item, styleString = "") => {
+          html: (item, styleString = '') => {
             const hasBgColor =
               this.NastaveniMapa &&
               this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable
@@ -188,12 +189,12 @@ export default {
                 : false;
 
             const imageContent =
-              item.ProfilovaFotka && item.ProfilovaFotka !== ""
+              item.ProfilovaFotka && item.ProfilovaFotka !== ''
                 ? `
                 <img src="${
                   item.ProfilovaFotka
                 }" class="map-person-thumb-head-icon-image ${
-                    hasBgColor ? "has--bg-color" : ""
+                    hasBgColor ? 'has--bg-color' : ''
                   }" />
               `
                 : `<div class="map-person-thumb-head-icon-image" style="${styleString}">
@@ -212,7 +213,7 @@ export default {
               </div>`;
 
             const detailUrl = slugify(`${item.Jmeno}-${item.Prijmeni}-${item.Id}`, {
-              locale: "cs",
+              locale: 'cs',
             }).toLowerCase();
 
             return `
@@ -230,7 +231,7 @@ export default {
                         <div class="desc">
                           <p>
                             Narození: ${item.DatumNarozeniZobrazene}<br>
-                            Úmrtí: ${item.DatumUmrtiZobrazene || "??"}
+                            Úmrtí: ${item.DatumUmrtiZobrazene || '??'}
                           </p>
 
                           <div class="map-card__content__address">Místo narození: ${
@@ -259,22 +260,22 @@ export default {
         },
         addresses: {
           cluster: {
-            className: "map__marker map__marker--cluster",
+            className: 'map__marker map__marker--cluster',
             iconSize: 30,
           },
           iconLargePerson: {
-            className: "map__marker map__marker--address",
+            className: 'map__marker map__marker--address',
             iconSize: 50,
             popupAnchor: [-240, 95],
             tooltip: {
-              direction: "bottom",
+              direction: 'bottom',
               offset: { x: 0, y: 20 },
             },
-            html: (item, index, styleString = "") => {
+            html: (item, index, styleString = '') => {
               const start = `<div class="map__marker__container map-address-icon map-person-thumb-head-icon" style="${styleString}">`;
               const end = `</div>`;
 
-              let content = "";
+              let content = '';
 
               if (item.ProfilovaFotka) {
                 content = `<img class="map-person-thumb-head-icon-image has--bg-color" src="${item.ProfilovaFotka}" alt="Fotografie osoby ${item.Jmeno} ${item.Prijmeni}">`;
@@ -335,7 +336,7 @@ export default {
       const minHSL = 38;
       const maxHSL = 315;
 
-      let newColor = "";
+      let newColor = '';
 
       try {
         if (this.partyColorRelations[affiliationObj.Id]) {
@@ -405,7 +406,7 @@ export default {
       tileLayer(
         `https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.mapbox.accessToken}`,
         {
-          id: "mapbox.light",
+          id: 'mapbox.light',
           attribution:
             'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         }
@@ -419,7 +420,7 @@ export default {
         showCoverageOnHover: false,
         removeOutsideVisibleBounds: true,
         chunkedLoading: true,
-      }).on("clusterclick", (event) => {
+      }).on('clusterclick', (event) => {
         DomEvent.stopPropagation(event);
         // this.resetAll();
       });
@@ -427,13 +428,13 @@ export default {
       this.geojson.forEach((item, index) => {
         let iconClassNames = [this.mapSettings.addresses.iconLargePerson.className];
 
-        let styleString = "";
+        let styleString = '';
 
         if (
           this.NastaveniMapa &&
           this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable
         ) {
-          iconClassNames = [...iconClassNames, "has--political-indicator"];
+          iconClassNames = [...iconClassNames, 'has--political-indicator'];
 
           // const strany = Array.from(new Set(item.VolebniStrany));
           const kluby = Array.from(new Set(item.Kluby));
@@ -450,12 +451,12 @@ export default {
           // const stranaColor = this.getColorForGivenPartyAffiliationId(strany[0]);
           // const klubColor = this.getColorForGivenPartyAffiliationId(kluby[0]);
 
-          styleString = ""; // `background-color: ${klubColor}`;
+          styleString = ''; // `background-color: ${klubColor}`;
         }
 
         const icon = new divIcon({
           ...this.mapSettings.addresses.iconLargePerson,
-          className: iconClassNames.join(", "),
+          className: iconClassNames.join(', '),
           html: this.mapSettings.addresses.iconLargePerson.html(item, index, styleString),
         });
 
@@ -467,7 +468,7 @@ export default {
           zIndexOffset: 2,
         });
 
-        marker.on("click", (event) => {
+        marker.on('click', (event) => {
           // in dev tools in chrome, you can get error on click, but it's a Chrome bug
           // viz https://stackoverflow.com/a/50857216/12058461
           // DomEvent.stopPropagation(event);
@@ -511,9 +512,9 @@ export default {
     // load map
     this.$nextTick(() => {
       setTimeout(async () => {
-        this.$store.dispatch("setLoading", { loadingState: true });
+        this.$store.dispatch('setLoading', { loadingState: true });
         await this.initMap();
-        this.$store.dispatch("setLoading", { loadingState: false });
+        this.$store.dispatch('setLoading', { loadingState: false });
       }, 500);
     });
 
@@ -591,11 +592,11 @@ export default {
             DatumNarozeniZobrazene:
               poslanec.DatumNarozeniZobrazene !== null
                 ? poslanec.DatumNarozeniZobrazene
-                : "???",
+                : '???',
             DatumUmrtiZobrazene:
               poslanec.DatumUmrtiZobrazene !== null
                 ? poslanec.DatumUmrtiZobrazene
-                : "???",
+                : '???',
             ProfilovaFotka:
               (poslanec.Soubory &&
                 poslanec.Soubory.length &&
@@ -609,7 +610,7 @@ export default {
 
   watch: {
     PoslanciVstupniData() {
-      console.log("from watcher poslanci vstupni data");
+      console.log('from watcher poslanci vstupni data');
 
       this.initMap();
     },
@@ -619,17 +620,17 @@ export default {
     return {
       link: [
         {
-          rel: "stylesheet",
-          href: "//unpkg.com/leaflet/dist/leaflet.css",
+          rel: 'stylesheet',
+          href: '//unpkg.com/leaflet/dist/leaflet.css',
         },
         {
-          rel: "stylesheet",
+          rel: 'stylesheet',
           href:
-            "https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
+            'https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css',
         },
         {
-          rel: "stylesheet",
-          href: "//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css",
+          rel: 'stylesheet',
+          href: '//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css',
         },
       ],
       htmlAttrs: {},
