@@ -122,7 +122,7 @@ export default {
         ...strankyRoutes,
         ...mediaRoutes,
         ...slovnikRoutes,
-        // ...snemovniObdobiRoutes,
+        ...snemovniObdobiRoutes,
         // ...rodinyRoutes,
       ];
     },
