@@ -9,13 +9,13 @@
 
       .image-item-detail.columns.is-multiline
 
-        .image-container(v-if="soubor.image.full_url").column.is-four-fifths-desktop.is-two-thirds-tablet.is-full-mobile
+        .image-container(v-if="getFullUrl(soubor)").column.is-four-fifths-desktop.is-two-thirds-tablet.is-full-mobile
 
           nuxt-picture.slider-image(
             format="webp"
             quality="50"
             loading="lazy"
-            :src="soubor.image.full_url"
+            :src="getFullUrl(soubor)"
             sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:80vw"
           )
 
@@ -38,88 +38,75 @@
 <style lang="sass" scoped>
 
 
-  .image-item-detail
+.image-item-detail
 
-    .image-container
-      img
-        width: 100%
+  .image-container
+    img
+      width: 100%
 
-  .source
-    margin-top: 1em
-    word-break: break-word
-
+.source
+  margin-top: 1em
+  word-break: break-word
 </style>
 
 <script>
-import IconFileTypeImage from "~/assets/images/icon-file-image.svg?inline";
-import IconFileTypeVideo from "~/assets/images/icon-file-video.svg?inline";
-import IconFileTypeDocument from "~/assets/images/icon-file-document.svg?inline";
+import IconFileTypeImage from '~/assets/images/icon-file-image.svg?inline';
+import IconFileTypeVideo from '~/assets/images/icon-file-video.svg?inline';
+import IconFileTypeDocument from '~/assets/images/icon-file-document.svg?inline';
 
-const MediaData = () => import('~/data/media.json').then(m => m.default || m);
-
+const MediaData = () => import('~/data/media.json').then((m) => m.default || m);
 
 export default {
-     components: { IconFileTypeImage, IconFileTypeVideo, IconFileTypeDocument },
+  components: { IconFileTypeImage, IconFileTypeVideo, IconFileTypeDocument },
 
-    // :NOTE: {params, error, payload, store} is a deconstructed "context" variable
-    async asyncData({params, error, payload, store, $axios, $config}) {
+  // :NOTE: {params, error, payload, store} is a deconstructed "context" variable
+  async asyncData({ params, error, payload, store, $axios, $config }) {
+    if (payload) {
+      return {
+        soubor: payload,
+      };
+    } else {
+      if (!$config.useFileCachedAPI) {
+        // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
+        await store.dispatch('getMedia', { id: params.id });
 
-      if (payload) {
+        const storeItem = [...store.state.media_soubory].filter(
+          (soubor) => soubor.id == params.id
+        )[0];
 
         return {
-          soubor: payload
-        }
-
+          soubor: storeItem,
+        };
       } else {
+        const MediaRes = await MediaData();
 
-        if (!$config.useFileCachedAPI) {
+        const filteredItem = MediaRes.filter((soubor) => soubor.id == params.id)[0];
 
-          // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
-          await store.dispatch("getMedia", {id: params.id});
-
-          const storeItem = [...store.state.media_soubory].filter(soubor => soubor.id == params.id)[0];
-
-
-          return {
-            soubor: storeItem
-          }
-
-        } else {
-
-          const MediaRes = await MediaData();
-
-          const filteredItem = MediaRes.filter(soubor => soubor.id == params.id)[0];
-
-          return {
-            soubor: filteredItem
-          }
-
-        }
-
-
-
-      }
-
-    },
-
-    mounted() {
-
-    },
-
-    data() {
-      return {
-        media: {},
-      }
-    },
-    head () {
-      return {
-        title: `${this.soubor.caption} — ${this.$config.globalTitle}`,
-        htmlAttrs: {
-          class: 'alt-bg subpage-media'
-        },
+        return {
+          soubor: filteredItem,
+        };
       }
     }
+  },
+  methods: {
+    getFullUrl(imageObject) {
+      return imageObject?.image?.full_url;
+    },
+  },
+  mounted() {},
 
-}
+  data() {
+    return {
+      media: {},
+    };
+  },
+  head() {
+    return {
+      title: `${this.soubor.caption} — ${this.$config.globalTitle}`,
+      htmlAttrs: {
+        class: 'alt-bg subpage-media',
+      },
+    };
+  },
+};
 </script>
-

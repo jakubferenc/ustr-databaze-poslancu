@@ -75,6 +75,7 @@
 
 
     PoslanciSeznam(
+      v-if="poslanci"
       :PoslanciVstupniPolozky="poslanci"
       :NastaveniFiltrace="nastaveniFiltrace"
       :MaPaginaci="false"
@@ -275,27 +276,27 @@
 </style>
 
 <script>
-const PoslanciSeznam = () => import("~/components/PoslanciSeznam.vue");
-const CasovaOsa = () => import("~/components/CasovaOsa.vue");
-const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
-const TabNavigace = () => import("~/components/TabNavigace.vue");
+const PoslanciSeznam = () => import('~/components/PoslanciSeznam.vue');
+const CasovaOsa = () => import('~/components/CasovaOsa.vue');
+const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
+const TabNavigace = () => import('~/components/TabNavigace.vue');
 
 // const SnemovniObdobiData = () => import('~/data/snemovni-obdobi.json').then(m => m.default || m);
 
-import IconPerson from "~/assets/images/icon-person.svg?inline";
+import IconPerson from '~/assets/images/icon-person.svg?inline';
 
-import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+import ParlamentNahledObecnyImage from '~/assets/images/icon-parlamentni-teleso.svg?inline';
 
 //import DoughnutChart from '~/components/DoughnutChart';
 
 const chartColors = {
-  red: "rgb(255, 99, 132)",
-  orange: "rgb(255, 159, 64)",
-  yellow: "rgb(255, 205, 86)",
-  green: "rgb(75, 192, 192)",
-  blue: "rgb(54, 162, 235)",
-  purple: "rgb(153, 102, 255)",
-  grey: "rgb(201, 203, 207)",
+  red: 'rgb(255, 99, 132)',
+  orange: 'rgb(255, 159, 64)',
+  yellow: 'rgb(255, 205, 86)',
+  green: 'rgb(75, 192, 192)',
+  blue: 'rgb(54, 162, 235)',
+  purple: 'rgb(153, 102, 255)',
+  grey: 'rgb(201, 203, 207)',
 };
 
 export default {
@@ -314,7 +315,7 @@ export default {
         snemovniObdobi: payload,
       };
     } else {
-      await store.dispatch("getSnemovniObdobiDetail", {
+      await store.dispatch('getSnemovniObdobiDetail', {
         snemovniObdobiId: params.id,
       });
 
@@ -326,21 +327,21 @@ export default {
 
   data() {
     return {
-      buttonToggleTypeActive: "start",
+      buttonToggleTypeActive: 'start',
       ukazatDataProKonecneObdobi: false,
     };
   },
 
   methods: {
     toggleDate(type, event) {
-      if (type === "start") {
+      if (type === 'start') {
         this.ukazatDataProKonecneObdobi = false;
-        this.buttonToggleTypeActive = "start";
+        this.buttonToggleTypeActive = 'start';
       }
 
-      if (type === "end") {
+      if (type === 'end') {
         this.ukazatDataProKonecneObdobi = true;
-        this.buttonToggleTypeActive = "end";
+        this.buttonToggleTypeActive = 'end';
       }
     },
   },
@@ -358,7 +359,7 @@ export default {
           )
             .filter((item) => item !== null)
             .map((mandat) =>
-              mandat.Kurie && mandat.Kurie.length > 0 ? mandat.Kurie : ["neuvedeno"]
+              mandat.Kurie && mandat.Kurie.length > 0 ? mandat.Kurie : ['neuvedeno']
             )
             .reduce((prev, current) => {
               return [...prev, ...current];
@@ -369,7 +370,7 @@ export default {
         }, []);
 
       const hasZobrazovatKurieProperty = this.snemovniObdobi?.acf?.hasOwnProperty(
-        "zobrazovat_kurie"
+        'zobrazovat_kurie'
       );
       if (hasZobrazovatKurieProperty) {
         return this.snemovniObdobi?.acf?.zobrazovat_kurie === false;
@@ -428,7 +429,7 @@ export default {
 
       [...this.poslanci].forEach((item) => {
         if (item.Nabozenstvi.length === 0) {
-          nabozenske_vyznani.push("neuvedeno");
+          nabozenske_vyznani.push('neuvedeno');
         } else {
           [...item.Nabozenstvi].forEach((nabozenstviItemObj) => {
             nabozenske_vyznani.push(nabozenstviItemObj.Nazev);
@@ -436,7 +437,7 @@ export default {
         }
 
         const narodnosti_edited = !item.Narodnosti.length
-          ? ["neuvedeno"]
+          ? ['neuvedeno']
           : item.Narodnosti;
 
         narodnosti.push(...narodnosti_edited);
@@ -448,9 +449,9 @@ export default {
           ...item.Mandaty.filter(
             (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
           ).map((mandat) =>
-            mandat.VolebniStrana && mandat.VolebniStrana !== ""
+            mandat.VolebniStrana && mandat.VolebniStrana !== ''
               ? mandat.VolebniStrana
-              : "neuvedeno"
+              : 'neuvedeno'
           ),
         ];
 
@@ -461,7 +462,7 @@ export default {
             (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
           )
             .map((mandat) =>
-              mandat.Kurie && mandat.Kurie.length > 0 ? mandat.Kurie : ["neuvedeno"]
+              mandat.Kurie && mandat.Kurie.length > 0 ? mandat.Kurie : ['neuvedeno']
             )
             .reduce((prev, current) => {
               return [...prev, ...current];
@@ -478,7 +479,7 @@ export default {
             .map((mandat) =>
               mandat.Vybory && mandat.Vybory.length > 0
                 ? mandat.Vybory.map((vybor) => vybor.Nazev)
-                : ["neuvedeno"]
+                : ['neuvedeno']
             )
             .reduce((prev, current) => {
               return [...prev, ...current];
@@ -493,7 +494,7 @@ export default {
             (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
           )
             .map((mandat) =>
-              mandat.Kluby && mandat.Kluby.length > 0 ? mandat.Kluby : ["neuvedeno"]
+              mandat.Kluby && mandat.Kluby.length > 0 ? mandat.Kluby : ['neuvedeno']
             )
             .reduce((prev, current) => {
               return [...prev, ...current];
@@ -508,7 +509,7 @@ export default {
             (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
           )
             .map((mandat) =>
-              mandat.Funkce && mandat.Funkce.length > 0 ? mandat.Funkce : ["neuvedeno"]
+              mandat.Funkce && mandat.Funkce.length > 0 ? mandat.Funkce : ['neuvedeno']
             )
             .reduce((prev, current) => {
               return [...prev, ...current];
@@ -522,9 +523,9 @@ export default {
             (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
           )
             .map((mandat) =>
-              mandat.DruhMandatu && mandat.DruhMandatu !== ""
+              mandat.DruhMandatu && mandat.DruhMandatu !== ''
                 ? mandat.DruhMandatu
-                : "neuvedeno"
+                : 'neuvedeno'
             )
             .filter((item) => item !== null),
         ];
@@ -535,7 +536,7 @@ export default {
             (mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id
           )
             .map((mandat) =>
-              mandat.DruhKonce && mandat.DruhKonce !== "" ? mandat.DruhKonce : "neuvedeno"
+              mandat.DruhKonce && mandat.DruhKonce !== '' ? mandat.DruhKonce : 'neuvedeno'
             )
             .filter((item) => item !== null),
         ];
@@ -544,7 +545,7 @@ export default {
       const poslaneckySlibMapped = [
         {
           id: 0,
-          text: "Vše",
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -552,7 +553,7 @@ export default {
         },
         {
           id: true,
-          text: "Ano",
+          text: 'Ano',
           default: false,
           selected: false,
           validate: (property) => {
@@ -565,7 +566,7 @@ export default {
         },
         {
           id: false,
-          text: "Ne",
+          text: 'Ne',
           default: false,
           selected: false,
           validate: (property) => {
@@ -581,7 +582,7 @@ export default {
       const kooptaceMapped = [
         {
           id: 0,
-          text: "Vše",
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -589,7 +590,7 @@ export default {
         },
         {
           id: true,
-          text: "Ano",
+          text: 'Ano',
           default: false,
           selected: false,
           validate: (property) => {
@@ -602,7 +603,7 @@ export default {
         },
         {
           id: false,
-          text: "Ne",
+          text: 'Ne',
           default: false,
           selected: false,
           validate: (property) => {
@@ -618,7 +619,7 @@ export default {
       const znovuzvolenMapped = [
         {
           id: 0,
-          text: "Vše",
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -626,7 +627,7 @@ export default {
         },
         {
           id: true,
-          text: "Ano",
+          text: 'Ano',
           default: false,
           selected: false,
           validate: (property) => {
@@ -639,7 +640,7 @@ export default {
         },
         {
           id: false,
-          text: "Ne",
+          text: 'Ne',
           default: false,
           selected: false,
           validate: (property) => {
@@ -655,15 +656,15 @@ export default {
       // make unique values
       volebni_strany = [...new Set(volebni_strany)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "volebni-strana-neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'volebni-strana-neuvedeno' : item;
 
           const itemName =
-            item === "neuvedeno" ? "neuvedeno" : item.replace(/\s*\(.*?\)\s*/g, "");
+            item === 'neuvedeno' ? 'neuvedeno' : item.replace(/\s*\(.*?\)\s*/g, '');
 
           return {
             id: itemId,
@@ -674,9 +675,9 @@ export default {
               const volebniStrany = [...property]
                 .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
                 .map((mandat) =>
-                  mandat.VolebniStrana && mandat.VolebniStrana !== ""
+                  mandat.VolebniStrana && mandat.VolebniStrana !== ''
                     ? mandat.VolebniStrana
-                    : "neuvedeno"
+                    : 'neuvedeno'
                 );
 
               return volebniStrany.includes(item);
@@ -687,8 +688,8 @@ export default {
       // add default value
       volebni_strany = [
         {
-          id: "vse-volebni-strany",
-          text: "Vše",
+          id: 'vse-volebni-strany',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -700,12 +701,12 @@ export default {
       // make unique values
       kurie = [...new Set(kurie)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "kurie-neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'kurie-neuvedeno' : item;
 
           return {
             id: itemId,
@@ -715,7 +716,7 @@ export default {
               const kurieItems = [...property]
                 .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
                 .map((mandat) =>
-                  mandat.Kurie && mandat.Kurie !== "" ? mandat.Kurie : ["neuvedeno"]
+                  mandat.Kurie && mandat.Kurie !== '' ? mandat.Kurie : ['neuvedeno']
                 )
                 .reduce((prev, current) => {
                   return [...prev, ...current];
@@ -730,8 +731,8 @@ export default {
       // add default value
       kurie = [
         {
-          id: "vse-kurie",
-          text: "Vše",
+          id: 'vse-kurie',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -743,12 +744,12 @@ export default {
       // make unique values
       vybory = [...new Set(vybory)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "vybor-neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'vybor-neuvedeno' : item;
 
           return {
             id: itemId,
@@ -760,7 +761,7 @@ export default {
                 .map((mandat) =>
                   mandat.Vybory && mandat.Vybory.length > 0
                     ? mandat.Vybory.map((vybor) => vybor.Nazev)
-                    : ["neuvedeno"]
+                    : ['neuvedeno']
                 )
                 .reduce((prev, current) => {
                   return [...prev, ...current];
@@ -775,8 +776,8 @@ export default {
       // add default value
       vybory = [
         {
-          id: "vse-vybory",
-          text: "Vše",
+          id: 'vse-vybory',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -788,12 +789,12 @@ export default {
       // make unique values
       kluby = [...new Set(kluby)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "kluby-neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'kluby-neuvedeno' : item;
 
           return {
             id: itemId,
@@ -803,7 +804,7 @@ export default {
               const klubyItems = [...property]
                 .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
                 .map((mandat) =>
-                  mandat.Kluby && mandat.Kluby.length > 0 ? mandat.Kluby : ["neuvedeno"]
+                  mandat.Kluby && mandat.Kluby.length > 0 ? mandat.Kluby : ['neuvedeno']
                 )
                 .reduce((prev, current) => {
                   return [...prev, ...current];
@@ -818,8 +819,8 @@ export default {
       // add default value
       kluby = [
         {
-          id: "vse-kluby",
-          text: "Vše",
+          id: 'vse-kluby',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -831,12 +832,12 @@ export default {
       // make unique values
       funkce = [...new Set(funkce)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "funkce-neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'funkce-neuvedeno' : item;
 
           return {
             id: itemId,
@@ -848,7 +849,7 @@ export default {
                 .map((mandat) =>
                   mandat.Funkce && mandat.Funkce.length > 0
                     ? mandat.Funkce
-                    : ["neuvedeno"]
+                    : ['neuvedeno']
                 )
                 .reduce((prev, current) => {
                   return [...prev, ...current];
@@ -863,8 +864,8 @@ export default {
       // add default value
       funkce = [
         {
-          id: "vse-funkce",
-          text: "Vše",
+          id: 'vse-funkce',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -876,12 +877,12 @@ export default {
       // make unique values
       druh_mandatu = [...new Set(druh_mandatu)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'neuvedeno' : item;
 
           return {
             id: itemId,
@@ -891,9 +892,9 @@ export default {
               const DruhMandatu = [...property]
                 .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
                 .map((mandat) =>
-                  mandat.DruhMandatu && mandat.DruhMandatu !== ""
+                  mandat.DruhMandatu && mandat.DruhMandatu !== ''
                     ? mandat.DruhMandatu
-                    : "neuvedeno"
+                    : 'neuvedeno'
                 )
                 .filter((item) => item !== null);
 
@@ -905,12 +906,12 @@ export default {
       // make unique values
       druh_konce_mandatu = [...new Set(druh_konce_mandatu)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'neuvedeno' : item;
 
           return {
             id: itemId,
@@ -920,9 +921,9 @@ export default {
               const druhUkonceniMandatu = [...property]
                 .filter((mandat) => mandat.SnemovniObdobiId === this.snemovniObdobi.Id)
                 .map((mandat) =>
-                  mandat.DruhKonce && mandat.DruhKonce !== ""
+                  mandat.DruhKonce && mandat.DruhKonce !== ''
                     ? mandat.DruhKonce
-                    : "neuvedeno"
+                    : 'neuvedeno'
                 )
                 .filter((item) => item !== null);
 
@@ -934,8 +935,8 @@ export default {
       // add default value
       druh_mandatu = [
         {
-          id: "vse-druh-mandatu",
-          text: "Vše",
+          id: 'vse-druh-mandatu',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -947,8 +948,8 @@ export default {
       // add default value
       druh_konce_mandatu = [
         {
-          id: "vse-konec-mandatu",
-          text: "Vše",
+          id: 'vse-konec-mandatu',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -960,19 +961,19 @@ export default {
       // make unique values
       nabozenske_vyznani = [...new Set(nabozenske_vyznani)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "nabozenstvi-neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'nabozenstvi-neuvedeno' : item;
 
           return {
             id: itemId,
             text: item,
             selected: false,
             validate: (property) => {
-              return property.length === 0 && item === "neuvedeno"
+              return property.length === 0 && item === 'neuvedeno'
                 ? true
                 : property.map((nabozenstviItem) => nabozenstviItem.Nazev).includes(item);
             },
@@ -985,8 +986,8 @@ export default {
       // add default value
       nabozenske_vyznani = [
         {
-          id: "vse-nabozenske-vyznani",
-          text: "Vše",
+          id: 'vse-nabozenske-vyznani',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -997,12 +998,12 @@ export default {
 
       narodnosti = [...new Set(narodnosti)]
         .sort((a, b) => {
-          if (a === "neuvedeno") return 1;
-          if (b === "neuvedeno") return -1;
+          if (a === 'neuvedeno') return 1;
+          if (b === 'neuvedeno') return -1;
           return a.toString().localeCompare(b);
         })
         .map((item) => {
-          const itemId = item === "neuvedeno" ? "narodnost-neuvedeno" : item;
+          const itemId = item === 'neuvedeno' ? 'narodnost-neuvedeno' : item;
 
           return {
             id: itemId,
@@ -1010,7 +1011,7 @@ export default {
             selected: false,
             validate: (property) => {
               if (Array.isArray(property) && property.length === 0) {
-                if (item === "neuvedeno") {
+                if (item === 'neuvedeno') {
                   return true;
                 }
               } else {
@@ -1026,8 +1027,8 @@ export default {
       // add default value
       narodnosti = [
         {
-          id: "vse-narodnosti",
-          text: "Vše",
+          id: 'vse-narodnosti',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
@@ -1040,14 +1041,14 @@ export default {
 
       vysoka_skola = [
         {
-          id: "vse-skola",
-          text: "Vše",
+          id: 'vse-skola',
+          text: 'Vše',
           default: true,
           reset: true,
           selected: true,
           validate: (property) => true,
         },
-        { id: "vysoka_skola", text: "Má VŠ", validate: (property) => property === true },
+        { id: 'vysoka_skola', text: 'Má VŠ', validate: (property) => property === true },
       ];
 
       if (!maji_vysokou_skolu) {
@@ -1068,7 +1069,7 @@ export default {
 
       const vekNaZacatkuMandatuMapped = [
         {
-          id: "vek-na-zacatku-mandatu-current-min",
+          id: 'vek-na-zacatku-mandatu-current-min',
           default: false,
           reset: false,
           selected: false,
@@ -1083,7 +1084,7 @@ export default {
         },
 
         {
-          id: "vek-na-zacatku-mandatu-current-max",
+          id: 'vek-na-zacatku-mandatu-current-max',
           default: false,
           reset: false,
           selected: false,
@@ -1112,7 +1113,7 @@ export default {
 
       const vekNaKonciMandatuMapped = [
         {
-          id: "vek-na-konci-mandatu-current-min",
+          id: 'vek-na-konci-mandatu-current-min',
           default: false,
           reset: false,
           selected: false,
@@ -1127,7 +1128,7 @@ export default {
         },
 
         {
-          id: "vek-na-konci-mandatu-current-max",
+          id: 'vek-na-konci-mandatu-current-max',
           default: false,
           reset: false,
           selected: false,
@@ -1149,7 +1150,7 @@ export default {
 
       const pocetMandatuMapped = [
         {
-          id: "pocet-mandatu-current-min",
+          id: 'pocet-mandatu-current-min',
           default: false,
           reset: false,
           selected: true,
@@ -1159,7 +1160,7 @@ export default {
           },
         },
         {
-          id: "pocet-mandatu-current-max",
+          id: 'pocet-mandatu-current-max',
           default: false,
           reset: false,
           selected: true,
@@ -1175,21 +1176,21 @@ export default {
       let filterFinalNastaveni = {
         PoslaneckySlib: {
           id: sectionId++,
-          title: "Poslanecky Slib",
-          type: "radio",
-          order: "inline",
-          info: "Nějaké informace k vysvětlení",
+          title: 'Poslanecky Slib',
+          type: 'radio',
+          order: 'inline',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: false,
-          property: "Mandaty",
+          property: 'Mandaty',
           values: poslaneckySlibMapped,
         },
         parlamentni_telesa: {
           id: sectionId++,
-          title: "Parlamentní tělesa",
-          type: "checkbox",
+          title: 'Parlamentní tělesa',
+          type: 'checkbox',
           multiple: true,
-          order: "block",
-          property: "Mandaty",
+          order: 'block',
+          property: 'Mandaty',
           values: [
             {
               id: snemovniObdobiNazevEdited,
@@ -1206,227 +1207,227 @@ export default {
         },
         pohlavi: {
           id: sectionId++,
-          title: "Pohlaví",
-          type: "radio",
-          order: "inline",
-          property: "Pohlavi",
+          title: 'Pohlaví',
+          type: 'radio',
+          order: 'inline',
+          property: 'Pohlavi',
           values: [
             {
-              id: "vse-pohlavi",
-              text: "Vše",
+              id: 'vse-pohlavi',
+              text: 'Vše',
               default: true,
               reset: false,
               selected: true,
               validate: (property) => property === 1 || property === 2,
             },
-            { id: "1", text: "Muž", validate: (property) => property === 1 },
-            { id: "2", text: "Žena", validate: (property) => property === 2 },
+            { id: '1', text: 'Muž', validate: (property) => property === 1 },
+            { id: '2', text: 'Žena', validate: (property) => property === 2 },
           ],
         },
         Kooptace: {
           id: sectionId++,
-          title: "Kooptace",
-          type: "radio",
-          order: "inline",
-          info: "Nějaké informace k vysvětlení",
+          title: 'Kooptace',
+          type: 'radio',
+          order: 'inline',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: false,
-          property: "Mandaty",
+          property: 'Mandaty',
           values: kooptaceMapped,
         },
         MandatyFunkce: {
           id: sectionId++,
-          title: "Funkce",
-          type: "checkbox",
+          title: 'Funkce',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          property: "Mandaty",
-          info: "Nějaké informace k vysvětlení",
+          order: 'block',
+          property: 'Mandaty',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: funkce,
         },
         MandatyKluby: {
           id: sectionId++,
-          title: "Poslanecké kluby",
-          type: "checkbox",
+          title: 'Poslanecké kluby',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          property: "Mandaty",
-          info: "Nějaké informace k vysvětlení",
+          order: 'block',
+          property: 'Mandaty',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: kluby,
         },
         MandatyVolebniStrana: {
           id: sectionId++,
-          title: "Volební strany",
-          type: "checkbox",
+          title: 'Volební strany',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          property: "Mandaty",
-          info: "Nějaké informace k vysvětlení",
+          order: 'block',
+          property: 'Mandaty',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: volebni_strany,
         },
         MandatyVybory: {
           id: sectionId++,
-          title: "Výbory",
-          type: "checkbox",
+          title: 'Výbory',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          property: "Mandaty",
-          info: "Nějaké informace k vysvětlení",
+          order: 'block',
+          property: 'Mandaty',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: vybory,
         },
         vzdelani: {
           id: sectionId++,
-          title: "Vzdělání",
-          type: "radio",
-          order: "inline",
-          property: "UniverzitniVzdelani",
+          title: 'Vzdělání',
+          type: 'radio',
+          order: 'inline',
+          property: 'UniverzitniVzdelani',
           values: vysoka_skola,
         },
         nabozenske_vyznani: {
           id: sectionId++,
-          title: "Náboženské vyznání",
-          type: "checkbox",
+          title: 'Náboženské vyznání',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          property: "Nabozenstvi",
-          info: "Nějaké informace k vysvětlení",
+          order: 'block',
+          property: 'Nabozenstvi',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: nabozenske_vyznani,
         },
         narodnosti: {
           id: sectionId++,
-          title: "Národnosti",
-          type: "checkbox",
+          title: 'Národnosti',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          info: "Nějaké informace k vysvětlení",
-          property: "Narodnosti",
+          order: 'block',
+          info: 'Nějaké informace k vysvětlení',
+          property: 'Narodnosti',
           hasCounter: true,
           values: narodnosti,
         },
         Fotografie: {
           id: sectionId++,
-          title: "Fotografie",
-          type: "radio",
-          order: "inline",
-          info: "Nějaké informace k vysvětlení",
-          property: "Soubory",
+          title: 'Fotografie',
+          type: 'radio',
+          order: 'inline',
+          info: 'Nějaké informace k vysvětlení',
+          property: 'Soubory',
           hasCounter: false,
           values: [
             {
-              id: "vse",
-              text: "Vše",
+              id: 'vse',
+              text: 'Vše',
               default: true,
               reset: true,
               selected: true,
               validate: (property) => true,
             },
             {
-              id: "ma-fotku",
-              text: "Má fotku",
+              id: 'ma-fotku',
+              text: 'Má fotku',
               default: false,
               selected: false,
-              property: "Soubory",
+              property: 'Soubory',
               validate: (property) => property.length > 0,
             },
             {
-              id: "nema-fotku",
-              text: "Nemá fotku",
+              id: 'nema-fotku',
+              text: 'Nemá fotku',
               default: false,
               selected: false,
-              property: "Soubory",
+              property: 'Soubory',
               validate: (property) => !property.length || property.length === 0,
             },
           ],
         },
         MandatyDruhMandatu: {
           id: sectionId++,
-          title: "Druh mandátu",
-          type: "checkbox",
+          title: 'Druh mandátu',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          property: "Mandaty",
-          info: "Nějaké informace k vysvětlení",
+          order: 'block',
+          property: 'Mandaty',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: druh_mandatu,
         },
         MandatyDruhUkonceni: {
           id: sectionId++,
-          title: "Druh ukončení mandátu",
-          type: "checkbox",
+          title: 'Druh ukončení mandátu',
+          type: 'checkbox',
           multiple: true,
           reset: true,
-          order: "block",
-          property: "Mandaty",
-          info: "Nějaké informace k vysvětlení",
+          order: 'block',
+          property: 'Mandaty',
+          info: 'Nějaké informace k vysvětlení',
           hasCounter: true,
           values: druh_konce_mandatu,
         },
         Znovuzvoleni: {
           id: sectionId++,
-          title: "Znovuzvolení",
-          type: "radio",
-          order: "inline",
-          info: "Nějaké informace k vysvětlení",
-          property: "Mandaty",
+          title: 'Znovuzvolení',
+          type: 'radio',
+          order: 'inline',
+          info: 'Nějaké informace k vysvětlení',
+          property: 'Mandaty',
           hasCounter: false,
           values: znovuzvolenMapped,
         },
         PocetMandatu: {
           id: sectionId++,
-          title: "Počet mandátů",
-          type: "range",
-          order: "inline",
-          info: "Nějaké informace k vysvětlení",
-          property: "Mandaty",
+          title: 'Počet mandátů',
+          type: 'range',
+          order: 'inline',
+          info: 'Nějaké informace k vysvětlení',
+          property: 'Mandaty',
           hasCounter: false,
           queryStructure: [
-            "MinimalniPocetMandatu",
-            "MaximalniPocetMandatu",
-            "AbsolutniMinimalniPocetMandatu",
-            "AbsolutniMaximalniPocetMandata",
+            'MinimalniPocetMandatu',
+            'MaximalniPocetMandatu',
+            'AbsolutniMinimalniPocetMandatu',
+            'AbsolutniMaximalniPocetMandata',
           ], // order matterrs, first lower bound, next higher bound
           values: pocetMandatuMapped,
         },
         VekNaZacatkuMandatu: {
           id: sectionId++,
-          title: "Věk na začátku mandátu",
-          type: "range",
-          order: "inline",
-          info: "Nějaké informace k vysvětlení",
-          property: "Mandaty",
+          title: 'Věk na začátku mandátu',
+          type: 'range',
+          order: 'inline',
+          info: 'Nějaké informace k vysvětlení',
+          property: 'Mandaty',
           hasCounter: false,
           queryStructure: [
-            "MinimalniPocetMandatu",
-            "MaximalniPocetMandatu",
-            "AbsolutniMinimalniPocetMandatu",
-            "AbsolutniMaximalniPocetMandata",
+            'MinimalniPocetMandatu',
+            'MaximalniPocetMandatu',
+            'AbsolutniMinimalniPocetMandatu',
+            'AbsolutniMaximalniPocetMandata',
           ], // order matterrs, first lower bound, next higher bound
           values: vekNaZacatkuMandatuMapped,
         },
         VekNaKonciMandatu: {
           id: sectionId++,
-          title: "Věk na konci mandátu",
-          type: "range",
-          order: "inline",
-          info: "Nějaké informace k vysvětlení",
-          property: "Mandaty",
+          title: 'Věk na konci mandátu',
+          type: 'range',
+          order: 'inline',
+          info: 'Nějaké informace k vysvětlení',
+          property: 'Mandaty',
           hasCounter: false,
           queryStructure: [
-            "MinimalniPocetMandatu",
-            "MaximalniPocetMandatu",
-            "AbsolutniMinimalniPocetMandatu",
-            "AbsolutniMaximalniPocetMandata",
+            'MinimalniPocetMandatu',
+            'MaximalniPocetMandatu',
+            'AbsolutniMinimalniPocetMandatu',
+            'AbsolutniMaximalniPocetMandata',
           ], // order matterrs, first lower bound, next higher bound
           values: vekNaKonciMandatuMapped,
         },
@@ -1451,13 +1452,13 @@ export default {
           ...filterFinalNastaveni,
           MandatyKurie: {
             id: sectionId++,
-            title: "Kurie",
-            type: "checkbox",
+            title: 'Kurie',
+            type: 'checkbox',
             multiple: true,
             reset: true,
-            order: "block",
-            property: "Mandaty",
-            info: "Nějaké informace k vysvětlení",
+            order: 'block',
+            property: 'Mandaty',
+            info: 'Nějaké informace k vysvětlení',
             hasCounter: true,
             values: kurie,
           },
@@ -1498,11 +1499,11 @@ export default {
             DatumNarozeniZobrazene:
               poslanec.DatumNarozeniZobrazene !== null
                 ? poslanec.DatumNarozeniZobrazene
-                : "???",
+                : '???',
             DatumUmrtiZobrazene:
               poslanec.DatumUmrtiZobrazene !== null
                 ? poslanec.DatumUmrtiZobrazene
-                : "???",
+                : '???',
             ProfilovaFotka:
               (poslanec.Soubory &&
                 poslanec.Soubory.length &&
@@ -1524,24 +1525,24 @@ export default {
     tabNavigaceNastaveni() {
       let polozky = {
         poslaneckeKluby: {
-          id: "poslanecke-kluby",
-          title: "poslanecké kluby",
+          id: 'poslanecke-kluby',
+          title: 'poslanecké kluby',
           data: this?.statistiky?.PoslaneckeKluby || [],
           aktivni: true,
         },
         volebniStrany: {
-          id: "volebni-strany",
-          title: "volební strany",
+          id: 'volebni-strany',
+          title: 'volební strany',
           data: this?.statistiky?.VolebniStrany || [],
         },
         narodnost: {
-          id: "narodnost",
-          title: "národnosti",
+          id: 'narodnost',
+          title: 'národnosti',
           data: this?.statistiky?.Narodnosti || [],
         },
         vybory: {
-          id: "vybory",
-          title: "výbory",
+          id: 'vybory',
+          title: 'výbory',
           data: this?.statistiky?.Vybory || [],
         },
       };
@@ -1550,8 +1551,8 @@ export default {
         polozky = {
           ...polozky,
           kurie: {
-            id: "kurie",
-            title: "kurie",
+            id: 'kurie',
+            title: 'kurie',
             data: this?.statistiky?.Kurie || [],
           },
         };
@@ -1568,21 +1569,21 @@ export default {
       title: `${this.snemovniObdobi.Nazev} (${this.snemovniObdobi.DatumZacatkuZobrazene} — ${this.snemovniObdobi.DatumKonceZobrazene}) — ${this.$config.globalTitle}`,
       link: [
         {
-          rel: "stylesheet",
-          href: "//unpkg.com/leaflet/dist/leaflet.css",
+          rel: 'stylesheet',
+          href: '//unpkg.com/leaflet/dist/leaflet.css',
         },
         {
-          rel: "stylesheet",
+          rel: 'stylesheet',
           href:
-            "https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
+            'https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css',
         },
         {
-          rel: "stylesheet",
-          href: "//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css",
+          rel: 'stylesheet',
+          href: '//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css',
         },
       ],
       htmlAttrs: {
-        class: "alt-bg-02 subpage-parlament",
+        class: 'alt-bg-02 subpage-parlament',
       },
     };
   },

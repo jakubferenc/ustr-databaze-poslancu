@@ -4,7 +4,7 @@
 
   <Slider />
 
-  <Rozcestnik />
+  //- <Rozcestnik />
 
   .section-padding.alt-bg
 
@@ -44,14 +44,14 @@
 </style>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
-const Slider = () => import("~/components/Slider.vue");
-const Rozcestnik = () => import("~/components/Rozcestnik.vue");
-const PoslanciSeznam = () => import("~/components/PoslanciSeznam.vue");
-const ParlamentySeznam = () => import("~/components/ParlamentySeznam.vue");
-const SlovnikSlider = () => import("~/components/SlovnikSlider.vue");
-const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
+const Slider = () => import('~/components/Slider.vue');
+const Rozcestnik = () => import('~/components/Rozcestnik.vue');
+const PoslanciSeznam = () => import('~/components/PoslanciSeznam.vue');
+const ParlamentySeznam = () => import('~/components/ParlamentySeznam.vue');
+const SlovnikSlider = () => import('~/components/SlovnikSlider.vue');
+const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
 // const MediaData = () => import('~/data/media.json').then(m => m.default || m);
 // const ParlamentyData = () => import('~/data/parlamenty.json').then(m => m.default || m);
@@ -73,10 +73,10 @@ export default {
 
   async asyncData({ store, $config }) {
     // wordpress api calls
-    await store.dispatch("getMedia");
-    await store.dispatch("getSlovnikovaHesla");
-    await store.dispatch("getParlamenty");
-    await store.dispatch("getPoslanciHomepage", {
+    await store.dispatch('getMedia');
+    await store.dispatch('getSlovnikovaHesla');
+    await store.dispatch('getParlamenty');
+    await store.dispatch('getPoslanciHomepage', {
       limit: 10,
       stranka: 1,
     });
@@ -100,7 +100,7 @@ export default {
     return {
       title: `${this.title} — ${this.$config.globalTitle}`,
       htmlAttrs: {
-        class: "index has-slider",
+        class: 'index has-slider',
       },
     };
   },

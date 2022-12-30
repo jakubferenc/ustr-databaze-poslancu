@@ -47,84 +47,62 @@ export default {
     crawler: true,
     async routes() {
 
-      let routes = [];
-
-      const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
-      const mediaRes =  await apiFactory.getAllMediaFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, 100);
+      // // const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
       const strankyRes =  await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
-
-      const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(config.wordpressAPIURLWebsite);
-
-      // snemovni obdobi
-
-      const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiWordpressFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
-
-      const snemovniObdobiWordpressArrResDatabaseIds = snemovniObdobiWordpressArrRes.map(item => item.databaze_id);
-
-      const snemovniObdobiObjsRes = await Promise.all(snemovniObdobiWordpressArrResDatabaseIds.map(async (snemovniObdobiId) => {
-
-        const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, snemovniObdobiId);
-
-        return snemovniObdobiObj;
-
-
-      }));
-
-
-      const mediaRoutes = mediaRes.map(item => {
-
+      const strankyRoutes = strankyRes.map(item => {
         return {
+          route: `/stranka/${item.slug}/`,
+          payload: item // thanks to the payload, we are caching results for the subpage here
+        };
+      });
 
+      const mediaRes =  await apiFactory.getAllMediaFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, 100);
+      const mediaRoutes = mediaRes.map(item => {
+        return {
           route: `/media/${item.id}`,
           payload: item // thanks to the payload, we are caching results for the subpage here
-
         };
-
       });
 
-      const strankyRoutes = strankyRes.map(item => {
-
-        return {
-          route: `/stranka/${item.slug}`,
-          payload: item // thanks to the payload, we are caching results for the subpage here
-        };
-
-      });
-
-      const rodinyRoutes = rodinyRes.map(item => {
-
-        // load persons in a family
-
-        return {
-          route: `/socialni-mapa/${item.slug}`,
-          payload: item // thanks to the payload, we are caching results for the subpage here
-        };
-
-      });
-
+      const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(config.wordpressAPIURLWebsite);
       const slovnikRoutes = slovnikRes.map(item => {
-
         return {
-
           route: `/slovnikove-heslo/${item.slug}`,
           payload: item // thanks to the payload, we are caching results for the subpage here
-
         };
-
       });
 
-      const snemovniObdobiRoutes = snemovniObdobiObjsRes.map(item => {
+      const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiWordpressFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
+      const snemovniObdobiWordpressArrResDatabaseIds = snemovniObdobiWordpressArrRes.map(item => item.databaze_id);
+      const snemovniObdobiObjsRes = await Promise.all(snemovniObdobiWordpressArrResDatabaseIds.map(async (snemovniObdobiId) => {
+        const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, snemovniObdobiId);
+        return snemovniObdobiObj;
+      }));
 
+     const snemovniObdobiRoutes = snemovniObdobiObjsRes.map(item => {
         return {
-
           route: `/snemovni-obdobi/${item.Id}`, // :TODO: careful about the "Id" vs "id"
           payload: item // thanks to the payload, we are caching results for the subpage here
-
         };
-
       });
+      // // const rodinyRoutes = rodinyRes.map(item => {
 
-      return [...strankyRoutes, ...rodinyRoutes, ...mediaRoutes, ...slovnikRoutes, ...snemovniObdobiRoutes];
+      // //   // load persons in a family
+
+      // //   return {
+      // //     route: `/socialni-mapa/${item.slug}`,
+      // //     payload: item // thanks to the payload, we are caching results for the subpage here
+      // //   };
+
+      // // });
+
+      return [
+        ...strankyRoutes,
+        ...mediaRoutes,
+        ...slovnikRoutes,
+        ...snemovniObdobiRoutes,
+        // ...rodinyRoutes,
+      ];
 
     },
     fallback: true
@@ -211,19 +189,5 @@ export default {
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
-  },
-  storybook: {
-    addons: [
-      {
-        name: '@storybook/preset-scss',
-        options: {
-          cssLoaderOptions: {
-              modules: true,
-              localIdentName: '[name]__[local]--[hash:base64:5]',
-          }
-        }
-      }
-    ]
   }
-
 };

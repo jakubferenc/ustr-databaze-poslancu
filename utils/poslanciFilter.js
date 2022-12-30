@@ -1,6 +1,4 @@
 export default {
-
-
   RaditDle: [
     { id: 'radit-id', text: 'Základní řazení' },
     { id: 'radit-prijmeni', text: 'Podle příjmení (od A)' },
@@ -11,7 +9,4 @@ export default {
     { id: 'radit-datum-narozeni-sestupne', text: 'Od nejstarších' },
   ],
   ZakladniPolozka: { id: 'radit-default', text: 'řadit dle' },
-
-
-
 };

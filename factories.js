@@ -17,7 +17,6 @@ const axiosInstance = axios.create({
   // Keep the timeout low in development so it at least somehow responsive
   timeout: process.dev ? 45000 : 45000,
   // httpsAgent: new https.Agent({ keepAlive: true })
-
 });
 
 // We need retrying on timeout, because wordpress api quite often hangs
@@ -782,13 +781,11 @@ const createFilterSettingsForApiUseParliamentMapsFactory = (filterData = {}, act
   if (filterData.PolitickeStrany && filterData.PolitickeStrany !== null) {
 
     const politickeStranyMapped = [...filterData.PolitickeStrany].map(item => {
-
       return {
-              id: item.Id,
-              text: item.Nazev,
-              selected: false,
-            };
-
+        id: item.Id,
+        text: item.Nazev,
+        selected: false,
+      };
     });
 
 
@@ -896,8 +893,6 @@ const getAllMediaFactory = async (wordpressAPIURLWebsite, databazePoslancuURL, l
 
     const posts = await axiosInstance.get(`${wordpressAPIURLWebsite}/wp/v2/media?per_page=${limit}&page=${page}`, wpFetchHeaders);
     media_soubory = [...media_soubory, ...posts.data];
-
-
   }
 
   return media_soubory
@@ -1386,7 +1381,11 @@ const getPoslanecDetailFactory = async (databazePoslancuURL, poslanecId) => {
 };
 
 
-const getPoslanciHomepageFactory = async(databazePoslancuURL, {limit, stranka, filterCallback = null}) => {
+const getPoslanciHomepageFactory = async (databazePoslancuURL, {
+  limit,
+  stranka,
+  filterCallback = null
+}) => {
 
   let poslanciRequest = await axiosInstance.get(`${databazePoslancuURL}/Api/osoby?Limit=${limit}&Stranka=${stranka}&Fotografie=true`);
   poslanciRequest = poslanciRequest.data;
