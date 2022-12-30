@@ -46,7 +46,6 @@ export default {
     ],
     crawler: true,
     async routes() {
-      // // const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
       const strankyRes = await apiFactory.getAllStrankyFactory(
         config.wordpressAPIURLWebsite
       );
@@ -107,23 +106,12 @@ export default {
           payload: item, // thanks to the payload, we are caching results for the subpage here
         };
       });
-      // // const rodinyRoutes = rodinyRes.map(item => {
-
-      // //   // load persons in a family
-
-      // //   return {
-      // //     route: `/socialni-mapa/${item.slug}`,
-      // //     payload: item // thanks to the payload, we are caching results for the subpage here
-      // //   };
-
-      // // });
 
       return [
         ...strankyRoutes,
         ...mediaRoutes,
         ...slovnikRoutes,
         ...snemovniObdobiRoutes,
-        // ...rodinyRoutes,
       ];
     },
     fallback: true,
