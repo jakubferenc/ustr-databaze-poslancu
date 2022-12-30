@@ -2,7 +2,7 @@ import apiFactory from './factories';
 import projectConfig from './project.config';
 
 const dev = process.env.NODE_ENV !== 'production';
-const config = {dev, ...projectConfig};
+const config = { dev, ...projectConfig };
 
 // data
 
@@ -22,7 +22,7 @@ export default {
     ...config,
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://localhost:8000'
+    baseUrl: process.env.BASE_URL || 'https://localhost:8000',
   },
   sitemap: {
     hostname: !dev ? config.baseURL.production : config.baseURL.development,
@@ -38,51 +38,73 @@ export default {
           'Origin, X-Requested-With, Content-Type, Accept'
         );
       },
-    }
+    },
   },
   generate: {
     exclude: [
-      /^\/poslanec/ // path starts with /poslanec
+      /^\/poslanec/, // path starts with /poslanec
     ],
     crawler: true,
     async routes() {
-
       // // const rodinyRes = await apiFactory.getRodinySocialniMapyFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
-      const strankyRes =  await apiFactory.getAllStrankyFactory(config.wordpressAPIURLWebsite);
-      const strankyRoutes = strankyRes.map(item => {
+      const strankyRes = await apiFactory.getAllStrankyFactory(
+        config.wordpressAPIURLWebsite
+      );
+      const strankyRoutes = strankyRes.map((item) => {
         return {
           route: `/stranka/${item.slug}/`,
-          payload: item // thanks to the payload, we are caching results for the subpage here
+          payload: item, // thanks to the payload, we are caching results for the subpage here
         };
       });
 
-      const mediaRes =  await apiFactory.getAllMediaFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, 100);
-      const mediaRoutes = mediaRes.map(item => {
+      const mediaRes = await apiFactory.getAllMediaFactory(
+        config.wordpressAPIURLWebsite,
+        config.databazePoslancuURL,
+        100
+      );
+      const mediaRoutes = mediaRes.map((item) => {
         return {
-          route: `/media/${item.id}`,
-          payload: item // thanks to the payload, we are caching results for the subpage here
+          route: `/media/${item.id}/`,
+          payload: item, // thanks to the payload, we are caching results for the subpage here
         };
       });
 
-      const slovnikRes =  await apiFactory.getSlovnikovaHeslaFactory(config.wordpressAPIURLWebsite);
-      const slovnikRoutes = slovnikRes.map(item => {
+      const slovnikRes = await apiFactory.getSlovnikovaHeslaFactory(
+        config.wordpressAPIURLWebsite
+      );
+      const slovnikRoutes = slovnikRes.map((item) => {
         return {
-          route: `/slovnikove-heslo/${item.slug}`,
-          payload: item // thanks to the payload, we are caching results for the subpage here
+          route: `/slovnikove-heslo/${item.slug}/`,
+          payload: item, // thanks to the payload, we are caching results for the subpage here
         };
       });
 
-      const snemovniObdobiWordpressArrRes = await apiFactory.getAllSnemovniObdobiWordpressFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL);
-      const snemovniObdobiWordpressArrResDatabaseIds = snemovniObdobiWordpressArrRes.map(item => item.databaze_id);
-      const snemovniObdobiObjsRes = await Promise.all(snemovniObdobiWordpressArrResDatabaseIds.map(async (snemovniObdobiId) => {
-        const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(config.wordpressAPIURLWebsite, config.databazePoslancuURL, snemovniObdobiId);
-        return snemovniObdobiObj;
-      }));
+      const snemovniObdobiWordpressArrRes =
+        await apiFactory.getAllSnemovniObdobiWordpressFactory(
+          config.wordpressAPIURLWebsite
+        );
 
-     const snemovniObdobiRoutes = snemovniObdobiObjsRes.map(item => {
+      const snemovniObdobiWordpressArrResDatabaseIds =
+        snemovniObdobiWordpressArrRes.map((item) => item.databaze_id);
+
+      const snemovniObdobiObjsRes = await Promise.all(
+        snemovniObdobiWordpressArrResDatabaseIds.map(
+          async (snemovniObdobiId) => {
+            const snemovniObdobiObj =
+              await apiFactory.getSnemovniObdobiDetailFactory(
+                config.wordpressAPIURLWebsite,
+                config.databazePoslancuURL,
+                snemovniObdobiId
+              );
+            return snemovniObdobiObj;
+          }
+        )
+      );
+
+      const snemovniObdobiRoutes = snemovniObdobiObjsRes.map((item) => {
         return {
-          route: `/snemovni-obdobi/${item.Id}`, // :TODO: careful about the "Id" vs "id"
-          payload: item // thanks to the payload, we are caching results for the subpage here
+          route: `/snemovni-obdobi/${item.Id}/`, // :TODO: careful about the "Id" vs "id"
+          payload: item, // thanks to the payload, we are caching results for the subpage here
         };
       });
       // // const rodinyRoutes = rodinyRes.map(item => {
@@ -100,80 +122,94 @@ export default {
         ...strankyRoutes,
         ...mediaRoutes,
         ...slovnikRoutes,
-        ...snemovniObdobiRoutes,
+        // ...snemovniObdobiRoutes,
         // ...rodinyRoutes,
       ];
-
     },
-    fallback: true
+    fallback: true,
   },
   build: {
     loaders: {
       sass: { sourceMap: false },
       scss: { sourceMap: false },
       vue: { cacheBusting: false },
-    }
+    },
   },
   buildModules: [
-    ['@nuxtjs/style-resources', {
-      // your settings here
-      sass: [
-        '~assets/scss/defs/_all.sass',
-      ],
-      scss: [],
-      hoistUseStatements: true  // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
-    }],
-    "@nuxtjs/svg",
-    ['@nuxt/image', {
-      // The screen sizes predefined by `@nuxt/image`:
-      screens: config.responsive.breakpoints,
-      domains: [config.wordpressURLWebsite, config.netlifyURL]
-    }],
+    [
+      '@nuxtjs/style-resources',
+      {
+        // your settings here
+        sass: ['~assets/scss/defs/_all.sass'],
+        scss: [],
+        hoistUseStatements: true, // Hoists the "@use" imports. Applies only to "sass", "scss" and "less". Default: false.
+      },
+    ],
+    '@nuxtjs/svg',
+    [
+      '@nuxt/image',
+      {
+        // The screen sizes predefined by `@nuxt/image`:
+        screens: config.responsive.breakpoints,
+        domains: [config.wordpressURLWebsite, config.netlifyURL],
+      },
+    ],
   ],
   modules: [
-    ['@nuxtjs/proxy', {
-      '/Api/snemovny/seznam': `${config.databazePoslancuURL}`,
-      '/Api/snemovny/': `${config.databazePoslancuURL}`,
-      '/Api/osoby': `${config.databazePoslancuURL}`,
-      '/Api/soubory': `${config.databazePoslancuURL}`,
-      '/wp/v2/slovnik': `${config.wordpressAPIURLWebsite}`,
-      '/wp/v2/pages': `${config.wordpressAPIURLWebsite}`,
-      '/wp/v2/casova_osa': `${config.wordpressAPIURLWebsite}`,
-    }],
-    ['@nuxtjs/sentry', {
-      dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
-      // Additional Module Options go here
-      // https://sentry.nuxtjs.org/sentry/options
-      config: {
-        // Add native Sentry config here
-        // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
-        environment: process.env.NODE_ENV,
-        debug: dev ? true : false,
+    [
+      '@nuxtjs/proxy',
+      {
+        '/Api/snemovny/seznam': `${config.databazePoslancuURL}`,
+        '/Api/snemovny/': `${config.databazePoslancuURL}`,
+        '/Api/osoby': `${config.databazePoslancuURL}`,
+        '/Api/soubory': `${config.databazePoslancuURL}`,
+        '/wp/v2/slovnik': `${config.wordpressAPIURLWebsite}`,
+        '/wp/v2/pages': `${config.wordpressAPIURLWebsite}`,
+        '/wp/v2/casova_osa': `${config.wordpressAPIURLWebsite}`,
       },
-    }],
-    ['@nuxtjs/i18n', {
-      locales: [
-        {code: 'cs', iso: 'cs-CZ', file: 'cs-CZ.js', dir: 'ltr'}
-      ],
-      lazy: true,
-      langDir: '~lang/',
-      defaultLocale: 'cs',
-      vueI18n: {
-        fallbackLocale: 'cs',
+    ],
+    [
+      '@nuxtjs/sentry',
+      {
+        dsn: 'https://9b271b2be5df44b9b13ace36c73dbfbe@o621712.ingest.sentry.io/5752198', // Enter your project's DSN here
+        // Additional Module Options go here
+        // https://sentry.nuxtjs.org/sentry/options
+        config: {
+          // Add native Sentry config here
+          // https://docs.sentry.io/platforms/javascript/guides/vue/configuration/options/
+          environment: process.env.NODE_ENV,
+          debug: dev ? true : false,
+        },
       },
-    }],
-    ['@nuxtjs/axios', {
-      proxy: true
-    }],
+    ],
+    [
+      '@nuxtjs/i18n',
+      {
+        locales: [{ code: 'cs', iso: 'cs-CZ', file: 'cs-CZ.js', dir: 'ltr' }],
+        lazy: true,
+        langDir: '~lang/',
+        defaultLocale: 'cs',
+        vueI18n: {
+          fallbackLocale: 'cs',
+        },
+      },
+    ],
+    [
+      '@nuxtjs/axios',
+      {
+        proxy: true,
+      },
+    ],
   ],
   css: [
     '~assets/scss/main.sass',
     { src: 'leaflet.markercluster/dist/MarkerCluster.css', lang: 'css' },
-    { src: 'leaflet.markercluster/dist/MarkerCluster.Default.css', lang: 'css' }
+    {
+      src: 'leaflet.markercluster/dist/MarkerCluster.Default.css',
+      lang: 'css',
+    },
   ],
-  plugins: [
-    { src: '~plugins/vue-leaflet.js', ssr: false },
-  ],
+  plugins: [{ src: '~plugins/vue-leaflet.js', ssr: false }],
   head: {
     title: config.globalTitle,
     htmlAttrs: {
@@ -185,9 +221,9 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: 'my website description'
-      }
+        content: 'my website description',
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
-  }
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+  },
 };
