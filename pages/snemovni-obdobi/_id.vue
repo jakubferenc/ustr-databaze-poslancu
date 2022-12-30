@@ -1580,7 +1580,7 @@ export default {
         },
       ],
       htmlAttrs: {
-        class: 'alt-bg-02 subpage-parlament',
+        class: 'alt-bg-02 page--parlament-detail',
       },
     };
   },

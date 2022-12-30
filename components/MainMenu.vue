@@ -30,6 +30,12 @@ nav.main-menu(role="navigation" aria-label="Primary")
 </template>
 
 <style lang="sass" scoped>
+%active-link
+  text-decoration: underline
+
+html.page--parlament-detail .link-parlamenty
+  @extend %active-link
+
 .main-menu
   a
     margin-left: 15px
@@ -39,19 +45,19 @@ nav.main-menu(role="navigation" aria-label="Primary")
 
   .nuxt-link-active:not(.link-index),
   .nuxt-link-exact-active
-    text-decoration: underline
+    @extend %active-link
     display: inline-flex
 
 .full-text
   +until($fullhd)
     display: none
   +from($fullhd)
-    display: inline-block
+    display: block
 .short-text
   +from($fullhd)
     display: none
   +until($fullhd)
-    display: inline-block
+    display: block
 </style>
 
 <script>
