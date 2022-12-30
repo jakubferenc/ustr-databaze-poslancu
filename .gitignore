@@ -25,3 +25,8 @@ storybook-static
 
 # Nuxt bridge
 .output
+
+# Resources
++resources
+resources
+_resources
