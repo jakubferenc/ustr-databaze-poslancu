@@ -2,7 +2,10 @@
 
 .section
 
-  h1.typography-main-title {{title}}
+  .typography-title-container
+    h1.typography-main-title {{title}}
+    h2.is-title.typography-page-subtitle Zde najdete fotografie, karikatury, mapy a jiné dokumenty  související s dějinami českého parlamentarismu.
+
 
   .section-padding-h-margin-v
 
@@ -11,9 +14,9 @@
 </template>
 
 <script>
-const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
+const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
-const MediaData = () => import("~/data/media.json").then((m) => m.default || m);
+const MediaData = () => import('~/data/media.json').then((m) => m.default || m);
 
 export default {
   components: { GalerieMediiSeznam },
@@ -21,7 +24,7 @@ export default {
   async asyncData({ params, error, payload, store, $config }) {
     try {
       if (!$config.useFileCachedAPI) {
-        await store.dispatch("getMedia");
+        await store.dispatch('getMedia');
 
         return {
           soubory: [...store.state.media_soubory],
@@ -49,7 +52,7 @@ export default {
     return {
       title: `${this.title} — ${this.$config.globalTitle}`,
       htmlAttrs: {
-        class: "alt-bg",
+        class: 'alt-bg',
       },
     };
   },

@@ -2,9 +2,11 @@
 
 .section
 
-  h1.typography-main-title {{ title }}
+  .typography-title-container
+    h1.is-title.typography-main-title {{ title }}
+    h2.is-title.typography-page-subtitle Mapy stranické příslušnosti propojují údaje o poslancích jednotlivých zastupitelských sborů, místa jejich narození a politickou příslušností vyjádřenou buď volební stranou nebo členstvím v politické straně, což se týká poslanců a poslankyň zvolených do Ústavodárného Národního shromáždění republiky Československé, Národního shromáždění ČSR/ČSSR, obou sněmoven Federálního shromáždění ČSSR/ČSFR a České národní rady. V případě těchto parlamentních těles existuje totiž pouze jedna volební strana (Národní fronta), a tudíž by její zobrazení nepřineslo žádnou novou informaci.
 
-  .section-padding-h-margin-v
+  .section-padding-h-margin-v.smaller-vertical-margin-only
 
     PoslanciSeznamAPI(
 
@@ -38,32 +40,32 @@
 </template>
 
 <script>
-import apiModule from "../factories";
-import { mapGetters } from "vuex";
+import apiModule from '../factories';
+import { mapGetters } from 'vuex';
 import {
   normalizeURLParamsToValueInArrayFormat,
   stringifyQueryForAPI,
   normalizeQueryParamsVariableTypes,
-} from "~/utils/functions";
-import { poslanciFilterMixin } from "~/mixins/poslanciFilterMixin";
+} from '~/utils/functions';
+import { poslanciFilterMixin } from '~/mixins/poslanciFilterMixin';
 
-const PoslanciSeznamAPI = () => import("~/components/PoslanciSeznamAPI.vue");
+const PoslanciSeznamAPI = () => import('~/components/PoslanciSeznamAPI.vue');
 
 export default {
   components: { PoslanciSeznamAPI },
   mixins: [poslanciFilterMixin],
   data() {
     return {
-      title: "Interaktivní mapy stranické příslušnosti",
+      title: 'Interaktivní mapy stranické příslušnosti',
       defaultQuery: {
-        Poslanec: ["true"],
+        Poslanec: ['true'],
         Limit: [8000],
         Stranka: [1],
       },
     };
   },
   async created() {
-    this.$store.dispatch("setLoading", { loadingState: true });
+    this.$store.dispatch('setLoading', { loadingState: true });
     const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query); // take URL params at the request time and add them to the request for API
 
     this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
@@ -74,7 +76,7 @@ export default {
     // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
 
     await this.prepareRequestFilteredViaAPI(this.currentQuery);
-    this.$store.dispatch("setLoading", { loadingState: false });
+    this.$store.dispatch('setLoading', { loadingState: false });
   },
 
   methods: {
@@ -83,13 +85,13 @@ export default {
     normalizeQueryParamsVariableTypes,
 
     async prepareRequestFilteredViaAPI(currentQuery) {
-      this.$store.dispatch("setLoading", { loadingState: true });
+      this.$store.dispatch('setLoading', { loadingState: true });
 
       this.currentQueryStringified = `?${this.stringifyQueryForAPI(currentQuery)}`;
 
-      await this.$store.dispatch("getParlamentyDatabaze");
+      await this.$store.dispatch('getParlamentyDatabaze');
 
-      await this.$store.dispatch("getPoslanciAll", this.currentQueryStringified);
+      await this.$store.dispatch('getPoslanciAll', this.currentQueryStringified);
 
       // Defines which params are reacting to the current filter settings
       // But for Parlamenty/Snemovny which must stay fixed
@@ -109,16 +111,16 @@ export default {
       );
 
       this.$router.push({
-        path: "/snemovny-mapy/",
+        path: '/snemovny-mapy/',
         query: this.currentQuery,
       });
-      this.$store.dispatch("setLoading", { loadingState: false });
+      this.$store.dispatch('setLoading', { loadingState: false });
     },
   },
 
   computed: {
     ...mapGetters({
-      isGlobalLoading: "getLoadingState",
+      isGlobalLoading: 'getLoadingState',
     }),
     nastaveniMapa() {
       return {
@@ -163,7 +165,7 @@ export default {
     return {
       title: `${this.title} — ${this.$config.globalTitle}`,
       htmlAttrs: {
-        class: "alt-bg",
+        class: 'alt-bg',
       },
     };
   },

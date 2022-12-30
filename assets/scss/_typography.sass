@@ -1,9 +1,7 @@
 @use "sass:math"
 
-
 .alt-bg
   background-color: #F4F4F4
-
 
 .alt-bg-02
   background-color: #F8F6F1
@@ -78,7 +76,6 @@
   +from($fullhd)
     font-size: 56px
 
-
   &.no-margin-bottom
     margin-bottom: 0
 
@@ -95,14 +92,11 @@
   font-size: 13px
   color: $color-primary-blue
 
-
-
 .typography-item-detail-text
   @extend %typography-body-text
   font-size: 22px
   line-height: 1.4
   letter-spacing: .5px
-
 
 .section-margin-h-margin-v
 
@@ -111,7 +105,6 @@
     padding-right: $margin-from-desktop
     margin-top: $margin-from-desktop
     margin-bottom: $margin-from-desktop
-
 
 .section-padding-h-margin-v
   padding-left: $margin-until-desktop
@@ -137,8 +130,11 @@
     padding-left: $margin-from-desktop
     padding-right: $margin-from-desktop
 
+.smaller-vertical-margin-only
+  margin-top: math.div($margin-until-desktop, 1.5)
+  margin-bottom: math.div($margin-until-desktop, 1.5)
 
-.section-padding.smaller-vertical-margin
+.smaller-vertical-margin
 
   @extend .section-padding
 
@@ -148,7 +144,6 @@
   +from($desktop)
     padding-top: $margin-until-desktop
     padding-bottom: $margin-until-desktop
-
 
   &.is-footer
     padding-top: $margin-until-desktop
@@ -162,17 +157,9 @@
       padding-left: $margin-from-desktop
       padding-right: $margin-from-desktop
 
-
 .section-content-max-width
 
   max-width: $section-content-fixed-max-width
-  margin-left: auto
-  margin-right: auto
-
-  +from($desktop)
-    padding-left: 0
-    padding-right: 0
-
 
 .button
   $button-height: 35px
@@ -185,7 +172,6 @@
   text-align: center
   line-height: $button-height
   cursor: pointer
-
 
 .button-large
   border-radius: 12px
@@ -219,7 +205,6 @@
   p
     margin-bottom: 1em
 
-
 .typography-row-with-image
 
   &.has-featured-image
@@ -233,11 +218,9 @@
       @extend .column
       @extend .is-half-desktop
 
-
     .row-in-text
       +from($desktop)
         margin-top: -0.5em
-
 
 .typography-has-no-h-padding
   padding-left: 0
@@ -268,8 +251,6 @@
   +from($widescreen)
     max-width: 570px
 
-
-
 .typography-snemovna-obr-nadpis
 
   @extend %is-title
@@ -287,8 +268,44 @@
   +from($fullhd)
     font-size: 2rem
 
-
 .first-letter-capitalize
 
   &::first-letter
     text-transform: uppercase
+
+.typography-page-subtitle
+
+  @extend %is-title
+  line-height: 1.25
+  font-weight: 300
+
+  +from($desktop)
+  font-size: math.div(2.91666667vw * 2.5,2.25)
+
+  +from($tablet)
+    font-size: math.div(2.91666667vw * 2,2.25)
+
+  +from($desktop)
+    font-size: math.div(2.91666667vw * 1.5,2.25)
+
+  +from($fullhd)
+    font-size: math.div(56px, 2.25)
+
+  margin-left: auto
+  margin-right: auto
+
+.typography-main-title + .typography-page-subtitle
+  margin-top: 2em
+  margin-bottom: 4em
+
+.typography-title-container
+
+  @extend %section-padding
+
+  padding-top: 0
+  padding-bottom: 0
+  margin-top: 0
+  margin-bottom: 0
+
+  & .typography-main-title
+    margin-bottom: 0
