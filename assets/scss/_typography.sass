@@ -278,9 +278,13 @@
   @extend %is-title
   line-height: 1.25
   font-weight: 300
+  width: 90%
 
   +from($desktop)
-  font-size: math.div(2.91666667vw * 2.5,2.25)
+    font-size: math.div(2.91666667vw * 2.5,2.25)
+
+    text-align: center
+    width: 75%
 
   +from($tablet)
     font-size: math.div(2.91666667vw * 2,2.25)
