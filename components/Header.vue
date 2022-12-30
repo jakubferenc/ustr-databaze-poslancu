@@ -8,10 +8,10 @@ header.main-header
     )
   .search-results(v-show="searchNavStatus")
     .search-results__header-container
-
-      h2.section-title.section-title-no-margin-bottom Vyhledat poslance
+      h2.is-title.typography-main-title Vyhledat poslance
 
       .search-results__search-bar
+        label(for="search-input") Vyhledejte pomocí jména, příjmení, nebo celého jména poslance
         input(type="text" name="search-input" v-model="searchQuery" placeholder="Vyhledejte pomocí jména, příjmení, nebo celého jména poslance")
         .search-button
 
@@ -31,8 +31,8 @@ header.main-header
         :MaButtonMore="false"
         :ButtonMoreLink="false"
         :MaMapu="false"
-        :Nadpis="'Výsledky vyhledávání'"
-        Mod="Seznam"
+        :Nadpis="false"
+        :Mod="['list']"
         :MaRazeni="true"
       )
 
@@ -69,15 +69,10 @@ $margin-body: 50px
     width: 100%
     height: calc(100vh - 80px)
     backdrop-filter: blur(2px)
-    backdrop-filter: brightness(60%)
-    backdrop-filter: contrast(40%)
-    backdrop-filter: drop-shadow(4px 4px 10px blue)
-    backdrop-filter: grayscale(30%)
-    backdrop-filter: hue-rotate(120deg)
-    backdrop-filter: invert(70%)
-    backdrop-filter: opacity(20%)
-    backdrop-filter: sepia(90%)
-    backdrop-filter: saturate(80%)
+
+    .is-title
+      margin-top: 0
+      padding-top: 0
 
     .loading-message
       padding: $margin-body
@@ -111,16 +106,16 @@ html.has-slider .main-header
 </style>
 
 <script>
-import { stringifyQueryForAPI } from "~/utils/functions";
-import { mapGetters } from "vuex";
+import { stringifyQueryForAPI } from '~/utils/functions';
+import { mapGetters } from 'vuex';
 
-import Logo from "../components/Logo.vue";
-import MainMenu from "../components/MainMenu.vue";
-import SearchNav from "../components/SearchNav.vue";
-import Slider from "../components/Slider.vue";
-import SearchIconImage from "~/assets/images/icon-search.svg?inline";
+import Logo from '../components/Logo.vue';
+import MainMenu from '../components/MainMenu.vue';
+import SearchNav from '../components/SearchNav.vue';
+import Slider from '../components/Slider.vue';
+import SearchIconImage from '~/assets/images/icon-search.svg?inline';
 
-const PoslanciSeznamAPI = () => import("~/components/PoslanciSeznamAPI.vue");
+const PoslanciSeznamAPI = () => import('~/components/PoslanciSeznamAPI.vue');
 
 export default {
   components: { Logo, MainMenu, SearchNav, Slider, SearchIconImage, PoslanciSeznamAPI },
@@ -128,11 +123,11 @@ export default {
   data() {
     return {
       isLoading: false,
-      searchQuery: "",
+      searchQuery: '',
       currentQuery: {},
       timeoutCallback: () => {},
       defaultQuery: {
-        Poslanec: ["true"],
+        Poslanec: ['true'],
         Limit: [99999],
         Stranka: [1],
       },
@@ -141,7 +136,7 @@ export default {
   async created() {},
   computed: {
     ...mapGetters({
-      searchNavStatus: "getSearchNavStatus",
+      searchNavStatus: 'getSearchNavStatus',
     }),
 
     currentQueryStringified() {
@@ -161,8 +156,8 @@ export default {
     async searchHandler() {
       clearTimeout(this.timeoutCallback);
 
-      if (!this.searchQuery || this.searchQuery === "") {
-        this.$store.dispatch("resetPoslanci");
+      if (!this.searchQuery || this.searchQuery === '') {
+        this.$store.dispatch('resetPoslanci');
       } else {
         this.timeoutCallback = setTimeout(async () => {
           await this.searchApiRequest();
@@ -177,7 +172,7 @@ export default {
           ...this.defaultQuery,
           Jmeno: [`"${this.searchQuery}"`],
         };
-        await this.$store.dispatch("getPoslanciAll", this.currentQueryStringified);
+        await this.$store.dispatch('getPoslanciAll', this.currentQueryStringified);
       } catch (e) {
         console.log(e);
       } finally {
@@ -185,16 +180,16 @@ export default {
       }
     },
     searchNavHandler(e) {
-      this.$store.dispatch("resetPoslanci");
+      this.$store.dispatch('resetPoslanci');
 
       const searchNavToggle = !this.searchNavStatus;
-      this.$store.dispatch("searchNavToggle", { searchState: searchNavToggle });
+      this.$store.dispatch('searchNavToggle', { searchState: searchNavToggle });
     },
   },
   head() {
     return {
       bodyAttrs: {
-        class: this.searchNavStatus ? "is-search-open" : "is-search-close",
+        class: this.searchNavStatus ? 'is-search-open' : 'is-search-close',
       },
       // htmlAttrs: {
       //   class: this.searchNavStatus ? "is-search-open" : "is-search-close",

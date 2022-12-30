@@ -25,7 +25,7 @@
 
   .filter-seznam
 
-    h2.section-title(v-if="Nadpis && ['Vse', 'Seznam'].includes(Mod)") {{Nadpis}}
+    h2.section-title(v-if="Nadpis") {{Nadpis}}
 
     .filter-seznam-filter-statistics(v-if="MaStatistiky")
 
