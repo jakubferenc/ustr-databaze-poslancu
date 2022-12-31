@@ -6,10 +6,10 @@ nav.main-menu(role="navigation" aria-label="Primary")
   NuxtLink(to="/stranka/cesky-parlamentarismus/")
     span Parlamentarismus
   span &nbsp;|
-  NuxtLink(to="/casova-osa/")
-    span.full-text Časová osa
-    span.short-text Časová osa
-  span &nbsp;|
+  //- NuxtLink(to="/casova-osa/")
+  //-   span.full-text Časová osa
+  //-   span.short-text Časová osa
+  //- span &nbsp;|
   NuxtLink.link-snemovny-mapy(to="/snemovny-mapy/")
     span Mapy
   span &nbsp;|

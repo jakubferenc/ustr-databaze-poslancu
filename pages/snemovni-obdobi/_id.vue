@@ -65,10 +65,8 @@
     .counter-poslanci celkem {{snemovniObdobi.PocetPoslancu}} poslanců
 
 
-  .parlament-meta-tab-navigation
-    TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-detail-navigace")
-
-
+  //- .parlament-meta-tab-navigation
+  //-   TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-detail-navigace")
 
 
   .parlament-detail-poslanci
@@ -346,7 +344,7 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() { },
 
   computed: {
     hideKurie() {
