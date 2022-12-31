@@ -1,201 +1,203 @@
 <template lang="pug">
-
 .poslanci-seznam-container
   LoaderIndication(v-if="isLoading")
   #scroll-top.poslanci-seznam.seznam-with-filter(v-if="!isLoading")
 
-    .mapa-container.section(v-if="MaMapu && Mod === 'Vse' ")
+    .mapa-container.section.mapa-container-above-list(v-if="MaMapu && Mod === 'Vse' ")
 
       h2.section-title Místo narození poslanců
         span.section-title-subtitle Mapa se aktualizace podle zvoleného nastavení filtru
 
-
-      Mapa(:PoslanciVstupniData="poslanci")
+      Mapa(:PoslanciVstupniData="poslanci" :Nadpis="false")
 
 
     .filter-seznam.section-padding-h-margin-v
 
-        h2.section-title(v-if="Nadpis") {{Nadpis}}
+      h2.section-title(v-if="Nadpis") {{Nadpis}}
 
-        .filter-seznam-filter-statistics(v-if="MaStatistiky")
+      .filter-seznam-filter-statistics(v-if="MaStatistiky")
 
-          .filter-seznam-filter-statistics-content.columns.is-multiline
+        .filter-seznam-filter-statistics-content.columns.is-multiline
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Poměr pohlaví poslanců
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.percentageMale}} <small>%</small>
-                span.diagram-graphics-desc muži
+            .diagram-desc Poměr pohlaví poslanců
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.percentageMale}} <small>%</small>
+              span.diagram-graphics-desc muži
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Vzdělání
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.percentageHasUniversityDegree}} <small>%</small>
-                span.diagram-graphics-desc má titul
+            .diagram-desc Vzdělání
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.percentageHasUniversityDegree}} <small>%</small>
+              span.diagram-graphics-desc má titul
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Znovuzvolení (2+ mandátů)
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.percentageHasMoreThanOneMandate}} <small>%</small>
-                span.diagram-graphics-desc
+            .diagram-desc Znovuzvolení (2+ mandátů)
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.percentageHasMoreThanOneMandate}} <small>%</small>
+              span.diagram-graphics-desc
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Nejvyšší věk
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.oldestAge}}
-                span.diagram-graphics-desc let
+            .diagram-desc Nejvyšší věk
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.oldestAge}}
+              span.diagram-graphics-desc let
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Nejnižší věk
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.lowestAge}}
-                span.diagram-graphics-desc let
+            .diagram-desc Nejnižší věk
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.lowestAge}}
+              span.diagram-graphics-desc let
 
-            .statistics-diagram.simple.is-one-third-desktop.column
+          .statistics-diagram.simple.is-one-third-desktop.column
 
-              .diagram-desc Průměrný věk
-              .diagram-graphics
-                span.diagram-graphics-value {{PoslanciStatistiky.averageAge}}
-                span.diagram-graphics-desc let
-
-
-        .filter-seznam-bar(v-if="MaFiltr")
-
-          .filter-seznam-bar-left
-            span.button.button-filter(:class="sidebarButtonToggleStyles" @click="toggleSidebar()")
-              span(v-if="isSidebarOpen") Zavřít filtr
-              span(v-else) Otevřít filtr
+            .diagram-desc Průměrný věk
+            .diagram-graphics
+              span.diagram-graphics-value {{PoslanciStatistiky.averageAge}}
+              span.diagram-graphics-desc let
 
 
-          .filter-seznam.bar-right(v-if="MaRazeni")
+      .filter-seznam-bar(v-if="MaFiltr")
 
-            span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
-              span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
-              span.options
-                span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text)") {{polozka.text}}
-
-
-        .seznam-content-container()
+        .filter-seznam-bar-left
+          span.button.button-filter(:class="sidebarButtonToggleStyles" @click="toggleSidebar()")
+            span(v-if="isSidebarOpen") Zavřít filtr
+            span(v-else) Otevřít filtr
 
 
-          .seznam-filter-sidebar(v-if="MaFiltr && isSidebarOpen")
-            .seznam-filter-sidebar-content
+        .filter-seznam.bar-right(v-if="MaRazeni")
 
-              .seznam-filter-sidebar-content-header
-                p.typography-filter-heading Zobrazuje se {{pocetPoslancuFiltrovanych}} z {{pocetPoslancu}} <br>poslanců
-
-
-
-              .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey")
+          span.custom-select(@click="toggleSelect()" :data-has-been-selected="radit.hasBeenSelected" :data-open="radit.isActive")
+            span.option-default(:id="radit.ZakladniPolozka.id" :data-option-default-text="radit.ZakladniPolozka.text") <span class="option-default-text">{{radit.ZakladniPolozka.text}}</span> <small class="option-selected-text">{{radit.selectedOptionText}}</small>
+            span.options
+              span.option(v-for="polozka in radit.RaditDle" :data-option-id="polozka.id"  @click="selectOrderOption(polozka.id, polozka.text)") {{polozka.text}}
 
 
-                //// BEGIN sekce
-                ////////////////////////////////////////////////////////////////////////////////
-                .seznam-filter-sidebar-content-section-title.typography-filter-heading
-                  span {{filtrNastaveni[filtrSekceKey].title}}
-                  span(v-if="filtrNastaveni[filtrSekceKey].hasCounter") &nbsp;({{filtrNastaveni[filtrSekceKey].values.length}})
-                  span.info-icon(v-if="filtrNastaveni[filtrSekceKey].info") i
-                    span.info-text ({{filtrNastaveni[filtrSekceKey].info}})
+      .seznam-content-container()
 
-                .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'radio' || filtrNastaveni[filtrSekceKey].type == 'checkbox'")
 
-                  ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
-                    li.filter-list-item(v-for="(filtrPolozka, valueIndex) in filtrNastaveni[filtrSekceKey].values" :key="valueIndex")
-                      label(:for="`${filtrSekceKey}-${filtrPolozka.id}`" :class="{disabled: filtrPolozka.disabled}")
-                        .filter-list-item-checkbox
-                          input(
-                            @click="onSelectFilterOption(filtrSekceKey, valueIndex, filtrNastaveni[filtrSekceKey].type, filtrNastaveni[filtrSekceKey].multiple, filtrNastaveni[filtrSekceKey].reset, $event)"
-                            :type="filtrNastaveni[filtrSekceKey].type"
-                            :id="`${filtrSekceKey}-${filtrPolozka.id}`"
-                            :disabled="filtrPolozka.disabled"
-                            :checked="filtrPolozka.selected  ? 'checked' : ''"
-                            :data-checked="filtrPolozka.selected"
-                            :class="{selected: filtrPolozka.selected}"
-                            :name="filtrNastaveni[filtrSekceKey].type ==='radio' ? filtrSekceKey : false"
-                            :value="filtrPolozka.id"
-                          )
-                        .filter-list-item-value {{filtrPolozka.text}}
+        .seznam-filter-sidebar(v-if="MaFiltr && isSidebarOpen")
+          .seznam-filter-sidebar-content
+
+            .seznam-filter-sidebar-content-header
+              p.typography-filter-heading Zobrazuje se {{pocetPoslancuFiltrovanych}} z {{pocetPoslancu}} <br>poslanců
 
 
 
-                .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'range'")
+            .seznam-filter-sidebar-content-section(v-for="filtrSekceKey in Object.keys(filtrNastaveni)" :key="filtrSekceKey")
 
 
-                  MultiRangeSlider(
-                    v-on:multi-range-change="onRangeChange(filtrSekceKey, $event)"
-                    :QueryStructure="filtrNastaveni[filtrSekceKey].queryStructure"
-                    :Name="`${filtrSekceKey}`"
-                    :Id="`${filtrSekceKey}`"
-                    :CurrentMinValue="filtrNastaveni[filtrSekceKey].values[0].currentValue"
-                    :CurrentMaxValue="filtrNastaveni[filtrSekceKey].values[1].currentValue"
-                    :MinValue="filtrNastaveni[filtrSekceKey].values[2]"
-                    :MaxValue="filtrNastaveni[filtrSekceKey].values[3]"
-                  )
+              //// BEGIN sekce
+              ////////////////////////////////////////////////////////////////////////////////
+              .seznam-filter-sidebar-content-section-title.typography-filter-heading
+                span {{filtrNastaveni[filtrSekceKey].title}}
+                span(v-if="filtrNastaveni[filtrSekceKey].hasCounter") &nbsp;({{filtrNastaveni[filtrSekceKey].values.length}})
+                span.info-icon(v-if="filtrNastaveni[filtrSekceKey].info") i
+                  span.info-text ({{filtrNastaveni[filtrSekceKey].info}})
+
+              .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'radio' || filtrNastaveni[filtrSekceKey].type == 'checkbox'")
+
+                ol.filter-list(:class="{'filter-list-inline' : filtrNastaveni[filtrSekceKey].order === 'inline', 'filter-list-radios' : filtrNastaveni[filtrSekceKey].type === 'radio', 'filter-list-checkboxes' : filtrNastaveni[filtrSekceKey].type === 'checkbox'}")
+                  li.filter-list-item(v-for="(filtrPolozka, valueIndex) in filtrNastaveni[filtrSekceKey].values" :key="valueIndex")
+                    label(:for="`${filtrSekceKey}-${filtrPolozka.id}`" :class="{disabled: filtrPolozka.disabled}")
+                      .filter-list-item-checkbox
+                        input(
+                          @click="onSelectFilterOption(filtrSekceKey, valueIndex, filtrNastaveni[filtrSekceKey].type, filtrNastaveni[filtrSekceKey].multiple, filtrNastaveni[filtrSekceKey].reset, $event)"
+                          :type="filtrNastaveni[filtrSekceKey].type"
+                          :id="`${filtrSekceKey}-${filtrPolozka.id}`"
+                          :disabled="filtrPolozka.disabled"
+                          :checked="filtrPolozka.selected  ? 'checked' : ''"
+                          :data-checked="filtrPolozka.selected"
+                          :class="{selected: filtrPolozka.selected}"
+                          :name="filtrNastaveni[filtrSekceKey].type ==='radio' ? filtrSekceKey : false"
+                          :value="filtrPolozka.id"
+                        )
+                      .filter-list-item-value {{filtrPolozka.text}}
 
 
-                //// END sekce
-                ////////////////////////////////////////////////////////////////////////////////
+
+              .seznam-filter-sidebar-content-section-content.typography-filter-text(v-if="filtrNastaveni[filtrSekceKey].type == 'range'")
 
 
-
-
-          .seznam-filter-list(v-if="PoslanciVstupniPolozky")
-
-            .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
-
-              Mapa(:PoslanciVstupniData="poslanci" :Velka="true")
-
-            .columns.is-multiline.is-mobile(v-if="['Vse', 'Seznam'].includes(Mod)")
-
-              Poslanec(
-                v-for="(poslanec, index) in poslanci"
-                :key="index"
-                :Id="poslanec.Id"
-                :Jmeno="poslanec.Jmeno"
-                :Prijmeni="poslanec.Prijmeni"
-                :ZivotniData="poslanec.ZivotniData"
-                :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
-                :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
-                :Mandaty="poslanec.Mandaty"
-                :Soubory="poslanec.Soubory"
-                :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
-                class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
+                MultiRangeSlider(
+                  v-on:multi-range-change="onRangeChange(filtrSekceKey, $event)"
+                  :QueryStructure="filtrNastaveni[filtrSekceKey].queryStructure"
+                  :Name="`${filtrSekceKey}`"
+                  :Id="`${filtrSekceKey}`"
+                  :CurrentMinValue="filtrNastaveni[filtrSekceKey].values[0].currentValue"
+                  :CurrentMaxValue="filtrNastaveni[filtrSekceKey].values[1].currentValue"
+                  :MinValue="filtrNastaveni[filtrSekceKey].values[2]"
+                  :MaxValue="filtrNastaveni[filtrSekceKey].values[3]"
                 )
 
-            .component-footer(v-if="MaButtonMore || MaPaginaci")
 
-              .pagination-bar(v-if="MaPaginaci")
-                .to-the-top
-                  a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
-                .pagination-list
-                  a.pagination-list-prev.pagination-item(href="#") &lt;
-                  .pagination-list-number
-                    a.pagination-list-number.pagination-item(href="#") 1
-                    a.pagination-list-number.pagination-item(href="#") 2
-                    a.pagination-list-number.pagination-item(href="#") 3
-                    a.pagination-list-number.pagination-item(href="#") 4
-                    a.pagination-list-number.pagination-item(href="#") 5
-                  .pagination-list-last-number
-                    .pagination-item.bullets ...
-                    a(href="#").pagination-item 40
-
-                  a.pagination-list-next.pagination-item(href="#") &gt;
+              //// END sekce
+              ////////////////////////////////////////////////////////////////////////////////
 
 
-              .buttons-more(v-if="MaButtonMore")
-                NuxtLink(v-if="ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
 
-                a(v-if="MaButtonMorePrevious" @click="loadPreviousItems()").typo-form-button.button-large Načíst předchozí poslance
-                a(v-if="!ButtonMoreLink" @click="loadMoreItems()").typo-form-button.button-large Načíst další poslance
+
+        .seznam-filter-list(v-if="PoslanciVstupniPolozky")
+
+          .mapa-container.section(v-if="MaMapu && Mod === 'Mapa' ")
+
+            Mapa(:PoslanciVstupniData="poslanci" :Velka="true" :Nadpis="false")
+
+          .columns.is-multiline.is-mobile(v-if="['Vse', 'Seznam'].includes(Mod)")
+
+            Poslanec(
+              v-for="(poslanec, index) in poslanci"
+              :key="index"
+              :Id="poslanec.Id"
+              :Jmeno="poslanec.Jmeno"
+              :Prijmeni="poslanec.Prijmeni"
+              :ZivotniData="poslanec.ZivotniData"
+              :DatumNarozeniZobrazene="poslanec.DatumNarozeniZobrazene"
+              :DatumUmrtiZobrazene="poslanec.DatumUmrtiZobrazene"
+              :Mandaty="poslanec.Mandaty"
+              :Soubory="poslanec.Soubory"
+              :ZobrazitMandaty="aktualniNastaveniRazeni === 'radit-pocet-mandatu' || aktualniNastaveniRazeni === 'radit-pocet-mandatu-sestupne' "
+              class="is-one-third-mobile is-one-third-tablet column is-2-fullhd is-2-widescreen is-one-quarter-desktop"
+              )
+
+          .component-footer(v-if="MaButtonMore || MaPaginaci")
+
+            .pagination-bar(v-if="MaPaginaci")
+              .to-the-top
+                a(href="#" data-scroll-into="true" rel="#scroll-top") Zpět nahoru
+              .pagination-list
+                a.pagination-list-prev.pagination-item(href="#") &lt;
+                .pagination-list-number
+                  a.pagination-list-number.pagination-item(href="#") 1
+                  a.pagination-list-number.pagination-item(href="#") 2
+                  a.pagination-list-number.pagination-item(href="#") 3
+                  a.pagination-list-number.pagination-item(href="#") 4
+                  a.pagination-list-number.pagination-item(href="#") 5
+                .pagination-list-last-number
+                  .pagination-item.bullets ...
+                  a(href="#").pagination-item 40
+
+                a.pagination-list-next.pagination-item(href="#") &gt;
+
+
+            .buttons-more(v-if="MaButtonMore")
+              NuxtLink(v-if="ButtonMoreLink" :to="ButtonMoreLink").typo-form-button.button-large Zobrazit všechny poslance
+
+              a(v-if="MaButtonMorePrevious" @click="loadPreviousItems()").typo-form-button.button-large Načíst předchozí poslance
+              a(v-if="!ButtonMoreLink" @click="loadMoreItems()").typo-form-button.button-large Načíst další poslance
 
 </template>
 
 <style lang="sass" scoped>
+.mapa-container-above-list
+  @extend %section-padding-h-margin-v
+  padding-left: 0
+  padding-right: 0
 
 .filter-list-item-value
   &::first-letter
@@ -332,28 +334,28 @@ input:disabled
 </style>
 
 <script>
-const Poslanec = () => import("~/components/Poslanec.vue");
-const MultiRangeSlider = () => import("~/components/MultiRangeSlider.vue");
-const Mapa = () => import("~/components/Mapa.vue");
+const Poslanec = () => import('~/components/Poslanec.vue');
+const MultiRangeSlider = () => import('~/components/MultiRangeSlider.vue');
+const Mapa = () => import('~/components/Mapa.vue');
 
 export default {
   components: { Mapa, Poslanec, MultiRangeSlider },
 
   props: [
-    "MaButtonMorePrevious",
-    "PoslanciVstupniPolozky",
-    "PoslanciStatistiky",
-    "MaFiltr",
-    "MaButtonMore",
-    "ButtonMoreLink",
-    "MaPaginaci",
-    "MaStatistiky",
-    "NastaveniFiltrace",
-    "UkladatFiltrovanePoslanceDoStore",
-    "MaMapu",
-    "Nadpis",
-    "Mod",
-    "MaRazeni",
+    'MaButtonMorePrevious',
+    'PoslanciVstupniPolozky',
+    'PoslanciStatistiky',
+    'MaFiltr',
+    'MaButtonMore',
+    'ButtonMoreLink',
+    'MaPaginaci',
+    'MaStatistiky',
+    'NastaveniFiltrace',
+    'UkladatFiltrovanePoslanceDoStore',
+    'MaMapu',
+    'Nadpis',
+    'Mod',
+    'MaRazeni',
   ],
 
   computed: {
@@ -409,7 +411,7 @@ export default {
 
               let tempFilterResults = []; // here will be several boolean variables true or false, we need to get at least one true for the filter item to be true as such and this the item passes the filter
 
-              if (this.filtrNastaveni[polozkaFiltrKey].type !== "range") {
+              if (this.filtrNastaveni[polozkaFiltrKey].type !== 'range') {
                 const thisFilterItemSelectedItems = this.filtrNastaveni[
                   polozkaFiltrKey
                 ].values.filter((item) => item.selected);
@@ -436,11 +438,11 @@ export default {
                 // here we are testing attributes of the given poslanec against the range element and its setting inside this.filtrNastaveni
                 // the validator function differs from radio or checkbox elements so that we need the current "min" or "max" value of the given range element
 
-                console.log("validation range", polozkaFiltrKey);
+                console.log('validation range', polozkaFiltrKey);
 
                 const thisFilterItemSelectedItems = this.filtrNastaveni[
                   polozkaFiltrKey
-                ].values.filter((item) => item.hasOwnProperty("selected"));
+                ].values.filter((item) => item.hasOwnProperty('selected'));
 
                 thisFilterItemSelectedItems.forEach((itemFiltervalidator) => {
                   tempFilterResults =
@@ -484,7 +486,7 @@ export default {
 
       if (this.UkladatFiltrovanePoslanceDoStore) {
         // commit & dispatch
-        this.$store.dispatch("setPoslanciFiltrovani", currentPoslanci);
+        this.$store.dispatch('setPoslanciFiltrovani', currentPoslanci);
       }
 
       // return
@@ -509,10 +511,10 @@ export default {
       this.radit.selectedOptionText = selectedOptionText;
       this.$el
         .querySelectorAll(`.option.selected`)
-        .forEach((item) => item.classList.remove("selected"));
+        .forEach((item) => item.classList.remove('selected'));
       this.$el
         .querySelector(`[data-option-id="${selectedOptionId}"]`)
-        .classList.add("selected");
+        .classList.add('selected');
 
       this.currentFilteredPoslanci = this.getFilteredPoslanci();
     },
@@ -541,7 +543,7 @@ export default {
       const tempResult = this.filtrNastaveni[filtrSekceKey];
 
       // for checkboxes and radio buttons
-      if (type !== "range") {
+      if (type !== 'range') {
         // checkboxes
         if (multiple) {
           if (sectionHasReset) {
@@ -589,19 +591,19 @@ export default {
 
       // Sorting
 
-      if (selectedOptionId === "radit-datum-narozeni") {
+      if (selectedOptionId === 'radit-datum-narozeni') {
         filteredPoslanci = filteredPoslanci.sort((a, b) =>
           a.DatumNarozeniZobrazene > b.DatumNarozeniZobrazene ? 1 : -1
         );
       }
 
-      if (selectedOptionId === "radit-datum-narozeni-sestupne") {
+      if (selectedOptionId === 'radit-datum-narozeni-sestupne') {
         filteredPoslanci = filteredPoslanci.sort((a, b) =>
           a.DatumNarozeniZobrazene < b.DatumNarozeniZobrazene ? 1 : -1
         );
       }
 
-      if (selectedOptionId === "radit-prijmeni") {
+      if (selectedOptionId === 'radit-prijmeni') {
         filteredPoslanci = filteredPoslanci.sort((a, b) => {
           const nameA = a.Prijmeni.toLowerCase();
           const nameB = b.Prijmeni.toLowerCase();
@@ -610,7 +612,7 @@ export default {
         });
       }
 
-      if (selectedOptionId === "radit-prijmeni-sestupne") {
+      if (selectedOptionId === 'radit-prijmeni-sestupne') {
         filteredPoslanci = filteredPoslanci.sort((a, b) => {
           const nameA = a.Prijmeni.toLowerCase();
           const nameB = b.Prijmeni.toLowerCase();
@@ -619,25 +621,25 @@ export default {
         });
       }
 
-      if (selectedOptionId === "radit-pocet-mandatu") {
+      if (selectedOptionId === 'radit-pocet-mandatu') {
         filteredPoslanci = filteredPoslanci.sort((a, b) =>
           a.Mandaty.length > b.Mandaty.length ? 1 : -1
         );
       }
 
-      if (selectedOptionId === "radit-pocet-mandatu-sestupne") {
+      if (selectedOptionId === 'radit-pocet-mandatu-sestupne') {
         filteredPoslanci = filteredPoslanci.sort((a, b) =>
           a.Mandaty.length < b.Mandaty.length ? 1 : -1
         );
       }
 
-      if (selectedOptionId === "radit-id") {
+      if (selectedOptionId === 'radit-id') {
         filteredPoslanci = filteredPoslanci.sort((a, b) => (a.Id > b.Id ? 1 : -1));
       }
 
       // commit & dispatch
 
-      this.$store.commit("updatePoslanciFiltrovani", filteredPoslanci);
+      this.$store.commit('updatePoslanciFiltrovani', filteredPoslanci);
 
       return filteredPoslanci;
     },
@@ -673,7 +675,7 @@ export default {
       );
       if (getFilterInDefaults.length) {
         const { selectedOptionId, selectedOptionText } = getFilterInDefaults;
-        this.$emit("selectOption", { selectedOptionId, selectedOptionText });
+        this.$emit('selectOption', { selectedOptionId, selectedOptionText });
       }
     }
 
@@ -681,14 +683,14 @@ export default {
   },
 
   mounted() {
-    this.$sidebar = this.$el.querySelector(".seznam-filter-sidebar");
+    this.$sidebar = this.$el.querySelector('.seznam-filter-sidebar');
 
     if (this.MaPaginaci) {
-      const $scrollIntoViewBtn = this.$el.querySelector("[data-scroll-into]");
-      $scrollIntoViewBtn.addEventListener("click", (e) => {
+      const $scrollIntoViewBtn = this.$el.querySelector('[data-scroll-into]');
+      $scrollIntoViewBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        const $target = this.$el.querySelector(e.currentTarget.getAttribute("rel"));
+        const $target = this.$el.querySelector(e.currentTarget.getAttribute('rel'));
         $target.scrollIntoView();
       });
     }
@@ -705,15 +707,15 @@ export default {
         selectedOptionText: undefined,
         hasBeenSelected: false,
         RaditDle: [
-          { id: "radit-id", text: "Základní řazení" },
-          { id: "radit-prijmeni", text: "Podle příjmení (od A)" },
-          { id: "radit-prijmeni-sestupne", text: "Podle příjmení (od Z)" },
-          { id: "radit-pocet-mandatu", text: "Nejméně mandátů" },
-          { id: "radit-pocet-mandatu-sestupne", text: "Nejvíce mandátů" },
-          { id: "radit-datum-narozeni", text: "Od nejmladších" },
-          { id: "radit-datum-narozeni-sestupne", text: "Od nejstarších" },
+          { id: 'radit-id', text: 'Základní řazení' },
+          { id: 'radit-prijmeni', text: 'Podle příjmení (od A)' },
+          { id: 'radit-prijmeni-sestupne', text: 'Podle příjmení (od Z)' },
+          { id: 'radit-pocet-mandatu', text: 'Nejméně mandátů' },
+          { id: 'radit-pocet-mandatu-sestupne', text: 'Nejvíce mandátů' },
+          { id: 'radit-datum-narozeni', text: 'Od nejmladších' },
+          { id: 'radit-datum-narozeni-sestupne', text: 'Od nejstarších' },
         ],
-        ZakladniPolozka: { id: "radit-default", text: "řadit dle" },
+        ZakladniPolozka: { id: 'radit-default', text: 'řadit dle' },
       },
       filtrNastaveniAktualniPolozky: {},
       isSidebarOpen: true, // can set a default value

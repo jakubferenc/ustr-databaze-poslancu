@@ -68,9 +68,7 @@
   //- .parlament-meta-tab-navigation
   //-   TabNavigace(:Nastaveni="tabNavigaceNastaveni" Typ="parlament-detail-navigace")
 
-
   .parlament-detail-poslanci
-
 
     PoslanciSeznam(
       v-if="poslanci"
@@ -344,7 +342,7 @@ export default {
     },
   },
 
-  mounted() { },
+  mounted() {},
 
   computed: {
     hideKurie() {
