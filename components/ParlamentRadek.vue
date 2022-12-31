@@ -114,6 +114,8 @@
 
   .parlament-radek-text
     max-width: 800px
+    margin-left: auto
+    margin-right: auto
 
   .parlament-radek-title
     line-height: 1
@@ -128,28 +130,28 @@
 
 <script>
 
-  const TabNavigace = () => import('~/components/TabNavigace.vue');
+const TabNavigace = () => import('~/components/TabNavigace.vue');
 
 
-  import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
 
 
-  const snemovnyHTMLHelperContainer = (data, parlamentId) => {
+const snemovnyHTMLHelperContainer = (data, parlamentId) => {
 
-    const start = `  <div class="parlament-snemovni-obdobi-list columns is-mobile is-multiline">`;
-    const end = `</div>`;
+  const start = `  <div class="parlament-snemovni-obdobi-list columns is-mobile is-multiline">`;
+  const end = `</div>`;
 
-    let content = '';
+  let content = '';
 
-    data.forEach(item => {
+  data.forEach(item => {
 
-      let dateYearStart = item.DatumZacatkuZobrazene + "";
-      dateYearStart = dateYearStart.split(". ")[2];
+    let dateYearStart = item.DatumZacatkuZobrazene + "";
+    dateYearStart = dateYearStart.split(". ")[2];
 
-      let dateYearEnd = item.DatumKonceZobrazene + "";
-      dateYearEnd = dateYearEnd.split(". ")[2];
+    let dateYearEnd = item.DatumKonceZobrazene + "";
+    dateYearEnd = dateYearEnd.split(". ")[2];
 
-      content = content + `
+    content = content + `
         <a href="/snemovni-obdobi/${item.Id}/" class="parlament-snemovni-obdobi column is-one-third-mobile is-one-fifth-tablet ">
           <span class="parlament-snemovni-obdobi-in">
             <span class="image"></span>
@@ -159,60 +161,60 @@
         </a>
       `;
 
-    });
+  });
 
-    return start + content + end;
+  return start + content + end;
 
-  };
+};
 
-  export default {
+export default {
 
-    components: {TabNavigace, ParlamentNahledObecnyImage },
-
-
-    props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa', 'Galerie'],
-
-    computed: {
-
-      tabNavigaceNastaveni() {
+  components: { TabNavigace, ParlamentNahledObecnyImage },
 
 
-        return {
-          tabNavigaceNastaveni: {},
-          polozky: {
-            snemovny: {
-              id: 'snemovny',
-              title: 'sněmovny',
-              obsah: snemovnyHTMLHelperContainer(this.SnemovniObdobi, this.Id),
-              aktivni: true
-            },
-            dalsiInformace: {
-              id: 'dalsi-informace',
-              title: 'podrobné informace',
-              obsah: this.Popis
-            },
-            duleziteUdalosti: {
-              id: 'dulezite-udalosti',
-              title: 'důležité události',
-              obsah: this.CasovaOsa
-            },
-            galerieMedia: {
-              id: 'galerie-medii',
-              title: 'galerie médií',
-              obsah: this.Galerie,
-              pocetPolozekNadpis: (this.Galerie) ? this.Galerie.length : 0,
-            }
-          },
-        };
+  props: ['Id', 'Nazev', 'SnemovniObdobi', 'StrucnyPopis', 'Popis', 'Barva', 'CasovaOsa', 'Galerie'],
 
-      },
-    },
+  computed: {
 
-    data() {
+    tabNavigaceNastaveni() {
+
+
       return {
-        BarvaPozadi: '#F8F6F1',
+        tabNavigaceNastaveni: {},
+        polozky: {
+          snemovny: {
+            id: 'snemovny',
+            title: 'sněmovny',
+            obsah: snemovnyHTMLHelperContainer(this.SnemovniObdobi, this.Id),
+            aktivni: true
+          },
+          dalsiInformace: {
+            id: 'dalsi-informace',
+            title: 'podrobné informace',
+            obsah: this.Popis
+          },
+          duleziteUdalosti: {
+            id: 'dulezite-udalosti',
+            title: 'důležité události',
+            obsah: this.CasovaOsa
+          },
+          galerieMedia: {
+            id: 'galerie-medii',
+            title: 'galerie médií',
+            obsah: this.Galerie,
+            pocetPolozekNadpis: (this.Galerie) ? this.Galerie.length : 0,
+          }
+        },
       };
+
     },
-  };
+  },
+
+  data() {
+    return {
+      BarvaPozadi: '#F8F6F1',
+    };
+  },
+};
 
 </script>

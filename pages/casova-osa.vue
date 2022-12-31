@@ -57,6 +57,9 @@
 
 .timeline-item-box-image
   cursor: pointer
+  max-width: 500px
+  +from($fullhd)
+    max-width: 800px
 
 .timeline-item-box
   display: flex
@@ -74,8 +77,10 @@
   align-items: center
   margin-bottom: 120px
 
-  &:nth-child(2n+1)
-    flex-direction: row-reverse
+
+  +from($widescreen)
+    &:nth-child(2n+1)
+      flex-direction: row-reverse
 
   &.reverse
     flex-direction: row-reverse
@@ -163,7 +168,7 @@
 </style>
 
 <script>
-const CasovaOsaData = () => import("~/data/casova-osa.json").then((m) => m.default || m);
+const CasovaOsaData = () => import('~/data/casova-osa.json').then((m) => m.default || m);
 
 export default {
   async asyncData({ params, error, payload, store, $axios, $config }) {
@@ -173,7 +178,7 @@ export default {
       };
     } else {
       // :TODO: check if in store, it is cached, so that when we have results stored in the store, we just return the array of "stranka" items
-      await store.dispatch("getCasovaOsa");
+      await store.dispatch('getCasovaOsa');
       return {
         casova_osa: store.state.casova_osa,
       };
@@ -184,19 +189,19 @@ export default {
     openPopUpDetail: function (item, e) {
       item.scrollTop = window.scrollY;
 
-      this.$store.dispatch("setPopupTimelineDetail", item);
-      document.getElementsByTagName("html")[0].classList.add("popup-detail-on");
+      this.$store.dispatch('setPopupTimelineDetail', item);
+      document.getElementsByTagName('html')[0].classList.add('popup-detail-on');
     },
   },
   computed: {
     htmlClassComputed() {
-      return this.htmlClass.join(" ");
+      return this.htmlClass.join(' ');
     },
   },
   data() {
     return {
       title: `Časová osa vývoje parlamentarismu v českých zemích a Československu`,
-      htmlClass: ["alt-bg"],
+      htmlClass: ['alt-bg'],
     };
   },
 
