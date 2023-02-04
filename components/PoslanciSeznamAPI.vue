@@ -227,10 +227,6 @@
 </template>
 
 <style lang="sass" scoped>
-.poslanci-seznam
-  &.has-modes-nav
-
-
 .filter-modes-nav
   display: flex
   justify-content: center
