@@ -1,8 +1,7 @@
 # Dokumentace aplikace Databáze poslanců
 
 ## Status
-
-![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=ustr-databaze-poslancu)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/20a4a8b8-9ec5-471b-aa74-c0af98279a40/deploy-status)](https://app.netlify.com/sites/ustr-databaze-poslancu/deploys)
 
 # Popis
 The `dev` branch is the main development branch. Merge all accepted feature branches to the `dev` branch or make pull/merge requests. If feature branch was merged, delete that branch. Keep updated your feature branches with current `dev` status.
@@ -19,11 +18,10 @@ The `dev` branch is the main development branch. Merge all accepted feature bran
 ## Vue & Nuxt prostředí
 * [Vue JS](https://vuejs.org/)
 * [Nuxt framework](https://nuxtjs.org/)
-* [Nuxt Storybook](https://storybook.nuxtjs.org/)
 * [@nuxt/image](https://image.nuxtjs.org/)
 
 ## Začni vyvíjet
-* Clone the repository from [MDH team](https://github.com/jakubferenc/ustr-mdh-mapa)
+* Clone the repository from [Databáze poslanců](https://github.com/jakubferenc/ustr-databaze-poslancu)
 * `npm run dev` in terminal to install & run the project in your browser
 
 ## Produkční build
