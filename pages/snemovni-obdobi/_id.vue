@@ -97,11 +97,11 @@
       .typography-body-text.text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
 
-  .parlament-detail-events.section-padding-h-margin-v(v-if="snemovniObdobi.CasovaOsa")
+  //- .parlament-detail-events.section-padding-h-margin-v(v-if="snemovniObdobi.CasovaOsa")
 
-    h2.section-title Důležité události
+  //-   h2.section-title Důležité události
 
-    CasovaOsa(:Data="snemovniObdobi.CasovaOsa")
+  //-   CasovaOsa(:Data="snemovniObdobi.CasovaOsa")
 
 
   .parlament-detail-galerie-medii.section-padding-h-margin-v(v-if="snemovniObdobi.Galerie")
