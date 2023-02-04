@@ -7,11 +7,17 @@
   //- <Rozcestnik />
 
   .section-padding.alt-bg
-
-    h2.section-title.section-title-no-margin-bottom Interaktivní mapy stranické příslušnosti
     p
       NuxtLink(to="/snemovny-mapy/")
         img(src="~/assets/images/banner-interaktivni-mapy.png" alt="")
+
+    .component-footer()
+
+      .buttons-more
+
+        NuxtLink(class="typo-form-button button-large" :to="`/snemovny-mapy/`") Zobrazit mapy
+
+
   div
     PoslanciSeznam(
       v-if="poslanci.length > 0"
