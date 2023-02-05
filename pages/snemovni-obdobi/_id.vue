@@ -93,7 +93,17 @@
     .typography-text-block.columns.is-multiline
 
       .text-block-image.next-to-text.column.is-full.is-full-tablet.is-half-desktop
-        img(v-if="snemovniObdobi.UvodniFotografie" :src="snemovniObdobi.UvodniFotografie" :alt="snemovniObdobi.Nazev")
+
+        nuxt-picture.slider-image(
+          v-if="snemovniObdobi.UvodniFotografie"
+          format="webp"
+          quality="50"
+          loading="lazy"
+          :src="snemovniObdobi.UvodniFotografie"
+          :alt="snemovniObdobi.Nazev"
+          sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:80vw"
+        )
+
       .typography-body-text.text-block-text.real-content-text.column.is-full.is-full-tablet.is-half-desktop(v-html="snemovniObdobi.Popis")
 
 

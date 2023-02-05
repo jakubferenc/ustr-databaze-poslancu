@@ -93,7 +93,7 @@ export default {
       return imageObject?.image?.full_url;
     },
   },
-  mounted() {},
+  mounted() { },
 
   data() {
     return {
