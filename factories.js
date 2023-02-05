@@ -1182,29 +1182,45 @@ const getSnemovniObdobiDetailFactory = async (
   });
 
   // prepare statistics, make them integer
-  snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu =
-    parseInt(
-      snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu
+  if (snemovniObdobiObj.SnemovniObdobiStatistikaZacatek?.PrumernyVekPoslancu) {
+    snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.PrumernyVekPoslancu =
+      parseInt(
+        snemovniObdobiObj?.SnemovniObdobiStatistikaZacatek?.PrumernyVekPoslancu
+      );
+  }
+  if (snemovniObdobiObj.SnemovniObdobiStatistikaZacatek?.ProcentoMuzu) {
+    snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(
+      snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu
     );
-  snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu = parseInt(
-    snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoMuzu
-  );
-  snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku =
-    parseInt(
-      snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku
-    );
+  }
 
-  snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu =
-    parseInt(
-      snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu
+  if (
+    snemovniObdobiObj.SnemovniObdobiStatistikaZacatek?.ProcentoVysokoskolaku
+  ) {
+    snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku =
+      parseInt(
+        snemovniObdobiObj.SnemovniObdobiStatistikaZacatek.ProcentoVysokoskolaku
+      );
+  }
+
+  if (snemovniObdobiObj.SnemovniObdobiStatistikaKonec?.PrumernyVekPoslancu) {
+    snemovniObdobiObj.SnemovniObdobiStatistikaKonec.PrumernyVekPoslancu =
+      parseInt(
+        snemovniObdobiObj?.SnemovniObdobiStatistikaKonec?.PrumernyVekPoslancu
+      );
+  }
+
+  if (snemovniObdobiObj.SnemovniObdobiStatistikaKonec?.ProcentoMuzu) {
+    snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(
+      snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu
     );
-  snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu = parseInt(
-    snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoMuzu
-  );
-  snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku =
-    parseInt(
-      snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku
-    );
+  }
+  if (snemovniObdobiObj.SnemovniObdobiStatistikaKonec?.ProcentoVysokoskolaku) {
+    snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku =
+      parseInt(
+        snemovniObdobiObj.SnemovniObdobiStatistikaKonec.ProcentoVysokoskolaku
+      );
+  }
 
   let snemovniObdobiObjWpData = await axiosInstance.get(
     `${wordpressAPIURLWebsite}/wp/v2/snemovni_obdobi?per_page=100`
