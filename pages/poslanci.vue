@@ -59,20 +59,24 @@ export default {
     };
   },
   async created() {
-    this.$store.dispatch('setLoading', { loadingState: true });
+    try {
+      this.$store.dispatch('setLoading', { loadingState: true });
 
-    // take URL params at the request time and add them to the request for API
-    const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query);
+      // take URL params at the request time and add them to the request for API
+      const routerParams = normalizeURLParamsToValueInArrayFormat(this.$route.query);
 
-    this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
+      this.currentQuery = Object.assign({}, this.defaultQuery, routerParams);
 
-    // make API requests to get parlaments that will be fixed in the filter
-    // also, get API request for poslanci and related filter settings
+      // make API requests to get parlaments that will be fixed in the filter
+      // also, get API request for poslanci and related filter settings
 
-    // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
-
-    await this.prepareRequestFilteredViaAPI(this.currentQuery);
-    this.$store.dispatch('setLoading', { loadingState: false });
+      // now, we should have both all fixed filter items available, and also all poslanci items with the filter data
+      await this.prepareRequestFilteredViaAPI(this.currentQuery);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.$store.dispatch('setLoading', { loadingState: false });
+    }
   },
 
   methods: {
