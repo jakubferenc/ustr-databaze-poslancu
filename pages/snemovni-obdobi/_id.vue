@@ -29,7 +29,7 @@
           .chart-graphics.text-data
             .text-data-main {{ parseInt(statistiky.PocetMazaku / (statistiky.CelkovyPocetPoslancu / 100))  }}<small class="text-data-sub">%</small>
             .text-data-sub
-          .chart-text Znovuzvolených
+          .chart-text Předchozí parl. zkušenost
 
     .component-snemovna-schema
       <ParlamentNahledObecnyImage />
@@ -1372,7 +1372,7 @@ export default {
         },
         Znovuzvoleni: {
           id: sectionId++,
-          title: 'Znovuzvolení',
+          title: 'Předchozí parlamentní zkušenost',
           type: 'radio',
           order: 'inline',
           property: 'Mandaty',

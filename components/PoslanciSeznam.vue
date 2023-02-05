@@ -35,7 +35,7 @@
 
           .statistics-diagram.simple.is-one-third-desktop.column
 
-            .diagram-desc Znovuzvolení (2+ mandátů)
+            .diagram-desc Předchozí parlamentní zkušenost
             .diagram-graphics
               span.diagram-graphics-value {{PoslanciStatistiky.percentageHasMoreThanOneMandate}} <small>%</small>
               span.diagram-graphics-desc
@@ -449,12 +449,12 @@ export default {
                     itemFiltervalidator.selected === false
                       ? [...tempFilterResults, true]
                       : [
-                          ...tempFilterResults,
-                          itemFiltervalidator.validate(
-                            poslanec[itemPropertyToTest],
-                            itemFiltervalidator.currentValue
-                          ),
-                        ];
+                        ...tempFilterResults,
+                        itemFiltervalidator.validate(
+                          poslanec[itemPropertyToTest],
+                          itemFiltervalidator.currentValue
+                        ),
+                      ];
                 });
 
                 // both min and max must be validated as true in order for the given poslanec to be included in the filtered list
