@@ -137,13 +137,14 @@ export default {
   computed: {
     ...mapGetters({
       searchNavStatus: 'getSearchNavStatus',
+      poslanciRaw: 'getPoslanciSearch',
     }),
 
     currentQueryStringified() {
       return `?${this.stringifyQueryForAPI(this.currentQuery)}`;
     },
     poslanci() {
-      return this.$store.state.poslanci.length ? this.$store.state.poslanci : null;
+      return this.poslanciRaw.length ? this.poslanciRaw : null;
     },
   },
   watch: {
@@ -157,7 +158,7 @@ export default {
       clearTimeout(this.timeoutCallback);
 
       if (!this.searchQuery || this.searchQuery === '') {
-        this.$store.dispatch('resetPoslanci');
+        // this.$store.dispatch('resetPoslanci');
       } else {
         this.timeoutCallback = setTimeout(async () => {
           await this.searchApiRequest();
@@ -172,18 +173,23 @@ export default {
           ...this.defaultQuery,
           Jmeno: [`"${this.searchQuery}"`],
         };
-        await this.$store.dispatch('getPoslanciAll', this.currentQueryStringified);
+        await this.$store.dispatch('getPoslanciSearchAll', this.currentQueryStringified);
       } catch (e) {
-        console.log(e);
+        console.error(e);
       } finally {
         this.isLoading = false;
       }
     },
     searchNavHandler(e) {
-      this.$store.dispatch('resetPoslanci');
-
       const searchNavToggle = !this.searchNavStatus;
       this.$store.dispatch('searchNavToggle', { searchState: searchNavToggle });
+      if (!searchNavToggle) {
+        this.resetSearch();
+      }
+    },
+    resetSearch() {
+      this.$store.dispatch('resetPoslanciSearch');
+      this.searchQuery = null;
     },
   },
   head() {

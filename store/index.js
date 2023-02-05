@@ -19,7 +19,9 @@ export const state = () => ({
   poslanec: {},
   poslanci: [],
   poslanci_filtrovani: [],
+  poslanci_hledani: [],
   filter_data: {},
+  filter_data_search: {},
   poslanci_filter_data: {},
   poslanci_homepage: [],
   poslanci_statistiky: {},
@@ -34,13 +36,15 @@ export const state = () => ({
   is_downloaded: {
     stranky: false,
     snemovni_obdobi: false,
-    media_soubory: false
+    media_soubory: false,
   },
   search_nav: false,
 });
 
 export const getters = {
   getPoslanciHomepage: (state) => state.poslanci_homepage,
+  getPoslanci: (state) => state.poslanci,
+  getPoslanciSearch: (state) => state.poslanci_hledani,
   getSearchNavStatus: (state) => state.search_nav,
   getLoadingState: (state) => state.is_loading,
   getSouboryHomepage: (state) => [...state.media_soubory].slice(0, 20),
@@ -52,29 +56,22 @@ export const getters = {
 this will update the state with the posts
 */
 export const mutations = {
-
-  updateLoadingState: ( state, loadingState ) => {
-
+  updateLoadingState: (state, loadingState) => {
     state.is_loading = loadingState;
-
   },
 
-  updateSearchNavState: ( state, search_nav ) => {
-
+  updateSearchNavState: (state, search_nav) => {
     state.search_nav = search_nav;
-
   },
 
-  updateFilterData: ( state, filter_data ) => {
-
+  updateFilterData: (state, filter_data) => {
     state.filter_data = filter_data;
-
   },
-
-  updatePoslanecDetail: ( state, poslanec ) => {
-
+  updateFilterDataSearch: (state, filter_data) => {
+    state.filter_data_search = filter_data;
+  },
+  updatePoslanecDetail: (state, poslanec) => {
     state.poslanec = poslanec;
-
   },
 
   updateRodinySocialniMapy: (state, rodiny_socialni_mapy) => {
@@ -112,6 +109,10 @@ export const mutations = {
     state.poslanci = poslanci;
   },
 
+  updatePoslanciSearch: (state, poslanci) => {
+    state.poslanci_hledani = poslanci;
+  },
+
   updatePoslanciFiltrovani: (state, poslanci_filtrovani) => {
     state.poslanci_filtrovani = poslanci_filtrovani;
   },
@@ -131,7 +132,7 @@ export const mutations = {
   },
   updateIsDownloaded(state, object_name) {
     state.is_downloaded[object_name] = true;
-  }
+  },
 };
 /*
 
@@ -139,274 +140,299 @@ actions is where we will make an API call that gathers the posts,
 and then commits the mutation to update it
 */
 export const actions = {
-
-  setLoading ({ state, commit }, {loadingState}) {
+  setLoading({ state, commit }, { loadingState }) {
     try {
-      commit("updateLoadingState", loadingState);
+      commit('updateLoadingState', loadingState);
     } catch (err) {
       console.warn(err);
     }
   },
 
-  searchNavToggle ({ state, commit }, { searchState }) {
+  searchNavToggle({ state, commit, dispatch }, { searchState }) {
     try {
-      commit("updateSearchNavState", searchState);
-
+      commit('updateSearchNavState', searchState);
     } catch (err) {
       console.warn(err);
     }
   },
 
-
-  setPopupTimelineDetail ({ state, commit }, popup_timeline_detail) {
+  setPopupTimelineDetail({ state, commit }, popup_timeline_detail) {
     try {
-
-      commit("updatePopupTimelineDetail", popup_timeline_detail);
-
+      commit('updatePopupTimelineDetail', popup_timeline_detail);
     } catch (err) {
       console.warn(err);
     }
   },
 
-
-  setPoslanciFiltrovani ({ state, commit, dispatch }, poslanci_filtrovani) {
+  setPoslanciFiltrovani({ state, commit, dispatch }, poslanci_filtrovani) {
     try {
-
-      commit("updatePoslanciFiltrovani", poslanci_filtrovani);
-      dispatch("countPoslanciStatistiky");
-
+      commit('updatePoslanciFiltrovani', poslanci_filtrovani);
+      dispatch('countPoslanciStatistiky');
     } catch (err) {
       console.warn(err);
     }
   },
 
-
-  async getRodinySocialniMapy ({ state, commit }) {
-
+  async getRodinySocialniMapy({ state, commit }) {
     if (state.rodiny_socialni_mapy.length) return;
 
     try {
+      const rodiny = await apiFactory.getRodinySocialniMapyFactory(
+        projectConfig.wordpressAPIURLWebsite,
+        projectConfig.databazePoslancuURL
+      );
 
-      const rodiny = await apiFactory.getRodinySocialniMapyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
-
-
-      commit("updateRodinySocialniMapy", rodiny);
-
+      commit('updateRodinySocialniMapy', rodiny);
     } catch (err) {
       console.warn(err);
     }
   },
 
-  async getStranky ({ state, commit }) {
-
+  async getStranky({ state, commit }) {
     if (state.stranky.length) return;
 
     try {
+      const stranky = await apiFactory.getAllStrankyFactory(
+        projectConfig.wordpressAPIURLWebsite
+      );
 
-      const stranky = await apiFactory.getAllStrankyFactory(projectConfig.wordpressAPIURLWebsite);
-
-      commit("updateStranky", stranky);
-
+      commit('updateStranky', stranky);
     } catch (err) {
       console.warn(err);
     }
   },
 
   async getCasovaOsa({ state, commit }) {
-
     if (state.casova_osa.length) return;
 
     try {
+      const casova_osa = await apiFactory.getCasovaOsaFactory(
+        projectConfig.wordpressAPIURLWebsite
+      );
 
-      const casova_osa = await apiFactory.getCasovaOsaFactory(projectConfig.wordpressAPIURLWebsite);
-
-      commit("updateCasovaOsa", casova_osa);
-
+      commit('updateCasovaOsa', casova_osa);
     } catch (err) {
-
       console.warn(err);
-
     }
   },
 
   async getSlovnikovaHesla({ state, commit }) {
-
     try {
+      const slovnikova_hesla = await apiFactory.getSlovnikovaHeslaFactory(
+        projectConfig.wordpressAPIURLWebsite
+      );
 
-      const slovnikova_hesla = await apiFactory.getSlovnikovaHeslaFactory(projectConfig.wordpressAPIURLWebsite);
-
-      commit("updateSlovnikovaHesla", slovnikova_hesla);
-
+      commit('updateSlovnikovaHesla', slovnikova_hesla);
     } catch (err) {
-
       console.warn(err);
-
     }
   },
 
-  async getMedia({ state, commit }, opts = {limit: 100, id: false} ) {
-
+  async getMedia({ state, commit }, opts = { limit: 100, id: false }) {
     // Wordpress media REST API reference — https://developer.wordpress.org/rest-api/reference/media/#list-media
 
     if (state.is_downloaded.media_soubory) return;
 
-
     try {
+      const media_soubory = await apiFactory.getAllMediaFactory(
+        projectConfig.wordpressAPIURLWebsite,
+        projectConfig.databazePoslancuURL,
+        opts.limit
+      );
 
-      const media_soubory = await apiFactory.getAllMediaFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, opts.limit);
-
-      commit("updateMedia", media_soubory);
-      commit("updateIsDownloaded", 'media_soubory');
-
+      commit('updateMedia', media_soubory);
+      commit('updateIsDownloaded', 'media_soubory');
     } catch (err) {
       console.warn(err);
     }
-
-
-
   },
 
   async getSnemovniObdobiDetail({ state, commit }, { snemovniObdobiId }) {
-
-
     try {
+      const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(
+        projectConfig.wordpressAPIURLWebsite,
+        projectConfig.databazePoslancuURL,
+        snemovniObdobiId
+      );
 
-      const snemovniObdobiObj = await apiFactory.getSnemovniObdobiDetailFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL, snemovniObdobiId);
-
-      commit("addSnemovniObdobi", snemovniObdobiObj);
-      commit("updateSnemovniObdobiDetail", snemovniObdobiObj);
-
+      commit('addSnemovniObdobi', snemovniObdobiObj);
+      commit('updateSnemovniObdobiDetail', snemovniObdobiObj);
     } catch (err) {
-
       console.warn(err);
-
     }
-
-
-
   },
 
   async getParlamentyDatabaze({ state, commit }) {
-
     if (state.parlamentyDatabaze.length) return;
 
-    const parlamenty = await apiFactory.getParlamentyDatabazeFactory(projectConfig.databazePoslancuURL);
+    const parlamenty = await apiFactory.getParlamentyDatabazeFactory(
+      projectConfig.databazePoslancuURL
+    );
 
-    commit("updateParlamentyDatabaze", parlamenty);
-
+    commit('updateParlamentyDatabaze', parlamenty);
   },
 
   async getParlamenty({ state, commit }) {
-
     if (state.parlamenty.length) return;
 
-    const parlamenty = await apiFactory.getParlamentyFactory(projectConfig.wordpressAPIURLWebsite, projectConfig.databazePoslancuURL);
+    const parlamenty = await apiFactory.getParlamentyFactory(
+      projectConfig.wordpressAPIURLWebsite,
+      projectConfig.databazePoslancuURL
+    );
 
-    commit("updateParlamenty", parlamenty);
-
-
+    commit('updateParlamenty', parlamenty);
   },
 
-  async getPoslanciHomepage({ state, commit }, {limit = 20, stranka = 1, filterCallback = null} ) {
+  async getPoslanciHomepage(
+    { state, commit },
+    { limit = 20, stranka = 1, filterCallback = null }
+  ) {
     if (state.poslanci_homepage.length) return;
 
     try {
-
-      const poslanci_homepage = await apiFactory.getPoslanciHomepageFactory(projectConfig.databazePoslancuURL, {limit, stranka, filterCallback,});
-      commit("updatePoslanciHomepage", poslanci_homepage);
-
+      const poslanci_homepage = await apiFactory.getPoslanciHomepageFactory(
+        projectConfig.databazePoslancuURL,
+        { limit, stranka, filterCallback }
+      );
+      commit('updatePoslanciHomepage', poslanci_homepage);
     } catch (err) {
       console.warn(err);
     }
   },
 
   countPoslanciStatistiky({ state, commit, dispatch }) {
-
     let poslanciStatistiky = {};
 
     // Remove all items with Age == 0
-    let poslanciFiltered = state.poslanci_filtrovani.filter((item) => typeof item.Vek == 'number');
+    let poslanciFiltered = state.poslanci_filtrovani.filter(
+      (item) => typeof item.Vek == 'number'
+    );
 
-    poslanciStatistiky.averageAge = Math.round(poslanciFiltered.reduce((total, next) => total + next.Vek, 0) / poslanciFiltered.length);
-    poslanciStatistiky.oldestAge = Math.round(Math.max(...poslanciFiltered.map(o => o.Vek), 0));
-    poslanciStatistiky.lowestAge = Math.round(Math.min(...poslanciFiltered.map(o => o.Vek)));
+    poslanciStatistiky.averageAge = Math.round(
+      poslanciFiltered.reduce((total, next) => total + next.Vek, 0) /
+        poslanciFiltered.length
+    );
+    poslanciStatistiky.oldestAge = Math.round(
+      Math.max(...poslanciFiltered.map((o) => o.Vek), 0)
+    );
+    poslanciStatistiky.lowestAge = Math.round(
+      Math.min(...poslanciFiltered.map((o) => o.Vek))
+    );
 
-    const arrTempMaleOnlyLength = poslanciFiltered.filter((item) => item.Pohlavi === 1).length;
-    poslanciStatistiky.percentageMale =  Math.round(arrTempMaleOnlyLength / (poslanciFiltered.length / 100));
+    const arrTempMaleOnlyLength = poslanciFiltered.filter(
+      (item) => item.Pohlavi === 1
+    ).length;
+    poslanciStatistiky.percentageMale = Math.round(
+      arrTempMaleOnlyLength / (poslanciFiltered.length / 100)
+    );
 
-    const arrTempHasUniversityDegree = poslanciFiltered.filter((item) => item.UniverzitniVzdelani == true).length;
-    poslanciStatistiky.percentageHasUniversityDegree = Math.round(arrTempHasUniversityDegree / (poslanciFiltered.length / 100));
+    const arrTempHasUniversityDegree = poslanciFiltered.filter(
+      (item) => item.UniverzitniVzdelani == true
+    ).length;
+    poslanciStatistiky.percentageHasUniversityDegree = Math.round(
+      arrTempHasUniversityDegree / (poslanciFiltered.length / 100)
+    );
 
-    const arrTempHasMoreThanOneMandate = poslanciFiltered.filter((item) => item.Mandaty.length > 1).length;
-    poslanciStatistiky.percentageHasMoreThanOneMandate = Math.round(arrTempHasMoreThanOneMandate / (poslanciFiltered.length / 100));
+    const arrTempHasMoreThanOneMandate = poslanciFiltered.filter(
+      (item) => item.Mandaty.length > 1
+    ).length;
+    poslanciStatistiky.percentageHasMoreThanOneMandate = Math.round(
+      arrTempHasMoreThanOneMandate / (poslanciFiltered.length / 100)
+    );
 
-
-    commit("updatePoslanciStatistiky", poslanciStatistiky);
-
+    commit('updatePoslanciStatistiky', poslanciStatistiky);
   },
 
-  async getPoslanecDetail({ state, commit, dispatch }, {poslanecId}) {
-
+  async getPoslanecDetail({ state, commit, dispatch }, { poslanecId }) {
     // :TODO: get cached poslanec if already in the store
     // :TODO: cache via http cache?
 
-    const poslanec = await apiFactory.getPoslanecDetailFactory(projectConfig.databazePoslancuURL, poslanecId);
+    const poslanec = await apiFactory.getPoslanecDetailFactory(
+      projectConfig.databazePoslancuURL,
+      poslanecId
+    );
 
-    commit("updatePoslanecDetail", poslanec);
-
-
+    commit('updatePoslanecDetail', poslanec);
   },
 
-  async getPoslanciAll({ state, commit, dispatch }, filtrNastaveniParamsString) {
-
+  async getPoslanciSearchAll(
+    { state, commit, dispatch },
+    filtrNastaveniParamsString
+  ) {
     try {
-
-      let poslanciRequest = await this.$axios.get(`${projectConfig.databazePoslancuURL}/Api/osoby/${filtrNastaveniParamsString}`);
+      let poslanciRequest = await this.$axios.get(
+        `${projectConfig.databazePoslancuURL}/Api/osoby/${filtrNastaveniParamsString}`
+      );
       poslanciRequest = poslanciRequest.data;
 
       let poslanci = poslanciRequest.Poslanci;
       const filterData = poslanciRequest.Filtry;
 
+      poslanci = poslanci.map((poslanec) => {
+        if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
+          poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(
+            poslanec.DatumNarozeni
+          );
+        }
 
-      poslanci = poslanci
-        .map((poslanec) => {
+        if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
+          poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(
+            poslanec.DatumUmrti
+          );
+        }
 
-          if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
-            poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(poslanec.DatumNarozeni);
-          }
+        return poslanec;
+      });
 
-          if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
-            poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(poslanec.DatumUmrti);
-          }
-
-          return poslanec;
-
-        });
-
-
-      commit("updatePoslanci", poslanci);
-      commit("updateFilterData", filterData);
-
-
+      commit('updatePoslanciSearch', poslanci);
+      commit('updateFilterDataSearch', filterData);
     } catch (err) {
       console.warn(err);
     }
-
   },
 
-  async resetPoslanci({ state, commit, dispatch }) {
-
+  async getPoslanciAll(
+    { state, commit, dispatch },
+    filtrNastaveniParamsString
+  ) {
     try {
+      let poslanciRequest = await this.$axios.get(
+        `${projectConfig.databazePoslancuURL}/Api/osoby/${filtrNastaveniParamsString}`
+      );
+      poslanciRequest = poslanciRequest.data;
 
-      commit("updatePoslanci", []);
-      commit("updateFilterData", []);
+      let poslanci = poslanciRequest.Poslanci;
+      const filterData = poslanciRequest.Filtry;
 
+      poslanci = poslanci.map((poslanec) => {
+        if (!poslanec.DatumNarozeniZobrazene && poslanec.DatumNarozeni) {
+          poslanec.DatumNarozeniZobrazene = dateISOStringToCZFormat(
+            poslanec.DatumNarozeni
+          );
+        }
+
+        if (!poslanec.DatumUmrtiZobrazene && poslanec.DatumUmrti) {
+          poslanec.DatumUmrtiZobrazene = dateISOStringToCZFormat(
+            poslanec.DatumUmrti
+          );
+        }
+
+        return poslanec;
+      });
+
+      commit('updatePoslanci', poslanci);
+      commit('updateFilterData', filterData);
     } catch (err) {
       console.warn(err);
     }
-
   },
 
+  async resetPoslanciSearch({ state, commit, dispatch }) {
+    try {
+      commit('updatePoslanciSearch', []);
+      commit('updateFilterDataSearch', []);
+    } catch (err) {
+      console.warn(err);
+    }
+  },
 };
-
-
