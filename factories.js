@@ -104,19 +104,19 @@ const createFilterSettingsForApiUseFactory = (
       nullable: true,
       values: undefined,
     },
-    VolebniStrany: {
-      id: sectionId++,
-      title: 'Volební strany',
-      type: 'checkbox',
-      multiple: true,
-      reset: true,
-      order: 'block',
-      info: false,
-      property: 'VolebniStrany',
-      hasCounter: true,
-      nullable: true,
-      values: undefined,
-    },
+    //   VolebniStrany: {
+    //     id: sectionId++,
+    //     title: 'Volební strany',
+    //     type: 'checkbox',
+    //     multiple: true,
+    //     reset: true,
+    //     order: 'block',
+    //     info: false,
+    //     property: 'VolebniStrany',
+    //     hasCounter: true,
+    //     nullable: true,
+    //     values: undefined,
+    //   },
     Kluby: {
       id: sectionId++,
       title: 'Kluby',
@@ -193,15 +193,15 @@ const createFilterSettingsForApiUseFactory = (
       nullable: true,
       values: undefined,
     },
-    // SocialniVazby: {
-    //   id: sectionId++,
-    //   title: 'Sociální vazby',
-    //   type: 'radio',
-    //   order: 'inline',
-    //   info: "Databáze sleduje u poslanců a poslankyň také jejich příbuzenské vztahy, skrze něž je posléze možné dohledat vztahy k dalším poslancům a poslankyním v databázi. Zároveň ne u všech bylo možné příbuzenské vazby v historických pramenech dohledat. Filtr umožňuje vybrat ty poslance a poslankyně, u nichž jsou příbuzenské vazby dostupné.",
-    //   hasCounter: false,
-    //   values: undefined,
-    // },
+    //   // SocialniVazby: {
+    //   //   id: sectionId++,
+    //   //   title: 'Sociální vazby',
+    //   //   type: 'radio',
+    //   //   order: 'inline',
+    //   //   info: "Databáze sleduje u poslanců a poslankyň také jejich příbuzenské vztahy, skrze něž je posléze možné dohledat vztahy k dalším poslancům a poslankyním v databázi. Zároveň ne u všech bylo možné příbuzenské vazby v historických pramenech dohledat. Filtr umožňuje vybrat ty poslance a poslankyně, u nichž jsou příbuzenské vazby dostupné.",
+    //   //   hasCounter: false,
+    //   //   values: undefined,
+    //   // },
     Fotografie: {
       id: sectionId++,
       title: 'Fotografie',
@@ -316,19 +316,6 @@ const createFilterSettingsForApiUseFactory = (
     ...parlamentyMapped,
   ];
 
-  let snemovniObdobiMapped = [...filterData.SnemovniObdobi].map((item) => {
-    return {
-      id: item.Id,
-      text: item.Nazev,
-      selected: false,
-    };
-  });
-
-  snemovniObdobiMapped = [
-    { id: null, text: 'Vše', default: true, reset: true, selected: true },
-    ...snemovniObdobiMapped,
-  ];
-
   let narodnostiMapped = [...filterData.Narodnosti].map((item) => {
     return {
       id: item.Id,
@@ -358,10 +345,10 @@ const createFilterSettingsForApiUseFactory = (
     { id: true, text: 'Má VŠ', disabled: false },
   ];
 
-  const SocialniVazbyMapped = [
-    { id: false, text: 'Vše', default: true, reset: true, selected: true },
-    { id: true, text: 'Má sociální vztahy', disabled: false },
-  ];
+  // const SocialniVazbyMapped = [
+  //   { id: false, text: 'Vše', default: true, reset: true, selected: true },
+  //   { id: true, text: 'Má sociální vztahy', disabled: false },
+  // ];
 
   const maFotkuMapped = [
     { id: null, text: 'Vše', default: true, reset: true, selected: true },
@@ -431,16 +418,15 @@ const createFilterSettingsForApiUseFactory = (
     filterData.AbsolutniMinimalniVekNaKonciMandatu, // default min
     filterData.AbsolutniMaximalniVekNaKonciMandatu, // default max
   ]; ///
-  ////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////
 
   finalResult.PoslaneckySlib.values = poslaneckySlibMapped;
   finalResult.Pohlavi.values = pohlaviMapped;
   finalResult.Snemovny.values = parlamentyMapped;
-  finalResult.SnemovniObdobi.values = snemovniObdobiMapped;
   finalResult.Narodnosti.values = narodnostiMapped;
   finalResult.Vyznani.values = vyznaniMapped;
   finalResult.UniverzitniVzdelani.values = vysokaSkolaMapped;
-  // finalResult.SocialniVazby.values = SocialniVazbyMapped;
+  // // finalResult.SocialniVazby.values = SocialniVazbyMapped;
   finalResult.Fotografie.values = maFotkuMapped;
 
   finalResult.DruhMandatu.values = druhMandatuMapped;
@@ -448,6 +434,23 @@ const createFilterSettingsForApiUseFactory = (
   finalResult.PocetMandatu.values = pocetMandatuMapped;
   finalResult.VekNaZacatkuMandatu.values = vekyNaZacatkuMandatuMapped;
   finalResult.VekNaKonciMandatu.values = vekyNaKonciMandatuMapped;
+
+  if (filterData.SnemovniObdobi && filterData.SnemovniObdobi !== null) {
+    const snemovniObdobiMapped = [...filterData.SnemovniObdobi].map((item) => {
+      return {
+        id: item.Id,
+        text: item.Nazev,
+        selected: false,
+      };
+    });
+
+    finalResult.SnemovniObdobi.values = [
+      { id: null, text: 'Vše', default: true, reset: true, selected: true },
+      ...snemovniObdobiMapped,
+    ];
+  } else {
+    delete finalResult.SnemovniObdobi;
+  }
 
   if (filterData.Kluby && filterData.Kluby !== null) {
     const klubyMapped = [...filterData.Kluby].map((item) => {
@@ -485,22 +488,22 @@ const createFilterSettingsForApiUseFactory = (
     delete finalResult.PolitickeStrany;
   }
 
-  if (filterData.VolebniStrany && filterData.VolebniStrany !== null) {
-    const stranyMapped = [...filterData.VolebniStrany].map((item) => {
-      return {
-        id: item.Id,
-        text: item.Nazev,
-        selected: false,
-      };
-    });
+  // if (filterData.VolebniStrany && filterData.VolebniStrany !== null) {
+  //   const stranyMapped = [...filterData.VolebniStrany].map((item) => {
+  //     return {
+  //       id: item.Id,
+  //       text: item.Nazev,
+  //       selected: false,
+  //     };
+  //   });
 
-    finalResult.VolebniStrany.values = [
-      { id: null, text: 'Vše', default: true, reset: true, selected: true },
-      ...stranyMapped,
-    ];
-  } else {
-    delete finalResult.VolebniStrany;
-  }
+  //   finalResult.VolebniStrany.values = [
+  //     { id: null, text: 'Vše', default: true, reset: true, selected: true },
+  //     ...stranyMapped,
+  //   ];
+  // } else {
+  //   delete finalResult.VolebniStrany;
+  // }
 
   if (filterData.Vybory && filterData.Vybory !== null) {
     let vyboryMapped = [...filterData.Vybory].map((item) => {
@@ -536,9 +539,9 @@ const createFilterSettingsForApiUseFactory = (
     delete finalResult.Kurie;
   }
 
-  ////////////////////////////////////////////////////////////////////////
+  // ////////////////////////////////////////////////////////////////////////
 
-  // make active items in the filter based on the current query
+  // // make active items in the filter based on the current query
 
   Object.keys(finalResult).forEach((key) => {
     if (finalResult[key].type !== 'range') {
