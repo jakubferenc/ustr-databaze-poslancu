@@ -1519,7 +1519,9 @@ export default {
 
     statistiky() {
       if (!this.ukazatDataProKonecneObdobi) {
-        return this.snemovniObdobi.SnemovniObdobiStatistikaZacatek;
+        return this.snemovniObdobi.SnemovniObdobiStatistikaZacatek !== null
+          ? this.snemovniObdobi.SnemovniObdobiStatistikaZacatek
+          : this.snemovniObdobi.SnemovniObdobiStatistikaKonec;
       } else {
         return this.snemovniObdobi.SnemovniObdobiStatistikaKonec;
       }
