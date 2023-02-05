@@ -62,7 +62,7 @@
 
   .parlament-detail-title
     h1.typography-main-title.typography-has-no-margin-top.typography-has-no-margin-bottom {{snemovniObdobi.Nazev}} <br> ({{snemovniObdobi.DatumZacatkuZobrazene}} — {{snemovniObdobi.DatumKonceZobrazene}} )
-    .counter-poslanci celkem {{snemovniObdobi.PocetPoslancu}} poslanců
+    .counter-poslanci celkem {{snemovniObdobi.PocetPoslancu}} poslanců s mandáty
 
 
   //- .parlament-meta-tab-navigation
