@@ -435,4 +435,8 @@ export const actions = {
       console.warn(err);
     }
   },
+
+  async resetPoslanci({ state, commit, dispatch }) {
+    return;
+  },
 };
