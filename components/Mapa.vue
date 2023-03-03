@@ -184,18 +184,16 @@ export default {
           html: (item, styleString = '') => {
             const hasBgColor =
               this.NastaveniMapa &&
-              this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable
+                this.NastaveniMapa?.zvyraznitPoslancePodlePolitickePrislusnosti?.enable
                 ? true
                 : false;
 
             const imageContent =
               item.ProfilovaFotka && item.ProfilovaFotka !== ''
                 ? `
-                <img src="${
-                  item.ProfilovaFotka
-                }" class="map-person-thumb-head-icon-image ${
-                    hasBgColor ? 'has--bg-color' : ''
-                  }" />
+                <img src="${item.ProfilovaFotka
+                }" class="map-person-thumb-head-icon-image ${hasBgColor ? 'has--bg-color' : ''
+                }" />
               `
                 : `<div class="map-person-thumb-head-icon-image" style="${styleString}">
 
@@ -234,12 +232,10 @@ export default {
                             Úmrtí: ${item.DatumUmrtiZobrazene || '??'}
                           </p>
 
-                          <div class="map-card__content__address">Místo narození: ${
-                            item.Nazev
-                          }</div>
-                          <div class="map-card__content__address__meta">GPS lokace: ${
-                            item.GeoX
-                          } ${item.GeoY}</div>
+                          <div class="map-card__content__address">Místo narození: ${item.Nazev
+              }</div>
+                          <div class="map-card__content__address__meta">GPS lokace: ${item.GeoX
+              } ${item.GeoY}</div>
                           <div class="map-card__footer">Zobrazit detail poslance →</div>
                         </div>
 
@@ -403,14 +399,11 @@ export default {
 
       this.mapInstance = map($mapElement, this.mapOptions);
 
-      tileLayer(
-        `https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.mapbox.accessToken}`,
-        {
-          id: 'mapbox.light',
-          attribution:
-            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        }
-      ).addTo(this.mapInstance);
+      tileLayer(`https://tile.openstreetmap.org/{z}/{x}/{y}.png`, {
+        // id: 'mapbox.light',
+        attribution:
+          'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+      }).addTo(this.mapInstance);
 
       // // init clusters for places
       // https://github.com/Leaflet/Leaflet.markercluster
@@ -630,7 +623,7 @@ export default {
         },
         {
           rel: 'stylesheet',
-          href: '//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css',
+          // href: '//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css',
         },
       ],
       htmlAttrs: {},
