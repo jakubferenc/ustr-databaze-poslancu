@@ -60,11 +60,11 @@
                         .profese.item(v-for="(itemNabozenstvi, index) in poslanec.Nabozenstvi" :key="index")
 
 
-                            .profese-title {{itemNabozenstvi.Nazev}}
-                            .profese-date-range(v-if="itemNabozenstvi.Zacatek")
-                              | (
-                              span od roku {{itemNabozenstvi.Zacatek}}
-                              | )
+                          .profese-title {{itemNabozenstvi.Nazev}}
+                          .profese-date-range(v-if="itemNabozenstvi.Zacatek")
+                            | (
+                            span od roku {{itemNabozenstvi.Zacatek}}
+                            | )
 
 
                       .metadata-section-content.typography-item-detail-text(v-else) Neuvedeno
@@ -129,7 +129,7 @@
     //-   h2.section-title Sociální mapa poslance
 
     //-   #socialni-mapy-container
-      //- <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
+    //- <SocialniMapa :Poslanec="poslanec" :MaNadpis="true" :MaBilePozadi="true" />
 
 
     //- .parlament-detail-galerie-medii.section-padding.alt-bg-02(v-if="poslanec.Soubory.length > 0")
@@ -252,26 +252,26 @@
 </style>
 
 <script>
-import { addRecursivelyPerson, dateISOStringToCZFormat } from "~/utils/functions";
+import { addRecursivelyPerson, dateISOStringToCZFormat } from '~/utils/functions';
 
-import OrgChart from "~/vendor/org-chart";
+import OrgChart from '~/vendor/org-chart';
 
-const CasovaOsa = () => import("~/components/CasovaOsa.vue");
-const MandatRadek = () => import("~/components/MandatRadek.vue");
+const CasovaOsa = () => import('~/components/CasovaOsa.vue');
+const MandatRadek = () => import('~/components/MandatRadek.vue');
 // const SocialniMapa = () => import('~/components/SocialniMapa.vue');
-const GalerieMediiSeznam = () => import("~/components/GalerieMediiSeznam.vue");
+const GalerieMediiSeznam = () => import('~/components/GalerieMediiSeznam.vue');
 
 let leafletObj;
 let leafletObjMarkerCluster;
 
 if (process.client) {
-  leafletObj = () => import("leaflet");
-  leafletObjMarkerCluster = () => import("leaflet.markercluster");
+  leafletObj = () => import('leaflet');
+  leafletObjMarkerCluster = () => import('leaflet.markercluster');
 }
 
-import MapaIkonaNarozeni from "~/assets/images/mapa-icon-birth.svg?inline";
-import MapaIkonaUmrti from "~/assets/images/mapa-icon-death.svg?inline";
-import ParlamentNahledObecnyImage from "~/assets/images/icon-parlamentni-teleso.svg?inline";
+import MapaIkonaNarozeni from '~/assets/images/mapa-icon-birth.svg?inline';
+import MapaIkonaUmrti from '~/assets/images/mapa-icon-death.svg?inline';
+import ParlamentNahledObecnyImage from '~/assets/images/icon-parlamentni-teleso.svg?inline';
 
 export default {
   components: {
@@ -290,9 +290,9 @@ export default {
         poslanec: payload,
       };
     } else {
-      const numericIdParts = params.id.split("-");
+      const numericIdParts = params.id.split('-');
       const numericId = numericIdParts[numericIdParts.length - 1];
-      await store.dispatch("getPoslanecDetail", { poslanecId: numericId });
+      await store.dispatch('getPoslanecDetail', { poslanecId: numericId });
 
       return {
         poslanec: store.state.poslanec,
@@ -306,7 +306,7 @@ export default {
       mapSettings: {
         popup: {
           html: (item) => {
-            let snemovniObdobiString = "";
+            let snemovniObdobiString = '';
 
             // we don't want to show "od" and "do" dates for addresses of types 1,5,6  as they are addresses of birth and death and grave
             if ((item.Zacatek || item.Konec) && [2].includes(item.Druh)) {
@@ -314,7 +314,7 @@ export default {
 
               snemovniObdobiString += item.Zacatek
                 ? `<span>od dne ${dateISOStringToCZFormat(item.Zacatek)}</span>`
-                : "<span>od dne ???</span>";
+                : '<span>od dne ???</span>';
               snemovniObdobiString += `</div>`;
             }
 
@@ -336,9 +336,8 @@ export default {
             if (item.Zacatek && [3].includes(item.Druh)) {
               snemovniObdobiString += `<div class="map-card__date-item">`;
               if (item.Zacatek) {
-                snemovniObdobiString += `kolem roku <span>${
-                  dateISOStringToCZFormat(item.Zacatek, false, true)[2]
-                }</span>`;
+                snemovniObdobiString += `kolem roku <span>${dateISOStringToCZFormat(item.Zacatek, false, true)[2]
+                  }</span>`;
               }
               snemovniObdobiString += `</div>`;
             }
@@ -371,22 +370,22 @@ export default {
         },
         addresses: {
           cluster: {
-            className: "map__marker map__marker--cluster",
+            className: 'map__marker map__marker--cluster',
             iconSize: 30,
           },
           iconLarge: {
-            className: "map__marker map__marker--address",
+            className: 'map__marker map__marker--address',
             iconSize: 50,
             popupAnchor: [-200, 95],
             tooltip: {
-              direction: "bottom",
+              direction: 'bottom',
               offset: { x: 0, y: 20 },
             },
             html: (item, index) => {
               const start = `<div class="map__marker__container map-address-icon">`;
               const end = `</div>`;
 
-              let content = "";
+              let content = '';
 
               if (item.Druh === 1) {
                 content = `
@@ -492,16 +491,13 @@ export default {
 
         this.mapInstance = map($mapElement, mapOptions);
 
-        tileLayer(
-          `https://api.mapbox.com/styles/v1/jakubferenc/ckfnqth7411u319o31xieiy4n/tiles/{z}/{x}/{y}?access_token=${this.$config.mapbox.accessToken}`,
-          {
-            id: "mapbox.light",
-            attribution:
-              'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-          }
-        ).addTo(this.mapInstance);
+        tileLayer(`https://tile.openstreetmap.org/{z}/{x}/{y}.png`, {
+          // id: 'mapbox.light',
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
+        }).addTo(this.mapInstance);
 
-        this.mapInstance.createPane("addresses");
+        this.mapInstance.createPane('addresses');
 
         // // init clusters for places
         // https://github.com/Leaflet/Leaflet.markercluster
@@ -513,7 +509,7 @@ export default {
           //   ...this.mapSettings.addresses.cluster,
           //   html: `${cluster.getAllChildMarkers()[0].getIcon().options.html}<span></span><span></span>`,
           // }),
-        }).on("clusterclick", (event) => {
+        }).on('clusterclick', (event) => {
           DomEvent.stopPropagation(event);
           // this.resetAll();
         });
@@ -533,7 +529,7 @@ export default {
             zIndexOffset: 2,
           });
 
-          marker.on("click", (event) => {
+          marker.on('click', (event) => {
             // in dev tools in chrome, you can get error on click, but it's a Chrome bug
             // viz https://stackoverflow.com/a/50857216/12058461
             // DomEvent.stopPropagation(event);
@@ -612,7 +608,7 @@ export default {
           Prijmeni,
           ZivotniData: `${DatumNarozeniZobrazene} ${DatumUmrtiZobrazene}`,
           name: `${Jmeno} ${Prijmeni}`,
-          title: "Poslanec",
+          title: 'Poslanec',
         };
 
         const resultItems = [...SouvisejiciPoslanci].map((person) => {
@@ -620,15 +616,15 @@ export default {
             Id: person.Id,
             PrimarniOsobaId: person.VztahovaCesta[0].PrimarniOsobaId,
             Jmeno:
-              person.Jmeno.split("|")[0].trim() ||
-              person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
+              person.Jmeno.split('|')[0].trim() ||
+              person.VztahovaCesta[0].PrimarniOsobaJmeno.split('|')[0].trim(),
             ZivotniData: person.VztahovaCesta[0].SouvisejícíOsobaZivotniData,
             DruhVztahu: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
             JePoslanec: person.VztahovaCesta[0].JeSouvisejiciOsobaPoslanec,
             Uroven: person.VztahovaCesta[0].Uroven,
             name:
-              person.Jmeno.split("|")[0].trim() ||
-              person.VztahovaCesta[0].PrimarniOsobaJmeno.split("|")[0].trim(),
+              person.Jmeno.split('|')[0].trim() ||
+              person.VztahovaCesta[0].PrimarniOsobaJmeno.split('|')[0].trim(),
             title: person.VztahovaCesta[0].SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
           };
         });
@@ -640,12 +636,12 @@ export default {
           return {
             Id: person.Id,
             PrimarniOsobaId: person.PrimarniOsobaId,
-            Jmeno: person.PrimarniOsobaJmeno.split("|")[0].trim(),
+            Jmeno: person.PrimarniOsobaJmeno.split('|')[0].trim(),
             ZivotniData: null,
             DruhVztahu: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
             JePoslanec: person.JeSouvisejiciOsobaPoslanec,
             Uroven: person.Uroven,
-            name: person.PrimarniOsobaJmeno.split("|")[0].trim(),
+            name: person.PrimarniOsobaJmeno.split('|')[0].trim(),
             title: person.SouvisejiciOsobaDruhVztahuKPrimarniOsobe,
           };
         });
@@ -658,7 +654,7 @@ export default {
 
         if (!this.$config.poslanec.socialniVazby.showPritelType) {
           preparedItems = [...preparedItems].filter(
-            (item) => item.DruhVztahu !== "přítel"
+            (item) => item.DruhVztahu !== 'přítel'
           ); // filter out type "přítel"
         }
 
@@ -683,7 +679,7 @@ export default {
       }
     },
 
-    mandatyChronologicky() {},
+    mandatyChronologicky() { },
 
     profileImage() {
       const hasProfileImage =
@@ -721,14 +717,14 @@ export default {
     // },
 
     tituly() {
-      return this.poslanec.Tituly.join(" ") ?? false;
+      return this.poslanec.Tituly.join(' ') ?? false;
     },
 
     pocetMandatu() {
       if (this.poslanec.Mandaty) {
         return this.poslanec.Mandaty.length;
       } else {
-        return this.$t("error.notDefined");
+        return this.$t('error.notDefined');
       }
     },
 
@@ -758,10 +754,10 @@ export default {
         const addressObject =
           this.poslanec.Adresy.filter((adresa) => adresa.Druh === 1)?.[0] ?? false;
         if (addressObject) {
-          const parts = addressObject.Nazev.split("|");
+          const parts = addressObject.Nazev.split('|');
           const city = parts[0];
 
-          const countryParts = parts[1].split(",");
+          const countryParts = parts[1].split(',');
           // const country = countryParts[countryParts.length-1];
 
           return {
@@ -779,9 +775,9 @@ export default {
       const addressObject =
         this.poslanec.Adresy.filter((adresa) => adresa.Druh === 5)[0] ?? false;
       if (addressObject) {
-        const parts = addressObject.Nazev.split("|");
+        const parts = addressObject.Nazev.split('|');
         const city = parts[0];
-        const countryParts = parts[1].split(",");
+        const countryParts = parts[1].split(',');
         // const country = countryParts[countryParts.length-1];
 
         return {
@@ -797,21 +793,17 @@ export default {
       title: `${this.poslanec?.Jmeno} ${this.poslanec?.Prijmeni} — ${this.$config.globalTitle}`, // :TODO:
       link: [
         {
-          rel: "stylesheet",
-          href: "//unpkg.com/leaflet/dist/leaflet.css",
+          rel: 'stylesheet',
+          href: '//unpkg.com/leaflet/dist/leaflet.css',
         },
         {
-          rel: "stylesheet",
+          rel: 'stylesheet',
           href:
-            "https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
-        },
-        {
-          rel: "stylesheet",
-          href: "//api.mapbox.com/mapbox-gl-js/v2.3.0/mapbox-gl.css",
+            'https://unpkg.com/browse/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css',
         },
       ],
       htmlAttrs: {
-        class: "subpage-poslanci",
+        class: 'subpage-poslanci',
       },
     };
   },
