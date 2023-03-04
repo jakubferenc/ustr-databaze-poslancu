@@ -8,16 +8,15 @@
       NuxtLink.file-link(:to="`/media/${soubor.id}/`")
 
         .image-container
-
-          nuxt-picture.slider-image(
-            v-if="soubor.image.thumb_url"
-            format="webp"
-            quality="50"
-            loading="lazy"
-            :src="soubor.image.thumb_url"
-            :alt="soubor.caption"
-            sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:80vw"
-          )
+          template(v-if="soubor.image.thumb_url")
+            nuxt-picture.slider-image(
+              quality="50"
+              format="jpg"
+              loading="lazy"
+              :src="soubor.image.thumb_url"
+              :alt="soubor.caption"
+              sizes="mobile:100vw tablet:100vw desktop:100vw widescreen::100vw fullhd:80vw"
+            )
 
         .file-thumb-footer
           .file-title(v-html="soubor.caption")
@@ -107,6 +106,6 @@ export default {
 
   components: { IconFileTypeImage, IconFileTypeVideo, IconFileTypeDocument },
 
-  mounted() {},
+  mounted() { },
 };
 </script>

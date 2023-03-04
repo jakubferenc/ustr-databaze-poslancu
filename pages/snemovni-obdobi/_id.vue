@@ -92,11 +92,10 @@
 
     .typography-text-block.columns.is-multiline
 
-      .text-block-image.next-to-text.column.is-full.is-full-tablet.is-half-desktop
+      .text-block-image.next-to-text.column.is-full.is-full-tablet.is-half-desktop()
 
         nuxt-picture.slider-image(
-          v-if="snemovniObdobi.UvodniFotografie"
-          format="webp"
+          format="jpg"
           quality="50"
           loading="lazy"
           :src="snemovniObdobi.UvodniFotografie"
@@ -352,7 +351,7 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() { },
 
   computed: {
     hideKurie() {

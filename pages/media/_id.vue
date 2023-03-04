@@ -12,7 +12,7 @@
         .image-container(v-if="getFullUrl(soubor)").column.is-four-fifths-desktop.is-two-thirds-tablet.is-full-mobile
 
           nuxt-picture.slider-image(
-            format="webp"
+            format="jpg"
             quality="50"
             loading="lazy"
             :src="getFullUrl(soubor)"
